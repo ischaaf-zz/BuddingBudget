@@ -1,0 +1,275 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/nodejs', '/usr/bin/npm', 'install', '-g', 'phonegap' ]
+2 info using npm@1.3.10
+3 info using node@v0.10.25
+4 verbose cache add [ 'phonegap', null ]
+5 verbose cache add name=undefined spec="phonegap" args=["phonegap",null]
+6 verbose parsed url { protocol: null,
+6 verbose parsed url   slashes: null,
+6 verbose parsed url   auth: null,
+6 verbose parsed url   host: null,
+6 verbose parsed url   port: null,
+6 verbose parsed url   hostname: null,
+6 verbose parsed url   hash: null,
+6 verbose parsed url   search: null,
+6 verbose parsed url   query: null,
+6 verbose parsed url   pathname: 'phonegap',
+6 verbose parsed url   path: 'phonegap',
+6 verbose parsed url   href: 'phonegap' }
+7 silly lockFile 10db903f-phonegap phonegap
+8 verbose lock phonegap /home/kyle/.npm/10db903f-phonegap.lock
+9 silly lockFile 10db903f-phonegap phonegap
+10 silly lockFile 10db903f-phonegap phonegap
+11 verbose addNamed [ 'phonegap', '' ]
+12 verbose addNamed [ null, '*' ]
+13 silly lockFile 3a6257f3-phonegap phonegap@
+14 verbose lock phonegap@ /home/kyle/.npm/3a6257f3-phonegap.lock
+15 silly addNameRange { name: 'phonegap', range: '*', hasData: false }
+16 verbose url raw phonegap
+17 verbose url resolving [ 'https://registry.npmjs.org/', './phonegap' ]
+18 verbose url resolved https://registry.npmjs.org/phonegap
+19 info trying registry request attempt 1 at 18:12:24
+20 verbose etag "D7T836J603F00MQKSINVVAXII"
+21 http GET https://registry.npmjs.org/phonegap
+22 http 304 https://registry.npmjs.org/phonegap
+23 silly registry.get cb [ 304,
+23 silly registry.get   { date: 'Sun, 24 Jan 2016 02:12:24 GMT',
+23 silly registry.get     via: '1.1 varnish',
+23 silly registry.get     'cache-control': 'max-age=300',
+23 silly registry.get     etag: '"D7T836J603F00MQKSINVVAXII"',
+23 silly registry.get     age: '0',
+23 silly registry.get     connection: 'keep-alive',
+23 silly registry.get     'x-served-by': 'cache-sjc3134-SJC',
+23 silly registry.get     'x-cache': 'MISS',
+23 silly registry.get     'x-cache-hits': '0',
+23 silly registry.get     'x-timer': 'S1453601544.436858,VS0,VE84',
+23 silly registry.get     vary: 'Accept' } ]
+24 verbose etag phonegap from cache
+25 silly addNameRange number 2 { name: 'phonegap', range: '*', hasData: true }
+26 silly addNameRange versions [ 'phonegap',
+26 silly addNameRange   [ '0.2.0',
+26 silly addNameRange     '0.2.1',
+26 silly addNameRange     '0.2.2',
+26 silly addNameRange     '0.3.0',
+26 silly addNameRange     '0.4.0',
+26 silly addNameRange     '0.4.1',
+26 silly addNameRange     '0.5.0',
+26 silly addNameRange     '0.6.0',
+26 silly addNameRange     '0.6.1',
+26 silly addNameRange     '0.7.0',
+26 silly addNameRange     '0.7.1',
+26 silly addNameRange     '0.7.2',
+26 silly addNameRange     '0.7.3',
+26 silly addNameRange     '0.7.4',
+26 silly addNameRange     '0.7.5',
+26 silly addNameRange     '0.7.6',
+26 silly addNameRange     '0.7.7',
+26 silly addNameRange     '0.7.8',
+26 silly addNameRange     '0.8.0',
+26 silly addNameRange     '0.8.1',
+26 silly addNameRange     '0.9.0',
+26 silly addNameRange     '0.9.1',
+26 silly addNameRange     '0.9.2',
+26 silly addNameRange     '0.9.3',
+26 silly addNameRange     '0.9.4',
+26 silly addNameRange     '2.8.0-0.10.0',
+26 silly addNameRange     '2.8.0-0.10.1',
+26 silly addNameRange     '2.8.0-0.10.2',
+26 silly addNameRange     '2.8.0-0.10.3',
+26 silly addNameRange     '2.8.0-0.10.4',
+26 silly addNameRange     '2.8.0-0.10.6',
+26 silly addNameRange     '2.8.1-0.11.0',
+26 silly addNameRange     '2.9.0-0.12.2',
+26 silly addNameRange     '2.9.0-0.12.3',
+26 silly addNameRange     '2.9.0-0.12.4',
+26 silly addNameRange     '2.9.0-0.12.5',
+26 silly addNameRange     '2.9.0-0.12.6',
+26 silly addNameRange     '2.9.0-0.12.7',
+26 silly addNameRange     '2.9.0-0.12.8',
+26 silly addNameRange     '2.9.0-rc1-0.12.0',
+26 silly addNameRange     '2.9.0-rc1-0.12.1',
+26 silly addNameRange     '2.9.0-rc1-0.12.2',
+26 silly addNameRange     '2.9.0-0.12.9',
+26 silly addNameRange     '2.9.0-0.12.10',
+26 silly addNameRange     '2.9.0-0.12.11',
+26 silly addNameRange     '2.9.0-0.13.0',
+26 silly addNameRange     '2.9.0-0.13.1',
+26 silly addNameRange     '2.9.0-0.13.2',
+26 silly addNameRange     '3.0.0-rc1-0.13.2',
+26 silly addNameRange     '3.0.0-rc1-0.13.3',
+26 silly addNameRange     '3.0.0-0.14.0',
+26 silly addNameRange     '3.0.0-0.14.1',
+26 silly addNameRange     '3.0.0-0.14.2',
+26 silly addNameRange     '3.0.0-0.14.3',
+26 silly addNameRange     '3.0.0-0.14.4',
+26 silly addNameRange     '3.1.0-0.15.0',
+26 silly addNameRange     '3.2.0-0.15.0',
+26 silly addNameRange     '3.2.0-0.16.0',
+26 silly addNameRange     '3.2.0-0.17.0',
+26 silly addNameRange     '3.2.0-0.17.1',
+26 silly addNameRange     '3.3.0-0.17.1',
+26 silly addNameRange     '3.3.0-0.18.0',
+26 silly addNameRange     '3.3.0-0.18.1',
+26 silly addNameRange     '3.3.0-0.19.0',
+26 silly addNameRange     '3.3.0-0.19.1',
+26 silly addNameRange     '3.3.0-0.19.2',
+26 silly addNameRange     '3.3.0-0.19.3',
+26 silly addNameRange     '3.3.0-0.19.4',
+26 silly addNameRange     '3.3.0-0.19.5',
+26 silly addNameRange     '3.3.0-0.19.6',
+26 silly addNameRange     '3.4.0-0.19.7',
+26 silly addNameRange     '3.4.0-0.19.8',
+26 silly addNameRange     '3.4.0-0.19.9',
+26 silly addNameRange     '3.4.0-0.19.10',
+26 silly addNameRange     '3.4.0-0.19.11',
+26 silly addNameRange     '3.4.0-0.19.12',
+26 silly addNameRange     '3.4.0-0.19.13',
+26 silly addNameRange     '3.4.0-0.19.14',
+26 silly addNameRange     '3.4.0-0.19.15',
+26 silly addNameRange     '3.4.0-0.19.16',
+26 silly addNameRange     '3.4.0-0.19.17',
+26 silly addNameRange     '3.4.0-0.19.18',
+26 silly addNameRange     '3.4.0-0.19.19',
+26 silly addNameRange     '3.4.0-0.19.20',
+26 silly addNameRange     '3.4.0-0.19.21',
+26 silly addNameRange     '3.4.0-0.20.0',
+26 silly addNameRange     '3.5.0-0.19.23',
+26 silly addNameRange     '3.5.0-0.20.0',
+26 silly addNameRange     '3.5.0-0.20.1',
+26 silly addNameRange     '3.5.0-0.20.3',
+26 silly addNameRange     '3.5.0-0.20.4',
+26 silly addNameRange     '3.5.0-0.20.5',
+26 silly addNameRange     '3.5.0-0.20.6',
+26 silly addNameRange     '3.5.0-0.20.7',
+26 silly addNameRange     '3.5.0-0.20.9',
+26 silly addNameRange     '3.5.0-0.20.10',
+26 silly addNameRange     '3.5.0-0.20.14',
+26 silly addNameRange     '3.5.0-0.21.14',
+26 silly addNameRange     '3.5.0-0.21.15',
+26 silly addNameRange     '3.5.0-0.21.16',
+26 silly addNameRange     '3.5.0-0.21.17',
+26 silly addNameRange     '3.5.0-0.21.18',
+26 silly addNameRange     '3.6.0-0.21.18',
+26 silly addNameRange     '3.6.0-0.21.19',
+26 silly addNameRange     '3.6.3-0.22.0',
+26 silly addNameRange     '3.6.3-0.22.1',
+26 silly addNameRange     '3.6.3-0.22.2',
+26 silly addNameRange     '3.6.3-0.22.3',
+26 silly addNameRange     '3.6.3-0.22.4',
+26 silly addNameRange     '3.6.3-0.22.5',
+26 silly addNameRange     '3.6.3-0.22.6',
+26 silly addNameRange     '3.6.3-0.22.7',
+26 silly addNameRange     '4.0.0-0.22.7',
+26 silly addNameRange     '4.1.2-0.22.7',
+26 silly addNameRange     '4.1.2-0.22.8',
+26 silly addNameRange     '4.1.2-0.22.9',
+26 silly addNameRange     '4.1.2-0.22.10',
+26 silly addNameRange     '4.1.2-0.22.11',
+26 silly addNameRange     '4.1.2-0.22.12',
+26 silly addNameRange     '4.2.0-0.23.0',
+26 silly addNameRange     '4.2.0-0.24.0',
+26 silly addNameRange     '4.2.0-0.24.1',
+26 silly addNameRange     '4.2.0-0.24.2',
+26 silly addNameRange     '4.2.0-0.25.0',
+26 silly addNameRange     '4.2.0-0.26.0',
+26 silly addNameRange     '5.0.0-0.27.0',
+26 silly addNameRange     '5.0.0-0.27.1',
+26 silly addNameRange     '5.0.0-0.28.0',
+26 silly addNameRange     '5.0.0-0.28.1',
+26 silly addNameRange     '5.1.1-0.29.0',
+26 silly addNameRange     '5.1.1',
+26 silly addNameRange     '5.2.0',
+26 silly addNameRange     '5.2.1',
+26 silly addNameRange     '5.2.2',
+26 silly addNameRange     '5.2.3',
+26 silly addNameRange     '5.3.1',
+26 silly addNameRange     '5.3.2',
+26 silly addNameRange     '5.3.3',
+26 silly addNameRange     '5.3.4',
+26 silly addNameRange     '5.3.5',
+26 silly addNameRange     '5.3.6',
+26 silly addNameRange     '5.3.7',
+26 silly addNameRange     '5.3.8',
+26 silly addNameRange     '5.3.9',
+26 silly addNameRange     '5.3.10',
+26 silly addNameRange     '5.4.0',
+26 silly addNameRange     '5.4.1' ] ]
+27 verbose addNamed [ 'phonegap', '5.4.1' ]
+28 verbose addNamed [ '5.4.1', '5.4.1' ]
+29 silly lockFile 9a043784-phonegap-5-4-1 phonegap@5.4.1
+30 verbose lock phonegap@5.4.1 /home/kyle/.npm/9a043784-phonegap-5-4-1.lock
+31 silly lockFile 9a043784-phonegap-5-4-1 phonegap@5.4.1
+32 silly lockFile 9a043784-phonegap-5-4-1 phonegap@5.4.1
+33 silly lockFile 3a6257f3-phonegap phonegap@
+34 silly lockFile 3a6257f3-phonegap phonegap@
+35 silly resolved [ { name: 'phonegap',
+35 silly resolved     description: 'PhoneGap command-line interface and node.js library.',
+35 silly resolved     version: '5.4.1',
+35 silly resolved     homepage: 'http://github.com/phonegap/phonegap-cli',
+35 silly resolved     repository:
+35 silly resolved      { type: 'git',
+35 silly resolved        url: 'git://github.com/phonegap/phonegap-cli.git' },
+35 silly resolved     keywords:
+35 silly resolved      [ 'cli',
+35 silly resolved        'cordova',
+35 silly resolved        'phonegap',
+35 silly resolved        'phonegap build',
+35 silly resolved        'phonegap/build' ],
+35 silly resolved     preferGlobal: 'true',
+35 silly resolved     main: './lib/main.js',
+35 silly resolved     bin: { phonegap: './bin/phonegap.js' },
+35 silly resolved     scripts: { test: 'node node_modules/jasmine-node/bin/jasmine-node --color spec' },
+35 silly resolved     engineStrict: 'true',
+35 silly resolved     engines: { node: '>=0.10.0' },
+35 silly resolved     dependencies:
+35 silly resolved      { colors: '0.6.0-1',
+35 silly resolved        'connect-phonegap': '0.19.0',
+35 silly resolved        cordova: '5.4.1',
+35 silly resolved        minimist: '0.1.0',
+35 silly resolved        'phonegap-build': '0.9.2',
+35 silly resolved        pluralize: '0.0.4',
+35 silly resolved        prompt: '0.2.11',
+35 silly resolved        'qrcode-terminal': '0.9.4',
+35 silly resolved        semver: '1.1.0',
+35 silly resolved        shelljs: '0.1.4' },
+35 silly resolved     devDependencies: { 'jasmine-node': '1.14.5', chdir: '0.0.x' },
+35 silly resolved     optionalDependencies: {},
+35 silly resolved     contributors: [ [Object], [Object], [Object], [Object], [Object], [Object] ],
+35 silly resolved     templates:
+35 silly resolved      { blank: [Object],
+35 silly resolved        'hello-world': [Object],
+35 silly resolved        'hello-cordova': [Object],
+35 silly resolved        'jquery-mobile-starter': [Object],
+35 silly resolved        'phonegap-template-framework7': [Object] },
+35 silly resolved     readme: '# PhoneGap CLI [![Build Status][travis-ci-img]][travis-ci-url] [![bitHound Score][bithound-img]][bithound-url]\n\n> PhoneGap command-line interface and Node.js library.\n\n## Command-line\n\n### Requirements\n\n- [Install node.js](http://nodejs.org/) version `>=0.10.x`\n- [Install ios-sim](https://github.com/phonegap/ios-sim#installation) to deploy apps to the iOS simulator.\n\n### Install\n\n    $ npm install -g phonegap@latest\n\n### Getting Started\n\n    $ phonegap create my-app    # create a PhoneGap project\n    $ cd my-app                 # change to project directory\n    $ phonegap run ios          # build and install the app to iOS\n\n### Usage\n\n    Usage: phonegap [options] [commands]\n\n    Description:\n\n      PhoneGap command-line tool.\n\n    Commands:\n\n      create <path>        create a phonegap project\n      build <platform>     build the project for specific platform\n      install <platform>   install the project on a specific platform\n      run <platform>       build and install the projectfor specific platform\n      serve                serve a phonegap project\n      local [command]      development on local system\n      remote [command]     development in cloud with phonegap/build\n      platform [command]   update a platform version\n      help [command]       output usage information\n      version              output version number\n\n    Options:\n\n      -d, --verbose        allow verbose output\n      -v, --version        output version number\n      -h, --help           output usage information\n\n    Platforms:\n\n      keyword            | local environment | remote environment\n      -------------------|-------------------|-------------------\n      android            | ✔                 | ✔\n      blackberry10       | ✔                 | ✖\n      ios                | ✔                 | ✔\n      wp8                | ✔                 | ✔\n\n\n    Examples:\n\n      $ phonegap help create\n      $ phonegap help remote build\n      $ phonegap create path/to/my-app\n      $ phonegap remote build android\n\n#### Local Usage\n\n    Usage: phonegap local [command]\n\n    Description:\n\n      Executes the command on the local system.\n\n      This requires that platform SDK is correctly installed.\n\n    Commands:\n\n      build <platform>     build a specific platform\n      install <platform>   install a specific platform\n      run <platform>       build and install a specific platform\n      plugin <command>     add, remove, and list plugins\n\n    Examples:\n\n      $ phonegap local build android\n      $ phonegap local run android\n      $ phonegap local plugin list\n\n#### Remote Usage\n\n    Usage: phonegap remote [command]\n\n    Description:\n\n      Executes the command remotely using the cloud-based PhoneGap/Build service.\n\n    Commands:\n\n      login                login to PhoneGap/Build\n      logout               logout of PhoneGap/Build\n      build <platform>     build a specific platform\n      install <platform>   install a specific platform\n      run <platform>       build and install a specific platform\n\n    Examples:\n\n      $ phonegap remote login\n      $ phonegap remote build android\n      $ phonegap remote run android\n\n## Node Library\n\n### Usage\n\n    var phonegap = require(\'phonegap\');\n\n## App Templates\n\nTemplates allow you to create a new app from an existing app template. The\nnice part about templates is that they are simply a Cordova-compatible app.\nAny existing app can be a template.\n\nYou can list the available templates with:\n\n    $ phonegap template list\n\nYou can create a new project from a template with:\n\n    $ phonegap create my-app --template hello-world\n\n### Adding a New Template\n\nAdding a new template is easy.\n\n1. Add your template to the [package.json template section][package-template].\n\n        // the key is your template name (e.g. hello-world)\n        // the url is a HTTP URL to a .tar.gz.\n        {\n          "templates": {\n            "hello-world": {\n              "description": "Default hello world app for PhoneGap.",\n              "url": "https://github.com/phonegap/phonegap-app-hello-world/archive/master.tar.gz"\n            }\n          }\n        }\n\n1. Send us a pull request!\n\n## FAQ\n\n### phonegap: command not found\n\n#### Problem\n\nThe PhoneGap CLI installs successfully but you do not have a command `phonegap`.\n\n#### Reason\n\nDepending on how `node` and `npm` were installed, your globally installed npm\nmodules may not be in your `PATH`.\n\n#### Solution\n\nAt the bottom of your `npm install -g phonegap@latest` installation log, you will see the following:\n\n    ...\n    /usr/local/share/npm/bin/phonegap -> /usr/local/share/npm/lib/node_modules/phonegap/bin/phonegap.js\n    ...\n\n_(Your path may be slightly different)_\n\nOpen `~/.profile` or `~/.bashrc`, depending on what exists on your system, and add following line:\n\n    export PATH=$PATH:/usr/local/share/npm/bin\n\nOpen a new terminal tab or type the following command:\n\n    $ source ~/.profile\n    or\n    $ source ~/.bashrc\n\nThe command `phonegap` should now be available to you.\n\n### The provided path is not an Android project\n\n#### Problem\n\nYou receive the following error message when building an Android project:\n\n    throw new Error(\'The provided path "\' + project + \'" is not an Android\n\n#### Reason\n\nThe first time that you build for a platform, the framework is downloaded from Apache Cordova.\n\nThe framework is stored locally in your home directory, such as `~/.cordova/lib`.\n\nSometimes the framework is corrupted during the download. It can exist for two\nknow reasons:\n\n1. Your Android SDK environment is not properly configured.\n1. Unknown issue related to Apache\'s servers or the untar operation.\n\n#### Solution\n\nFirst, you must properly configure your Android environment by following\nthe [platform setup guide](http://docs.phonegap.com/en/3.0.0/guide_platforms_android_index.md.html).\n\nNext, you must delete the cached Cordova Android framework (`x.x.x` is your version):\n\n    ~/.cordova/lib/android/cordova/x.x.x\n\nNext, you can try to rebuild the project. Enabling verbose mode is sometimes helpful:\n\n    $ phonegap build android --verbose\n\n## Upgrading Cordova\n\nThere are a few steps that should be taken when upgrading to a new version of the\n[cordova-cli](http://github.com/apache/cordova-cli).\n\n1. Update the `package.json` dependencies version for `cordova`.\n\n        {\n          "dependencies": {\n            "cordova": "3.1.0"\n          }\n        }\n\n1. Update the `package.json` version.\n\n        {\n          "version": "3.1.0-0.15.0"\n        }\n\n1. Run the tests.\n\n        $ npm test\n\n1. Commit stating the version increment.\n\n        $ git commit -am "Version 3.1.0-0.15.0"\n\n1. Tag the version commit.\n\n        $ git tag 3.1.0-0.15.0\n\n1. Update the [PhoneGap Hello World App](https://github.com/phonegap/phonegap-app-hello-world) to match the new version.\n  - See [Update instructions](https://github.com/phonegap/phonegap-app-hello-world#updating-the-application).\n  - In the above example, we would update the app to `3.1.0`.\n1. Manually test that the latest Hello World app is lazy-loaded.\n\n        # Link the phonegap-cli for easier development (only need to do once).\n\n        $ cd phonegap-cli/\n        $ [sudo] npm link .\n\n        # Manually test and verify hello world app is lazy-loaded.\n\n        $ phonegap create my-app\n        [phonegap] missing library phonegap/www/3.1.0\n        [phonegap] downloading https://github.com/phonegap/phonegap-app-hello-world/archive/3.1.0.tar.gz...\n        [phonegap] created project at /Users/mwbrooks/Development/sandbox/my-app\n\n        $ cd my-app/\n        $ phonegap run ios\n\n1. Push the git commit after the Hello World has been updated.\n\n        $ git push phonegap master\n\n1. Publish the npm release.\n\n        $ npm publish\n\n[travis-ci-img]: https://travis-ci.org/phonegap/phonegap-cli.svg?branch=master\n[travis-ci-url]: http://travis-ci.org/phonegap/phonegap-cli\n[package-template]: https://github.com/phonegap/phonegap-cli/blob/035057713c613cc0488e4b0beb5b72c4c820d54a/package.json#L67-L76\n[bithound-img]: https://www.bithound.io/github/phonegap/phonegap-cli/badges/score.svg\n[bithound-url]: https://www.bithound.io/github/phonegap/phonegap-cli\n\n',
+35 silly resolved     readmeFilename: 'README.md',
+35 silly resolved     bugs: { url: 'https://github.com/phonegap/phonegap-cli/issues' },
+35 silly resolved     _id: 'phonegap@5.4.1',
+35 silly resolved     _from: 'phonegap@' } ]
+36 info install phonegap@5.4.1 into /usr/local/lib
+37 info installOne phonegap@5.4.1
+38 info /usr/local/lib/node_modules/phonegap unbuild
+39 info preuninstall phonegap@5.4.1
+40 info uninstall phonegap@5.4.1
+41 verbose true,/usr/local/lib/node_modules,/usr/local/lib/node_modules unbuild phonegap@5.4.1
+42 verbose /usr/local/bin,[object Object] binRoot
+43 info /usr/local/lib/node_modules/phonegap unbuild
+44 info preuninstall phonegap@5.4.1
+45 info uninstall phonegap@5.4.1
+46 verbose true,/usr/local/lib/node_modules,/usr/local/lib/node_modules unbuild phonegap@5.4.1
+47 verbose /usr/local/bin,[object Object] binRoot
+48 error error rolling back Error: EACCES, unlink '/usr/local/bin/phonegap'
+48 error error rolling back  phonegap@5.4.1 { [Error: EACCES, unlink '/usr/local/bin/phonegap'] errno: 3, code: 'EACCES', path: '/usr/local/bin/phonegap' }
+49 error Error: EACCES, unlink '/usr/local/bin/phonegap'
+49 error  { [Error: EACCES, unlink '/usr/local/bin/phonegap'] errno: 3, code: 'EACCES', path: '/usr/local/bin/phonegap' }
+50 error Please try running this command again as root/Administrator.
+51 error System Linux 3.19.0-39-generic
+52 error command "/usr/bin/nodejs" "/usr/bin/npm" "install" "-g" "phonegap"
+53 error cwd /home/kyle/dev/403/BuddingBudget
+54 error node -v v0.10.25
+55 error npm -v 1.3.10
+56 error path /usr/local/bin/phonegap
+57 error code EACCES
+58 error errno 3
+59 error stack Error: EACCES, unlink '/usr/local/bin/phonegap'
+60 verbose exit [ 3, true ]

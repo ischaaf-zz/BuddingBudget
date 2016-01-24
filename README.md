@@ -3,7 +3,9 @@
 You need to install nodejs and npm (node package manager) in your os of choice. Then, run these two commands -
 
 npm install -g phonegap
+
 npm install -g cordova
+
 (You may need to use sudo in Linux, or run the command prompt as an administrator in Windows)
 
 --------------------------------

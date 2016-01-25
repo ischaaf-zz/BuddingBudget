@@ -10,7 +10,7 @@ npm install -g cordova
 
 --------------------------------
 
-There's an app store on the "PhoneGap Developer App" which lets you test the app on your phone without dealing with building it an all that nonsense. To run that, navigate to the app directory in your terminal and run the command "phonegap serve". You can then connect to the given IP in the phonegap developer app to test the application on the phone.
+There's an app on the app store called "PhoneGap Developer App" which lets you test the app on your phone without dealing with building it an all that nonsense. To run that, navigate to the app directory in your terminal and run the command "phonegap serve". You can then connect to the given IP in the phonegap developer app to test the application on the phone.
 
 --------------------------------
 

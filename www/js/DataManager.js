@@ -13,6 +13,7 @@ var DataManager = function() {
 		data[type] = newData;
 	};
 
+	// DO NOT USE THIS AS THE getFunc ON A SETWATCH
 	this.getBudget = calculator.calculateBudget(data);
 
 };

@@ -29,27 +29,35 @@
         <link rel="stylesheet" type="text/css" href="css/index.css" />
         <title>Budding Budget</title>
     </head>
-    <body>
+    <body ng-app="budgetData">
         <div class="app">
             <h1>PhoneGap</h1>
             <div id="deviceready" class="blink">
                 <p class="event listening">Connecting to Device</p>
                 <p class="event received">Device is Ready</p>
                 <br>
-                <h2>Set Notification for...</h2>
-                <br>
-                <button onclick="alarms.setInFiveSec()">Set in five seconds</button>
-                <br><br>
-                <button onclick="alarms.setInTenMins()">Set in ten minutes</button>
-                <br><br>
-                <button onclick="alarms.setRecurringOneMin()">Set recurring every min</button>
-                <br><br>
-                <button onclick="alarms.setEveryDaySixPM()">Set every day 6PM</button>
-                <br>
             </div>
+            <div ng-controller="uiController as ui">
+
+                New Assets: <input type="text" ng-model="inputVal">
+                <br><br>
+                <button ng-click="ui.setData('assets', inputVal)">CLICK</button>
+                <br><br>
+                Current Assets (budget): {{ui.getData('assets')}}
+
+            </div>
+        <div ng-controller="storageController"></div>
+        <div ng-controller="notificationController"></div>
         </div>
         <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src='js/angular.min.js'></script>
+        <script type="text/javascript" src='js/DataManager.js'></script>
+        <script type="text/javascript" src='js/angularInit.js'></script>
+        <script type="text/javascript" src='js/Calculator.js'></script>
+        <script type="text/javascript" src='js/NotificationManager.js'></script>
+        <script type="text/javascript" src='js/NetworkManager.js'></script>
+        <script type="text/javascript" src='js/StorageManager.js'></script>
+        <script type="text/javascript" src="js/main.js"></script>
         <script type="text/javascript">
             app.initialize();
         </script>

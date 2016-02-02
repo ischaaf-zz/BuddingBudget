@@ -1,0 +1,69 @@
+.diagram {
+	float: left;
+}
+
+.diagram h2 {
+	width: 360px;
+}
+
+.container {
+	width:100%;
+	margin: auto;
+}
+
+#content {
+	overflow: hidden;
+}
+
+#primary {
+	float: left;
+}
+
+#secondary {
+	float: right;
+}
+
+#primary_image {
+	position: relative;
+}
+
+.button {
+	border-radius: 4px;
+	position: absolute;
+	width: 149px;
+	height: 110px;
+}
+
+.button:hover {
+	background: rgba(0, 0, 0, 0.2);
+}
+
+#assets_button {
+	top: 252px;
+	left: 12px;
+}
+
+#recurring_charges_button {
+	top: 382px;
+	left: 13px;
+}
+
+#track_spending_button {
+	top: 511px;
+	left: 14px;
+}
+
+#savings_button {
+	top: 252px;
+	left: 196px;
+}
+
+#recurring_income_button {
+	top: 382px;
+	left: 197px;
+}
+
+#options_button {
+	top: 511px;
+	left: 198px;
+}

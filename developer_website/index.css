@@ -1,0 +1,104 @@
+body {
+	margin: 0em;
+	font-family: 'Droid Sans', sans-serif;
+	color: #444;
+	background: #bbbbbb;
+}
+
+#banner {
+	background: #eee;
+	float: left;
+	width: 60%;
+	min-width: 39em;
+	margin-left: 1em;
+	padding-left: 2em;
+	padding-right: 2em;
+	margin-bottom: 1em;
+	border: 2px solid #333;
+}
+
+#banner ul {
+	/*text-align: center;*/
+	margin-top: 0em;
+	margin-bottom: 0em;
+}
+
+#banner ul li {
+	display: inline-block;
+	padding: 1em 0.5em;
+	font-weight: bold;
+	margin-left: 1em;
+	margin-right: 1em;
+	text-align: center;
+	width: 8em;
+	background: #ddd;
+	color: black;
+}
+
+#banner ul a {
+	padding: 0em;
+	margin: 0em;
+}
+
+#banner ul li:hover {
+	background: #ccc;
+}
+
+#left_pane {
+	float: left;
+	width: 15%;
+	min-width: 13em;
+	margin-top: 71px;
+	margin-left: 1em;
+	background: #ddd;
+	border: 2px solid #333;
+	/*border-radius: 10px;*/
+}
+
+a {
+	color: #000F3B;
+	font-weight: bold;
+}
+
+#content {
+	float: left;
+	width: 60%;
+	min-width: 39em;
+	margin-left: 1em;
+	background: #eee;
+	padding: 2em;
+	border: 2px solid #333;
+	/*border-radius: 10px;*/
+}
+
+#team_members, #email {
+	float: right;
+}
+
+#email {
+	clear: right;
+}
+
+h1 {
+	text-align: center;
+	margin-top: 0em;
+}
+
+ul {
+	list-style-type: none;
+}
+
+span.name {
+	display: inline-block;
+	width: 10.5em;
+}
+
+span.cseid {
+	display: inline-block;
+	width:5em;
+	font-style: italic;
+}
+
+.red {
+	color: red;
+}

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link type="text/css" rel="stylesheet" href="../../index.css" />
+		<link type="text/css" rel="stylesheet" href="diagrams.css" />
+		<script>
+
+			window.onload = function() {
+				// 12,252 -- 160,361 -> w,h = 148,109
+				// 13,382 -- 161,491
+				// 14,511
+				// 196,252
+				// 197,382
+				// 198,511
+				console.log("start");
+				document.getElementById("assets_button").onmouseout = mouseOut;
+				document.getElementById("recurring_charges_button").onmouseout = mouseOut;
+				document.getElementById("track_spending_button").onmouseout = mouseOut;
+				document.getElementById("savings_button").onmouseout = mouseOut;
+				document.getElementById("recurring_income_button").onmouseout = mouseOut;
+				document.getElementById("options_button").onmouseout = mouseOut;
+
+				document.getElementById("assets_button").onmouseenter = mouseIn;
+				document.getElementById("recurring_charges_button").onmouseenter = mouseIn;
+				document.getElementById("track_spending_button").onmouseenter = mouseIn;
+				document.getElementById("savings_button").onmouseenter = mouseIn;
+				document.getElementById("recurring_income_button").onmouseenter = mouseIn;
+				document.getElementById("options_button").onmouseenter = mouseIn;
+			};
+
+			function mouseIn(e) {
+				switch (e.toElement.id) {
+					case "assets_button":
+						document.getElementById("secondary_title").innerHTML = "Assets";
+						document.getElementById("secondary_image").src = "assets.png";
+					break;
+					case "recurring_charges_button":
+						document.getElementById("secondary_title").innerHTML = "Recurring Payments";
+						document.getElementById("secondary_image").src = "recurring_payments.png";
+					break;
+					case "track_spending_button":
+						document.getElementById("secondary_title").innerHTML = "Track Spending";
+						document.getElementById("secondary_image").src = "track_spending.png";
+					break;
+					case "savings_button":
+						document.getElementById("secondary_title").innerHTML = "Savings";
+						document.getElementById("secondary_image").src = "savings.png";
+					break;
+					case "recurring_income_button":
+						document.getElementById("secondary_title").innerHTML = "Recurring Income";
+						document.getElementById("secondary_image").src = "recurring_income.png";
+					break;
+					case "options_button":
+						document.getElementById("secondary_title").innerHTML = "Options";
+						document.getElementById("secondary_image").src = "options.png";
+					break;
+				}
+			};
+
+			function mouseOut(e) {
+				document.getElementById("secondary_title").innerHTML = "";
+				document.getElementById("secondary_image").src = "";
+			};
+
+		</script>
+	</head>
+	<body>
+		<div id="content">
+			<h1>Example UI</h1>
+			<div class="container">
+				<div class="diagram" id="primary">
+					<h2>Main Page</h2>
+					<div id="primary_image">
+						<img type="image/png" src="main.png" />
+						<div class="button" id="assets_button"></div>
+						<div class="button" id="recurring_charges_button"></div>
+						<div class="button" id="track_spending_button"></div>
+						<div class="button" id="savings_button"></div>
+						<div class="button" id="recurring_income_button"></div>
+						<div class="button" id="options_button"></div>
+					</div>
+				</div>
+				<div id="secondary">
+					<h2 id="secondary_title"></h2>
+					<img id="secondary_image" src="" />
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

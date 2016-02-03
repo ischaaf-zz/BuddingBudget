@@ -30,6 +30,7 @@ html {
 /* Demo Sections - You can use these as guides or delete them - the scroller will work with any sort of height, fixed, undefined, or percentage based.
 The padding is very important to make sure the scrollspy picks up the right area when scrolled to. Adjust the margin and padding of sections and children 
 of those sections to manage the look and feel of the site. */
+<<<<<<< HEAD
 .container, .column {
     margin-left: 0;
     margin-right: 0;
@@ -48,3 +49,33 @@ section {
 
 section:nth-child(even) { background: #eee; }
 section:nth-child(odd) { background: #fff; }
+=======
+
+.intro-section {
+    height: 100%;
+    padding-top: 150px;
+    text-align: center;
+    background: #fff;
+}
+
+.about-section {
+    height: 100%;
+    padding-top: 150px;
+    text-align: center;
+    background: #eee;
+}
+
+.services-section {
+    height: 100%;
+    padding-top: 150px;
+    text-align: center;
+    background: #fff;
+}
+
+.contact-section {
+    height: 100%;
+    padding-top: 150px;
+    text-align: center;
+    background: #eee;
+}
+>>>>>>> eeb789ac3cb30f8212262021296b8a8b1dc2a769

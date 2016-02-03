@@ -7,7 +7,8 @@
 var express    = require('express');        // call express
 var app        = express();                 // define our app using express
 var bodyParser = require('body-parser');
-var session   = require('client-sessions');
+var session    = require('client-sessions');
+var mongo      = require('mongoose');
 
 
 // configure app to use bodyParser()
@@ -15,11 +16,12 @@ var session   = require('client-sessions');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+// setup session handling
 app.use(session({
-  cookieName: 'session',
-  secret: 'sIe0tACPeIyJTOMXUJBkT9Jhr8ryZkgFCpQpJBkqAnvLGftYk86V7GyjolhX',
-  duration: 30 * 60 * 1000,
-  activeDuration: 5 * 60 * 1000,
+  cookieName: 'session', // session cookie name
+  secret: 'sIe0tACPeIyJTOMXUJBkT9Jhr8ryZkgFCpQpJBkqAnvLGftYk86V7GyjolhX', // string used to encrypt cookie values
+  duration: 24 * 60 * 60 * 1000, // how long the cookie should exist for (ms)
+  activeDuration: 5 * 60 * 1000, // how long after an interaction the cookie should be active for (ms)
 }));
 
 // set default port (if not using PORT environment variable)

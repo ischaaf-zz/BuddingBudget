@@ -8,8 +8,12 @@ var express    = require('express');        // call express
 var app        = express();                 // define our app using express
 var bodyParser = require('body-parser');
 var session    = require('client-sessions');
-var mongo      = require('mongoose');
+var mongoose   = require('mongoose');
+var Schemas    = require('./app/models/user');
 
+// connect to local database
+// NOTE: This is a temp connection to localhost -- change to production
+mongoose.connect('mongodb://localhost:27017/');
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
@@ -45,6 +49,9 @@ router.get('/', function(req, res, next) {
 // POST: credentials { username: u_name, password: password }
 router.post('/login', function(req, res, next) {
   // check if user is already logged in, if so do nothing
+  if (session.user) {
+
+  }
 
   // check for username and password
 
@@ -56,11 +63,29 @@ router.post('/login', function(req, res, next) {
 
 // store the user data for the logged in user
 // POST: User
-router.post('/store_data', function(req, res, next) {
+router.get('/store_data', function(req, res, next) {
   // check that user is logged in, if not return error
 
   // parse the data object
+  var user = new Schemas.User();
+  user.username = 'isaac99';
+  user.name = 'Isaac Schaaf';
+  user.password = 'buddingbudget';
+  user.data.budget = 100;
+  user.data.assets = 1000000;
+  user.data.savings[0] = new Schemas.Savings();
+  user.data.savings[0].name = 'emergency';
+  user.data.savings[0].amount = 200;
+  user.data.savings[0].isDefault = true;
+  // user.data.savings[1].name = 'car money';
+  // user.data.savings[1].amount = 154;
+  // user.data.savings[1].isDefault = false;
 
+  user.save(function(err) {
+    if (err)
+      res.send(err);
+    res.json({message: "user created"});
+  });
   // check that data object user matches logged in user
 
   // sync user data with stored data
@@ -84,7 +109,11 @@ router.delete('/remove_data', function(req, res, next) {
 // GET: username - string
 // /api/get_data?username=<username>
 router.get('/get_data', function(req, res, next) {
-
+  Schemas.User.find(function(err, users) {
+    if (err)
+      res.send(err);
+    res.json(users);
+  });
 });
 
 router.get('/test', function(req, res, next) {

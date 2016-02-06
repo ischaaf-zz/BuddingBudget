@@ -9,12 +9,21 @@ module.exports = function(grunt) {
         // Your spec helper files
         helpers : 'www/spec/helpers/*.js'
       }
+    },
+    shell: {
+      options: {
+        stderr: false
+      },
+      target: {
+        command: 'cordova build android'
+      }
     }
   });
 
   // Register tasks.
   grunt.loadNpmTasks('grunt-contrib-jasmine');
+  grunt.loadNpmTasks('grunt-shell');
 
   // Default task.
-  grunt.registerTask('default', 'jasmine');
+  grunt.registerTask('default', ['jasmine', 'shell']);
 };

@@ -1,17 +1,25 @@
-var StorageManager = function() {
+var StorageManager = function(dataManager, readyCallback) {
 
-	var budget = angular.module('budgetData');
 	var networkManager = new NetworkManager();
 
-	function updateEntries(newValues, oldValues, type) {
-		alert("DETECTED CHANGE TO " + newValues + " FROM " + oldValues + " ON " + type);
-	}
+	// fetch from Phonegap storage, send each data type to dataManager
+	// Then call readyCallback()
 
-	// watch data for any changes, call above functions
-	// appropriately if any.
-	budget.controller('storageController', ['$scope', 'data', function($scope, data) {
-		setWatch($scope, data.getData, 'assets', 'assets', updateEntries);
-	}]);
+	networkManager.fetchInitialData(function(data) {
+		// check against phonegap storage, update if newer
+		// and send to dataManager
+	}, function() {
+		// Failure callback
+	});
 
-};
+	dataManager.registerListener(["assets", "savings", "charges", "income", "trackEntries", "options"], function(type) {
+		var newData = dataManager.getData(type);
+		networkManager.store(type, newData);
+		// modify local storage and network storage
+	});
 
+	// THIS SHOULD GET CALLED BACK IN PHONEGAP STORAGE'S FETCH
+	// CALLBACK INSTEAD ONCE THAT'S SET UP
+	readyCallback();
+
+}

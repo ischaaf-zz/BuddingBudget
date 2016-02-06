@@ -7,19 +7,18 @@
         "files": {}
     },
     "installed_plugins": {
-        "cordova-plugin-whitelist": {
+        "cordova-plugin-app-event": {
             "PACKAGE_NAME": "com.phonegap.helloworld"
         },
         "cordova-plugin-device": {
+            "PACKAGE_NAME": "com.phonegap.helloworld"
+        },
+        "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.phonegap.helloworld"
         },
         "de.appplant.cordova.plugin.local-notification": {
             "PACKAGE_NAME": "com.phonegap.helloworld"
         }
     },
-    "dependent_plugins": {
-        "cordova-plugin-app-event": {
-            "PACKAGE_NAME": "com.phonegap.helloworld"
-        }
-    }
+    "dependent_plugins": {}
 }

@@ -1,3 +1,8 @@
+// The general idea of this class is that it needs to populate dataManager
+// with initial data upon creation from phonegap's storage, and after that
+// needs to keep dataManager, phonegap's storage, and the network storage
+// synchronized.
+
 var StorageManager = function(dataManager, readyCallback) {
 
 	var networkManager = new NetworkManager();
@@ -6,8 +11,8 @@ var StorageManager = function(dataManager, readyCallback) {
 	// Then call readyCallback()
 
 	networkManager.fetchInitialData(function(data) {
-		// check against phonegap storage, update if newer
-		// and send to dataManager
+		// check against phonegap storage, update phonegap
+		// and dataManager if newer
 	}, function() {
 		// Failure callback
 	});
@@ -22,4 +27,4 @@ var StorageManager = function(dataManager, readyCallback) {
 	// CALLBACK INSTEAD ONCE THAT'S SET UP
 	readyCallback();
 
-}
+};

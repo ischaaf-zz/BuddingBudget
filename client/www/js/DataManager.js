@@ -35,7 +35,7 @@ var DataManager = function() {
 
 	// Gets the data of the given category
 	this.getData = function(category) {
-		return data[category]
+		return data[category];
 	};
 
 	// Registers a listener for each category in categories
@@ -64,4 +64,4 @@ var DataManager = function() {
 		}
 	}
 
-}
+};

@@ -8,7 +8,7 @@ var UIView = function(getData, setDataListener) {
 	this.registerCallback = function(event, callback) {
 		callbacks[event] = callbacks[event] || [];
 		callbacks[event].push(callback);
-	}
+	};
 
 	function notifyListeners(event, args) {
 		var callbackArr = callbacks[event] || [];
@@ -23,7 +23,11 @@ var UIView = function(getData, setDataListener) {
 	});
 	
 	$("#setAssets").click(function() {
-		notifyListeners("changeData", ["assets", 0, parseInt($("#amount").val())]);
+		notifyListeners("changeData", ["assets", 0, parseInt($("#amount").val()), function() {
+			$("#assetsSuccess").html("CHANGED ASSETS SUCCESS");
+		}, function(message) {
+			$("#assetsSuccess").html("FAILED: " + message);
+		}]);
 	});
 
-}
+};

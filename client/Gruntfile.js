@@ -17,14 +17,19 @@ module.exports = function(grunt) {
       target: {
         command: 'cordova build android'
       }
+    },
+    jshint: {
+      all: ['Gruntfile.js', 'www/js/**/*.js', 'www/js/*.js', '!www/js/lib/*.js'],
     }
   });
 
   // Register tasks.
   grunt.loadNpmTasks('grunt-contrib-jasmine');
   grunt.loadNpmTasks('grunt-shell');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
 
   // Default task.
-  grunt.registerTask('default', ['jasmine', 'shell']);
+  grunt.registerTask('default', ['jshint', 'jasmine', 'shell']);
   grunt.registerTask('build', 'shell');
+
 };

@@ -6,7 +6,7 @@ var Calculator = function() {
 
 	this.calculateBudget = function(data) {
 		// calculate budget and return
-		return data.assets / 5
+		return data.assets / 5;
 	};
 
 };

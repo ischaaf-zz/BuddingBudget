@@ -17,9 +17,9 @@ var StorageManager = function(dataManager, readyCallback) {
 		// Failure callback
 	});
 
-	dataManager.registerListener(["assets", "savings", "charges", "income", "trackEntries", "options"], function(type) {
-		var newData = dataManager.getData(type);
-		networkManager.store(type, newData);
+	dataManager.registerListener(["assets", "savings", "charges", "income", "trackEntries", "options"], function(category) {
+		var newData = dataManager.getData(category);
+		networkManager.store(category, newData);
 		// modify local storage and network storage
 	});
 

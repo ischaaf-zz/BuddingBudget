@@ -20,6 +20,18 @@ module.exports = function(grunt) {
     },
     jshint: {
       all: ['Gruntfile.js', 'www/js/**/*.js', 'www/js/*.js', '!www/js/lib/*.js'],
+      // options: {
+      //   globals: {
+      //     "$": false,
+      //     "Calculator": false,
+      //     "DataManager": false,
+      //     "NetworkManager": false,
+      //     "NotificationManager": false,
+      //     "StorageManager": false,
+      //     "UIController": false,
+      //     "UIView": false
+      //   }
+      // }
     }
   });
 
@@ -31,5 +43,4 @@ module.exports = function(grunt) {
   // Default task.
   grunt.registerTask('default', ['jshint', 'jasmine', 'shell']);
   grunt.registerTask('build', 'shell');
-
 };

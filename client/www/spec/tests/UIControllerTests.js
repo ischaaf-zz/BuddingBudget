@@ -47,4 +47,24 @@ describe("UIController", function() {
 
     });
 
+    // describe("trackSpending callback", function() {
+
+    // });
+
+    // describe("setOption callback", function() {
+
+    // });
+
+    // describe("addEntry callback", function() {
+
+    // });
+
+    // describe("changeEntry callback", function() {
+
+    // });
+
+    // describe("removeEntry callback", function() {
+
+    // });
+
 });

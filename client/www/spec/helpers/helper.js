@@ -1,7 +1,9 @@
-var sampleData = {
+var today = new Date();
+
+var simpleSampleData = {
 	budget: 3,
 	assets: 20,
-	endDate: new Date(new Date() + 1000000),
+	endDate: new Date(today.getTime() + 86400000 * 3), // 3 days from now
 	savings: [{
 		name: "testSave",
 		amount: 300,
@@ -16,9 +18,9 @@ var sampleData = {
 	}],
 	income: [{
 		name: "paycheck",
-		amount: 300,
-		period: "semiMonthly",
-		start: 15,
+		amount: 600,
+		period: "monthly",
+		start: 1,
 		isConfirm: true
 	}],
 	trackEntries: [],

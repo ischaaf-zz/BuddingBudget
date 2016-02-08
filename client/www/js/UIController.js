@@ -6,6 +6,8 @@ var UIController = function(dataManager, registerUICallback) {
 
 		// This should probably call separate function handlers depending
 		// upon the category.
+
+		// If we're tracking spending, be sure to also update spending.
 	});
 
 	registerUICallback("changeData", function(category, id, newData, success, failure) {

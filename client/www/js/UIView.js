@@ -2,7 +2,8 @@
 
 var UIView = function(getData, setDataListener) {
 
-	// events: sendNewData, changeData, removeData
+	// events: updateAssets, trackSpending, setOption, 
+	//		   addEntry, changeEntry, removeEntry
 	var callbacks = {};
 
 	this.registerCallback = function(event, callback) {
@@ -23,7 +24,7 @@ var UIView = function(getData, setDataListener) {
 	});
 	
 	$("#setAssets").click(function() {
-		notifyListeners("changeData", ["assets", 0, parseInt($("#amount").val()), function() {
+		notifyListeners("updateAssets", [parseInt($("#amount").val()), function() {
 			$("#assetsSuccess").html("CHANGED ASSETS SUCCESS");
 		}, function(message) {
 			$("#assetsSuccess").html("FAILED: " + message);

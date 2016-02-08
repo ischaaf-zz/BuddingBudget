@@ -10,15 +10,15 @@ $( document ).ready(function() {
 	    		registerListener: jasmine.createSpy('registerListener'),
 	    		getData: jasmine.createSpy('getData')
 	    	};
-	    	changeData = jasmine.createSpy('changeData');
+	    	updateAssets = jasmine.createSpy('updateAssets');
 	    	
 	    	uiView = new UIView(mock.getData, mock.registerListener);
-			uiView.registerCallback("changeData", changeData);
+			uiView.registerCallback("updateAssets", updateAssets);
 	    });
 
 	    it('should call the changeData callback on setAssets click', function() {
 	        $("#setAssets").trigger("click");
-	        expect(changeData).toHaveBeenCalled();
+	        expect(updateAssets).toHaveBeenCalled();
 	    });
 
 	});

@@ -24,7 +24,7 @@ var DataManager = function() {
 	this.setData = function(category, newData) {
 		if((category in data) && (typeof(data[category]) === typeof(newData))) {
 			var oldBudget = data.budget;
-			data[category] = newData;
+			data[category] = deepCopy(newData);
 			data.budget = calculator.calculateBudget(data);
 			if(data.budget != oldBudget) {
 				notifyListeners("budget");
@@ -35,7 +35,7 @@ var DataManager = function() {
 
 	// Gets the data of the given category
 	this.getData = function(category) {
-		return data[category];
+		return (data[category] === undefined) ? undefined : deepCopy(data[category]);
 	};
 
 	// Registers a listener for each category in categories
@@ -62,6 +62,10 @@ var DataManager = function() {
 		for(var i = 0; i < callbackArr.length; i++) {
 			callbackArr[i].apply(window, args);
 		}
+	}
+
+	function deepCopy(newData) {
+		return JSON.parse(JSON.stringify(newData));
 	}
 
 };

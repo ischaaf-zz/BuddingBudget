@@ -4,6 +4,8 @@
 // both get changed.
 var Calculator = function() {
 
+	// Calculates and returns the budget based upon the
+	// passed in data.
 	this.calculateBudget = function(data) {
 		// calculate budget and return
 		return data.assets / 5;

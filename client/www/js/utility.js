@@ -1,9 +1,15 @@
+// Utility functions in the global namespace that may be useful for multiple objects
+
+// Constructors for data entries ---------------------------------------------------
+
+// Constructs a new savings entry
 var SavingsEntry = function(name, amount, isDefault) {
 	this.name = name;
 	this.amount = amount;
 	this.isDefault = isDefault;
 };
 
+// Constructs a new recurring charge entry
 var ChargeEntry = function(name, amount, period, start, isConfirm) {
 	this.name = name;
 	this.amount = amount;
@@ -12,6 +18,7 @@ var ChargeEntry = function(name, amount, period, start, isConfirm) {
 	this.isConfirm = isConfirm;
 };
 
+// Constructs a new recurring income entry
 var IncomeEntry = function(name, amount, period, start, portionSaved, isConfirm) {
 	this.name = name;
 	this.amount = amount;
@@ -20,3 +27,12 @@ var IncomeEntry = function(name, amount, period, start, portionSaved, isConfirm)
 	this.portionSaved = portionSaved;
 	this.isConfirm = isConfirm;
 };
+
+// Constructs a new daily tracking entry
+var TrackEntry = function(amount, budget, day) {
+	this.amount = amount;
+	this.budget = budget;
+	this.day = day;
+};
+
+// ---------------------------------------------------------------------------------

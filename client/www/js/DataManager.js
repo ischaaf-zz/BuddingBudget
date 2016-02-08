@@ -1,3 +1,4 @@
+// Handles access to the user data object used by the application
 var DataManager = function() {
 
 	var calculator = new Calculator();
@@ -64,7 +65,11 @@ var DataManager = function() {
 		}
 	}
 
+	// Makes a deep copy of the passed in data
 	function deepCopy(newData) {
+		// Believe it or not, this tends to be a bit faster
+		// than copying the data manually, field by field.
+		// We can easily replace it later though.
 		return JSON.parse(JSON.stringify(newData));
 	}
 

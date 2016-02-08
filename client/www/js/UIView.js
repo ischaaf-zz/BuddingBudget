@@ -1,4 +1,6 @@
 // THIS FILE SHOULD BE THE ONLY PLACE THE DOM IS MANIPULATED
+// Handles sending new data and commands out from the DOM, and
+// putting new updated data into the DOM.
 
 var UIView = function(getData, setDataListener) {
 

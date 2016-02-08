@@ -17,6 +17,7 @@ var StorageManager = function(dataManager, readyCallback) {
 		// Failure callback
 	});
 
+	// can split this listener into many different pieces depending on how different their handlers are
 	dataManager.registerListener(["assets", "savings", "charges", "income", "trackEntries", "options"], function(category) {
 		var newData = dataManager.getData(category);
 		networkManager.store(category, newData);

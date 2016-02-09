@@ -74,10 +74,14 @@ var DataManager = function() {
 
 	// Makes a deep copy of the passed in data
 	function deepCopy(newData) {
-		// Believe it or not, this tends to be a bit faster
-		// than copying the data manually, field by field.
-		// We can easily replace it later though.
-		return JSON.parse(JSON.stringify(newData));
+		if(newData instanceof Array) {
+			return $.extend(true, [], newData);
+		} else if(newData instanceof Object) {
+			return $.extend(true, {}, newData);
+		} else {
+			// If it's not an Object, it was passed by value
+			return newData;
+		}
 	}
 
 };

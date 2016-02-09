@@ -28,11 +28,7 @@ var UIController = function(dataManager, registerUICallback) {
 		// verify that selection and value are valid
 		// if so, get, update, and set options for dataManager - call success
 		// else, call failure with error code
-	});
-
-
-	// For these three "(val instanceof(SavingsEntry))" might be useful to determine
-	// if it's a valid insertion. Or that might be overkill, I'm not sure. 
+	}); 
 
 	registerUICallback("addEntry", function(category, val, success, failure) {
 		// verify the category and entry are valid
@@ -51,14 +47,5 @@ var UIController = function(dataManager, registerUICallback) {
 		// if so, update data and insert into dataManager, call success
 		// else, call failure with error code
 	});
-
-	// Helper function. Lets us call optional success and
-	// failure functions without explicitly checking that they
-	// exist every time.
-	function callFunc(func, args) {
-		if(typeof(func) === 'function') {
-			func.apply(window, args);
-		}
-	}
 
 };

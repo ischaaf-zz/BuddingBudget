@@ -57,7 +57,9 @@ describe('DataManager', function() {
     it("shouldn't allow access to internal data through setData", function() {
         var insertData = [{test: 3}];
         dataManager.setData("savings", insertData);
+
         insertData[0].test = 4;
+        
         var retrieveData = dataManager.getData("savings");
         expect(retrieveData[0].test).toEqual(3);
     });

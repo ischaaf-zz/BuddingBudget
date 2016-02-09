@@ -1,5 +1,13 @@
 // Utility functions in the global namespace that may be useful for multiple objects
 
+function isSameDay(date1, date2) {
+	return date1.toDateString() === date2.toDateString();
+}
+
+function isToday(date) {
+	return isSameDay(date, new Date());
+}
+
 // Constructors for data entries ---------------------------------------------------
 
 // Constructs a new savings entry

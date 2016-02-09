@@ -1,6 +1,7 @@
 // Handles access to the user data object used by the application
 var DataManager = function() {
 
+	// Calculates our budget based upon the data
 	var calculator = new Calculator();
 
 	// Representation of the user's data - a cache of the
@@ -12,7 +13,7 @@ var DataManager = function() {
 		savings: [],
 		charges: [],
 		income: [],
-		trackEntries: [],
+		trackedEntry: {}, // Only store one tracked entry at a time
 		options: {}
 	};
 
@@ -36,6 +37,10 @@ var DataManager = function() {
 
 	// Gets the data of the given category
 	this.getData = function(category) {
+		// If we have a trackedEntry from a previous day, evict it before returning.
+		if(category === 'trackedEntry' && data.trackedEntry.day.toDateString() !== (new Date()).toDateString()) {
+			data.trackedEntry = {};
+		}
 		return (data[category] === undefined) ? undefined : deepCopy(data[category]);
 	};
 

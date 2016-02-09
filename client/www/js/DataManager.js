@@ -38,6 +38,8 @@ var DataManager = function() {
 	// Gets the data of the given category
 	this.getData = function(category) {
 		// If we have a trackedEntry from a previous day, evict it before returning.
+		// We do this here because there's no other place the user's going to be able
+		// to see this data, so this is the most efficient place to make this check.
 		if(category === 'trackedEntry' && data.trackedEntry.day.toDateString() !== (new Date()).toDateString()) {
 			data.trackedEntry = {};
 		}

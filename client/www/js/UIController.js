@@ -30,6 +30,10 @@ var UIController = function(dataManager, registerUICallback) {
 		// else, call failure with error code
 	});
 
+
+	// For these three "(val instanceof(SavingsEntry))" might be useful to determine
+	// if it's a valid insertion. Or that might be overkill, I'm not sure. 
+
 	registerUICallback("addEntry", function(category, val, success, failure) {
 		// verify the category and entry are valid
 		// if so, update data and insert into dataManager, call success

@@ -54,12 +54,12 @@ var ChargeEntry = function(name, amount, period, start, isConfirm) {
 };
 
 // Constructs a new recurring income entry
-var IncomeEntry = function(name, amount, period, start, portionSaved, isConfirm) {
+var IncomeEntry = function(name, amount, period, start, holdout, isConfirm) {
 	this.name = name;
 	this.amount = amount;
 	this.period = period;
 	this.start = start;
-	this.portionSaved = portionSaved;
+	this.holdout = holdout;
 	this.isConfirm = isConfirm;
 	this.timeTouched = (new Date()).getTime();
 };

@@ -53,4 +53,23 @@ describe('DataManager', function() {
         // Both should be called
         expect(savingsCalled && chargesCalled).toEqual(true);
     });
+
+    it("shouldn't allow access to internal data through setData", function() {
+        var insertData = [{test: 3}];
+        dataManager.setData("savings", insertData);
+        insertData[0].test = 4;
+        var retrieveData = dataManager.getData("savings");
+        expect(retrieveData[0].test).toEqual(3);
+    });
+
+    it("shouldn't allow access to internal data through getData", function() {
+        dataManager.setData("savings", [{test: 3}]);
+
+        var retrieveData = dataManager.getData("savings");
+        retrieveData[0].test = 4;
+
+        var secondRetrieve = dataManager.getData("savings");
+        expect(secondRetrieve[0].test).toEqual(3);
+    });
+
 });

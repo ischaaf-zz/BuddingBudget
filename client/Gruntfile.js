@@ -2,12 +2,10 @@ module.exports = function(grunt) {
   grunt.initConfig({
     jasmine : {
       // Your project's source files
-      src : ['www/js/**/*.js', 'www/js/*.js'],
+      src : ['www/js/**/*.js', 'www/js/*.js', 'www/spec/helpers/*.js'],
       options : {
         // Your Jasmine spec files
-        specs : 'www/spec/tests/*.js',
-        // Your spec helper files
-        helpers : 'www/spec/helpers/*.js'
+        specs : 'www/spec/tests/*.js'
       }
     },
     shell: {
@@ -19,7 +17,19 @@ module.exports = function(grunt) {
       }
     },
     jshint: {
-      all: ['Gruntfile.js', 'www/js/**/*.js', 'www/js/*.js', '!www/js/lib/*.js'],
+      all: ['Gruntfile.js', 'www/js/**/*.js', 'www/js/*.js', '!www/js/lib/*.js', '../server/server.js'],
+      // options: {
+      //   globals: {
+      //     "$": false,
+      //     "Calculator": false,
+      //     "DataManager": false,
+      //     "NetworkManager": false,
+      //     "NotificationManager": false,
+      //     "StorageManager": false,
+      //     "UIController": false,
+      //     "UIView": false
+      //   }
+      // }
     }
   });
 
@@ -31,5 +41,4 @@ module.exports = function(grunt) {
   // Default task.
   grunt.registerTask('default', ['jshint', 'jasmine', 'shell']);
   grunt.registerTask('build', 'shell');
-
 };

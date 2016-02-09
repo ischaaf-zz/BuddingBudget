@@ -1,41 +1,55 @@
 var UIController = function(dataManager, registerUICallback) {
-	
-	registerUICallback("sendNewData", function(category, newData, success, failure) {
-		// get data from dataManager, verify newData can be inserted,
-		// insert it, call success / failure function
 
-		// This should probably call separate function handlers depending
-		// upon the category.
-	});
-
-	registerUICallback("changeData", function(category, id, newData, success, failure) {
-		// get data from dataManager, verify id can be changed,
-		// insert it, call success / failure function
-		var currentData = dataManager.getData(category);
-
-		// This should probably call separate function handlers depending
-		// upon the category. For now, it's really only set up to handle
-		// assets.
-
-		if(currentData === undefined) {
-			callFunc(failure, ['Invalid data category: ' + category]);
-		} else if(typeof(newData) !== typeof(currentData)){
-			callFunc(failure, ['Invalid data type for category ' + category + ': ' + typeof(newData)]);
-		} else if(typeof(newData) === 'number' && isNaN(newData)) {
-			callFunc(failure, ['NaN is an invalid number']);
+	// verify that newVal is a valid number
+	// set assets and call success if we can make the change
+	// otherwise call failure with an error code
+	registerUICallback("updateAssets", function(newVal, success, failure) {
+		if(typeof(newVal) === 'number') {
+			if(!isNaN(newVal)) {
+				dataManager.setData('assets', newVal);
+				callFunc(success);
+			} else {
+				callFunc(failure, ['Cannot set assets to NaN']);
+			}
 		} else {
-			dataManager.setData(category, newData);
-			callFunc(success);
+			callFunc(failure, ['Cannot set assets to ' + typeof(newVal)]);
 		}
-
 	});
 
-	registerUICallback("removeData", function(category, id, success, failure) {
-		// get data from dataManager, verify id can be removed,
-		// insert it, call success / failure function
+	registerUICallback("trackSpending", function(amount, success, failure) {
+		// verify that amount is a valid number
+		// make sure the new budget isn't below zero
+		// if fail, call failure with error message
+		// if success, call success with callbacks for possible user
+		//    options (rollover, savings, distribute)
+	});
 
-		// This should probably call separate function handlers depending
-		// upon the category.
+	registerUICallback("setOption", function(selection, value, success, failure) {
+		// verify that selection and value are valid
+		// if so, get, update, and set options for dataManager - call success
+		// else, call failure with error code
+	});
+
+
+	// For these three "(val instanceof(SavingsEntry))" might be useful to determine
+	// if it's a valid insertion. Or that might be overkill, I'm not sure. 
+
+	registerUICallback("addEntry", function(category, val, success, failure) {
+		// verify the category and entry are valid
+		// if so, update data and insert into dataManager, call success
+		// else, call failure with error code
+	});
+
+	registerUICallback("changeEntry", function(category, oldVal, newVal, success, failure) {
+		// verify the category and entry are valid
+		// if so, update data and insert into dataManager, call success
+		// else, call failure with error code
+	});
+
+	registerUICallback("removeEntry", function(category, oldVal, success, failure) {
+		// verify the category and entry are valid
+		// if so, update data and insert into dataManager, call success
+		// else, call failure with error code
 	});
 
 	// Helper function. Lets us call optional success and

@@ -1,4 +1,8 @@
-var UIController = function(dataManager, registerUICallback) {
+// Checks whether the data changes made by the UI View are valid,
+// sends them to the storage manager if they are, calls failure if
+// they aren't.
+
+var UIController = function(getData, storageManager, registerUICallback) {
 
 	// verify that newVal is a valid number
 	// set assets and call success if we can make the change
@@ -6,7 +10,7 @@ var UIController = function(dataManager, registerUICallback) {
 	registerUICallback("updateAssets", function(newVal, success, failure) {
 		if(typeof(newVal) === 'number') {
 			if(!isNaN(newVal)) {
-				dataManager.setData('assets', newVal);
+				storageManager.updateAssets(newVal);
 				callFunc(success);
 			} else {
 				callFunc(failure, ['Cannot set assets to NaN']);

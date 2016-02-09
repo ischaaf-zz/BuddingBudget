@@ -13,10 +13,6 @@ describe("StorageManager", function() {
         storageManager = new StorageManager(mockData, mockNetwork, readyCB);
     });
 
-    it('should register listeners', function() {
-        expect(mockData.registerListener).toHaveBeenCalled();
-    });
-
     it('should call its ready CB', function() {
     	expect(readyCB).toHaveBeenCalled();
     });

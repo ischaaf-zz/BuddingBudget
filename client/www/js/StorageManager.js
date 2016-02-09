@@ -5,21 +5,45 @@
 
 var StorageManager = function(dataManager, networkManager, readyCallback) {
 
+	// Update assets
+	this.updateAssets = function(newVal) {
+		// update network and local storage
+		dataManager.setData('assets', newVal);
+	};
+
+	// Create and add new spending entry
+	this.trackSpending = function(amount) {
+
+	};
+
+	// Set the specified option to a new value
+	this.setOption = function(selection, value) {
+
+	};
+
+	// Add a new entry to savings or recurring charges / income
+	this.addEntry = function(category, val) {
+
+	};
+
+	// Change an entry to savings or recurring charges / income
+	this.changeEntry = function(category, oldVal, newVal) {
+
+	};
+
+	// Remove an entry from savings or recurring charges / income
+	this.removeEntry = function(category, oldVal) {
+
+	};
+
 	// fetch from Phonegap storage, send each data type to dataManager
 	// Then call readyCallback()
 
 	networkManager.fetchInitialData(function(data) {
 		// check against phonegap storage, update phonegap
-		// and dataManager if newer
+		// if newer, and dataManager from that.
 	}, function() {
 		// Failure callback
-	});
-
-	// can split this listener into many different pieces depending on how different their handlers are
-	dataManager.registerListener(["assets", "savings", "charges", "income", "trackEntries", "options"], function(category) {
-		var newData = dataManager.getData(category);
-		networkManager.store(category, newData);
-		// modify local storage and network storage
 	});
 
 	// THIS SHOULD GET CALLED BACK IN PHONEGAP STORAGE'S FETCH

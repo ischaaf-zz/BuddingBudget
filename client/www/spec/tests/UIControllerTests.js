@@ -1,6 +1,6 @@
 describe("UIController", function() {
 
-    var callbacks, mockDM, uiController, success, failure;
+    var callbacks, mockDM, mockSM, uiController, success, failure;
 
     beforeEach(function() {
         success = jasmine.createSpy('success')
@@ -16,32 +16,39 @@ describe("UIController", function() {
         mockDM = {
             getData: function(category) {
                 return simpleSampleData[category];
-            },
-            setData: function(category, value) {}
+            }
         }
         spyOn(mockDM, 'getData').and.callThrough();
-        spyOn(mockDM, 'setData').and.callThrough();
 
-        uiController = new UIController(mockDM, registerUICallback);
+        mockSM = {
+            updateAssets: jasmine.createSpy('updateAssets'),
+            trackSpending: jasmine.createSpy('trackSpending'),
+            setOption: jasmine.createSpy('setOption'),
+            addEntry: jasmine.createSpy('addEntry'),
+            changeEntry: jasmine.createSpy('changeEntry'),
+            removeEntry: jasmine.createSpy('removeEntry'),
+        }
+
+        uiController = new UIController(mockDM.getData, mockSM, registerUICallback);
     });
 
     describe("updateAssets callback", function() {
 
         it("should change value when valid", function() {
             callbacks.updateAssets(100, success, failure);
-            expect(mockDM.setData).toHaveBeenCalledWith('assets', 100);
+            expect(mockSM.updateAssets).toHaveBeenCalledWith(100);
             expect(success).toHaveBeenCalled();
         });
 
         it("should throw NaN error if NaN", function() {
             callbacks.updateAssets(NaN, success, failure);
-            expect(mockDM.setData).not.toHaveBeenCalled();
+            expect(mockSM.updateAssets).not.toHaveBeenCalled();
             expect(failure).toHaveBeenCalledWith('Cannot set assets to NaN');
         });
 
         it("should throw type error if wrong type", function() {
             callbacks.updateAssets('potato', success, failure);
-            expect(mockDM.setData).not.toHaveBeenCalled();
+            expect(mockSM.updateAssets).not.toHaveBeenCalled();
             expect(failure).toHaveBeenCalledWith('Cannot set assets to string');
         });
 

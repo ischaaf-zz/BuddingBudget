@@ -21,6 +21,18 @@ function callFunc(func, args) {
 	}
 }
 
+// Makes a deep copy of the passed in data
+function deepCopy(newData) {
+	if(newData instanceof Array) {
+		return $.extend(true, [], newData);
+	} else if(newData instanceof Object) {
+		return $.extend(true, {}, newData);
+	} else {
+		// If it's not an Object, it was passed by value
+		return newData;
+	}
+}
+
 // Constructors for data entries ---------------------------------------------------
 
 // Constructs a new savings entry
@@ -28,6 +40,7 @@ var SavingsEntry = function(name, amount, isDefault) {
 	this.name = name;
 	this.amount = amount;
 	this.isDefault = isDefault;
+	this.timeTouched = (new Date()).getTime();
 };
 
 // Constructs a new recurring charge entry
@@ -37,6 +50,7 @@ var ChargeEntry = function(name, amount, period, start, isConfirm) {
 	this.period = period;
 	this.start = start;
 	this.isConfirm = isConfirm;
+	this.timeTouched = (new Date()).getTime();
 };
 
 // Constructs a new recurring income entry
@@ -47,6 +61,7 @@ var IncomeEntry = function(name, amount, period, start, portionSaved, isConfirm)
 	this.start = start;
 	this.portionSaved = portionSaved;
 	this.isConfirm = isConfirm;
+	this.timeTouched = (new Date()).getTime();
 };
 
 // Constructs a new daily tracking entry
@@ -54,6 +69,11 @@ var TrackEntry = function(amount, budget, day) {
 	this.amount = amount;
 	this.budget = budget;
 	this.day = day;
+	this.timeTouched = (new Date()).getTime();
 };
+
+function updateTimeTouched(obj) {
+	obj.timeTouched = (new Date()).getTime();
+}
 
 // ---------------------------------------------------------------------------------

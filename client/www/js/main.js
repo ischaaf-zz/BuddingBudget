@@ -12,9 +12,6 @@
 	// Gives uiView access to get data, and to listen for when it changes
 	var uiView = new UIView(dataManager.getData, dataManager.registerListener);
 
-	// Gives uiController access to get, set, and listen to data, and to listen for events in the view
-	var uiController = new UIController(dataManager, uiView.registerCallback);
-
 	// Initializes the network manager. In the future, may give it some access to the UI to listen for
 	// logins, but for now, it doesn't have access to any other objects.
 	var networkManager = new NetworkManager();
@@ -27,5 +24,8 @@
 		// storage.
 		dataManager.start();
 	});
+
+	// Gives uiController access to get, set, and listen to data, and to listen for events in the view
+	var uiController = new UIController(dataManager.getData, storageManager, uiView.registerCallback);
 
 // }, false);

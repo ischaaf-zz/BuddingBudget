@@ -1,4 +1,9 @@
 // Handles access to the user data object used by the application
+
+// Is essentially a cache for the data in phonegap storage, as well
+// as on the network storage. As far as the UIView and Notifications
+// are concerned, this is the only representation of the data.
+
 var DataManager = function() {
 
 	// Calculates our budget based upon the data
@@ -69,18 +74,6 @@ var DataManager = function() {
 		var callbackArr = callbacks[event] || [];
 		for(var i = 0; i < callbackArr.length; i++) {
 			callbackArr[i].apply(window, args);
-		}
-	}
-
-	// Makes a deep copy of the passed in data
-	function deepCopy(newData) {
-		if(newData instanceof Array) {
-			return $.extend(true, [], newData);
-		} else if(newData instanceof Object) {
-			return $.extend(true, {}, newData);
-		} else {
-			// If it's not an Object, it was passed by value
-			return newData;
 		}
 	}
 

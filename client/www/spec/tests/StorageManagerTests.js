@@ -1,17 +1,20 @@
 describe("StorageManager", function() {
 
-    var storageManager, mock, readyCB;
+    var storageManager, mockData, mockNetwork, readyCB;
 
     beforeEach(function() {
-    	mock = {
+    	mockData = {
     		registerListener: jasmine.createSpy('registerListener')
     	};
+        mockNetwork = {
+            fetchInitialData: jasmine.createSpy('fetchInitialData')
+        }
     	readyCB = jasmine.createSpy('readyCB');
-        storageManager = new StorageManager(mock, readyCB);
+        storageManager = new StorageManager(mockData, mockNetwork, readyCB);
     });
 
     it('should register listeners', function() {
-        expect(mock.registerListener).toHaveBeenCalled();
+        expect(mockData.registerListener).toHaveBeenCalled();
     });
 
     it('should call its ready CB', function() {

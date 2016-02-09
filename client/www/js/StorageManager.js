@@ -3,9 +3,7 @@
 // needs to keep dataManager, phonegap's storage, and the network storage
 // synchronized.
 
-var StorageManager = function(dataManager, readyCallback) {
-
-	var networkManager = new NetworkManager();
+var StorageManager = function(dataManager, networkManager, readyCallback) {
 
 	// fetch from Phonegap storage, send each data type to dataManager
 	// Then call readyCallback()

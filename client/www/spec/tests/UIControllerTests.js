@@ -1,22 +1,77 @@
 describe("UIController", function() {
 
-    var uiController, mock, registerUICallback;
+    var callbacks, mockDM, mockSM, uiController, success, failure;
 
     beforeEach(function() {
-    	registerUICallback = jasmine.createSpy('registerUICallback');
-        uiController = new UIController(mock, registerUICallback);
+        success = jasmine.createSpy('success')
+        failure = jasmine.createSpy('failure')
+
+        callbacks = {};
+
+        registerUICallback = function(name, callback) {
+            callbacks[name] = callback;
+            spyOn(callbacks, name).and.callThrough();
+        }
+
+        mockDM = {
+            getData: function(category) {
+                return simpleSampleData[category];
+            }
+        }
+        spyOn(mockDM, 'getData').and.callThrough();
+
+        mockSM = {
+            updateAssets: jasmine.createSpy('updateAssets'),
+            trackSpending: jasmine.createSpy('trackSpending'),
+            setOption: jasmine.createSpy('setOption'),
+            addEntry: jasmine.createSpy('addEntry'),
+            changeEntry: jasmine.createSpy('changeEntry'),
+            removeEntry: jasmine.createSpy('removeEntry'),
+        }
+
+        uiController = new UIController(mockDM.getData, mockSM, registerUICallback);
     });
 
-    it('should register UI Callback for sendNewData', function() {
-        expect(registerUICallback).toHaveBeenCalledWith("sendNewData", jasmine.any(Function));
+    describe("updateAssets callback", function() {
+
+        it("should change value when valid", function() {
+            callbacks.updateAssets(100, success, failure);
+            expect(mockSM.updateAssets).toHaveBeenCalledWith(100);
+            expect(success).toHaveBeenCalled();
+        });
+
+        it("should throw NaN error if NaN", function() {
+            callbacks.updateAssets(NaN, success, failure);
+            expect(mockSM.updateAssets).not.toHaveBeenCalled();
+            expect(failure).toHaveBeenCalledWith('Cannot set assets to NaN');
+        });
+
+        it("should throw type error if wrong type", function() {
+            callbacks.updateAssets('potato', success, failure);
+            expect(mockSM.updateAssets).not.toHaveBeenCalled();
+            expect(failure).toHaveBeenCalledWith('Cannot set assets to string');
+        });
+
     });
 
-    it('should register UI Callback for changeData', function() {
-        expect(registerUICallback).toHaveBeenCalledWith("changeData", jasmine.any(Function));
-    });
+    // describe("trackSpending callback", function() {
 
-    it('should register UI Callback for removeData', function() {
-        expect(registerUICallback).toHaveBeenCalledWith("removeData", jasmine.any(Function));
-    });
+    // });
+
+    // describe("setOption callback", function() {
+
+    // });
+
+    // describe("addEntry callback", function() {
+
+    // });
+
+    // describe("changeEntry callback", function() {
+
+    // });
+
+    // describe("removeEntry callback", function() {
+
+    // });
 
 });

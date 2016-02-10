@@ -1,5 +1,12 @@
+// Handles access to the user data object used by the application
+
+// Is essentially a cache for the data in phonegap storage, as well
+// as on the network storage. As far as the UIView and Notifications
+// are concerned, this is the only representation of the data.
+
 var DataManager = function() {
 
+	// Calculates our budget based upon the data
 	var calculator = new Calculator();
 
 	// Representation of the user's data - a cache of the
@@ -11,7 +18,7 @@ var DataManager = function() {
 		savings: [],
 		charges: [],
 		income: [],
-		trackEntries: [],
+		trackedEntry: {}, // Only store one tracked entry at a time
 		options: {}
 	};
 
@@ -24,7 +31,7 @@ var DataManager = function() {
 	this.setData = function(category, newData) {
 		if((category in data) && (typeof(data[category]) === typeof(newData))) {
 			var oldBudget = data.budget;
-			data[category] = newData;
+			data[category] = deepCopy(newData);
 			data.budget = calculator.calculateBudget(data);
 			if(data.budget != oldBudget) {
 				notifyListeners("budget");
@@ -35,7 +42,13 @@ var DataManager = function() {
 
 	// Gets the data of the given category
 	this.getData = function(category) {
-		return data[category];
+		// If we have a trackedEntry from a previous day, evict it before returning.
+		// We do this here because there's no other place the user's going to be able
+		// to see this data, so this is the most efficient place to make this check.
+		if(category === 'trackedEntry' && !isToday(data.trackedEntry.day)) {
+			data.trackedEntry = {};
+		}
+		return (data[category] === undefined) ? undefined : deepCopy(data[category]);
 	};
 
 	// Registers a listener for each category in categories

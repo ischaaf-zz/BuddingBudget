@@ -51,7 +51,7 @@ var UserSchema = new Schema ({
     income: [IncomeEntry],
     charges: [ChargeEntry],
     entries: [TrackEntry],
-    options: OptionsEntry
+    options: { type : Mongoose.Schema.ObjectId, ref : 'OptionsEntry' }
   }
 });
 

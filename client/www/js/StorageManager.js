@@ -6,34 +6,90 @@
 var StorageManager = function(dataManager, networkManager, readyCallback) {
 
 	// Update assets
-	this.updateAssets = function(newVal) {
+	this.updateAssets = function(newVal, success, failure) {
 		// update network and local storage
 		dataManager.setData('assets', newVal);
+		callFunc(success);
 	};
 
 	// Create and add new spending entry
-	this.trackSpending = function(amount) {
+	this.trackSpending = function(trackedEntry, extraOption, success, failure) {
+		// extraOption is where we want the surplus / deficit to go
+		// if rollover, set difference
+		// if distribute, change assets
+		// if savings, change savings
+		
+		var difference = trackedEntry.budget - trackedEntry.amount;
+		var amountToDeduct = trackedEntry.amount;
 
+		if(extraOption === "rollover") {
+			// This is harder to implement than I thought it would be. May get
+			// pushed past the beta stage
+			//
+			// dataManager.setData('assets', currentAssets - trackedEntry.amount);
+			// dataManager.setData('trackedEntry', trackedEntry);
+			// dataManager.setData('nextDayBudget', trackedEntry.budget + difference)
+		} else if(extraOption === "savings") {
+			var savings = dataManager.getData('savings');
+			savings[0].amount += difference;
+			dataManager.setData('savings', savings);
+			amountToDeduct = trackedEntry.budget;
+		} else if(extraOption !== "distribute") {
+			callFunc(failure, ["invalid extraOption"]);
+			return;
+		}
+
+		dataManager.setData('assets', dataManager.getData('assets') - amountToDeduct);
+		dataManager.setData("trackedEntry", trackedEntry);
+
+		callFunc(success);
 	};
 
 	// Set the specified option to a new value
-	this.setOption = function(selection, value) {
-
+	this.setOption = function(selection, value, success, failure) {
+		var options = dataManager.getData('options');
+		options[selection] = value;
+		dataManager.setData('options', options);
+		callFunc(success);
 	};
 
 	// Add a new entry to savings or recurring charges / income
-	this.addEntry = function(category, val) {
-
+	this.addEntry = function(category, val, success, failure) {
+		var data = dataManager.getData(category);
+		// If there's already an entry with this name
+		if(indexOfData(data, "name", val.name) !== -1) {
+			callFunc(failure, ["entry with name " + val.name + " already exists"]);
+		} else {
+			data.push(val);
+			dataManager.setData(category, data);
+			callFunc(success);
+		}
 	};
 
 	// Change an entry to savings or recurring charges / income
-	this.changeEntry = function(category, oldVal, newVal) {
-
+	this.changeEntry = function(category, name, newVal, success, failure) {
+		var data = dataManager.getData(category);
+		var index = indexOfData(data, "name", name);
+		if(index === -1) {
+			callFunc(failure, ["entry with name " + name + " does not exist"]);
+		} else {
+			data[index] = newVal;
+			dataManager.setData(category, data);
+			callFunc(success);
+		}
 	};
 
 	// Remove an entry from savings or recurring charges / income
-	this.removeEntry = function(category, oldVal) {
-
+	this.removeEntry = function(category, name, success, failure) {
+		var data = dataManager.getData(category);
+		var index = indexOfData(data, "name", name);
+		if(index === -1) {
+			callFunc(failure, ["entry with name " + name + " does not exist"]);
+		} else {
+			data.splice(index, 1);
+			dataManager.setData(category, data);
+			callFunc(success);
+		}
 	};
 
 	// fetch from Phonegap storage, send each data type to dataManager
@@ -51,3 +107,4 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 	readyCallback();
 
 };
+

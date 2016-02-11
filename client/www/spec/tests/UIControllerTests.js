@@ -36,8 +36,7 @@ describe("UIController", function() {
 
         it("should change value when valid", function() {
             callbacks.updateAssets(100, success, failure);
-            expect(mockSM.updateAssets).toHaveBeenCalledWith(100);
-            expect(success).toHaveBeenCalled();
+            expect(mockSM.updateAssets).toHaveBeenCalledWith(100, jasmine.any(Function), jasmine.any(Function));
         });
 
         it("should throw NaN error if NaN", function() {

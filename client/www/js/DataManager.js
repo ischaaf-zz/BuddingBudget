@@ -28,8 +28,13 @@ var DataManager = function() {
 	// if the data is of a valid category, and the type of the newData
 	// is the same as the type stored, sets the data, recalculates the
 	// budget, and notifies appropriate listeners.
+	// Returns true if insertion succeeded, false if it failed
 	this.setData = function(category, newData) {
-		if((category in data) && (typeof(data[category]) === typeof(newData))) {
+		if(!(category in data)) {
+			return false;
+		}
+		var notXorArray = (data[category].constructor === Array) === (newData.constructor === Array);
+		if(notXorArray && (typeof(data[category]) === typeof(newData))) {
 			var oldBudget = data.budget;
 			data[category] = deepCopy(newData);
 			data.budget = calculator.calculateBudget(data);
@@ -37,7 +42,9 @@ var DataManager = function() {
 				notifyListeners("budget");
 			}
 			notifyListeners(category);
+			return true;
 		}
+		return false;
 	};
 
 	// Gets the data of the given category

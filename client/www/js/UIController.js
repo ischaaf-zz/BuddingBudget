@@ -44,11 +44,11 @@ var UIController = function(getData, storageManager, registerUICallback) {
 		// if so, call storageManager equivalent function
 		// else, call failure with error code
 		if(verifyCategory(category)) {
-			if(verifyType(category, val)) {
+			// if(verifyType(category, val)) {
 				storageManager.addEntry(category, val, success, failure);
-			} else {
-				callFunc(failure, ["Value is invalid type for category " + category]);
-			}
+			// } else {
+			// 	callFunc(failure, ["Value is invalid type for category " + category]);
+			// }
 		} else {
 			callFunc(failure, ["Category is invalid: " + category]);
 		}
@@ -59,11 +59,11 @@ var UIController = function(getData, storageManager, registerUICallback) {
 		// if so, call storageManager equivalent function
 		// else, call failure with error code
 		if(verifyCategory(category)) {
-			if(verifyType(category, newVal)) {
+			// if(verifyType(category, newVal)) {
 				storageManager.changeEntry(category, name, newVal, success, failure);
-			} else {
-				callFunc(failure, ["Value is invalid type for category " + category]);
-			}
+			// } else {
+			// 	callFunc(failure, ["Value is invalid type for category " + category]);
+			// }
 		} else {
 			callFunc(failure, ["Category is invalid: " + category]);
 		}

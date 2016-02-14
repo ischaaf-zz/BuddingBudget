@@ -1,29 +1,132 @@
+<!doctype html>
 <html>
+<head>
+<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="android-mobile-web-app-capable" content="yes">
+  <meta name="msapplication-tap-highlight" content="no">
+  <meta charset="UTF-8">
+  <title>Budding Budget</title>
+  <link rel="stylesheet" href="chui/chui-android-3.9.2.min.css">
+  <script src="chui/chui-3.9.2.min.js"></script>
+  
+   <style>
+    .list > li:hover {
+      background: #d9d9d9;
+    }
+    .list > li:hover > h3,
+    .list > li:hover > h4 {
+      color: #000;
+    }
+    .list > li.nav:hover::after {
+      border-color: #000;
+    }
+  </style>
+  
+</head>
 	<body>
-		<app>
-			<p>Budget: (currently just assets / 5)</p>
-			<p id="budget">0</p>
-			<br>
-			<input type="text" id="amount">
-			<br>
-			<button id="setAssets">Set Assets</button>
-			<br>
-			<p id="assetsSuccess"></p>
-			<br>
-			<img src="img/logo.png"></img>
+		<nav class="current">
+			<h1> Your Budget Plan </h1>
+		</nav>
+		
+		<article class="current" id="main"> 
+		<section>
+			<h2> Your Budget for Today $ </h2>
+			<h2 id="budget">0</h2>
+		
+			<ul class="list">
+				<li class="nav" data-goto="assets">
+					<h3> Assets </h3>
+				</li>
+				<li class="nav" data-goto="savings">
+					<h3> Savings </h3>
+				</li>
+				<li class="nav" data-goto="charges">
+					<h3> Recurring Charges </h3>
+				</li>
+				<li class="nav" data-goto="income">
+					<h3> Recurring Income </h3>
+				</li>
+				<li class="nav" data-goto="spending">
+					<h3> Track Spending </h3>
+				</li>
+				<li class="nav" data-goto="options">
+					<h3> Options </h3>
+				</li>
+			</ul>
+		</section>
+		</article>
+		
+		<nav class="next">
+			<button class="back"> Main </button>
+			<h1> Assets </h1>
+		</nav>
+		<article id="assets" class ="next">
+			<section>
+				<h3> You are here </h3>
+			</section>
+		</article>
+		
+		<nav class="next">
+			<button class="back"> Main </button>
+			<h1> Savings </h1>
+		</nav>
+		<article id="savings" class ="next">
+			<section>
+				<h3> You are here </h3>
+			</section>
+		</article>
+		
+		<nav class="next">
+			<button class="back"> Main </button>
+			<h1> Recurring Charges </h1>
+		</nav>
+		<article id="charges" class ="next">
+			<section>
+				<h3> You are here </h3>
+			</section>
+		</article>
+		
+		<nav class="next">
+			<button class="back"> Main </button>
+			<h1> Recurring Income </h1>
+		</nav>
+		<article id="income" class = "next">
+			<section>
+				<h3> You are here </h3>
+			</section>
+		</article>
+		
+		<nav class="next">
+			<button class="back"> Main </button>
+			<h1> Track Spending </h1>
+		</nav>
+		<article id="spending" class = "next">
+			<section>
+				<h3> You are here </h3>
+			</section>
+		</article>
+		
+		<nav class="next">
+			<button class="back"> Main </button>
+			<h1> Options </h1>
+		</nav>
+		<article id="options" class = "next">
+			<section>
+				<h3> You are here </h3>
+			</section>
+		</article>
+		
+		<script type="text/javascript" src="js/lib/jquery-1.12.0.min.js"></script>
+		<script type="text/javascript" src="cordova.js"></script>
 
-			<script type="text/javascript" src="js/lib/jquery-1.12.0.min.js"></script>
-			<script type="text/javascript" src="cordova.js"></script>
-
-			<script type="text/javascript" src="js/utility.js"></script>
-			<script type="text/javascript" src="js/Calculator.js"></script>
-			<script type="text/javascript" src="js/NetworkManager.js"></script>
-			<script type="text/javascript" src="js/DataManager.js"></script>
-			<script type="text/javascript" src="js/NotificationManager.js"></script>
-			<script type="text/javascript" src="js/UIView.js"></script>
-			<script type="text/javascript" src="js/UIController.js"></script>
-			<script type="text/javascript" src="js/StorageManager.js"></script>
-			<script type="text/javascript" src="js/main.js"></script>
-		</app>
+		<script type="text/javascript" src="js/utility.js"></script>
+		<script type="text/javascript" src="js/Calculator.js"></script>
+		<script type="text/javascript" src="js/NetworkManager.js"></script>
+		<script type="text/javascript" src="js/DataManager.js"></script>
+		<script type="text/javascript" src="js/NotificationManager.js"></script>
+		<script type="text/javascript" src="js/UIView.js"></script>
+		<script type="text/javascript" src="js/UIController.js"></script>
+		<script type="text/javascript" src="js/StorageManager.js"></script>
+		<script type="text/javascript" src="js/main.js"></script>
 	</body>
 </html>

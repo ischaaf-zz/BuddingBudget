@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/client/platforms/android/CordovaLib/CordovaLib.iml" filepath="$PROJECT_DIR$/client/platforms/android/CordovaLib/CordovaLib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/client/platforms/android/android.iml" filepath="$PROJECT_DIR$/client/platforms/android/android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/client/plugins/cordova-plugin-device/src/cordova-plugin-device.iml" filepath="$PROJECT_DIR$/client/plugins/cordova-plugin-device/src/cordova-plugin-device.iml" />
+      <module fileurl="file://$PROJECT_DIR$/client/plugins/cordova-plugin-whitelist/src/cordova-plugin-whitelist.iml" filepath="$PROJECT_DIR$/client/plugins/cordova-plugin-whitelist/src/cordova-plugin-whitelist.iml" />
+      <module fileurl="file://$PROJECT_DIR$/client/plugins/de.appplant.cordova.plugin.local-notification/src/de.appplant.cordova.plugin.local-notification.iml" filepath="$PROJECT_DIR$/client/plugins/de.appplant.cordova.plugin.local-notification/src/de.appplant.cordova.plugin.local-notification.iml" />
+    </modules>
+  </component>
+</project>

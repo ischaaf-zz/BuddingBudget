@@ -1,0 +1,24 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-plugin-app-event": {
+            "PACKAGE_NAME": "Budding Budget"
+        },
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "Budding Budget"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "Budding Budget"
+        },
+        "de.appplant.cordova.plugin.local-notification": {
+            "PACKAGE_NAME": "Budding Budget"
+        }
+    },
+    "dependent_plugins": {}
+}

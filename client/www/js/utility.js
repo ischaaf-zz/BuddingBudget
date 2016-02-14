@@ -38,6 +38,11 @@ function indexOfData(arr, key, value) {
 	return -1;
 }
 
+// Clears all localStorage data
+function clearStorage() {
+	window.localStorage.clear();
+}
+
 // Constructors for data entries ---------------------------------------------------
 
 // Constructs a new savings entry

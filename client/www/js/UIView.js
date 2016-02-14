@@ -27,7 +27,7 @@ var UIView = function(getData, setDataListener) {
 	
 	$("#buttonAssets").click(function() {
 		notifyListeners("updateAssets", [parseInt($("#setAssets").val()), function() {
-			$("#prevAssets").html($("#setAssets").val());
+			$("#prevAssets").html("$" + $("#setAssets").val());
 			$("#assetsSuccess").html("CHANGED ASSETS SUCCESS");
 		}, function(message) {
 			$("#assetsSuccess").html("FAILED: " + message);

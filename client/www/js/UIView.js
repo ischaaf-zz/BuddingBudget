@@ -32,6 +32,4 @@ var UIView = function(getData, setDataListener) {
 		}, function(message) {
 			$("#assetsSuccess").html("FAILED: " + message);
 		}]);
-	});
-
 };

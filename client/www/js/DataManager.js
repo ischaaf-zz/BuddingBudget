@@ -9,6 +9,10 @@ var DataManager = function() {
 	// Calculates our budget based upon the data
 	var calculator = new Calculator();
 
+	// DataManager won't fire callbacks unless it's
+	// marked as having started
+	var isStarted = false;
+
 	// Representation of the user's data - a cache of the
 	// data stored in localStorage / network storage
 	var data = {
@@ -70,17 +74,24 @@ var DataManager = function() {
 	// calculates the initial budget and fires a ready event
 	this.start = function() {
 		data.budget = calculator.calculateBudget(data);
+		isStarted = true;
 		notifyListeners("ready");
+	};
+
+	this.getKeySet = function() {
+		return Object.keys(data);
 	};
 
 	// Notifies all listeners for event with the first argument
 	// event, followed by the arguments in args
 	function notifyListeners(event, args) {
-		args = args || [];
-		args.unshift(event);
-		var callbackArr = callbacks[event] || [];
-		for(var i = 0; i < callbackArr.length; i++) {
-			callbackArr[i].apply(window, args);
+		if(isStarted) {
+			args = args || [];
+			args.unshift(event);
+			var callbackArr = callbacks[event] || [];
+			for(var i = 0; i < callbackArr.length; i++) {
+				callbackArr[i].apply(window, args);
+			}
 		}
 	}
 

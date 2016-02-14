@@ -6,8 +6,11 @@ describe("StorageManager", function() {
     	mockData = {
             getData: jasmine.createSpy('getData'),
             setData: jasmine.createSpy('setData'),
-    		registerListener: jasmine.createSpy('registerListener')
-    	};
+    		registerListener: jasmine.createSpy('registerListener'),
+    	    getKeySet: function() {
+                return Object.keys(simpleSampleData);
+            }
+        };
         mockNetwork = {
             fetchInitialData: jasmine.createSpy('fetchInitialData')
         }

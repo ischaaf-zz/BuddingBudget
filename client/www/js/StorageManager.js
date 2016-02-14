@@ -12,6 +12,11 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 		callFunc(success);
 	};
 
+	this.setEndDate = function(endDate, success, failure) {
+		saveData('endDate', endDate);
+		callFunc(success);
+	};
+
 	// Create and add new spending entry
 	this.trackSpending = function(trackedEntry, extraOption, success, failure) {
 		// extraOption is where we want the surplus / deficit to go

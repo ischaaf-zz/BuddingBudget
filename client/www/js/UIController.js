@@ -38,6 +38,10 @@ var UIController = function(getData, storageManager, registerUICallback) {
 		// else, call failure with error code
 	}); 
 
+	registerUICallback("setEndDate", function(endDate, success, failure) {
+
+	});
+
 	registerUICallback("addEntry", function(category, val, success, failure) {
 		// verify the category and entry are valid
 		// if so, call storageManager equivalent function

@@ -3,6 +3,9 @@ describe("StorageManager", function() {
     var storageManager, mockData, mockNetwork, success, failure, readyCB;
 
     beforeEach(function() {
+        spyOn(localforage, "ready").and.callFake(function(cb) {
+            cb();
+        });
     	mockData = {
             getData: jasmine.createSpy('getData'),
             setData: jasmine.createSpy('setData'),

@@ -5,6 +5,14 @@
 
 var StorageManager = function(dataManager, networkManager, readyCallback) {
 
+	var recurringManager = new RecurringManager(function(val) {
+		saveData("assets", val);
+	}, function(val) {
+		saveData("charges", val);
+	}, function(val) {
+		saveData("income", val);
+	});
+
 	// Update assets
 	this.updateAssets = function(newVal, success, failure) {
 		// update network and local storage
@@ -101,7 +109,14 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 	// and the cloud storage (once we figure that out)
 	function saveData(key, val) {
 		if(dataManager.setData(key, val)) {
-			localforage.setItem(key, val);	
+			if(PERSIST_DATA) {
+				localforage.setItem(key, val);
+			}	
+			if(key === 'charges') {
+				recurringManager.setCharges(val);
+			} else if(key === 'income') {
+				recurringManager.setIncome(val);
+			}
 			return true;
 		} else {
 			// INCORRECT DATA TYPE, DATA NOT INSERTED
@@ -119,26 +134,27 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 		// Failure callback
 	});
 
-	localforage.ready(function() {
-		// Populate the data cache with information in
-		// phonegap's local storage
-		var keys = dataManager.getKeySet();
-		for(var i = 0; i < keys.length; i++) {
-			// placed in closure to keep key in scope
-			// with localforage's asynchronous callback
-			(function(key) {
-				localforage.getItem(key, function(err, val) {
-					if(val !== null) {
-						dataManager.setData(key, val);
-					}
-				});
-			})(keys[i]);
-		}
+	if(PERSIST_DATA) {
+		var getFromForage = function(key) {
+			localforage.getItem(key, function(err, val) {
+				if(val !== null) {
+					dataManager.setData(key, val);
+				}
+			});
+		};
 
-		// THIS SHOULD GET CALLED BACK IN PHONEGAP STORAGE'S FETCH
-		// CALLBACK INSTEAD ONCE THAT'S SET UP
+		localforage.ready(function() {
+			// Populate the data cache with information in
+			// phonegap's local storage
+			var keys = dataManager.getKeySet();
+			for(var i = 0; i < keys.length; i++) {
+				getFromForage(keys[i]);
+			}
+			readyCallback();
+		});	
+	} else {
 		readyCallback();
-	});
+	}
 
 };
 

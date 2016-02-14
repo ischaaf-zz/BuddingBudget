@@ -1,6 +1,6 @@
 // Utility functions in the global namespace that may be useful for multiple objects
 
-var PERSIST_DATA = true;
+var PERSIST_DATA = false;
 
 
 // Checks if two date objects represent the same day

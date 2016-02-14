@@ -21,10 +21,10 @@ var UIView = function(getData, setDataListener) {
 	}
 	
 	//when first opened, get values out of local storage
-	/*$(document).ready(function() {
-		$("#prevAssets").html("$" + getData(assets));
-		$("#budget").html("$" + getData(budget));
-	});*/
+	//if PERSIST_DATA in utility.js is set to false temp data will set here instead
+	$(document).ready(function() {
+		setTempData();
+	});
 	
 	// update budget when budget changes
 	setDataListener("budget", function() {

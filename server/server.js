@@ -9,11 +9,18 @@ var app        = express();                 // define our app using express
 var bodyParser = require('body-parser');
 var session    = require('client-sessions');
 var mongoose   = require('mongoose');
-var Schemas    = require('./app/models/user');
+
 
 // connect to local database
 // NOTE: This is a temp connection to localhost -- change to production
-mongoose.connect('mongodb://localhost:27017/');
+mongoose.connect('mongodb://buddingbudget:buddingbudget@localhost:27017/budding_budget');
+
+// mongoose.NativeConnection.on("error", function(e) {
+//   console.log("DBERR: ");
+//   console.log(e);
+// });
+
+var UserModel    = require('./app/models/user');
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
@@ -29,7 +36,7 @@ app.use(session({
 }));
 
 // set default port (if not using PORT environment variable)
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 8081;
 
 // ROUTES FOR OUR API
 // =============================================================================
@@ -61,31 +68,45 @@ router.post('/login', function(req, res, next) {
   // else return error
 });
 
+router.post('/create_user', function(req, res, next) {
+  console.log(mongoose);
+  var user = new UserModel();
+  user.username = req.body.username;
+  user.name = req.body.name;
+  user.password = req.body.password;
+  console.log(user.name);
+  console.log(user.username);
+  console.log(user.password);
+  user.data.budget = 0;
+  user.data.assets = 0;
+  user.data.savings = [];
+  user.data.savings.push({name: "emergency", amount: 200, isDefault: true});
+  user.data.income = [];
+  user.data.income.push({name: "Work", amount: 450, period: 1, start: new Date(2016, 1, 1), holdout: 50, isConfirm: false});
+  user.data.charges = [];
+  user.data.income.push({name: "Work", amount: 50, period: 1, start: new Date(2016, 1, 1), isConfirm: false});
+  user.data.entries = [];
+  user.data.entries.push({budget: 25, spent: 20, date: new Date(2016, 2, 9)});
+  user.data.userOptions.isNotify = false;
+  user.data.userOptions.notifyTime = new Date(0, 0, 0, 9);
+  user.data.userOptions.isTrack = false;
+  console.log("saving user...");
+  user.save(function(err) {
+    console.log("save function start");
+    if (err)
+      res.send(err);
+    res.json({message: "user created"});
+  });
+  console.log("done");
+});
+
 // store the user data for the logged in user
 // POST: User
 router.get('/store_data', function(req, res, next) {
   // check that user is logged in, if not return error
 
   // parse the data object
-  var user = new Schemas.User();
-  user.username = 'isaac99';
-  user.name = 'Isaac Schaaf';
-  user.password = 'buddingbudget';
-  user.data.budget = 100;
-  user.data.assets = 1000000;
-  user.data.savings[0] = new Schemas.Savings();
-  user.data.savings[0].name = 'emergency';
-  user.data.savings[0].amount = 200;
-  user.data.savings[0].isDefault = true;
-  // user.data.savings[1].name = 'car money';
-  // user.data.savings[1].amount = 154;
-  // user.data.savings[1].isDefault = false;
 
-  user.save(function(err) {
-    if (err)
-      res.send(err);
-    res.json({message: "user created"});
-  });
   // check that data object user matches logged in user
 
   // sync user data with stored data

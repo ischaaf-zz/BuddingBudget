@@ -21,19 +21,24 @@ var UIView = function(getData, setDataListener) {
 	}
 	
 	//when first opened, get values out of local storage
-	$(window).load(function() {
+	/*$(document).ready(function() {
 		$("#prevAssets").html("$" + getData(assets));
-	});
-
+		$("#budget").html("$" + getData(budget));
+	});*/
+	
 	// update budget when budget changes
-	setDataListener("prevAssets", function() {
-		$("#prevAssets").html(getData("prevAssets"));
+	setDataListener("budget", function() {
+		$("#budget").html("$" + getData("budget"));
+	});
+	
+	setDataListener("assets", function() {
+		$("#prevAssets").html("$" + getData("assets"));
 	});
 	
 	$("#buttonAssets").click(function() {
 		notifyListeners("updateAssets", [parseInt($("#setAssets").val()), function() {
 			//$("#prevAssets").html("$" + getData(assets));
-			$("#prevAssets").html("$" + $("#setAssets").val());
+			//$("#prevAssets").html("$" + $("#setAssets").val());
 			$("#assetsSuccess").html("CHANGED ASSETS SUCCESS");
 		}, function(message) {
 			$("#assetsSuccess").html("FAILED: " + message);

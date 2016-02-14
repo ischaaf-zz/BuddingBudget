@@ -4,6 +4,7 @@ describe('DataManager', function() {
 
     beforeEach(function() {
         dataManager = new DataManager();
+        dataManager.start();
     });
 
     it('should set and get data', function() {

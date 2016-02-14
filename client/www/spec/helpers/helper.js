@@ -1,3 +1,10 @@
+// overrides localStorage for testing purposes
+window.localStorage.getItem = function() {
+	return null;
+};
+
+window.localStorage.setItem = function() {};
+
 var today = new Date();
 
 var simpleSampleData = {

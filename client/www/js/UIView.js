@@ -24,13 +24,21 @@ var UIView = function(getData, setDataListener) {
 	setDataListener("budget", function() {
 		$("#budget").html(getData("budget"));
 	});
+
+	function success() {
+		$("#assetsSuccess").html("CHANGED ASSETS SUCCESS");
+	}
+
+	function failure(message) {
+		$("#assetsSuccess").html("FAILED: " + message);
+	}
 	
 	$("#setAssets").click(function() {
-		notifyListeners("updateAssets", [parseInt($("#amount").val()), function() {
-			$("#assetsSuccess").html("CHANGED ASSETS SUCCESS");
-		}, function(message) {
-			$("#assetsSuccess").html("FAILED: " + message);
-		}]);
+		notifyListeners("updateAssets", [parseInt($("#amount").val()), success, failure]);
+	});
+
+	setDataListener("ready", function() {
+		$("#budget").html(getData("budget"));
 	});
 
 };

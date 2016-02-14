@@ -8,7 +8,7 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 	// Update assets
 	this.updateAssets = function(newVal, success, failure) {
 		// update network and local storage
-		dataManager.setData('assets', newVal);
+		saveData('assets', newVal);
 		callFunc(success);
 	};
 
@@ -32,15 +32,15 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 		} else if(extraOption === "savings") {
 			var savings = dataManager.getData('savings');
 			savings[0].amount += difference;
-			dataManager.setData('savings', savings);
+			saveData('savings', savings);
 			amountToDeduct = trackedEntry.budget;
 		} else if(extraOption !== "distribute") {
 			callFunc(failure, ["invalid extraOption"]);
 			return;
 		}
 
-		dataManager.setData('assets', dataManager.getData('assets') - amountToDeduct);
-		dataManager.setData("trackedEntry", trackedEntry);
+		saveData('assets', dataManager.getData('assets') - amountToDeduct);
+		saveData('trackedEntry', trackedEntry);
 
 		callFunc(success);
 	};
@@ -49,7 +49,7 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 	this.setOption = function(selection, value, success, failure) {
 		var options = dataManager.getData('options');
 		options[selection] = value;
-		dataManager.setData('options', options);
+		saveData('options', options);
 		callFunc(success);
 	};
 
@@ -61,7 +61,7 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 			callFunc(failure, ["entry with name " + val.name + " already exists"]);
 		} else {
 			data.push(val);
-			dataManager.setData(category, data);
+			saveData(category, data);
 			callFunc(success);
 		}
 	};
@@ -74,7 +74,7 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 			callFunc(failure, ["entry with name " + name + " does not exist"]);
 		} else {
 			data[index] = newVal;
-			dataManager.setData(category, data);
+			saveData(category, data);
 			callFunc(success);
 		}
 	};
@@ -87,10 +87,22 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 			callFunc(failure, ["entry with name " + name + " does not exist"]);
 		} else {
 			data.splice(index, 1);
-			dataManager.setData(category, data);
+			saveData(category, data);
 			callFunc(success);
 		}
 	};
+
+	// Saves data to the data cache, phonegap localStorage,
+	// and the cloud storage (once we figure that out)
+	function saveData(key, val) {
+		if(dataManager.setData(key, val)) {
+			window.localStorage.setItem(key, JSON.stringify(val));	
+			return true;
+		} else {
+			console.log("INCORRECT DATA TYPE, DATA NOT INSERTED");
+			return false;
+		}
+	}
 
 	// fetch from Phonegap storage, send each data type to dataManager
 	// Then call readyCallback()
@@ -101,6 +113,16 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 	}, function() {
 		// Failure callback
 	});
+
+	// Populate the data cache with information in
+	// phonegap's local storage
+	var keys = dataManager.getKeySet();
+	for(var i = 0; i < keys.length; i++) {
+		var value = JSON.parse(window.localStorage.getItem(keys[i]));
+		if(value !== null) {
+			dataManager.setData(keys[i], value);
+		}
+	}
 
 	// THIS SHOULD GET CALLED BACK IN PHONEGAP STORAGE'S FETCH
 	// CALLBACK INSTEAD ONCE THAT'S SET UP

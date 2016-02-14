@@ -19,6 +19,11 @@ var UIView = function(getData, setDataListener) {
 			callbackArr[i].apply(window, args);
 		}
 	}
+	
+	//when first opened, get values out of local storage
+	$(window).load(function() {
+		$("#prevAssets").html("$" + getData(assets));
+	});
 
 	// update budget when budget changes
 	setDataListener("prevAssets", function() {
@@ -27,6 +32,7 @@ var UIView = function(getData, setDataListener) {
 	
 	$("#buttonAssets").click(function() {
 		notifyListeners("updateAssets", [parseInt($("#setAssets").val()), function() {
+			//$("#prevAssets").html("$" + getData(assets));
 			$("#prevAssets").html("$" + $("#setAssets").val());
 			$("#assetsSuccess").html("CHANGED ASSETS SUCCESS");
 		}, function(message) {

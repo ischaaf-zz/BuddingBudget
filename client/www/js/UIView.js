@@ -20,8 +20,7 @@ var UIView = function(getData, setDataListener) {
 		}
 	}
 	
-	//when first opened, get values out of local storage
-	//if PERSIST_DATA in utility.js is set to false temp data will set here instead
+	//if PERSIST_DATA in utility.js is set to false temp data will be set here
 	$(document).ready(function() {
 		setTempData();
 	});
@@ -33,6 +32,14 @@ var UIView = function(getData, setDataListener) {
 	
 	setDataListener("assets", function() {
 		$("#prevAssets").html("$" + getData("assets"));
+	});
+	
+	// setup savings and update when there are changes
+	// warning: currently dependant on SavingsEntry internals
+	setDataListener("savings", function() {
+		getData("savings").forEach(function(ctx) {
+			$("#savingsList").append('<li id ="'+ ctx["name"] + '"><h3>' + ctx["name"] + '</h3><input id="' + ctx["amount"] + '" data-controller="input-value" type="number" min = "0"><button id=button"' + ctx["name"] + '">Update</button></li>');
+		});
 	});
 	
 	$("#buttonAssets").click(function() {

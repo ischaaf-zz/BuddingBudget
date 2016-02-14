@@ -11,14 +11,14 @@
   <script src="chui/chui-3.9.2.min.js"></script>
   
    <style>
-    .list > li:hover {
+    #mainList > li:hover {
       background: #d9d9d9;
     }
-    .list > li:hover > h3,
-    .list > li:hover > h4 {
+    #mainList > li:hover > h3,
+    #mainList > li:hover > h4 {
       color: #000;
     }
-    .list > li.nav:hover::after {
+    #mainList > li.nav:hover::after {
       border-color: #000;
     }
   </style>
@@ -34,7 +34,7 @@
 			<h2> Your Budget for Today $ </h2>
 			<h2 id="budget">0</h2>
 		
-			<ul class="list">
+			<ul class="list" id="mainList">
 				<li class="nav" data-goto="assets">
 					<h3> Assets </h3>
 				</li>
@@ -63,7 +63,17 @@
 		</nav>
 		<article id="assets" class ="next">
 			<section>
-				<h3> You are here </h3>
+				<ul class='list'>
+					<li>
+						<h2> You have </h2>
+						<h2 id="prevAssets">0</h2>
+						<p id="assetsSuccess"></p>
+					</li>
+					<li><lable>Enter Value to Update:</lable> 
+						<input id='setAssets' data-controller='input-value' type='text'>
+						<button id="buttonAssets"> Update </button>
+					</li>
+				</ul>
 			</section>
 		</article>
 		
@@ -116,8 +126,6 @@
 				<h3> You are here </h3>
 			</section>
 		</article>
-		
-		<script type="text/javascript" src="cordova.js"></script>
 
 		<script type="text/javascript" src="js/utility.js"></script>
 		<script type="text/javascript" src="js/Calculator.js"></script>

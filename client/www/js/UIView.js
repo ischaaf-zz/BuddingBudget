@@ -21,12 +21,13 @@ var UIView = function(getData, setDataListener) {
 	}
 
 	// update budget when budget changes
-	setDataListener("budget", function() {
-		$("#budget").html(getData("budget"));
+	setDataListener("prevAssets", function() {
+		$("#prevAssets").html(getData("prevAssets"));
 	});
 	
-	$("#setAssets").click(function() {
-		notifyListeners("updateAssets", [parseInt($("#amount").val()), function() {
+	$("#buttonAssets").click(function() {
+		notifyListeners("updateAssets", [parseInt($("#setAssets").val()), function() {
+			$("#prevAssets").html($("#setAssets").val());
 			$("#assetsSuccess").html("CHANGED ASSETS SUCCESS");
 		}, function(message) {
 			$("#assetsSuccess").html("FAILED: " + message);

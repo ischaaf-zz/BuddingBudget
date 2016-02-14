@@ -124,6 +124,8 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 		// phonegap's local storage
 		var keys = dataManager.getKeySet();
 		for(var i = 0; i < keys.length; i++) {
+			// placed in closure to keep key in scope
+			// with localforage's asynchronous callback
 			(function(key) {
 				localforage.getItem(key, function(err, val) {
 					if(val !== null) {

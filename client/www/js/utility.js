@@ -40,7 +40,7 @@ function indexOfData(arr, key, value) {
 
 // Clears all localStorage data
 function clearStorage() {
-	window.localStorage.clear();
+	localforage.clear();
 }
 
 // Constructors for data entries ---------------------------------------------------

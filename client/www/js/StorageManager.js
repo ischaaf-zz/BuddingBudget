@@ -101,7 +101,7 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 	// and the cloud storage (once we figure that out)
 	function saveData(key, val) {
 		if(dataManager.setData(key, val)) {
-			window.localStorage.setItem(key, JSON.stringify(val));	
+			localforage.setItem(key, val);	
 			return true;
 		} else {
 			// INCORRECT DATA TYPE, DATA NOT INSERTED
@@ -119,19 +119,24 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 		// Failure callback
 	});
 
-	// Populate the data cache with information in
-	// phonegap's local storage
-	var keys = dataManager.getKeySet();
-	for(var i = 0; i < keys.length; i++) {
-		var value = JSON.parse(window.localStorage.getItem(keys[i]));
-		if(value !== null) {
-			dataManager.setData(keys[i], value);
+	localforage.ready(function() {
+		// Populate the data cache with information in
+		// phonegap's local storage
+		var keys = dataManager.getKeySet();
+		for(var i = 0; i < keys.length; i++) {
+			(function(key) {
+				localforage.getItem(key, function(err, val) {
+					if(val !== null) {
+						dataManager.setData(key, val);
+					}
+				});
+			})(keys[i]);
 		}
-	}
 
-	// THIS SHOULD GET CALLED BACK IN PHONEGAP STORAGE'S FETCH
-	// CALLBACK INSTEAD ONCE THAT'S SET UP
-	readyCallback();
+		// THIS SHOULD GET CALLED BACK IN PHONEGAP STORAGE'S FETCH
+		// CALLBACK INSTEAD ONCE THAT'S SET UP
+		readyCallback();
+	});
 
 };
 

@@ -99,7 +99,7 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 			window.localStorage.setItem(key, JSON.stringify(val));	
 			return true;
 		} else {
-			console.log("INCORRECT DATA TYPE, DATA NOT INSERTED");
+			// INCORRECT DATA TYPE, DATA NOT INSERTED
 			return false;
 		}
 	}

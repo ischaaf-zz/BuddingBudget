@@ -6,11 +6,11 @@
 var StorageManager = function(dataManager, networkManager, readyCallback) {
 
 	var recurringManager = new RecurringManager(function(val) {
-		saveData("assets", val);
+		saveData("assets", dataManager.getData('assets') + val, true);
 	}, function(val) {
-		saveData("charges", val);
+		saveData("charges", val, true);
 	}, function(val) {
-		saveData("income", val);
+		saveData("income", val, true);
 	});
 
 	// Update assets
@@ -107,15 +107,17 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 
 	// Saves data to the data cache, phonegap localStorage,
 	// and the cloud storage (once we figure that out)
-	function saveData(key, val) {
+	function saveData(key, val, fromRecurringManager) {
 		if(dataManager.setData(key, val)) {
 			if(PERSIST_DATA) {
 				localforage.setItem(key, val);
-			}	
-			if(key === 'charges') {
-				recurringManager.setCharges(val);
-			} else if(key === 'income') {
-				recurringManager.setIncome(val);
+			}
+			if(!fromRecurringManager) {
+				if(key === 'charges') {
+					recurringManager.setCharges(val);
+				} else if(key === 'income') {
+					recurringManager.setIncome(val);
+				}
 			}
 			return true;
 		} else {

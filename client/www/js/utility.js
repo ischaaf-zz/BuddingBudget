@@ -87,7 +87,7 @@ var ChargeEntry = function(name, amount, period, start, isConfirm) {
 	this.period = period;
 	this.start = start;
 	this.isConfirm = isConfirm;
-	this.nextTime = findNextTime(period, start);
+	this.nextTime = findNextTime(this);
 };
 
 // Constructs a new recurring income entry
@@ -98,7 +98,7 @@ var IncomeEntry = function(name, amount, period, start, holdout, isConfirm) {
 	this.start = start;
 	this.holdout = holdout;
 	this.isConfirm = isConfirm;
-	this.nextTime = findNextTime(period, start);
+	this.nextTime = findNextTime(this);
 };
 
 // Constructs a new daily tracking entry
@@ -108,18 +108,20 @@ var TrackEntry = function(amount, budget, day) {
 	this.day = day;
 };
 
-function findNextTime(period, start) {
-	var today = new Date();
-	var nextTime = new Date();
+function findNextTime(entry) {
+	var period = entry.period;
+	var start = entry.start;
+	var lastTime = entry.nextTime || new Date();
+	var nextTime = new Date(lastTime);
 	if(period == "monthly") {
 		nextTime.setDate(start);
-		if(nextTime < today) {
+		if(nextTime < lastTime) {
 			nextTime.setMonth(nextTime.getMonth() + 1);
 		}
 	} else if(period == "weekly") {
 		var diff = start - nextTime.getDay();
 		nextTime.setDate(nextTime.getDate() + diff);
-		if(nextTime < today) {
+		if(nextTime < lastTime) {
 			nextTime.setDate(nextTime.getDate() + 7);
 		}
 	} else if(period == "biweekly") {
@@ -127,6 +129,7 @@ function findNextTime(period, start) {
 	} else if(period == "twiceMonthly") {
 
 	}
+	return nextTime;
 }
 
 // ---------------------------------------------------------------------------------

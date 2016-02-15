@@ -23,6 +23,15 @@ var UIView = function(getData, setDataListener) {
 	//if PERSIST_DATA in utility.js is set to false temp data will be set here
 	$(document).ready(function() {
 		setTempData();
+		
+		var arr = getData("savings");
+		
+		//prevtest number, savetest status 
+		arr.forEach(function(ctx) {
+			$("#savingsList").append('<li id ="'+ ctx.name + '"><h3>' + ctx.name + '</h3><h3 id="prev' + ctx.name + '">$' + ctx.amount +'</h3><input id="text' + ctx.name + '" data-controller="input-value" type="number" min = "0"><button id="button' + ctx.name + '">Update</button><p id="save' + ctx.name +'"></p></li>');
+			
+			$("#button" + ctx.name).click(function() { changeSavingEntry(ctx.name, ctx.isDefault); });
+		});
 	});
 	
 	// update budget when budget changes
@@ -37,10 +46,20 @@ var UIView = function(getData, setDataListener) {
 	// setup savings and update when there are changes
 	// warning: currently dependant on SavingsEntry internals
 	setDataListener("savings", function() {
-		getData("savings").forEach(function(ctx) {
-			$("#savingsList").append('<li id ="'+ ctx.name + '"><h3>' + ctx.name + '</h3><h3 id=prev"' + ctx.name + '">$' + ctx.amount +'</h3><input id=text"' + ctx.name + '" data-controller="input-value" type="number" min = "0"><button id=button"' + ctx.name + '">Update</button><p id=save"' + ctx.name +'"></p></li>');
+		var arr = getData("savings");
+		arr.forEach(function(ctx) {
+			$("#prev" + ctx.name).html("$" + ctx.amount);
 		});
 	});
+	
+	function changeSavingEntry(name, isDefault) {
+		var save = new SavingsEntry(name, parseInt($("#text" + name).val()), isDefault);
+		notifyListeners("changeEntry", ["savings", name, save, function() {
+			$("#save" + name).html("CHANGED SAVINGS SUCCESS");
+		}, function(message) {
+			$("#save" + name).html("FAILED: " + message);
+		}]);
+	} 
 	
 	$("#buttonAssets").click(function() {
 		notifyListeners("updateAssets", [parseInt($("#setAssets").val()), function() {

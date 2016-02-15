@@ -91,17 +91,23 @@ var TrackEntry = function(amount, budget, day) {
 function findNextTime(entry) {
 	var period = entry.period;
 	var start = entry.start;
-	var lastTime = entry.nextTime || new Date();
+	var lastTime;
+	if(entry.nextTime) {
+		lastTime = entry.nextTime;
+	} else {
+		lastTime = new Date();
+		lastTime.setDate(lastTime.getDate() - 1);
+	}
 	var nextTime = new Date(lastTime);
 	if(period == "monthly") {
 		nextTime.setDate(start);
-		if(nextTime < lastTime) {
+		if(nextTime < lastTime || isSameDay(nextTime, lastTime)) {
 			nextTime.setMonth(nextTime.getMonth() + 1);
 		}
 	} else if(period == "weekly") {
 		var diff = start - nextTime.getDay();
 		nextTime.setDate(nextTime.getDate() + diff);
-		if(nextTime < lastTime) {
+		if(nextTime < lastTime || isSameDay(nextTime, lastTime)) {
 			nextTime.setDate(nextTime.getDate() + 7);
 		}
 	} else if(period == "biweekly") {

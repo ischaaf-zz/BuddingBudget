@@ -14,8 +14,8 @@ var RecurringManager = function(saveAssets, saveCharges, saveIncome) {
 	// each charge
 	this.setCharges = function(value) {
 		clearTimeouts(chargeTimeouts);
-		charges = deepCopy(value);
-		for(var i = 0; i < charges; i++) {
+		charges = value;
+		for(var i = 0; i < charges.length; i++) {
 			updateCharge(charges[i], i);
 		}
 	};
@@ -24,8 +24,8 @@ var RecurringManager = function(saveAssets, saveCharges, saveIncome) {
 	// each income
 	this.setIncome = function(value) {
 		clearTimeouts(incomeTimeouts);
-		income = deepCopy(value);
-		for(var i = 0; i < charges; i++) {
+		income = value;
+		for(var i = 0; i < income.length; i++) {
 			updateIncome(income[i], i);
 		}
 	};
@@ -46,16 +46,15 @@ var RecurringManager = function(saveAssets, saveCharges, saveIncome) {
 	// and the current time. Sets a timer for it to be called
 	// again next time.
 	function updateCharge(entry, index) {
-		var nextTime = entry.nextTime;
 		var now = new Date();
-		while(nextTime < now || isToday(nextTime)) {
+		while(entry.nextTime < now || isToday(entry.nextTime)) {
 			saveAssets(-1 * entry.amount);
 			entry.nextTime = findNextTime(entry);
 		}
 		saveCharges(charges);
-		chargeTimeouts[i] = setTimeout(function() {
+		chargeTimeouts[index] = setTimeout(function() {
 			updateCharge(entry, index);
-		}, entry.nextTime - now);
+		}, (entry.nextTime.getTime() % 86400000) - now.getTime());
 	}
 
 	// Updates the assets based upon the given recurring
@@ -63,16 +62,15 @@ var RecurringManager = function(saveAssets, saveCharges, saveIncome) {
 	// and the current time. Sets a timer for it to be called
 	// again next time.
 	function updateIncome(entry, index) {
-		var nextTime = entry.nextTime;
 		var now = new Date();
-		while(nextTime < now || isToday(nextTime)) {
+		while(entry.nextTime < now || isToday(entry.nextTime)) {
 			saveAssets(entry.amount);
 			entry.nextTime = findNextTime(entry);
 		}
 		saveIncome(income);
-		incomeTimeouts[i] = setTimeout(function() {
+		incomeTimeouts[index] = setTimeout(function() {
 			updateIncome(entry, index);
-		}, entry.nextTime - now);
+		}, (entry.nextTime.getTime() % 86400000) - now.getTime());
 	}
 	
 	// document.addEventListener('resume', function () {

@@ -22,6 +22,11 @@ describe("StorageManager", function() {
         mockNetwork = {
             fetchInitialData: jasmine.createSpy('fetchInitialData')
         }
+        var MockRecurring = function() {
+            this.setIncome = function() {};
+            this.setCharges = function() {};
+        };
+        RecurringManager = MockRecurring;
         mockData.setData.and.returnValue(true);
         success = jasmine.createSpy('success');
         failure = jasmine.createSpy('failure');

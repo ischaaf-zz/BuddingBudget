@@ -6,6 +6,8 @@ describe("StorageManager", function() {
         spyOn(localforage, "ready").and.callFake(function(cb) {
             cb();
         });
+        spyOn(localforage, 'getItem').and.callThrough();
+        spyOn(localforage, 'setItem').and.callThrough();
     	mockData = {
             getData: jasmine.createSpy('getData'),
             setData: jasmine.createSpy('setData'),
@@ -51,6 +53,10 @@ describe("StorageManager", function() {
 
         it("should update data cache", function() {
             expect(mockData.setData).toHaveBeenCalledWith("assets", 0);
+        });
+
+        it("should update localforage", function() {
+            expect(localforage.setItem).toHaveBeenCalledWith("assets", 0);
         });
 
         succeedNotFail();

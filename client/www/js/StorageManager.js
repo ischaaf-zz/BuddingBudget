@@ -5,10 +5,23 @@
 
 var StorageManager = function(dataManager, networkManager, readyCallback) {
 
+	var recurringManager = new RecurringManager(function(val) {
+		saveData("assets", dataManager.getData('assets') + val, true);
+	}, function(val) {
+		saveData("charges", val, true);
+	}, function(val) {
+		saveData("income", val, true);
+	});
+
 	// Update assets
 	this.updateAssets = function(newVal, success, failure) {
 		// update network and local storage
-		dataManager.setData('assets', newVal);
+		saveData('assets', newVal);
+		callFunc(success);
+	};
+
+	this.setEndDate = function(endDate, success, failure) {
+		saveData('endDate', endDate);
 		callFunc(success);
 	};
 
@@ -32,15 +45,15 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 		} else if(extraOption === "savings") {
 			var savings = dataManager.getData('savings');
 			savings[0].amount += difference;
-			dataManager.setData('savings', savings);
+			saveData('savings', savings);
 			amountToDeduct = trackedEntry.budget;
 		} else if(extraOption !== "distribute") {
 			callFunc(failure, ["invalid extraOption"]);
 			return;
 		}
 
-		dataManager.setData('assets', dataManager.getData('assets') - amountToDeduct);
-		dataManager.setData("trackedEntry", trackedEntry);
+		saveData('assets', dataManager.getData('assets') - amountToDeduct);
+		saveData('trackedEntry', trackedEntry);
 
 		callFunc(success);
 	};
@@ -49,7 +62,7 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 	this.setOption = function(selection, value, success, failure) {
 		var options = dataManager.getData('options');
 		options[selection] = value;
-		dataManager.setData('options', options);
+		saveData('options', options);
 		callFunc(success);
 	};
 
@@ -61,7 +74,7 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 			callFunc(failure, ["entry with name " + val.name + " already exists"]);
 		} else {
 			data.push(val);
-			dataManager.setData(category, data);
+			saveData(category, data);
 			callFunc(success);
 		}
 	};
@@ -74,7 +87,7 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 			callFunc(failure, ["entry with name " + name + " does not exist"]);
 		} else {
 			data[index] = newVal;
-			dataManager.setData(category, data);
+			saveData(category, data);
 			callFunc(success);
 		}
 	};
@@ -87,10 +100,31 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 			callFunc(failure, ["entry with name " + name + " does not exist"]);
 		} else {
 			data.splice(index, 1);
-			dataManager.setData(category, data);
+			saveData(category, data);
 			callFunc(success);
 		}
 	};
+
+	// Saves data to the data cache, phonegap localStorage,
+	// and the cloud storage (once we figure that out)
+	function saveData(key, val, fromRecurringManager) {
+		if(dataManager.setData(key, val)) {
+			if(PERSIST_DATA) {
+				localforage.setItem(key, val);
+			}
+			if(!fromRecurringManager) {
+				if(key === 'charges') {
+					recurringManager.setCharges(val);
+				} else if(key === 'income') {
+					recurringManager.setIncome(val);
+				}
+			}
+			return true;
+		} else {
+			// INCORRECT DATA TYPE, DATA NOT INSERTED
+			return false;
+		}
+	}
 
 	// fetch from Phonegap storage, send each data type to dataManager
 	// Then call readyCallback()
@@ -102,9 +136,27 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 		// Failure callback
 	});
 
-	// THIS SHOULD GET CALLED BACK IN PHONEGAP STORAGE'S FETCH
-	// CALLBACK INSTEAD ONCE THAT'S SET UP
-	readyCallback();
+	if(PERSIST_DATA) {
+		var getFromForage = function(key) {
+			localforage.getItem(key, function(err, val) {
+				if(val !== null) {
+					dataManager.setData(key, val);
+				}
+			});
+		};
+
+		localforage.ready(function() {
+			// Populate the data cache with information in
+			// phonegap's local storage
+			var keys = dataManager.getKeySet();
+			for(var i = 0; i < keys.length; i++) {
+				getFromForage(keys[i]);
+			}
+			readyCallback();
+		});	
+	} else {
+		readyCallback();
+	}
 
 };
 

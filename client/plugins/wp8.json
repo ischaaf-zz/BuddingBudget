@@ -1,0 +1,24 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-plugin-app-event": {
+            "PACKAGE_NAME": "{cdc21530-cc8a-11e5-9593-b3d0a6eb0315}"
+        },
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "{cdc21530-cc8a-11e5-9593-b3d0a6eb0315}"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "{cdc21530-cc8a-11e5-9593-b3d0a6eb0315}"
+        },
+        "de.appplant.cordova.plugin.local-notification": {
+            "PACKAGE_NAME": "{cdc21530-cc8a-11e5-9593-b3d0a6eb0315}"
+        }
+    },
+    "dependent_plugins": {}
+}

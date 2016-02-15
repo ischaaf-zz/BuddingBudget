@@ -1,5 +1,8 @@
 // Utility functions in the global namespace that may be useful for multiple objects
 
+var PERSIST_DATA = false;
+
+
 // Checks if two date objects represent the same day
 // Assumes the user's current time zone applies for both dates.
 function isSameDay(date1, date2) {
@@ -10,6 +13,11 @@ function isSameDay(date1, date2) {
 // user's current time zone.
 function isToday(date) {
 	return isSameDay(date, new Date());
+}
+
+function isTodayOrLater(date) {
+	var today = new Date();
+	return isSameDay(date, today) || (date > today);
 }
 
 // Checks if the passed in function exists, and calls it with
@@ -38,6 +46,11 @@ function indexOfData(arr, key, value) {
 	return -1;
 }
 
+// Clears all localforage data
+function clearStorage() {
+	localforage.clear();
+}
+
 // Constructors for data entries ---------------------------------------------------
 
 // Constructs a new savings entry
@@ -54,6 +67,7 @@ var ChargeEntry = function(name, amount, period, start, isConfirm) {
 	this.period = period;
 	this.start = start;
 	this.isConfirm = isConfirm;
+	this.nextTime = findNextTime(this);
 };
 
 // Constructs a new recurring income entry
@@ -64,6 +78,7 @@ var IncomeEntry = function(name, amount, period, start, holdout, isConfirm) {
 	this.start = start;
 	this.holdout = holdout;
 	this.isConfirm = isConfirm;
+	this.nextTime = findNextTime(this);
 };
 
 // Constructs a new daily tracking entry
@@ -72,5 +87,35 @@ var TrackEntry = function(amount, budget, day) {
 	this.budget = budget;
 	this.day = day;
 };
+
+function findNextTime(entry) {
+	var period = entry.period;
+	var start = entry.start;
+	var lastTime;
+	if(entry.nextTime) {
+		lastTime = entry.nextTime;
+	} else {
+		lastTime = new Date();
+		lastTime.setDate(lastTime.getDate() - 1);
+	}
+	var nextTime = new Date(lastTime);
+	if(period == "monthly") {
+		nextTime.setDate(start);
+		if(nextTime < lastTime || isSameDay(nextTime, lastTime)) {
+			nextTime.setMonth(nextTime.getMonth() + 1);
+		}
+	} else if(period == "weekly") {
+		var diff = start - nextTime.getDay();
+		nextTime.setDate(nextTime.getDate() + diff);
+		if(nextTime < lastTime || isSameDay(nextTime, lastTime)) {
+			nextTime.setDate(nextTime.getDate() + 7);
+		}
+	} else if(period == "biweekly") {
+
+	} else if(period == "twiceMonthly") {
+
+	}
+	return nextTime;
+}
 
 // ---------------------------------------------------------------------------------

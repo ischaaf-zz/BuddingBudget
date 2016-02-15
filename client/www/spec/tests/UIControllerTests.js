@@ -53,24 +53,127 @@ describe("UIController", function() {
 
     });
 
-    // describe("trackSpending callback", function() {
+    describe("trackSpending callback", function() {
 
-    // });
+        it("should change value when valid", function() {
+            var entry = new TrackEntry(10, 5, new Date());
+            callbacks.trackSpending(entry, "foo", success, failure);
+            expect(mockSM.trackSpending).toHaveBeenCalledWith(entry, "foo", jasmine.any(Function), jasmine.any(Function));
+        });
 
-    // describe("setOption callback", function() {
+        it("should throw type error if wrong type", function() {
+            var entry = "potato";
+            callbacks.trackSpending(entry, "foo", success, failure);
+            expect(failure).toHaveBeenCalled();
+            expect(mockSM.trackSpending).not.toHaveBeenCalled();
+        });
 
-    // });
+    });
 
-    // describe("addEntry callback", function() {
+    describe("setOption callback", function() {
 
-    // });
+        it("should change option", function() {
+            callbacks.setOption("foo", "bar", success, failure);
+            expect(failure).not.toHaveBeenCalled();
+            expect(mockSM.setOption).toHaveBeenCalledWith("foo", "bar", jasmine.any(Function), jasmine.any(Function));
+        });
 
-    // describe("changeEntry callback", function() {
+    });
 
-    // });
+    describe("addEntry callback", function() {
 
-    // describe("removeEntry callback", function() {
+        describe("should succeed with valid category", function() {
 
-    // });
+            function commonTest(category) {
+                callbacks.addEntry(category, "foo", success, failure);
+                expect(failure).not.toHaveBeenCalled();
+                expect(mockSM.addEntry).toHaveBeenCalledWith(category, "foo", jasmine.any(Function), jasmine.any(Function));
+            }
+
+            it("such as savings", function() {
+                commonTest("savings");
+            });
+
+            it("such as income", function() {
+                commonTest("income");
+            });
+
+            it("such as charges", function() {
+                commonTest("charges");
+            });
+
+        });
+
+        it("should fail with invalid category", function() {
+            callbacks.addEntry("potato", "foo", success, failure);
+            expect(failure).toHaveBeenCalled();
+            expect(mockSM.addEntry).not.toHaveBeenCalled();
+        });
+
+    });
+
+    describe("changeEntry callback", function() {
+        
+        describe("should succeed with valid category", function() {
+
+            function commonTest(category) {
+                callbacks.changeEntry(category, "foo", "bar", success, failure);
+                expect(failure).not.toHaveBeenCalled();
+                expect(mockSM.changeEntry).toHaveBeenCalledWith(category, "foo", "bar", jasmine.any(Function), jasmine.any(Function));
+            }
+
+            it("such as savings", function() {
+                commonTest("savings");
+            });
+
+            it("such as income", function() {
+                commonTest("income");
+            });
+
+            it("such as charges", function() {
+                commonTest("charges");
+            });
+
+        });
+
+        it("should fail with invalid category", function() {
+            callbacks.changeEntry("potato", "foo", "bar", success, failure);
+            expect(failure).toHaveBeenCalled();
+            expect(mockSM.changeEntry).not.toHaveBeenCalled();
+        });
+
+    });
+
+    describe("removeEntry callback", function() {
+
+        describe("should succeed with valid category", function() {
+
+            function commonTest(category) {
+                callbacks.removeEntry(category, "foo", success, failure);
+                expect(failure).not.toHaveBeenCalled();
+                expect(mockSM.removeEntry).toHaveBeenCalledWith(category, "foo", jasmine.any(Function), jasmine.any(Function));
+            }
+
+            it("such as savings", function() {
+                commonTest("savings");
+            });
+
+            it("such as income", function() {
+                commonTest("income");
+            });
+
+            it("such as charges", function() {
+                commonTest("charges");
+            });
+
+        });
+
+        it("should fail with invalid category", function() {
+            callbacks.removeEntry("potato", "foo", success, failure);
+            expect(failure).toHaveBeenCalled();
+            expect(mockSM.removeEntry).not.toHaveBeenCalled();
+        });
+
+    });
 
 });

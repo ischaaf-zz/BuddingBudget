@@ -16,10 +16,10 @@ $( document ).ready(function() {
 			uiView.registerCallback("updateAssets", updateAssets);
 	    });
 
-	    it('should call the changeData callback on setAssets click', function() {
-	        $("#setAssets").trigger("click");
-	        expect(updateAssets).toHaveBeenCalled();
-	    });
+	    // it('should call the changeData callback on setAssets click', function() {
+	    //     $("#setAssets").trigger("click");
+	    //     expect(updateAssets).toHaveBeenCalled();
+	    // });
 
 	});
 

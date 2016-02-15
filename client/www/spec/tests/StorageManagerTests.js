@@ -3,11 +3,14 @@ describe("StorageManager", function() {
     var storageManager, mockData, mockNetwork, success, failure, readyCB;
 
     beforeEach(function() {
+        PERSIST_DATA = true;
         spyOn(localforage, "ready").and.callFake(function(cb) {
-            cb();
+            if(typeof(cb) === 'function') {
+                cb();
+            }
         });
-        spyOn(localforage, 'getItem').and.callThrough();
-        spyOn(localforage, 'setItem').and.callThrough();
+        spyOn(localforage, 'getItem');
+        spyOn(localforage, 'setItem');
     	mockData = {
             getData: jasmine.createSpy('getData'),
             setData: jasmine.createSpy('setData'),
@@ -19,6 +22,7 @@ describe("StorageManager", function() {
         mockNetwork = {
             fetchInitialData: jasmine.createSpy('fetchInitialData')
         }
+        mockData.setData.and.returnValue(true);
         success = jasmine.createSpy('success');
         failure = jasmine.createSpy('failure');
     	readyCB = jasmine.createSpy('readyCB');
@@ -86,6 +90,10 @@ describe("StorageManager", function() {
                 it("should update trackedEntry", function() {
                     expect(mockData.setData).toHaveBeenCalledWith('trackedEntry', entry);
                 });
+
+                it("should update localforage", function() {
+                    expect(localforage.setItem).toHaveBeenCalledWith('trackedEntry', entry);
+                });
             }
 
             describe("with distribute", function() {
@@ -152,6 +160,10 @@ describe("StorageManager", function() {
             expect(mockData.setData).toHaveBeenCalledWith('options', {"selection": "value"});
         });
 
+        it("should call localforage", function() {
+            expect(localforage.setItem).toHaveBeenCalledWith('options', {"selection": "value"});
+        })
+
         succeedNotFail();
 
     });
@@ -189,6 +201,10 @@ describe("StorageManager", function() {
                         expect(mockData.setData).toHaveBeenCalledWith(category, [{name: "nameVal1"}, {name: "nameVal2"}]);
                     });
 
+                    it("should set localforage", function() {
+                        expect(localforage.setItem).toHaveBeenCalledWith(category, [{name: "nameVal1"}, {name: "nameVal2"}]);
+                    });
+
                 });
 
                 describe("with invalid data", function() {
@@ -201,6 +217,10 @@ describe("StorageManager", function() {
 
                     it("should not set new data", function() {
                         expect(mockData.setData).not.toHaveBeenCalled();
+                    })
+
+                    it("should not set localforage", function() {
+                        expect(localforage.setItem).not.toHaveBeenCalled();
                     })
 
                 });
@@ -221,6 +241,10 @@ describe("StorageManager", function() {
                         expect(mockData.setData).toHaveBeenCalledWith(category, [{name: "nameVal2"}]);
                     });
 
+                    it("should update localforage", function() {
+                        expect(localforage.setItem).toHaveBeenCalledWith(category, [{name: "nameVal2"}]);
+                    });
+
                 });
 
                 describe("with invalid data", function() {
@@ -233,6 +257,10 @@ describe("StorageManager", function() {
 
                     it("should not set changed data", function() {
                         expect(mockData.setData).not.toHaveBeenCalled();
+                    });
+
+                    it("should not update localforage", function() {
+                        expect(localforage.setItem).not.toHaveBeenCalled();
                     });
 
                 });
@@ -253,6 +281,10 @@ describe("StorageManager", function() {
                         expect(mockData.setData).toHaveBeenCalledWith(category, []);
                     });
 
+                    it("should update localforage", function() {
+                        expect(localforage.setItem).toHaveBeenCalledWith(category, []);
+                    });
+
                 });
 
                 describe("with invalid data", function() {
@@ -263,8 +295,12 @@ describe("StorageManager", function() {
 
                     failNotSucceed();
 
-                    it("should set deleted data", function() {
+                    it("should not set deleted data", function() {
                         expect(mockData.setData).not.toHaveBeenCalled();
+                    });
+
+                    it("should not update localforage", function() {
+                        expect(localforage.setItem).not.toHaveBeenCalled();
                     });
 
                 });

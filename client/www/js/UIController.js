@@ -74,7 +74,7 @@ var UIController = function(getData, storageManager, registerUICallback) {
 		// if so, call storageManager equivalent function
 		// else, call failure with error code
 		if(verifyCategory(category)) {
-			storageManager.addEntry(category, name, success, failure);
+			storageManager.removeEntry(category, name, success, failure);
 		} else {
 			callFunc(failure, ["Category is invalid: " + category]);
 		}

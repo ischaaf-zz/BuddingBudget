@@ -33,7 +33,7 @@ var UIView = function(getData, setDataListener) {
 		arr.forEach(function(ctx) {
 			$("#chargesList").append('<li id =ch"'+ ctx.name + '"><h3>' + "ch" + ctx.name + '</h3><h3 id="prevCh' + ctx.name + '">$' + ctx.amount +'</h3><input id="chargeInput' + ctx.name + '" data-controller="input-value" type="number" min = "0"><button id="buttonCh' + ctx.name + '">Update</button><p id="charge' + ctx.name +'"></p></li>');
 			
-			$("#chargesList #buttonCh" + ctx.name).click(function() { /*changeChargeEntry(ctx.name, ctx.isDefault);*/ console.log("hi"); });
+			$("#chargesList #buttonCh" + ctx.name).click(function() { changeChargeEntry(ctx.name, ctx.isDefault); });
 		});
 	});
 	
@@ -157,7 +157,7 @@ var UIView = function(getData, setDataListener) {
 	}
 
 	function changeChargeEntry(name, isDefault) {
-		var save = new ChargeEntry(name, parseInt($("#chargeInput" + name).val()), 0, new Date().toLocaleString(), isDefault);
+		var save = new ChargeEntry(name, parseInt($("#chargeInput" + name).val()), 1, new Date().toLocaleString(), isDefault);
 		notifyListeners("changeEntry", ["charges", name, save, function() {
 			$("#charge" + name).html("CHANGED CHARGES SUCCESS");
 		}, function(message) {

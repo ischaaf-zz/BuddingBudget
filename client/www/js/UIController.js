@@ -39,6 +39,18 @@ var UIController = function(getData, storageManager, registerUICallback) {
 		storageManager.setOption(selection, value, success, failure);
 	}); 
 
+	registerUICallback("setEndDate", function(endDate, success, failure) {
+		if(typeof(endDate) === 'number') {
+			if(endDate >= new Date().getTime()) {
+				storageManager.setEndDate(endDate, success, failure);
+			} else {
+				callFunc(failure, ['Given date is not in the future']);
+			}
+		} else {
+			callFunc(failure, ['Given date is not a valid number']);
+		}		
+	});
+
 	registerUICallback("addEntry", function(category, val, success, failure) {
 		// verify the category and entry are valid
 		// if so, call storageManager equivalent function

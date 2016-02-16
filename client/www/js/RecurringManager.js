@@ -47,12 +47,12 @@ var RecurringManager = function(saveAssets, saveCharges, saveIncome) {
 	// again next time.
 	function updateCharge(entry, index) {
 		var now = new Date();
-		while(entry.nextTime < now || isToday(entry.nextTime)) {
+		while(entry.nextTime < now || isToday(new Date(entry.nextTime))) {
 			saveAssets(-1 * entry.amount);
 			entry.nextTime = findNextTime(entry);
 		}
 		saveCharges(charges);
-		var beginningNextDay = entry.nextTime.getTime() - (entry.nextTime.getTime() % 86400000);
+		var beginningNextDay = entry.nextTime - (entry.nextTime % 86400000);
 		chargeTimeouts[index] = setTimeout(function() {
 			updateCharge(entry, index);
 		}, beginningNextDay + 60000 - now.getTime());
@@ -64,12 +64,12 @@ var RecurringManager = function(saveAssets, saveCharges, saveIncome) {
 	// again next time.
 	function updateIncome(entry, index) {
 		var now = new Date();
-		while(entry.nextTime < now || isToday(entry.nextTime)) {
+		while(entry.nextTime < now || isToday(new Date(entry.nextTime))) {
 			saveAssets(entry.amount);
 			entry.nextTime = findNextTime(entry);
 		}
 		saveIncome(income);
-		var beginningNextDay = entry.nextTime.getTime() - (entry.nextTime.getTime() % 86400000);
+		var beginningNextDay = entry.nextTime - (entry.nextTime % 86400000);
 		incomeTimeouts[index] = setTimeout(function() {
 			updateIncome(entry, index);
 		}, beginningNextDay + 60000 - now.getTime());

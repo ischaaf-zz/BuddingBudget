@@ -93,7 +93,7 @@ function findNextTime(entry) {
 	var start = entry.start;
 	var lastTime;
 	if(entry.nextTime) {
-		lastTime = entry.nextTime;
+		lastTime = new Date(entry.nextTime);
 	} else {
 		lastTime = new Date();
 		lastTime.setDate(lastTime.getDate() - 1);
@@ -115,7 +115,7 @@ function findNextTime(entry) {
 	} else if(period == "twiceMonthly") {
 
 	}
-	return nextTime;
+	return nextTime.getTime();
 }
 
 // ---------------------------------------------------------------------------------

@@ -140,7 +140,7 @@ describe("nextTime management", function() {
 			var nextTime;
 
 			beforeEach(function() {
-				nextTime = new Date(entry.nextTime;
+				nextTime = new Date(entry.nextTime);
 			});
 
 			it("should be later than or equal to current time", function() {
@@ -159,7 +159,7 @@ describe("nextTime management", function() {
 			var nextTime;
 
 			beforeEach(function() {
-				prevTime = new Date(entry.nextTime;
+				prevTime = new Date(entry.nextTime);
 				nextTime = new Date(findNextTime(entry));
 			});
 

@@ -28,6 +28,13 @@ var UIView = function(getData, setDataListener) {
 		arr.forEach(function(ctx) {
 			appendSavingsList(ctx);
 		});
+
+		var arr = getData("charges");
+		arr.forEach(function(ctx) {
+			$("#chargesList").append('<li id =ch"'+ ctx.name + '"><h3>' + "ch" + ctx.name + '</h3><h3 id="prevCh' + ctx.name + '">$' + ctx.amount +'</h3><input id="chargeInput' + ctx.name + '" data-controller="input-value" type="number" min = "0"><button id="buttonCh' + ctx.name + '">Update</button><p id="charge' + ctx.name +'"></p></li>');
+			
+			$("#chargesList #buttonCh" + ctx.name).click(function() { /*changeChargeEntry(ctx.name, ctx.isDefault);*/ console.log("hi"); });
+		});
 	});
 	
 	//delete items from savings list
@@ -65,6 +72,13 @@ var UIView = function(getData, setDataListener) {
 		var arr = getData("savings");
 		arr.forEach(function(ctx) {
 			$("#prev" + ctx.name).html("$" + ctx.amount);
+		});
+	});
+
+	setDataListener("charges", function() {
+		var arr = getData("charges");
+		arr.forEach(function(ctx) {
+			$("#prevCh" + ctx.name).html("$" + ctx.amount);
 		});
 	});
 	
@@ -126,6 +140,11 @@ var UIView = function(getData, setDataListener) {
             assetsSuccess.classList.add("animatePopupMessage");
 		}]);
 	});
+
+	$("#addCharge").click(function() {
+		console.log("hola");
+		$("#chargesList").append('<li><h3>Rent</h3><h2>$500</h2><input data-controller="input-value" type="number" min="0"><button>Update</button></li>');
+	});
 	
 	//attached to buttons defined in .ready()
 	function changeSavingEntry(name, isDefault) {
@@ -134,6 +153,15 @@ var UIView = function(getData, setDataListener) {
 			$("#save" + name).html("CHANGED SAVINGS SUCCESS");
 		}, function(message) {
 			$("#save" + name).html("FAILED: " + message);
+		}]);
+	}
+
+	function changeChargeEntry(name, isDefault) {
+		var save = new ChargeEntry(name, parseInt($("#chargeInput" + name).val()), 0, new Date().toLocaleString(), isDefault);
+		notifyListeners("changeEntry", ["charges", name, save, function() {
+			$("#charge" + name).html("CHANGED CHARGES SUCCESS");
+		}, function(message) {
+			$("#charge" + name).html("FAILED: " + message);
 		}]);
 	}
 	

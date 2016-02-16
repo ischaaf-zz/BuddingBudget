@@ -9,8 +9,9 @@ describe("RecurringManager", function() {
 			saveIncome: jasmine.createSpy("saveIncome")
 		};
 
-		recurringManager = new RecurringManager(mock.saveAssets, mock.saveCharges, mock.saveIncome);
+		spyOn(window, 'setTimeout').and.callThrough();
 
+		recurringManager = new RecurringManager(mock.saveAssets, mock.saveCharges, mock.saveIncome);
 	});
 
 	describe("when managing charges", function() {
@@ -28,6 +29,16 @@ describe("RecurringManager", function() {
 			expect(mock.saveCharges).toHaveBeenCalled();
 		});
 
+		it("should set correct timeout", function() {
+			var now = new Date();
+			var next = new Date();
+			var msInDay = 86400000;
+			next.setMonth(next.getMonth() + 1);
+			var expectedTime = next.getTime() + 60000 - (next.getTime() % 86400000) - now.getTime();
+			var actualTime = setTimeout.calls.mostRecent().args[1];
+			expect(Math.abs(expectedTime - actualTime)).toBeLessThan(5);
+		});
+
 	});
 
 	describe("when managing income", function() {
@@ -43,6 +54,16 @@ describe("RecurringManager", function() {
 
 		it("timeout should update charges", function() {
 			expect(mock.saveIncome).toHaveBeenCalled();
+		});
+
+		it("should set correct timeout", function() {
+			var now = new Date();
+			var next = new Date();
+			var msInDay = 86400000;
+			next.setMonth(next.getMonth() + 1);
+			var expectedTime = next.getTime() + 60000 - (next.getTime() % 86400000) - now.getTime();
+			var actualTime = setTimeout.calls.mostRecent().args[1];
+			expect(Math.abs(expectedTime - actualTime)).toBeLessThan(5);
 		});
 
 	});

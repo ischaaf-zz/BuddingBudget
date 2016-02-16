@@ -52,9 +52,10 @@ var RecurringManager = function(saveAssets, saveCharges, saveIncome) {
 			entry.nextTime = findNextTime(entry);
 		}
 		saveCharges(charges);
+		var beginningNextDay = entry.nextTime.getTime() - (entry.nextTime.getTime() % 86400000);
 		chargeTimeouts[index] = setTimeout(function() {
 			updateCharge(entry, index);
-		}, (entry.nextTime.getTime() % 86400000) - now.getTime());
+		}, beginningNextDay + 60000 - now.getTime());
 	}
 
 	// Updates the assets based upon the given recurring
@@ -68,9 +69,10 @@ var RecurringManager = function(saveAssets, saveCharges, saveIncome) {
 			entry.nextTime = findNextTime(entry);
 		}
 		saveIncome(income);
+		var beginningNextDay = entry.nextTime.getTime() - (entry.nextTime.getTime() % 86400000);
 		incomeTimeouts[index] = setTimeout(function() {
 			updateIncome(entry, index);
-		}, (entry.nextTime.getTime() % 86400000) - now.getTime());
+		}, beginningNextDay + 60000 - now.getTime());
 	}
 	
 	// document.addEventListener('resume', function () {

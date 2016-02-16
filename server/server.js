@@ -57,92 +57,212 @@ router.get('/', function(req, res, next) {
 router.post('/login', function(req, res, next) {
   // check if user is already logged in, if so do nothing
   if (session.user) {
-
+    res.json({message: "Already logged in", user: session.user});
+    return;
   }
 
   // check for username and password
+  var username = req.body.username;
+  var pass = req.body.password;
 
+  if (!username || !pass) {
+    res.json({error: "Missing parameters -- check API reference for required parameters"});
+    return;
+  }
+
+  // search for user
+  UserModel.findOne({'username': username, 'password': pass}, function(err, user) {
+    if (!user) {
+      res.json({message: "Incorrect username or password"});
+      return;
+    }
+    session.user = user.username;
+    res.json({message: "logged in"});
+  });
   // if found, attempt login
     // if login is successful, set session username and return success
 
   // else return error
 });
 
-router.post('/create_user', function(req, res, next) {
-  console.log(mongoose);
-  var user = new UserModel();
+// User API calls
+// --------------------------------------------------------------------------------------------
+router.route('/user')
+
+.post(function(req, res, next) {
+  var user = new UserModel();      // create the user
   user.username = req.body.username;
   user.name = req.body.name;
   user.password = req.body.password;
-  console.log(user.name);
-  console.log(user.username);
-  console.log(user.password);
+  if (!user.username || !user.name || !user.password) {
+    res.json({error: "Missing parameters -- check API reference for required parameters"});
+    return;
+  }
   user.data.budget = 0;
   user.data.assets = 0;
-  user.data.savings = [];
-  user.data.savings.push({name: "emergency", amount: 200, isDefault: true});
-  user.data.income = [];
-  user.data.income.push({name: "Work", amount: 450, period: 1, start: new Date(2016, 1, 1), holdout: 50, isConfirm: false});
-  user.data.charges = [];
-  user.data.income.push({name: "Work", amount: 50, period: 1, start: new Date(2016, 1, 1), isConfirm: false});
-  user.data.entries = [];
-  user.data.entries.push({budget: 25, spent: 20, date: new Date(2016, 2, 9)});
   user.data.userOptions.isNotify = false;
   user.data.userOptions.notifyTime = new Date(0, 0, 0, 9);
   user.data.userOptions.isTrack = false;
-  console.log("saving user...");
   user.save(function(err) {
-    console.log("save function start");
     if (err)
       res.send(err);
     res.json({message: "user created"});
   });
-  console.log("done");
+})
+
+.put(function(req, res, next) {
+  res.json({message: "API Endpoint not implemented"});
+})
+
+.get(function(req, res, next) {
+  res.json({message: "API Endpoint not implemented"});
+})
+
+.delete(function(req, res, next) {
+  res.json({message: "API Endpoint not implemented"});
 });
 
-// store the user data for the logged in user
-// POST: User
-router.get('/store_data', function(req, res, next) {
-  // check that user is logged in, if not return error
+// Queries about getting/updating Track_Entries for the logged in user
+// --------------------------------------------------------------------------------------------
+router.route('/entry')
 
-  // parse the data object
+// add a new track entry for the user
+.post(function(req, res, next) {
 
-  // check that data object user matches logged in user
+  var username = session.user;
 
-  // sync user data with stored data
+  if (!username) {
+    res.json({message: "not logged in"});
+    return;
+  }
 
-  // send success
-});
+  // check the parameters
+  var budget = req.body.budget;
+  var spent = req.body.spent;
+  var year = req.body.year;
+  var month = req.body.month;
+  var day = req.body.day;
+  if (!budget || !spent || !year || !month || !day) {
+    res.json({error: "Missing parameters -- check API reference for required parameters"});
+    return;
+  }
 
-// delete a user from the system
-// GET: username - string
-// /api/remove_data?username=<username>
-router.delete('/remove_data', function(req, res, next) {
-  // check that user is logged in
-  // check that username matches logged in user
-
-  // delete user from database
-
-  //send success
-});
-
-// get the data for a user
-// GET: username - string
-// /api/get_data?username=<username>
-router.get('/get_data', function(req, res, next) {
-  Schemas.User.find(function(err, users) {
+  UserModel.findOne({'username': username}, function(err, user) {
     if (err)
-      res.send(err);
-    res.json(users);
+      res.json(err);
+    if (!user) {
+      res.json({error: "user not found"});
+      return;
+    }
+    console.log(user);
+    user.data.entries.push({budget: budget, spent: spent, date: new Date(year, month, day)});
+    user.save(function(err) {
+      if (err)
+        res.json(err);
+      res.json({message: "entry added successfully"});
+    });
   });
+})
+
+.put(function(req, res, next) {
+  res.json({message: "API Endpoint not implemented"});
+})
+
+.get(function(req, res, next) {
+  res.json({message: "API Endpoint not implemented"});
+})
+
+.delete(function(req, res, next) {
+  res.json({message: "API Endpoint not implemented"});
 });
 
-router.get('/test', function(req, res, next) {
-    if (req.session && req.session.user) {
-    	res.json({LoggedIn: "true", User: req.session.user});
-    } else {
-    	res.json({LoggedIn: "false"});
-    }
+// Calls for updating a user's assets, budget, endDate
+// --------------------------------------------------------------------------------------------
+
+router.route('/data')
+
+.put(function(req, res, next) {
+  res.json({message: "API Endpoint not implemented"});
+})
+
+.get(function(req, res, next) {
+  res.json({message: "API Endpoint not implemented"});
+});
+
+// Calls for updating a user's Savings Entries
+// --------------------------------------------------------------------------------------------
+
+router.route('/savings')
+
+.post(function(req, res, next) {
+  res.json({message: "API Endpoint not implemented"});
+})
+
+.put(function(req, res, next) {
+  res.json({message: "API Endpoint not implemented"});
+})
+
+.get(function(req, res, next) {
+  res.json({message: "API Endpoint not implemented"});
+})
+
+.delete(function(req, res, next) {
+  res.json({message: "API Endpoint not implemented"});
+});
+
+// Calls for updating a user's Income
+// --------------------------------------------------------------------------------------------
+
+router.route('/income')
+
+.post(function(req, res, next) {
+  res.json({message: "API Endpoint not implemented"});
+})
+
+.put(function(req, res, next) {
+  res.json({message: "API Endpoint not implemented"});
+})
+
+.get(function(req, res, next) {
+  res.json({message: "API Endpoint not implemented"});
+})
+
+.delete(function(req, res, next) {
+  res.json({message: "API Endpoint not implemented"});
+});
+
+// Calls for updating a user's Charge Entries
+// --------------------------------------------------------------------------------------------
+
+router.route('/charges')
+
+.post(function(req, res, next) {
+  res.json({message: "API Endpoint not implemented"});
+})
+
+.put(function(req, res, next) {
+  res.json({message: "API Endpoint not implemented"});
+})
+
+.get(function(req, res, next) {
+  res.json({message: "API Endpoint not implemented"});
+})
+
+.delete(function(req, res, next) {
+  res.json({message: "API Endpoint not implemented"});
+});
+
+// Calls for getting or setting a users options
+// --------------------------------------------------------------------------------------------
+
+router.route('/options')
+
+.put(function(req, res, next) {
+  res.json({message: "API Endpoint not implemented"});
+})
+
+.get(function(req, res, next) {
+  res.json({message: "API Endpoint not implemented"});
 });
 
 // more routes for our API will happen here

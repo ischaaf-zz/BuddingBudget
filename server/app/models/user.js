@@ -5,13 +5,13 @@ var Schema     = mongoose.Schema;
 
 
 var SavingsEntry = new Schema({
-  name: String,
+  name: {type: String, index: true, unique: true},
   amount: Number,
   isDefault: Boolean
 });
 
 var IncomeEntry = new Schema({
-  name: String,
+  name: {type: String, index: true, unique: true},
   amount: Number,
   period: Number,
   start: Date,
@@ -20,7 +20,7 @@ var IncomeEntry = new Schema({
 });
 
 var ChargeEntry = new Schema({
-  name: String,
+  name: {type: String, index: true, unique: true},
   amount: Number,
   period: Number,
   start: Date,
@@ -30,7 +30,7 @@ var ChargeEntry = new Schema({
 var TrackEntry = new Schema({
   budget: Number,
   spent: Number,
-  date: Date
+  date: {type: String, index: true, unique: true}
 });
 
 // var OptionsEntry = new Schema ({
@@ -40,9 +40,9 @@ var TrackEntry = new Schema({
 // });
 
 var UserSchema = new Schema ({
-  username: String,
-  name: String,
-  password: String,
+  username: {type: String, index: true, unique: true},
+  name: {type: String, required: true},
+  password: {type: String, required: true},
   data: {
     budget: Number,
     assets: Number,

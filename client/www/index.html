@@ -24,7 +24,7 @@
     }
 	
 	#budget {
-		font-size: 150%;
+		font-size: 140%;
 		font-weight: bold;
 		color: green;
 	}
@@ -76,7 +76,7 @@
 				<li class="nav" data-goto="assets">
 					<h3> Assets </h3>
 				</li>
-				<li class="nav" data-goto="savings">
+				<li class="nav" data-goto="savings" id="saveNext">
 					<h3> Savings </h3>
 				</li>
 				<li class="nav" data-goto="charges">
@@ -164,7 +164,48 @@
 		</nav>
 		<article id="options" class = "next">
 			<section>
-				<h3> You are here </h3>
+			  <ul class='list'>
+				<li class='comp'>
+				  <div>
+					<h3>Budget notification every morning</h3>
+				  </div>
+				  <aside>
+					<span class="switch" id="morningSwitch">
+					   <input data-controller='switch-value' type="checkbox" value="morning" name="morningSwitch">
+					</span>
+				  </aside>
+				</li>
+				<li class='comp'>
+				  <div>
+					<h3>Tracking reminder every night</h3>
+				  </div>
+				  <aside>
+					<span class="switch" id="nightSwitch">
+					  <input data-controller='switch-value' type="checkbox" value="night" name="nightSwitch">
+					</span>
+				  </aside>
+				</li>
+				<li class='comp'>
+				  <div>
+					<h3>Regular asset update reminder</h3>
+				  </div>
+				  <aside>
+					<span class="switch" id="assetSwitch">
+					  <input data-controller='switch-value' type="checkbox" value="assetReminder" name="assetSwitch">
+					</span>
+				  </aside>
+				</li>
+				<li class='comp'>
+				  <div>
+					<h3>Enable habit tracking</h3>
+				  </div>
+				  <aside>
+					<span class="switch" id="trackingSwitch">
+					  <input data-controller='switch-value' type="checkbox" value="tracking" name="trackingSwitch">
+					</span>
+				  </aside>
+				</li>
+			  </ul>
 			</section>
 		</article>
 

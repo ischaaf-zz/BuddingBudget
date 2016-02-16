@@ -30,6 +30,18 @@ var UIView = function(getData, setDataListener) {
 		});
 	});
 	
+	//delete items from savings list
+	$(function() {
+		$("#savingsList").UIEditList({
+			editLabel: "DELETE ENTRY",
+			movable: false,
+			deletable: true,
+			callback: function(list) {
+				//TODO:callback
+			}
+		});
+    });
+	
 	//append to savings entry list
 	function appendSavingsList(ctx) {
 		$("#savingsList").append('<li id ="'+ ctx.name + '"><h3>' + ctx.name + '</h3><h3 id="prev' + ctx.name + '">$' + ctx.amount +'</h3><input id="text' + ctx.name + '" data-controller="input-value" type="number" min = "0"><button id="button' + ctx.name + '">Update</button><p id="save' + ctx.name +'"></p></li>');
@@ -57,7 +69,22 @@ var UIView = function(getData, setDataListener) {
 	});
 	
 	//-----------------BUTTONS--------------------------
+	
+	/*//hide savings edit buttons on return to main page
+	$("#saveNext").click(function() {
+		$('#savingsList').removeClass('showIndicators');
+        $('button.done').addClass('edit').removeClass('done').text('Edit');
+		//$('button.delete').hide();
+	});*/
+	
+	//add new savings entry - popup with textbox to ask for entry name
 	$("#addSavings").bind("singletap", function() {
+		
+		//hide delete
+		//$('#savingsList').removeClass('showIndicators');
+        //$('button.done').addClass('edit').removeClass('done').text('Edit');
+		//$('button.delete').hide();
+		
         $.UIPopup({
 			id: "addEntrySavings",
 			title: 'Input Entry Name', 
@@ -85,6 +112,7 @@ var UIView = function(getData, setDataListener) {
 		});
     });
 	
+	//update assets
 	$("#buttonAssets").click(function() {
 		notifyListeners("updateAssets", [parseInt($("#setAssets").val()), function() {
 			document.querySelector('#assetsSuccess');

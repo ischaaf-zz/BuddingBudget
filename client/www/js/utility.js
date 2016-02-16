@@ -88,6 +88,15 @@ var TrackEntry = function(amount, budget, day) {
 	this.day = day;
 };
 
+var Options = function(isNotifyMorning, isNotifyNight, isNotifyAssets, notifyMorningTime, notifyNightTime, notifyAssetsPeriod) {
+	this.isNotifyMorning = isNotifyMorning;
+	this.isNotifyNight = isNotifyNight;
+	this.isNotifyAssets = isNotifyAssets;
+	this.notifyMorningTime = notifyMorningTime;
+	this.notifyNightTime = notifyNightTime;
+	this.notifyAssetsPeriod = notifyAssetsPeriod;
+};
+
 function findNextTime(entry) {
 	var period = entry.period;
 	var start = entry.start;

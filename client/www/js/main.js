@@ -45,7 +45,7 @@ function setTempData() {
 	incomeArray.push(new IncomeEntry("test2", 40, "monthly", 1, 0, false));
 
 	dataManager.setData('assets', 33);
-	dataManager.setData('endDate', new Date());
+	dataManager.setData('endDate', (new Date()).getTime());
 	dataManager.setData('savings', savingsArray);
 	dataManager.setData('charges', chargesArray);
 	dataManager.setData('income', incomeArray);

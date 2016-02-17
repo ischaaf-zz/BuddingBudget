@@ -5,7 +5,7 @@ describe("Calculator", function() {
     beforeEach(function() {
         var baseTime = new Date(2016, 1, 13);
         jasmine.clock().mockDate(baseTime);
-        simpleSampleData.endDate = (new Date()).getTime() + 86400000 * 3, // 3 days from now
+        simpleSampleData.endDate = (new Date()).getTime() + MILLISECONDS_PER_DAY * 3, // 3 days from now
         calculator = new Calculator();
     });
 
@@ -30,7 +30,7 @@ describe("Calculator", function() {
         simpleSampleData.assets -= budget;
         var endDate = new Date(simpleSampleData.endDate);
         while(isTodayOrLater(endDate)) {
-            jasmine.clock().tick(86400000); // next day
+            jasmine.clock().tick(MILLISECONDS_PER_DAY); // next day
             budget = calculator.calculateBudget(simpleSampleData);
             simpleSampleData.assets -= budget;
         }

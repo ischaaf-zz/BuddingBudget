@@ -18,9 +18,8 @@ var Calculator = function() {
 			return 0;
 		}
 		var differenceMilliseconds = endDate - today;
-		var millisecondsPerDay = 24 * 60 * 60 * 1000;
 		// include last day
-		var differenceDays = Math.round(differenceMilliseconds / millisecondsPerDay) + 1;
+		var differenceDays = Math.round(differenceMilliseconds / MILLISECONDS_PER_DAY) + 1;
 		return Math.floor(data.assets / differenceDays);
 	};
 

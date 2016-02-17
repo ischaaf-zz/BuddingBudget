@@ -2,6 +2,7 @@
 
 var PERSIST_DATA = false;
 
+var MILLISECONDS_PER_DAY = 24 * 60 * 60 * 1000;
 
 // Checks if two date objects represent the same day
 // Assumes the user's current time zone applies for both dates.

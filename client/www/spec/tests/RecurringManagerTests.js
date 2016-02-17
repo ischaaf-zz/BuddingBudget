@@ -32,9 +32,9 @@ describe("RecurringManager", function() {
 		it("should set correct timeout", function() {
 			var now = new Date();
 			var next = new Date();
-			var msInDay = 86400000;
+			var msInDay = MILLISECONDS_PER_DAY;
 			next.setMonth(next.getMonth() + 1);
-			var expectedTime = next.getTime() + 60000 - (next.getTime() % 86400000) - now.getTime();
+			var expectedTime = next.getTime() + 60000 - (next.getTime() % MILLISECONDS_PER_DAY) - now.getTime();
 			var actualTime = setTimeout.calls.mostRecent().args[1];
 			expect(Math.abs(expectedTime - actualTime)).toBeLessThan(5);
 		});
@@ -59,9 +59,9 @@ describe("RecurringManager", function() {
 		it("should set correct timeout", function() {
 			var now = new Date();
 			var next = new Date();
-			var msInDay = 86400000;
+			var msInDay = MILLISECONDS_PER_DAY;
 			next.setMonth(next.getMonth() + 1);
-			var expectedTime = next.getTime() + 60000 - (next.getTime() % 86400000) - now.getTime();
+			var expectedTime = next.getTime() + 60000 - (next.getTime() % MILLISECONDS_PER_DAY) - now.getTime();
 			var actualTime = setTimeout.calls.mostRecent().args[1];
 			expect(Math.abs(expectedTime - actualTime)).toBeLessThan(5);
 		});

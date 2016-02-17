@@ -31,7 +31,7 @@ var UIView = function(getData, setDataListener) {
 
 		var arr = getData("charges");
 		arr.forEach(function(ctx) {
-			$("#chargesList").append('<li id =ch"'+ ctx.name + '"><h3>' + "ch" + ctx.name + '</h3><h3 id="prevCh' + ctx.name + '">$' + ctx.amount +'</h3><input id="chargeInput' + ctx.name + '" data-controller="input-value" type="number" min = "0"><button id="buttonCh' + ctx.name + '">Update</button><p id="charge' + ctx.name +'"></p></li>');
+			$("#chargesList").append('<div><li id =ch"'+ ctx.name + '"><h3>' + "ch" + ctx.name + '</h3><h3 id="prevCh' + ctx.name + '">$' + ctx.amount +'</h3><input id="chargeInput' + ctx.name + '" data-controller="input-value" type="number" min = "0"><button class="ui-btn ui-btn-inline" id="buttonCh' + ctx.name + '">Update</button><p id="charge' + ctx.name +'"></p></li></div>');
 			
 			$("#chargesList #buttonCh" + ctx.name).click(function() { changeChargeEntry(ctx.name, ctx.isDefault); });
 		});
@@ -51,7 +51,7 @@ var UIView = function(getData, setDataListener) {
 	
 	//append to savings entry list
 	function appendSavingsList(ctx) {
-		$("#savingsList").append('<li id ="'+ ctx.name + '"><h3>' + ctx.name + '</h3><h3 id="prev' + ctx.name + '">$' + ctx.amount +'</h3><input id="text' + ctx.name + '" data-controller="input-value" type="number" min = "0"><button id="button' + ctx.name + '" >Update</button><p id="save' + ctx.name +'"></p></li>');
+		$("#savingsList").append('<div><li id ="'+ ctx.name + '"><h3>' + ctx.name + '</h3><h3 id="prev' + ctx.name + '">$' + ctx.amount +'</h3><input id="text' + ctx.name + '" data-controller="input-value" type="number" min = "0"><button class="ui-btn ui-btn-inline" id="button' + ctx.name + '" >Update</button><p id="save' + ctx.name +'"></p></li></div>');
 			
 		$("#button" + ctx.name).click(function() { changeSavingEntry(ctx.name, ctx.isDefault); });
 	}
@@ -107,6 +107,7 @@ var UIView = function(getData, setDataListener) {
 		var p = document.createElement('p');
 
 		var button = document.createElement('button');
+		button.class="ui-btn ui-btn-inline"
 		button.innerHTML = "Update";
 		button.onclick = (function() {
 			updateMoneyEntry(uuid);
@@ -184,7 +185,7 @@ var UIView = function(getData, setDataListener) {
 
 	$("#addCharge").click(function() {
 		var lastLi =  $("#chargesList")[$("#chargesList").length -1];
-		$("#chargesList").append('<li><h3>Rent</h3><h3>$500</h3><input data-controller="input-value" type="number" min="0"><button>Update</button></li>');
+		$("#chargesList").append('<div><li><h3>Rent</h3><h3>$500</h3><input data-controller="input-value" type="number" min="0"><button class="ui-btn ui-btn-inline">Update</button></li><div>');
 	});
 	
 	//update assets

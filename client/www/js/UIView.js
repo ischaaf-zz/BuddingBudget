@@ -93,7 +93,10 @@ var UIView = function(getData, setDataListener) {
 	
 	//add new savings entry - popup with textbox to ask for entry name
 	$("#addSavings").click(function() {
+		var uuid = guid();
 		var li = document.createElement('li');
+		li.id = uuid;
+
 		var h3 = document.createElement('h3');
 		h3.innerHTML = "unnamed";
 		var h32 = document.createElement('h2');
@@ -105,9 +108,9 @@ var UIView = function(getData, setDataListener) {
 
 		var button = document.createElement('button');
 		button.innerHTML = "Update";
-		button.onclick = (function(e) {
-			changeEntry(e.target); 
-		});
+		button.onclick = (function() {
+			updateMoneyEntry(uuid);
+		}); 
 
 		li.appendChild(h3);
 		li.appendChild(h32);
@@ -118,8 +121,10 @@ var UIView = function(getData, setDataListener) {
 		/*$("#savingsList").append('<li><h3>Bicycle Fund</h3><h3>$500</h3><input data-controller="input-value" type="number" min="0"><button>Update</button></li>');*/
 	});
 
-	function changeEntry(e) {
-		e.closest('li').children[1].innerHTML = "$" + (e.closest('li').children[2].value);
+	function updateMoneyEntry(uuid) {
+		var li = document.getElementById(uuid);
+		var val = li.getElementsByTagName('input')[0].value;
+		li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
 	}
 		//hide delete
 		//$('#savingsList').removeClass('showIndicators');
@@ -206,4 +211,15 @@ var UIView = function(getData, setDataListener) {
 		this.textContent = "";
     });
 	//----------------------------------------------//
+
+	//generates random uuid for html elements
+	function guid() {
+	  function s4() {
+	    return Math.floor((1 + Math.random()) * 0x10000)
+	      .toString(16)
+	      .substring(1);
+	  }
+	  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+	    s4() + '-' + s4() + s4() + s4();
+	}
 };

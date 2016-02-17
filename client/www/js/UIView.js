@@ -31,27 +31,27 @@ var UIView = function(getData, setDataListener) {
 
 		var arr = getData("charges");
 		arr.forEach(function(ctx) {
-			$("#chargesList").append('<li id =ch"'+ ctx.name + '"><h3>' + "ch" + ctx.name + '</h3><h3 id="prevCh' + ctx.name + '">$' + ctx.amount +'</h3><input id="chargeInput' + ctx.name + '" data-controller="input-value" type="number" min = "0"><button id="buttonCh' + ctx.name + '">Update</button><p id="charge' + ctx.name +'"></p></li>');
+			$("#chargesList").append('<div><li id =ch"'+ ctx.name + '"><h3>' + "ch" + ctx.name + '</h3><h3 id="prevCh' + ctx.name + '">$' + ctx.amount +'</h3><input id="chargeInput' + ctx.name + '" data-controller="input-value" type="number" min = "0"><button class="ui-btn ui-btn-inline" id="buttonCh' + ctx.name + '">Update</button><p id="charge' + ctx.name +'"></p></li></div>');
 			
-			$("#chargesList #buttonCh" + ctx.name).click(function() { /*changeChargeEntry(ctx.name, ctx.isDefault);*/ console.log("hi"); });
+			$("#chargesList #buttonCh" + ctx.name).click(function() { changeChargeEntry(ctx.name, ctx.isDefault); });
 		});
 	});
 	
-	//delete items from savings list
-	$(function() {
-		$("#savingsList").UIEditList({
-			editLabel: "DELETE ENTRY",
-			movable: false,
-			deletable: true,
-			callback: function(list) {
-				//TODO:callback
-			}
-		});
-    });
+	// //delete items from savings list
+	// $(function() {
+	// 	$("#savingsList").UIEditList({
+	// 		editLabel: "DELETE ENTRY",
+	// 		movable: false,
+	// 		deletable: true,
+	// 		callback: function(list) {
+	// 			//TODO:callback
+	// 		}
+	// 	});
+ //    });
 	
 	//append to savings entry list
 	function appendSavingsList(ctx) {
-		$("#savingsList").append('<li id ="'+ ctx.name + '"><h3>' + ctx.name + '</h3><h3 id="prev' + ctx.name + '">$' + ctx.amount +'</h3><input id="text' + ctx.name + '" data-controller="input-value" type="number" min = "0"><button id="button' + ctx.name + '">Update</button><p id="save' + ctx.name +'"></p></li>');
+		$("#savingsList").append('<div><li id ="'+ ctx.name + '"><h3>' + ctx.name + '</h3><h3 id="prev' + ctx.name + '">$' + ctx.amount +'</h3><input id="text' + ctx.name + '" data-controller="input-value" type="number" min = "0"><button class="ui-btn ui-btn-inline" id="button' + ctx.name + '" >Update</button><p id="save' + ctx.name +'"></p></li></div>');
 			
 		$("#button" + ctx.name).click(function() { changeSavingEntry(ctx.name, ctx.isDefault); });
 	}
@@ -92,14 +92,74 @@ var UIView = function(getData, setDataListener) {
 	});*/
 	
 	//add new savings entry - popup with textbox to ask for entry name
-	$("#addSavings").bind("singletap", function() {
+	$("#addSavings").click(function() {
+		//Todo: generalize this to makeTemplate(params)
+		var uuid = guid();
+		var li = document.createElement('li');
+		li.id = uuid;
+
+		var h3 = document.createElement('h3');
+		h3.innerHTML = "unnamed";
+		var h32 = document.createElement('h2');
+		h32.innerHTML = "$0"
+		var input = document.createElement('input');
+		input.class = "updateVal";
+		input.type="number";
+		var p = document.createElement('p');
+
+		var button = document.createElement('button');
+		button.classList.add("ui-btn", "ui-btn-inline");
+		button.innerHTML = "Update";
+		button.onclick = (function() {
+			updateSavingsEntry(uuid);
+		}); 
+
+		li.appendChild(h3);
+		li.appendChild(h32);
+		li.appendChild(input);
+		li.appendChild(button);
+		li.appendChild(p);
+		$("#savingsList").append(li);
+
+		//generalize this? SavingsEntry
+		//add element to "savings" array
+		var save = new SavingsEntry(uuid, 0, true);
+		notifyListeners("addEntry", ["savings",
+			save,
+			uuid,
+			function() {
+				document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "ADD SAVINGS SUCCESS";
+			}, 
+			function(message) {
+				document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
+		}]);
+		console.log(getData("savings"));
+	});
+
+	function updateSavingsEntry(uuid) {
+		var li = document.getElementById(uuid);
+		var val = li.getElementsByTagName('input')[0].value;
+		li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
 		
+		//What does isDefault do?! Set to false here
+		var save = new SavingsEntry(uuid, val, false);
+		notifyListeners("changeEntry", ["savings",
+			uuid,
+			save,
+			function() {
+			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "CHANGED SAVINGS SUCCESS";
+			}, 
+			function(message) {
+			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
+		}]);
+		//Todo: add uuid as name and val to entry
+	}
 		//hide delete
 		//$('#savingsList').removeClass('showIndicators');
         //$('button.done').addClass('edit').removeClass('done').text('Edit');
 		//$('button.delete').hide();
 		
-        $.UIPopup({
+        /*$.UIPopup({
 			id: "addEntrySavings",
 			title: 'Input Entry Name', 
 			cancelButton: 'CANCEL', 
@@ -124,7 +184,12 @@ var UIView = function(getData, setDataListener) {
 				}]);
 			}
 		});
-    });
+    });*/
+
+	$("#addCharge").click(function() {
+		var lastLi =  $("#chargesList")[$("#chargesList").length -1];
+		$("#chargesList").append('<div><li><h3>Rent</h3><h3>$500</h3><input data-controller="input-value" type="number" min="0"><button class="ui-btn ui-btn-inline">Update</button></li><div>');
+	});
 	
 	//update assets
 	$("#buttonAssets").click(function() {
@@ -140,11 +205,6 @@ var UIView = function(getData, setDataListener) {
             assetsSuccess.classList.add("animatePopupMessage");
 		}]);
 	});
-
-	$("#addCharge").click(function() {
-		console.log("hola");
-		$("#chargesList").append('<li><h3>Rent</h3><h2>$500</h2><input data-controller="input-value" type="number" min="0"><button>Update</button></li>');
-	});
 	
 	//attached to buttons defined in .ready()
 	function changeSavingEntry(name, isDefault) {
@@ -157,7 +217,7 @@ var UIView = function(getData, setDataListener) {
 	}
 
 	function changeChargeEntry(name, isDefault) {
-		var save = new ChargeEntry(name, parseInt($("#chargeInput" + name).val()), 0, new Date().toLocaleString(), isDefault);
+		var save = new ChargeEntry(name, parseInt($("#chargeInput" + name).val()), 1, new Date().toLocaleString(), isDefault);
 		notifyListeners("changeEntry", ["charges", name, save, function() {
 			$("#charge" + name).html("CHANGED CHARGES SUCCESS");
 		}, function(message) {
@@ -178,4 +238,15 @@ var UIView = function(getData, setDataListener) {
 		this.textContent = "";
     });
 	//----------------------------------------------//
+
+	//generates random uuid for html elements
+	function guid() {
+	  function s4() {
+	    return Math.floor((1 + Math.random()) * 0x10000)
+	      .toString(16)
+	      .substring(1);
+	  }
+	  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+	    s4() + '-' + s4() + s4() + s4();
+	}
 };

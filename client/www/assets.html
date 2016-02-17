@@ -19,14 +19,37 @@
   
 	<link rel="stylesheet" href="nativeDroid2-master/css/nativedroid2.css">
 	<div id="head"></div>
-	
-	<!-- Pull out into css file-->
 	<style>
-		#budget {
-			font-size:700%;
-			color: purple;
-			text-align: center;
-		}
+	/* Popup Demo Styles */
+    .attentionGrapper {
+      opacity: 0;
+      font-size: 12pt;
+      line-height: 14pt;
+      font-weight: 200;
+      font-family: SegoeWP, SegoeUI, HelveticaNeue, Roboto, Sans-serif;
+      padding: 0 15px;
+    }
+    .animatePopupMessage {
+      -webkit-animation-duration: 2s;
+      -webkit-animation-timing-function: linear;
+      -webkit-animation-name: updatePopupMessage;
+      animation-duration: 2s;
+      animation-timing-function: linear;
+      animation-name: updatePopupMessage;
+    }
+    @-webkit-keyframes updatePopupMessage {
+      0% { opacity: 0; }
+      20% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+    
+    @keyframes updatePopupMessage {
+      0% { opacity: 0; }
+      20% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { opacity: 0; }
+    }
 	</style>
 </head>
 <body>
@@ -59,13 +82,16 @@
 
 		<div data-role="header" data-position="fixed" class="wow fadeIn">
 			<a href="#leftpanel" class="ui-btn ui-btn-left wow fadeIn" data-wow-delay='0.8s'><i class="zmdi zmdi-menu"></i></a>
-			<h1 class="wow fadeIn" data-wow-delay='0.4s'>Daily Budget</h1>
+			<h1 class="wow fadeIn" data-wow-delay='0.4s'>Assets</h1>
 		</div>
 
 		<div role="main" class="ui-content wow fadeIn" data-inset="false" data-wow-delay="0.2s">
 		<!--HEADER ABOVE, can copy paste-->
-			<h3>Your Budget for Today</h3>
-			<h1 id="budget">$0</h1>
+			<h3>Assets</h3>
+			<h3 id="prevAssets"></h3>
+			<input id="setAssets" data-controller="input-value" type="number" min="0">
+			<button class="ui-btn ui-btn-raised clr-primary" id="buttonAssets">Update</button>
+			<p id='assetsSuccess' class='attentionGrapper'></p>
 		<!--FOOTER BELOW, can copy paste-->
 		</div>
 	</div>

@@ -8,9 +8,9 @@
 /*@import url("nativedroid2.color.indigo.css");*/
 /*@import url("nativedroid2.color.light-blue.css");*/
 /*@import url("nativedroid2.color.cyan.css");*/
-@import url("nativedroid2.color.teal.css");
+/*@import url("nativedroid2.color.teal.css");*/
 /*@import url("nativedroid2.color.green.css");*/
-/*@import url("nativedroid2.color.light-green.css");*/
+@import url("nativedroid2.color.light-green.css");
 /*@import url("nativedroid2.color.lime.css");*/
 /*@import url("nativedroid2.color.yellow.css");*/
 /*@import url("nativedroid2.color.amber.css");*/
@@ -22,9 +22,10 @@
 
 
 @import url("flexboxgrid.min.css");
-@import url("material-design-iconic-font.min.css");
+@import url("material-design-iconic-font.min.css");/*
 @import url(//fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic);
-@import url(//fonts.googleapis.com/css?family=Roboto:400,300,500,400italic,700,900);
+@import url(//fonts.googleapis.com/css?family=Roboto:400,300,500,400italic,700,900);*/
+
 
 body {
 	-webkit-transition: opacity 0.4s;

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Budding Budget</title>
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta name="android-mobile-web-app-capable" content="yes">
+	<meta name="msapplication-tap-highlight" content="no">
+	<meta charset="UTF-8">
+	
+	<script type="text/javascript" src="js/lib/jquery-1.12.0.min.js"></script>
+	<script type="text/javascript" src="js/lib/localforage.min.js"></script>
+	<script src="nativeDroid2-master/nd2settings.js"></script>
+	<script rel="stylesheet" href="nativeDroid2-master/css/nativedroid2.css"></script>
+	
+	<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css" />
+	<link rel="stylesheet" href="vendor/waves.min.css" />
+	<link rel="stylesheet" href="vendor/animate.css" />
+  
+	<link rel="stylesheet" href="nativeDroid2-master/css/nativedroid2.css">
+</head>
+<body>
+		<div data-role="page">
+
+			<nd2-include data-src="fragments/panel.left.html"></nd2-include>
+
+			<div data-role="header" data-position="fixed" class="wow fadeIn">
+				<a href="#leftpanel" class="ui-btn ui-btn-left wow fadeIn" data-wow-delay='0.8s'><i class="zmdi zmdi-menu"></i></a>
+				<h1 class="wow fadeIn" data-wow-delay='0.4s'>Listview</h1>
+			</div>
+
+
+			<div role="main" class="ui-content wow fadeIn" data-inset="false" data-wow-delay="0.2s">
+				<nd2-ad data-banner="sample.banner"></nd2-ad>
+
+			<ul data-role="listview" data-icon="false">
+				<li data-role="list-divider">
+					Friends
+				</li>
+			</ul>
+
+			<hr />
+
+			<ul data-role="listview" data-icon="false">
+				<li data-role="list-divider">
+					Work
+				</li>
+			</ul>
+
+			<hr />
+
+			<ul data-role="listview" data-icon="false">
+				<li data-role="list-divider">
+					Linked List
+				</li>
+				<li><a href="#">Banana</a></li>
+				<li><a href="#">Blackberry</a></li>
+				<li><a href="#">Tomato</a></li>
+				<li><a href="#">Apple</a></li>
+			</ul>
+
+			<hr />
+
+			<ul data-role="listview" data-icon="false" data-autodividers="true">
+				<li><a href="#">Apple</a></li>
+				<li><a href="#">Banana</a></li>
+				<li><a href="#">Blackberry</a></li>
+				<li><a href="#">Tomato</a></li>
+			</ul>
+
+
+			</div>
+		</div>
+
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+		<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+		<script>
+		    $(document).bind('mobileinit',function(){
+		        $.mobile.changePage.defaults.changeHash = false;
+		        $.mobile.hashListeningEnabled = false;
+		        $.mobile.pushStateEnabled = false;
+		    });
+		</script> 
+		<script src="http://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>
+		<script src="vendor/waves.min.js"></script>
+		<script src="vendor/wow.min.js"></script>
+		<script src="nativeDroid2-master/js/nativedroid2.js"></script>
+		<script src="nativeDroid2-master/nd2settings.js"></script>
+	</body>
+</html>

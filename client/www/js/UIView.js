@@ -93,6 +93,7 @@ var UIView = function(getData, setDataListener) {
 	
 	//add new savings entry - popup with textbox to ask for entry name
 	$("#addSavings").click(function() {
+		//Todo: generalize this to makeTemplate(params)
 		var uuid = guid();
 		var li = document.createElement('li');
 		li.id = uuid;
@@ -110,7 +111,7 @@ var UIView = function(getData, setDataListener) {
 		button.class="ui-btn ui-btn-inline"
 		button.innerHTML = "Update";
 		button.onclick = (function() {
-			updateMoneyEntry(uuid);
+			updateSavingsEntry(uuid);
 		}); 
 
 		li.appendChild(h3);
@@ -120,6 +121,7 @@ var UIView = function(getData, setDataListener) {
 		li.appendChild(p);
 		$("#savingsList").append(li);
 
+		//generalize this? SavingsEntry
 		//add element to "savings" array
 		var save = new SavingsEntry(uuid, 0, true);
 		notifyListeners("addEntry", ["savings",
@@ -133,7 +135,7 @@ var UIView = function(getData, setDataListener) {
 		}]);
 	});
 
-	function updateMoneyEntry(uuid) {
+	function updateSavingsEntry(uuid) {
 		var li = document.getElementById(uuid);
 		var val = li.getElementsByTagName('input')[0].value;
 		li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;

@@ -38,18 +38,6 @@ var UIView = function(getData, setDataListener) {
 		});
 	});
 	
-	// //delete items from savings list
-	// $(function() {
-	// 	$("#savingsList").UIEditList({
-	// 		editLabel: "DELETE ENTRY",
-	// 		movable: false,
-	// 		deletable: true,
-	// 		callback: function(list) {
-	// 			//TODO:callback
-	// 		}
-	// 	});
- //    });
-	
 	//append to savings entry list
 	function appendSavingsList(ctx) {
 		$("#savingsList").append('<div><li id ="'+ ctx.name + '"><h3>' + ctx.name + '</h3><h3 id="prev' + ctx.name + '">$' + ctx.amount +'</h3><input id="text' + ctx.name + '" data-controller="input-value" type="number" min = "0"><button class="ui-btn ui-btn-inline" id="button' + ctx.name + '" >Update</button><p id="save' + ctx.name +'"></p></li></div>');
@@ -191,7 +179,6 @@ var UIView = function(getData, setDataListener) {
 			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
 		}]);
 	}
-
 
         
 	$("#addCharge").click(function() {

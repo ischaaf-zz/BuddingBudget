@@ -19,6 +19,17 @@
   
 	<link rel="stylesheet" href="nativeDroid2-master/css/nativedroid2.css">
 	<div id="head"></div>
+	<style>
+		p.small {
+			line-height: 0px;
+		}
+		.center {
+			text-align: center;
+		}
+		.ui-block-a {
+			text-align: center;
+		}
+	</style>
 </head>
 <body>
 		<div data-role="page">
@@ -55,9 +66,35 @@
 
 		<div role="main" class="ui-content wow fadeIn" data-inset="false" data-wow-delay="0.2s">
 		<!--HEADER ABOVE, can copy paste-->
-			
 
-			
+		<fieldset>
+		  <div data-role="fieldcontain">
+			<p class="small">Budget notification every morning</p>
+			<input type="checkbox" id="morningNotice" data-role="flipswitch">
+		  </div>
+		  <div data-role="fieldcontain">
+			<p class="small">Tracking reminder every night</p>
+			<input type="checkbox" id="nightNotice" data-role="flipswitch">
+		  </div>
+		  <div data-role="fieldcontain">
+			<p class="small">Regular asset update reminder</p>
+			<input type="checkbox" id="assetNotice" data-role="flipswitch">
+		  </div>
+		  <div data-role="fieldcontain">
+			<p class="small">Enable habit tracking</p>
+			<input type="checkbox" id="habitTrack" data-role="flipswitch">
+		  </div>
+		  <p class="center">Set minimum daily budget</p>
+			<div class="ui-grid-a">
+			  <div class="ui-block-a">
+				<p id="minBudget">$10</p>
+			  </div>
+			  <div class="ui-block-b">
+				<input type="number" id="setMinBudget" data-clear-btn="true" min="0">
+			  </div>
+			</div>
+		</fieldset>
+		
 		<!--FOOTER BELOW, can copy paste-->
 		</div>
 	</div>

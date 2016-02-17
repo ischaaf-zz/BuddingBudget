@@ -91,15 +91,12 @@ var UIView = function(getData, setDataListener) {
 		//$('button.delete').hide();
 	});*/
 	
-	//add new savings entry - popup with textbox to ask for entry name
-	$("#addSavings").click(function() {
-		//Todo: generalize this to makeTemplate(params)
+	function makeTemplate(catName, updateFn, listId) {
 		var uuid = guid();
 		var li = document.createElement('li');
 		li.id = uuid;
-
 		var h3 = document.createElement('h3');
-		h3.innerHTML = "unnamed";
+		h3.innerHTML = catName;
 		var h32 = document.createElement('h2');
 		h32.innerHTML = "$0"
 		var input = document.createElement('input');
@@ -111,7 +108,7 @@ var UIView = function(getData, setDataListener) {
 		button.classList.add("ui-btn", "ui-btn-inline");
 		button.innerHTML = "Update";
 		button.onclick = (function() {
-			updateSavingsEntry(uuid);
+			updateFn(uuid, catName);
 		}); 
 
 		li.appendChild(h3);
@@ -119,14 +116,26 @@ var UIView = function(getData, setDataListener) {
 		li.appendChild(input);
 		li.appendChild(button);
 		li.appendChild(p);
-		$("#savingsList").append(li);
+		$(listId).append(li);
+
+		return uuid;
+	}
+	//add new savings entry - popup with textbox to ask for entry name
+	$("#addSavings").click(function() {
+		//Todo: generalize this to makeTemplate(params)
+		var catName = prompt("Category name: ");
+		if(catName == null) {
+			return;
+		}
+
+		var uuid = makeTemplate(catName, updateSavingsEntry, "#savingsList");
 
 		//generalize this? SavingsEntry
 		//add element to "savings" array
-		var save = new SavingsEntry(uuid, 0, true);
+		var save = new SavingsEntry(catName, 0, true);
 		notifyListeners("addEntry", ["savings",
 			save,
-			uuid,
+			catName,
 			function() {
 				document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "ADD SAVINGS SUCCESS";
 			}, 
@@ -136,15 +145,15 @@ var UIView = function(getData, setDataListener) {
 		console.log(getData("savings"));
 	});
 
-	function updateSavingsEntry(uuid) {
+	function updateSavingsEntry(uuid, catName) {
 		var li = document.getElementById(uuid);
 		var val = li.getElementsByTagName('input')[0].value;
 		li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
 		
 		//What does isDefault do?! Set to false here
-		var save = new SavingsEntry(uuid, val, false);
+		var save = new SavingsEntry(catName, val, false);
 		notifyListeners("changeEntry", ["savings",
-			uuid,
+			catName,
 			save,
 			function() {
 			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "CHANGED SAVINGS SUCCESS";

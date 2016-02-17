@@ -13,7 +13,7 @@ describe("Calculator", function() {
 
     it('should calculate a correct budget', function() {
     	var budget = calculator.calculateBudget(simpleSampleData);
-    	expect(budget).toEqual(6);
+    	expect(budget).toEqual(5);
     });
 
 });

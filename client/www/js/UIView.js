@@ -122,10 +122,10 @@ var UIView = function(getData, setDataListener) {
 		//add element to "savings" array
 		var save = new SavingsEntry(uuid, 0, true);
 		notifyListeners("addEntry", ["savings",
-			uuid, 
-			save, 
+			save,
+			uuid,
 			function() {
-			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "Add SAVINGS SUCCESS";
+			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "ADD SAVINGS SUCCESS";
 			}, 
 			function(message) {
 			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
@@ -140,16 +140,14 @@ var UIView = function(getData, setDataListener) {
 		//What does isDefault do?! Set to false here
 		var save = new SavingsEntry(uuid, val, false);
 		notifyListeners("changeEntry", ["savings",
-			uuid, 
-			save, 
+			save,
+			uuid,
 			function() {
 			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "CHANGED SAVINGS SUCCESS";
 			}, 
 			function(message) {
 			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
 		}]);
-
-		console.log(getData("savings"));
 		//Todo: add uuid as name and val to entry
 	}
 		//hide delete
@@ -187,7 +185,6 @@ var UIView = function(getData, setDataListener) {
 	$("#addCharge").click(function() {
 		var lastLi =  $("#chargesList")[$("#chargesList").length -1];
 		$("#chargesList").append('<li><h3>Rent</h3><h3>$500</h3><input data-controller="input-value" type="number" min="0"><button>Update</button></li>');
-		console.log($("#chargesList li").length);
 	});
 	
 	//update assets

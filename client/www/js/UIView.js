@@ -108,7 +108,7 @@ var UIView = function(getData, setDataListener) {
 		var p = document.createElement('p');
 
 		var button = document.createElement('button');
-		button.class="ui-btn ui-btn-inline"
+		button.classList.add("ui-btn", "ui-btn-inline");
 		button.innerHTML = "Update";
 		button.onclick = (function() {
 			updateSavingsEntry(uuid);
@@ -128,11 +128,12 @@ var UIView = function(getData, setDataListener) {
 			save,
 			uuid,
 			function() {
-			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "ADD SAVINGS SUCCESS";
+				document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "ADD SAVINGS SUCCESS";
 			}, 
 			function(message) {
-			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
+				document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
 		}]);
+		console.log(getData("savings"));
 	});
 
 	function updateSavingsEntry(uuid) {
@@ -143,8 +144,8 @@ var UIView = function(getData, setDataListener) {
 		//What does isDefault do?! Set to false here
 		var save = new SavingsEntry(uuid, val, false);
 		notifyListeners("changeEntry", ["savings",
-			save,
 			uuid,
+			save,
 			function() {
 			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "CHANGED SAVINGS SUCCESS";
 			}, 

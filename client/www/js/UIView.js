@@ -51,7 +51,7 @@ var UIView = function(getData, setDataListener) {
 	
 	//append to savings entry list
 	function appendSavingsList(ctx) {
-		$("#savingsList").append('<li id ="'+ ctx.name + '"><h3>' + ctx.name + '</h3><h3 id="prev' + ctx.name + '">$' + ctx.amount +'</h3><input id="text' + ctx.name + '" data-controller="input-value" class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset" type="number" min = "0"><button id="button' + ctx.name + '" class=" ui-btn ui-shadow ui-corner-all">Update</button><p id="save' + ctx.name +'"></p></li>');
+		$("#savingsList").append('<li id ="'+ ctx.name + '"><h3>' + ctx.name + '</h3><h3 id="prev' + ctx.name + '">$' + ctx.amount +'</h3><input id="text' + ctx.name + '" data-controller="input-value" type="number" min = "0"><button id="button' + ctx.name + '" >Update</button><p id="save' + ctx.name +'"></p></li>');
 			
 		$("#button" + ctx.name).click(function() { changeSavingEntry(ctx.name, ctx.isDefault); });
 	}
@@ -92,8 +92,9 @@ var UIView = function(getData, setDataListener) {
 	});*/
 	
 	//add new savings entry - popup with textbox to ask for entry name
-	$("#addSavings").bind("singletap", function() {
+	$("#addSavings").click(function() {
 			$("#savingsList").append('<li><h3>Bicycle Fund</h3><h3>$500</h3><input data-controller="input-value" type="number" min="0"><button>Update</button></li>');
+	});
 		//hide delete
 		//$('#savingsList').removeClass('showIndicators');
         //$('button.done').addClass('edit').removeClass('done').text('Edit');
@@ -123,8 +124,12 @@ var UIView = function(getData, setDataListener) {
 					popupMessageTarget.classList.add("animatePopupMessage");
 				}]);
 			}
-		});*/
-    });
+		});
+    });*/
+
+	$("#addCharge").click(function() {
+		$("#chargesList").append('<li><h3>Rent</h3><h3>$500</h3><input data-controller="input-value" type="number" min="0"><button>Update</button></li>');
+	});
 	
 	//update assets
 	$("#buttonAssets").click(function() {
@@ -139,10 +144,6 @@ var UIView = function(getData, setDataListener) {
             assetsSuccess.classList.remove("animatePopupMessage");
             assetsSuccess.classList.add("animatePopupMessage");
 		}]);
-	});
-
-	$("#addCharge").click(function() {
-		$("#chargesList").append('<li><h3>Rent</h3><h3>$500</h3><input data-controller="input-value" type="number" min="0"><button>Update</button></li>');
 	});
 	
 	//attached to buttons defined in .ready()

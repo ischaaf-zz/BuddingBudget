@@ -93,8 +93,34 @@ var UIView = function(getData, setDataListener) {
 	
 	//add new savings entry - popup with textbox to ask for entry name
 	$("#addSavings").click(function() {
-			$("#savingsList").append('<li><h3>Bicycle Fund</h3><h3>$500</h3><input data-controller="input-value" type="number" min="0"><button>Update</button></li>');
+		var li = document.createElement('li');
+		var h3 = document.createElement('h3');
+		h3.innerHTML = "unnamed";
+		var h32 = document.createElement('h2');
+		h32.innerHTML = "$0"
+		var input = document.createElement('input');
+		input.class = "updateVal";
+		input.type="number";
+		//input.min = "0";
+
+		var button = document.createElement('button');
+		button.innerHTML = "Update";
+		button.onclick = (function(e) {
+			changeEntry(e.target); 
+		});
+
+		li.appendChild(h3);
+		li.appendChild(h32);
+		li.appendChild(input);
+		li.appendChild(button);
+		$("#savingsList").append(li);
+
+		/*$("#savingsList").append('<li><h3>Bicycle Fund</h3><h3>$500</h3><input data-controller="input-value" type="number" min="0"><button>Update</button></li>');*/
 	});
+
+	function changeEntry(e) {
+		e.closest('li').children[1].innerHTML = "$" + (e.closest('li').children[2].value);
+	}
 		//hide delete
 		//$('#savingsList').removeClass('showIndicators');
         //$('button.done').addClass('edit').removeClass('done').text('Edit');
@@ -128,7 +154,9 @@ var UIView = function(getData, setDataListener) {
     });*/
 
 	$("#addCharge").click(function() {
+		var lastLi =  $("#chargesList")[$("#chargesList").length -1];
 		$("#chargesList").append('<li><h3>Rent</h3><h3>$500</h3><input data-controller="input-value" type="number" min="0"><button>Update</button></li>');
+		console.log($("#chargesList li").length);
 	});
 	
 	//update assets

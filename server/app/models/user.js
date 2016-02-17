@@ -13,7 +13,7 @@ var SavingsEntry = new Schema({
 var IncomeEntry = new Schema({
   name: {type: String, index: true, unique: true},
   amount: Number,
-  period: Number,
+  period: String,
   start: Date,
   holdout: Number,
   isConfirm: Boolean
@@ -22,7 +22,7 @@ var IncomeEntry = new Schema({
 var ChargeEntry = new Schema({
   name: {type: String, index: true, unique: true},
   amount: Number,
-  period: Number,
+  period: String,
   start: Date,
   isConfirm: Boolean
 });
@@ -43,6 +43,7 @@ var UserSchema = new Schema ({
   username: {type: String, index: true, unique: true},
   name: {type: String, required: true},
   password: {type: String, required: true},
+  lastModified: {type: Date, required : true},
   data: {
     budget: Number,
     assets: Number,
@@ -52,9 +53,12 @@ var UserSchema = new Schema ({
     charges: [ChargeEntry],
     entries: [TrackEntry],
     userOptions: { 
-      isNotify: Boolean,
-      notifyTime: Date,
-      isTrack: Boolean
+      isNotifyMorning: Boolean,
+      isNotifyNight: Boolean,
+      isNotifyAssets: Boolean,
+      notifyMorningTime: Number,
+      notifyNightTime: Number,
+      notifyAssetsPeriod: String
     }
   }
 });

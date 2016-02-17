@@ -3,50 +3,45 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var UserModel    = require('../app/models/user');
 var session = require('client-sessions');
-var utils = require('../utilities.js');
+var validator = require('../utilities.js');
 
 // enable creating new users, if this is false addUser will always fail
-var enableUserCreation = false;
+var enableUserCreation = true;
 
 // required token for adding new users, super simple bit of security to help avoid unwanted users, 
 // anyone with the token can add a user
 var userCreationToken = "pmlWoKIm2XSes7jBHdPtl8UtGgiSnn1PW8xMFPQ1N2X5c1uY9fa3Zu3QYNODkpuy";
 
-var userAndPassRegex = /^[a-zA-Z0-9]{7,20}$/;
-var nameRegex = /^[a-zA-Z0-9]{1,20}( [a-zA-Z0-9]{1,20}){,4}$/;
-
 router.post('/', function(req, res, next) {
-    if (!enableUserCreation || req.token != userCreationToken) {
+    console.log(Date.now());
+    if (!enableUserCreation || req.body.token != userCreationToken) {
         res.status(401);
         res.json({message: "User creation not available"});
         return;
     }
-    if (!utils.stringRegex(req.body.username, userAndPassRegex)) {
+    if (!validator.username(req.body.username)) {
         res.status(422);
         res.json({message: "Invalid username"});
-    } else if (!utils.stringRegex(req.body.name, nameRegex)) {
+    } else if (!validator.name(req.body.name)) {
         res.status(422);
+        console.log("'" + req.body.name + "'");
         res.json({message: "Invalid name"});
-    } else if (!utils.stringRegex(req.body.password, userAndPassRegex)) {
+    } else if (!validator.password(req.body.password)) {
         res.status(422);
         res.json({message: "Invalid password"});
+    } else if (!validator.date(req.body.now)) {
+        res.status(422);
+        res.json({message: "must send creation time"});
     } else {
         var user = new UserModel();      // create the user
         user.username = req.body.username;
         user.name = req.body.name;
         user.password = req.body.password;
-        if (utils.isNumber(req.body.budget))
+        user.lastModified = new Date(req.body.now);
+        if (validator.number(req.body.budget))
             user.data.budget = req.body.budget;
-        if (utils.isNumber(req.body.assets))
+        if (validator.number(req.body.assets))
             user.data.assets = req.body.assets;
-        if (req.body.userOptions) {
-            if (req.body.userOptions.isNotify)
-                user.data.userOptions.isNotify = req.body.userOptions.isNotify;
-            if (utils.isNumber(req.body.userOptions.notifyTime))
-                user.data.userOptions.notifyTime = req.body.userOptions.notifyTime;
-            if (req.body.userOptions.isTrack)
-                user.data.userOptions.isTrack = req.body.userOptions.isTrack;
-        }
         user.save(function(err) {
             if (err) {
                 res.status(500);

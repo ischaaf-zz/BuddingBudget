@@ -104,7 +104,7 @@ var UIView = function(getData, setDataListener) {
 		var input = document.createElement('input');
 		input.class = "updateVal";
 		input.type="number";
-		//input.min = "0";
+		var p = document.createElement('p');
 
 		var button = document.createElement('button');
 		button.innerHTML = "Update";
@@ -116,15 +116,41 @@ var UIView = function(getData, setDataListener) {
 		li.appendChild(h32);
 		li.appendChild(input);
 		li.appendChild(button);
+		li.appendChild(p);
 		$("#savingsList").append(li);
 
-		/*$("#savingsList").append('<li><h3>Bicycle Fund</h3><h3>$500</h3><input data-controller="input-value" type="number" min="0"><button>Update</button></li>');*/
+		//add element to "savings" array
+		var save = new SavingsEntry(uuid, 0, true);
+		notifyListeners("addEntry", ["savings",
+			uuid, 
+			save, 
+			function() {
+			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "Add SAVINGS SUCCESS";
+			}, 
+			function(message) {
+			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
+		}]);
 	});
 
 	function updateMoneyEntry(uuid) {
 		var li = document.getElementById(uuid);
 		var val = li.getElementsByTagName('input')[0].value;
 		li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
+		
+		//What does isDefault do?! Set to false here
+		var save = new SavingsEntry(uuid, val, false);
+		notifyListeners("changeEntry", ["savings",
+			uuid, 
+			save, 
+			function() {
+			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "CHANGED SAVINGS SUCCESS";
+			}, 
+			function(message) {
+			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
+		}]);
+
+		console.log(getData("savings"));
+		//Todo: add uuid as name and val to entry
 	}
 		//hide delete
 		//$('#savingsList').removeClass('showIndicators');

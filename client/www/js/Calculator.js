@@ -12,11 +12,8 @@ var Calculator = function() {
 		// make sure dates are have no information about the hour, minute, seconds and milliseconds 
 		var now = new Date();
 		var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-		// check that endDate is set
-		if(!data.endDate) {
-			return 0;
-		}
-		var endDate = new Date(data.endDate.getFullYear(), data.endDate.getMonth(), data.endDate.getDate());
+		var endDate = new Date(data.endDate);
+		endDate = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
 		// check that endDate is later than today
 		if(endDate <= today) {
 			return 0;

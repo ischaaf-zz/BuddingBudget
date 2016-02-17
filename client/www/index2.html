@@ -1,0 +1,228 @@
+<!doctype html>
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="android-mobile-web-app-capable" content="yes">
+  <meta name="msapplication-tap-highlight" content="no">
+  <meta charset="UTF-8">
+  <title>Budding Budget</title>
+  <link rel="stylesheet" href="nativeDroid2-master/css/nativedroid2.color.light-green.css">
+  <script type="text/javascript" src="js/lib/jquery-1.12.0.min.js"></script>
+  <script type="text/javascript" src="js/lib/localforage.min.js"></script>
+  <script src="nativeDroid2-master/js/nativedroid2.js"></script>
+  
+   <style>
+    #mainList > li:hover {
+      background: #d9d9d9;
+    }
+    #mainList > li:hover > h3,
+    #mainList > li:hover > h4 {
+      color: #000;
+    }
+    #mainList > li.nav:hover::after {
+      border-color: #000;
+    }
+	
+	#budget {
+		font-size: 140%;
+		font-weight: bold;
+		color: green;
+	}
+	
+	/* Popup Demo Styles */
+    .attentionGrapper {
+      opacity: 0;
+      font-size: 12pt;
+      line-height: 14pt;
+      font-weight: 200;
+      font-family: SegoeWP, SegoeUI, HelveticaNeue, Roboto, Sans-serif;
+      padding: 0 15px;
+    }
+    .animatePopupMessage {
+      -webkit-animation-duration: 2s;
+      -webkit-animation-timing-function: linear;
+      -webkit-animation-name: updatePopupMessage;
+      animation-duration: 2s;
+      animation-timing-function: linear;
+      animation-name: updatePopupMessage;
+    }
+    @-webkit-keyframes updatePopupMessage {
+      0% { opacity: 0; }
+      20% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+    
+    @keyframes updatePopupMessage {
+      0% { opacity: 0; }
+      20% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+  </style>
+  
+</head>
+	<body>
+		<nav class="current">
+			<h1> Your Budget Plan </h1>
+		</nav>
+		
+		<article class="current" id="main"> 
+		<section>
+			<h2> Your Budget for Today</h2>
+			<h2 id="budget">$0</h2>
+		
+			<ul class="list" id="mainList">
+				<li class="nav" data-goto="assets">
+					<h3> Assets </h3>
+				</li>
+				<li class="nav" data-goto="savings" id="saveNext">
+					<h3> Savings </h3>
+				</li>
+				<li class="nav" data-goto="charges">
+					<h3> Recurring Charges </h3>
+				</li>
+				<li class="nav" data-goto="income">
+					<h3> Recurring Income </h3>
+				</li>
+				<li class="nav" data-goto="spending">
+					<h3> Track Spending </h3>
+				</li>
+				<li class="nav" data-goto="options">
+					<h3> Options </h3>
+				</li>
+			</ul>
+		</section>
+		</article>
+		
+		<nav class="next">
+			<button class="back"> Main </button>
+			<h1> Assets </h1>
+		</nav>
+		<article id="assets" class ="next">
+			<section>
+				<ul class='list'>
+					<li>
+						<h2> You have </h2>
+						<h2 id="prevAssets">$0</h2>
+						<p id='assetsSuccess' class='attentionGrapper'></p>
+					</li>
+					<li><lable>Enter Value to Update:</lable> 
+						<input id='setAssets' data-controller='input-value' type='number' min = "0">
+						<button id="buttonAssets"> Update </button>
+					</li>
+				</ul>
+			</section>
+		</article>
+		
+		<nav class="next">
+			<button class="back"> Main </button>
+			<h1> Savings </h1>
+		</nav>
+		<article id="savings" class ="next">
+			<section>
+				<p id='popupMessageTarget' class='attentionGrapper'></p>
+				<ul class='list' id='savingsList'>
+				</ul>
+				<p><button id='addSavings' class="button action">Add Entry</button></p>
+			</section>
+		</article>
+		
+		<nav class="next">
+			<button class="back"> Main </button>
+			<h1> Recurring Charges </h1>
+		</nav>
+		<article id="charges" class ="next">
+			<section>
+				<p id='popupMessageTarget' class='attentionGrapper'></p>
+				<ul class='list' id='chargesList'>
+				</ul>
+				<p><button id='addCharge' class="button action">Add Charge</button></p>
+				<p><button id='removeCharge' class="button action">Remove Charge</button></p>
+			</section>
+		</article>
+		
+		<nav class="next">
+			<button class="back"> Main </button>
+			<h1> Recurring Income </h1>
+		</nav>
+		<article id="income" class = "next">
+			<section>
+				<h3> You are here </h3>
+			</section>
+		</article>
+		
+		<nav class="next">
+			<button class="back"> Main </button>
+			<h1> Track Spending </h1>
+		</nav>
+		<article id="spending" class = "next">
+			<section>
+				<h3> You are here </h3>
+			</section>
+		</article>
+		
+		<nav class="next">
+			<button class="back"> Main </button>
+			<h1> Options </h1>
+		</nav>
+		<article id="options" class = "next">
+			<section>
+			  <ul class='list'>
+				<li class='comp'>
+				  <div>
+					<h3>Budget notification every morning</h3>
+				  </div>
+				  <aside>
+					<span class="switch" id="morningSwitch">
+					   <input data-controller='switch-value' type="checkbox" value="morning" name="morningSwitch">
+					</span>
+				  </aside>
+				</li>
+				<li class='comp'>
+				  <div>
+					<h3>Tracking reminder every night</h3>
+				  </div>
+				  <aside>
+					<span class="switch" id="nightSwitch">
+					  <input data-controller='switch-value' type="checkbox" value="night" name="nightSwitch">
+					</span>
+				  </aside>
+				</li>
+				<li class='comp'>
+				  <div>
+					<h3>Regular asset update reminder</h3>
+				  </div>
+				  <aside>
+					<span class="switch" id="assetSwitch">
+					  <input data-controller='switch-value' type="checkbox" value="assetReminder" name="assetSwitch">
+					</span>
+				  </aside>
+				</li>
+				<li class='comp'>
+				  <div>
+					<h3>Enable habit tracking</h3>
+				  </div>
+				  <aside>
+					<span class="switch" id="trackingSwitch">
+					  <input data-controller='switch-value' type="checkbox" value="tracking" name="trackingSwitch">
+					</span>
+				  </aside>
+				</li>
+			  </ul>
+			</section>
+		</article>
+
+		<script type="text/javascript" src="js/utility.js"></script>
+		<script type="text/javascript" src="js/Calculator.js"></script>
+		<script type="text/javascript" src="js/NetworkManager.js"></script>
+		<script type="text/javascript" src="js/DataManager.js"></script>
+		<script type="text/javascript" src="js/NotificationManager.js"></script>
+		<script type="text/javascript" src="js/UIView.js"></script>
+		<script type="text/javascript" src="js/UIController.js"></script>
+
+		<script type="text/javascript" src="js/RecurringManager.js"></script>
+		<script type="text/javascript" src="js/StorageManager.js"></script>
+		<script type="text/javascript" src="js/main.js"></script>
+	</body>
+</html>

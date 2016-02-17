@@ -14,8 +14,7 @@ var Calculator = function() {
 		var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 		var endDate = new Date(data.endDate);
 		endDate = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
-		// check that endDate is later than today
-		if(endDate <= today) {
+		if(!isTodayOrLater(endDate)) {
 			return 0;
 		}
 		var differenceMilliseconds = endDate - today;

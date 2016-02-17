@@ -83,24 +83,15 @@ var UIView = function(getData, setDataListener) {
 		});
 	});
 	
-	//-----------------BUTTONS--------------------------
-	
-	/*//hide savings edit buttons on return to main page
-	$("#saveNext").click(function() {
-		$('#savingsList').removeClass('showIndicators');
-        $('button.done').addClass('edit').removeClass('done').text('Edit');
-		//$('button.delete').hide();
-	});*/
-	
 	//make new element
-	function makeTemplate(catName, updateFn, listId) {
+	function makeTemplate(catName, val, updateFn, listId, isRecurring) {
 		var uuid = guid();
 		var li = document.createElement('li');
 		li.id = uuid;
 		var h3 = document.createElement('h3');
 		h3.innerHTML = catName;
 		var h32 = document.createElement('h2');
-		h32.innerHTML = "$0"
+		h32.innerHTML = "$" + val;
 		var input = document.createElement('input');
 		input.class = "updateVal";
 		input.type="number";
@@ -116,6 +107,17 @@ var UIView = function(getData, setDataListener) {
 		li.appendChild(h3);
 		li.appendChild(h32);
 		li.appendChild(input);
+
+		if(isRecurring) {
+			var select = document.createElement('select');
+			//TODO add options dynamically
+			var o1 = document.createElement('option');
+			o1.value = "monthly";
+			o1.innerHTML = "monthly";
+			select.appendChild(o1);
+			li.appendChild(select);
+		}
+
 		li.appendChild(button);
 		li.appendChild(p);
 		$(listId).append(li);
@@ -133,7 +135,7 @@ var UIView = function(getData, setDataListener) {
 			return;
 		}
 
-		var uuid = makeTemplate(catName, updateSavingsEntry, "#savingsList");
+		var uuid = makeTemplate(catName, 0, updateSavingsEntry, "#savingsList", false);
 
 		//generalize this? SavingsEntry
 		//add element to "savings" array
@@ -153,8 +155,8 @@ var UIView = function(getData, setDataListener) {
 	function updateSavingsEntry(uuid, catName) {
 		var li = document.getElementById(uuid);
 		var val = li.getElementsByTagName('input')[0].value;
-		li.getElementsByTagName('input')[0].value = "";
 		li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
+		li.getElementsByTagName('input')[0].value = "";
 		
 		//What does isDefault do?! Set to false here
 		var save = new SavingsEntry(catName, val, false);
@@ -167,43 +169,54 @@ var UIView = function(getData, setDataListener) {
 			function(message) {
 			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
 		}]);
-		//Todo: add uuid as name and val to entry
 	}
-		//hide delete
-		//$('#savingsList').removeClass('showIndicators');
-        //$('button.done').addClass('edit').removeClass('done').text('Edit');
-		//$('button.delete').hide();
-		
-        /*$.UIPopup({
-			id: "addEntrySavings",
-			title: 'Input Entry Name', 
-			cancelButton: 'CANCEL', 
-			continueButton: 'OK', 
-			message: '<input id="entryBox" data-controller="input-value">',
-			callback: function() {
-				//BUGGY: THIS LINE IS CURRENTLY RETURNING UNDEFINED for #entryBox
-				var temp = new SavingsEntry($("#entryBox").text(), 0, false);
-				
-				notifyListeners("addEntry", ["savings", temp, function() {
-					var popupMessageTarget = document.querySelector('#popupMessageTarget');
-					popupMessageTarget.textContent = 'Entry added.';
-					popupMessageTarget.classList.remove("animatePopupMessage");
-					popupMessageTarget.classList.add("animatePopupMessage");
-					
-					appendSavingsList(temp);
-				}, function(message) {
-					var popupMessageTarget = document.querySelector('#popupMessageTarget');
-					popupMessageTarget.textContent = 'Entry add FAILED.' + temp.name;
-					popupMessageTarget.classList.remove("animatePopupMessage");
-					popupMessageTarget.classList.add("animatePopupMessage");
-				}]);
-			}
-		});
-    });*/
 
+	function updateChargesEntry(uuid, catName) {
+		var li = document.getElementById(uuid);
+		var val = li.getElementsByTagName('input')[0].value;
+		li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
+		li.getElementsByTagName('input')[0].value = "";
+		var select = li.getElementsByTagName('select')[0];
+		var frequency = select.options[select.selectedIndex].value;
+		
+		//What does isDefault do?! Set to false here
+		var save = new ChargeEntry(catName, val, frequency, 5, false);
+		notifyListeners("changeEntry", ["charges",
+			catName,
+			save,
+			function() {
+			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "CHANGED CHARGES SUCCESS";
+			}, 
+			function(message) {
+			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
+		}]);
+	}
+
+
+        
 	$("#addCharge").click(function() {
-		var lastLi =  $("#chargesList")[$("#chargesList").length -1];
-		$("#chargesList").append('<div><li><h3>Rent</h3><h3>$500</h3><input data-controller="input-value" type="number" min="0"><button class="ui-btn ui-btn-inline">Update</button></li><div>');
+		var catName = document.getElementById("catNameDialog").value;
+		document.getElementById("catNameDialog").value = "";
+		console.log(catName);
+		if(catName == null || catName == "") {
+			return;
+		}
+
+		var uuid = makeTemplate(catName, 0, updateChargesEntry, "#chargesList", true);
+
+		//generalize this? SavingsEntry
+		//add element to "savings" array
+		var save = new ChargeEntry(catName, 0, 'monthly', 5, true);
+		notifyListeners("addEntry", ["charges",
+			save,
+			catName,
+			function() {
+				document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "ADD CHARGE SUCCESS";
+			}, 
+			function(message) {
+				document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
+		}]);
+		console.log(getData("charges"));
 	});
 	
 	//update assets

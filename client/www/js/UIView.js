@@ -37,17 +37,17 @@ var UIView = function(getData, setDataListener) {
 		});
 	});
 	
-	//delete items from savings list
-	$(function() {
-		$("#savingsList").UIEditList({
-			editLabel: "DELETE ENTRY",
-			movable: false,
-			deletable: true,
-			callback: function(list) {
-				//TODO:callback
-			}
-		});
-    });
+	// //delete items from savings list
+	// $(function() {
+	// 	$("#savingsList").UIEditList({
+	// 		editLabel: "DELETE ENTRY",
+	// 		movable: false,
+	// 		deletable: true,
+	// 		callback: function(list) {
+	// 			//TODO:callback
+	// 		}
+	// 	});
+ //    });
 	
 	//append to savings entry list
 	function appendSavingsList(ctx) {

@@ -18,7 +18,11 @@
 	<link rel="stylesheet" href="vendor/animate.css" />
   
 	<link rel="stylesheet" href="nativeDroid2-master/css/nativedroid2.css">
-	<div id="head"></div>
+	<style>
+		a {
+			padding: 0;
+		}
+	</style>
 </head>
 <body>
 	<div data-role="page">
@@ -54,9 +58,9 @@
 				<h1>Category name:</h1>
 			</div>
 			<div data-role='content' data-theme='b'>
-				<p>This is a popup description...</p>
+				<input id="catNameDialog" data-controller="input-value">
 				<div class='showastabs center nobg'>
-					<a href='#' data-rel='back' data-icon='ok' data-iconpos='left' data-role='button' data-inline='true'>Okay</a>
+					<a id="addSavings" href='#' data-rel='back' data-icon='ok' data-iconpos='left' data-role='button' data-inline='true'>Okay</a>
 					<a href='#' data-rel='back' data-icon='delete' data-iconpos='left' data-role='button' data-inline='true'>Cancel</a>
 				</div>
 			</div>
@@ -75,7 +79,7 @@
 				</ul>
 			</div>
 			<div>
-				<button href="#popupDialog" class="ui-btn ui-btn-raised clr-primary" id="addSavings">Add Saving</button>
+				<a href='#popupDialog' data-rel='popup' data-position-to='window' data-role='button' data-icon='external-link' data-transition='pop' data-inline='true' class="ui-btn ui-btn-raised clr-primary">Add Entry</a>
 			</div>
 		<!--FOOTER BELOW, can copy paste-->
 		</div>

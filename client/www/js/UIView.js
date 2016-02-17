@@ -26,6 +26,7 @@ var UIView = function(getData, setDataListener) {
 		
 		var arr = getData("savings");
 		arr.forEach(function(ctx) {
+			//Todo: replace with makeTemplate based on object
 			appendSavingsList(ctx);
 		});
 
@@ -91,6 +92,7 @@ var UIView = function(getData, setDataListener) {
 		//$('button.delete').hide();
 	});*/
 	
+	//make new element
 	function makeTemplate(catName, updateFn, listId) {
 		var uuid = guid();
 		var li = document.createElement('li');
@@ -123,8 +125,11 @@ var UIView = function(getData, setDataListener) {
 	//add new savings entry - popup with textbox to ask for entry name
 	$("#addSavings").click(function() {
 		//Todo: generalize this to makeTemplate(params)
-		var catName = prompt("Category name: ");
-		if(catName == null) {
+		var catName = document.getElementById("catNameDialog").value;
+
+		document.getElementById("catNameDialog").value = "";
+
+		if(catName == null || catName == "") {
 			return;
 		}
 
@@ -148,6 +153,7 @@ var UIView = function(getData, setDataListener) {
 	function updateSavingsEntry(uuid, catName) {
 		var li = document.getElementById(uuid);
 		var val = li.getElementsByTagName('input')[0].value;
+		li.getElementsByTagName('input')[0].value = "";
 		li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
 		
 		//What does isDefault do?! Set to false here

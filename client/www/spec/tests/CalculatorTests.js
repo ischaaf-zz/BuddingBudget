@@ -5,7 +5,7 @@ describe("Calculator", function() {
     beforeEach(function() {
         var baseTime = new Date(2016, 1, 13);
         jasmine.clock().mockDate(baseTime);
-        simpleSampleData.endDate = (new Date()).getTime() + MILLISECONDS_PER_DAY * 3, // 3 days from now
+        simpleSampleData.endDate = new Date(2016, 1, 16)
         calculator = new Calculator();
     });
 

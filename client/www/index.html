@@ -1,228 +1,100 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="android-mobile-web-app-capable" content="yes">
-  <meta name="msapplication-tap-highlight" content="no">
-  <meta charset="UTF-8">
-  <title>Budding Budget</title>
-  <link rel="stylesheet" href="chui/chui-android-3.9.2.min.css">
-  <script type="text/javascript" src="js/lib/jquery-1.12.0.min.js"></script>
-  <script type="text/javascript" src="js/lib/localforage.min.js"></script>
-  <script src="chui/chui-3.9.2.min.js"></script>
-  
-   <style>
-    #mainList > li:hover {
-      background: #d9d9d9;
-    }
-    #mainList > li:hover > h3,
-    #mainList > li:hover > h4 {
-      color: #000;
-    }
-    #mainList > li.nav:hover::after {
-      border-color: #000;
-    }
+	<title>Budding Budget</title>
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta name="android-mobile-web-app-capable" content="yes">
+	<meta name="msapplication-tap-highlight" content="no">
+	<meta charset="UTF-8">
 	
-	#budget {
-		font-size: 140%;
-		font-weight: bold;
-		color: green;
-	}
+	<script type="text/javascript" src="js/lib/jquery-1.12.0.min.js"></script>
+	<script type="text/javascript" src="js/lib/localforage.min.js"></script>
+	<script src="nativeDroid2-master/nd2settings.js"></script>
+	<script rel="stylesheet" href="nativeDroid2-master/css/nativedroid2.css"></script>
 	
-	/* Popup Demo Styles */
-    .attentionGrapper {
-      opacity: 0;
-      font-size: 12pt;
-      line-height: 14pt;
-      font-weight: 200;
-      font-family: SegoeWP, SegoeUI, HelveticaNeue, Roboto, Sans-serif;
-      padding: 0 15px;
-    }
-    .animatePopupMessage {
-      -webkit-animation-duration: 2s;
-      -webkit-animation-timing-function: linear;
-      -webkit-animation-name: updatePopupMessage;
-      animation-duration: 2s;
-      animation-timing-function: linear;
-      animation-name: updatePopupMessage;
-    }
-    @-webkit-keyframes updatePopupMessage {
-      0% { opacity: 0; }
-      20% { opacity: 1; }
-      90% { opacity: 1; }
-      100% { opacity: 0; }
-    }
-    
-    @keyframes updatePopupMessage {
-      0% { opacity: 0; }
-      20% { opacity: 1; }
-      90% { opacity: 1; }
-      100% { opacity: 0; }
-    }
-  </style>
+	<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css" />
+	<link rel="stylesheet" href="vendor/waves.min.css" />
+	<link rel="stylesheet" href="vendor/animate.css" />
   
+	<link rel="stylesheet" href="nativeDroid2-master/css/nativedroid2.css">
+	<div id="head"></div>
+	
+	<!-- Pull out into css file-->
+	<style>
+		#budget {
+			font-size:700%;
+			color: purple;
+			text-align: center;
+		}
+	</style>
 </head>
-	<body>
-		<nav class="current">
-			<h1> Your Budget Plan </h1>
-		</nav>
+<body>
+		<div data-role="page">
 		
-		<article class="current" id="main"> 
-		<section>
-			<h2> Your Budget for Today</h2>
-			<h2 id="budget">$0</h2>
-		
-			<ul class="list" id="mainList">
-				<li class="nav" data-goto="assets">
-					<h3> Assets </h3>
-				</li>
-				<li class="nav" data-goto="savings" id="saveNext">
-					<h3> Savings </h3>
-				</li>
-				<li class="nav" data-goto="charges">
-					<h3> Recurring Charges </h3>
-				</li>
-				<li class="nav" data-goto="income">
-					<h3> Recurring Income </h3>
-				</li>
-				<li class="nav" data-goto="spending">
-					<h3> Track Spending </h3>
-				</li>
-				<li class="nav" data-goto="options">
-					<h3> Options </h3>
-				</li>
-			</ul>
-		</section>
-		</article>
-		
-		<nav class="next">
-			<button class="back"> Main </button>
-			<h1> Assets </h1>
-		</nav>
-		<article id="assets" class ="next">
-			<section>
-				<ul class='list'>
-					<li>
-						<h2> You have </h2>
-						<h2 id="prevAssets">$0</h2>
-						<p id='assetsSuccess' class='attentionGrapper'></p>
-					</li>
-					<li><lable>Enter Value to Update:</lable> 
-						<input id='setAssets' data-controller='input-value' type='number' min = "0">
-						<button id="buttonAssets"> Update </button>
-					</li>
-				</ul>
-			</section>
-		</article>
-		
-		<nav class="next">
-			<button class="back"> Main </button>
-			<h1> Savings </h1>
-		</nav>
-		<article id="savings" class ="next">
-			<section>
-				<p id='popupMessageTarget' class='attentionGrapper'></p>
-				<ul class='list' id='savingsList'>
-				</ul>
-				<p><button id='addSavings' class="button action">Add Entry</button></p>
-			</section>
-		</article>
-		
-		<nav class="next">
-			<button class="back"> Main </button>
-			<h1> Recurring Charges </h1>
-		</nav>
-		<article id="charges" class ="next">
-			<section>
-				<p id='popupMessageTarget' class='attentionGrapper'></p>
-				<ul class='list' id='chargesList'>
-				</ul>
-				<p><button id='addCharge' class="button action">Add Charge</button></p>
-				<p><button id='removeCharge' class="button action">Remove Charge</button></p>
-			</section>
-		</article>
-		
-		<nav class="next">
-			<button class="back"> Main </button>
-			<h1> Recurring Income </h1>
-		</nav>
-		<article id="income" class = "next">
-			<section>
-				<h3> You are here </h3>
-			</section>
-		</article>
-		
-		<nav class="next">
-			<button class="back"> Main </button>
-			<h1> Track Spending </h1>
-		</nav>
-		<article id="spending" class = "next">
-			<section>
-				<h3> You are here </h3>
-			</section>
-		</article>
-		
-		<nav class="next">
-			<button class="back"> Main </button>
-			<h1> Options </h1>
-		</nav>
-		<article id="options" class = "next">
-			<section>
-			  <ul class='list'>
-				<li class='comp'>
-				  <div>
-					<h3>Budget notification every morning</h3>
-				  </div>
-				  <aside>
-					<span class="switch" id="morningSwitch">
-					   <input data-controller='switch-value' type="checkbox" value="morning" name="morningSwitch">
-					</span>
-				  </aside>
-				</li>
-				<li class='comp'>
-				  <div>
-					<h3>Tracking reminder every night</h3>
-				  </div>
-				  <aside>
-					<span class="switch" id="nightSwitch">
-					  <input data-controller='switch-value' type="checkbox" value="night" name="nightSwitch">
-					</span>
-				  </aside>
-				</li>
-				<li class='comp'>
-				  <div>
-					<h3>Regular asset update reminder</h3>
-				  </div>
-				  <aside>
-					<span class="switch" id="assetSwitch">
-					  <input data-controller='switch-value' type="checkbox" value="assetReminder" name="assetSwitch">
-					</span>
-				  </aside>
-				</li>
-				<li class='comp'>
-				  <div>
-					<h3>Enable habit tracking</h3>
-				  </div>
-				  <aside>
-					<span class="switch" id="trackingSwitch">
-					  <input data-controller='switch-value' type="checkbox" value="tracking" name="trackingSwitch">
-					</span>
-				  </aside>
-				</li>
-			  </ul>
-			</section>
-		</article>
+			<!-- panel left -->
+			<div data-role="panel" id="leftpanel" data-display="overlay" data-position-fixed="true" >
+				<div class='nd2-sidepanel-profile wow fadeInDown'>
+					<div class="row">
+						<div class='col-xs-8'>
+							<div class='box profile-text'>
+								<strong>Your Name</strong>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div data-inset="false"  data-collapsed-icon="carat-d" data-expanded-icon="carat-d" data-iconpos="right">
+					<ul data-role="listview" data-inset="false" data-icon="false" class="ui-listview">
+						<li><a href="index.html" data-ajax='false' data-icon="false">Daily Budget</a></li>
+						<li><a href="assets.html" data-ajax='false' data-icon="false">Assets</a></li>
+						<li><a href="savings.html" data-ajax='false' data-icon="false">Savings</a></li>
+						<li><a href="charges.html" data-ajax='false' data-icon="false">Recurring Charges</a></li>
+						<li><a href="income.html" data-ajax='false' data-icon="false">Recurring Income</a></li>
+						<li><a href="spending.html" data-ajax='false' data-icon="false">Track Spending</a></li>
+						<li><a href="options.html" data-ajax='false' data-icon="false">Options</a></li>
+					</ul>
+				</div>
+			</div>
+			<!-- /panel left -->
 
-		<script type="text/javascript" src="js/utility.js"></script>
-		<script type="text/javascript" src="js/Calculator.js"></script>
-		<script type="text/javascript" src="js/NetworkManager.js"></script>
-		<script type="text/javascript" src="js/DataManager.js"></script>
-		<script type="text/javascript" src="js/NotificationManager.js"></script>
-		<script type="text/javascript" src="js/UIView.js"></script>
-		<script type="text/javascript" src="js/UIController.js"></script>
+		<div data-role="header" data-position="fixed" class="wow fadeIn">
+			<a href="#leftpanel" class="ui-btn ui-btn-left wow fadeIn" data-wow-delay='0.8s'><i class="zmdi zmdi-menu"></i></a>
+			<h1 class="wow fadeIn" data-wow-delay='0.4s'>Daily Budget</h1>
+		</div>
 
-		<script type="text/javascript" src="js/RecurringManager.js"></script>
-		<script type="text/javascript" src="js/StorageManager.js"></script>
-		<script type="text/javascript" src="js/main.js"></script>
-	</body>
+		<div role="main" class="ui-content wow fadeIn" data-inset="false" data-wow-delay="0.2s">
+		<!--HEADER ABOVE, can copy paste-->
+			<h3>Your Budget for Today</h3>
+			<h1 id="budget">$0</h1>
+		<!--FOOTER BELOW, can copy paste-->
+		</div>
+	</div>
+
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+	<script>
+	    $(document).bind('mobileinit',function(){
+	        $.mobile.changePage.defaults.changeHash = false;
+	        $.mobile.hashListeningEnabled = false;
+	        $.mobile.pushStateEnabled = false;
+	    });
+	</script> 
+	<script src="http://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>
+	<script src="vendor/waves.min.js"></script>
+	<script src="vendor/wow.min.js"></script>
+	<script src="nativeDroid2-master/js/nativedroid2.js"></script>
+	<script src="nativeDroid2-master/nd2settings.js"></script>
+
+	<!-- ours -->
+	<script type="text/javascript" src="js/utility.js"></script>
+	<script type="text/javascript" src="js/Calculator.js"></script>
+	<script type="text/javascript" src="js/NetworkManager.js"></script>
+	<script type="text/javascript" src="js/DataManager.js"></script>
+	<script type="text/javascript" src="js/NotificationManager.js"></script>
+	<script type="text/javascript" src="js/UIView.js"></script>
+	<script type="text/javascript" src="js/UIController.js"></script>
+	<script type="text/javascript" src="js/RecurringManager.js"></script>
+	<script type="text/javascript" src="js/StorageManager.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
+</body>
 </html>

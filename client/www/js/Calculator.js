@@ -14,13 +14,12 @@ var Calculator = function() {
 		var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 		var endDate = new Date(data.endDate);
 		endDate = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
-		// check that endDate is later than today
-		if(endDate <= today) {
+		if(!isTodayOrLater(endDate)) {
 			return 0;
 		}
 		var differenceMilliseconds = endDate - today;
-		var millisecondsPerDay = 24 * 60 * 60 * 1000;
-		var differenceDays = Math.round(differenceMilliseconds / millisecondsPerDay);
+		// include last day
+		var differenceDays = Math.round(differenceMilliseconds / MILLISECONDS_PER_DAY) + 1;
 		return Math.floor(data.assets / differenceDays);
 	};
 

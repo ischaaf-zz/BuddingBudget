@@ -185,7 +185,13 @@
 							<p class="small">Regular asset update reminder</p>
 							<fieldset class="ui-grid-a">
 								<div class="ui-block-a"><input type="checkbox" id="assetNotice" data-role="flipswitch"></div>
-								<div class="ui-block-b"><button class="ui-btn ui-btn-inline ui-btn-right ui-disabled"><i class="zmdi zmdi-time-interval zmd-2x"></i></button></div>
+								<div class="ui-block-b"><button class="ui-btn ui-btn-inline ui-btn-right ui-disabled"></button>
+								<select id="selectAssetNotice">
+									<option value="1">Weekly</option>
+									<option value="2">Monthly</option>
+									<option value="3">Biweekly</option>
+									<option value="4">BiMonthly</option>
+								</select></div>
 							</fieldset>
 						</div>
 						<div data-role="fieldcontain">

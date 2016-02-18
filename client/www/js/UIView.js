@@ -22,7 +22,9 @@ var UIView = function(getData, setDataListener) {
 	
 	$(document).ready(function() {
 		//if PERSIST_DATA in utility.js is set to false temp data will be set here
-		setTempData();
+		if(!PERSIST_DATA) {
+			setTempData();
+		}
 		
 		var arr = getData("savings");
 		arr.forEach(function(ctx) {

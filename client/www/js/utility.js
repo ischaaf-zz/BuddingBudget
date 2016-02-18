@@ -1,6 +1,6 @@
 // Utility functions in the global namespace that may be useful for multiple objects
 
-var PERSIST_DATA = false;
+var PERSIST_DATA = true;
 
 var MILLISECONDS_PER_DAY = 24 * 60 * 60 * 1000;
 

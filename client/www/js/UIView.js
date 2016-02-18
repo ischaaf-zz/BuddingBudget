@@ -269,8 +269,8 @@ var UIView = function(getData, setDataListener) {
 			return;
 		}
 
-		var uuid = makeRecurringTemplate("charges", catName, 0, updateChargesEntry, "#chargesList");
-
+		var uuid = makeRecurringTemplate("charges", catName, 0, "monthly", updateChargesEntry, "#chargesList");
+		
 		//generalize this? SavingsEntry
 		//add element to "savings" array
 		var save = new ChargeEntry(catName, 0, 'monthly', 5, true);
@@ -352,25 +352,6 @@ var UIView = function(getData, setDataListener) {
 		}]);
 		document.getElementById("setAssets").value = "";
 	});
-	
-	// //attached to buttons defined in .ready()
-	// function changeSavingEntry(name, isDefault) {
-	// 	var save = new SavingsEntry(name, parseInt($("#text" + name).val()), isDefault);
-	// 	notifyListeners("changeEntry", ["savings", name, save, function() {
-	// 		$("#save" + name).html("CHANGED SAVINGS SUCCESS");
-	// 	}, function(message) {
-	// 		$("#save" + name).html("FAILED: " + message);
-	// 	}]);
-	// }
-
-	// function changeChargeEntry(name, isDefault) {
-	// 	var save = new ChargeEntry(name, parseInt($("#chargeInput" + name).val()), 1, new Date().toLocaleString(), isDefault);
-	// 	notifyListeners("changeEntry", ["charges", name, save, function() {
-	// 		$("#charge" + name).html("CHANGED CHARGES SUCCESS");
-	// 	}, function(message) {
-	// 		$("#charge" + name).html("FAILED: " + message);
-	// 	}]);
-	// }
 	
 	$("#habitTrack").change(function() {
 		var label = $("#habitTrack").prop("checked") ? "On" : "Off";

@@ -29,6 +29,11 @@ var UIView = function(getData, setDataListener) {
 			//Todo: replace with makeTemplate based on object
 			appendSavingsList(ctx);
 		});
+		
+		var arr = getData("options");
+		//TODO: replace with saved options
+		$("#trackTime").datebox('disable');
+		$("#budgetTime").datebox('disable');
 
 		var arr = getData("charges");
 		arr.forEach(function(ctx) {
@@ -242,9 +247,54 @@ var UIView = function(getData, setDataListener) {
 	
 	$("#habitTrack").change(function() {
 		var label = $("#habitTrack").prop("checked") ? "On" : "Off";
-		//selection and setOption not yet defined in UIController
+		//selection not yet defined in UIController
 		//TODO: Rewrite when defined
-		notifyListeners("budgetNotify", ["budgetNotify", label, function() {
+		notifyListeners("options", ["budgetNotify", label, function() {
+			//success
+		}, function(message) {
+			//failure
+		}]);
+	});
+	
+	$("#assetNotice").change(function() {
+		var label = $("#assetNotice").prop("checked") ? "On" : "Off";
+		//selection not yet defined in UIController
+		//TODO: Rewrite when defined
+		notifyListeners("options", ["assetNotice", label, function() {
+			//success
+		}, function(message) {
+			//failure
+		}]);
+	});
+	
+	$("#nightNotice").change(function() {
+		var label = $("#nightNotice").prop("checked") ? "On" : "Off";
+		if(label == 'On') {
+			$("#trackTime").datebox('enable');
+		} else {
+			$("#trackTime").datebox('disable');
+		}
+		
+		//selection not yet defined in UIController
+		//TODO: Rewrite when defined
+		notifyListeners("options", ["nightNotice", label, function() {
+			//success
+		}, function(message) {
+			//failure
+		}]);
+	});
+	
+	$("#morningNotice").change(function() {
+		var label = $("#morningNotice").prop("checked") ? "On" : "Off";
+		if(label == 'On') {
+			$("#budgetTime").datebox('enable');
+		} else {
+			$("#budgetTime").datebox('disable');
+		}
+		
+		//selection not yet defined in UIController
+		//TODO: Rewrite when defined
+		notifyListeners("options", ["morningNotice", label, function() {
 			//success
 		}, function(message) {
 			//failure

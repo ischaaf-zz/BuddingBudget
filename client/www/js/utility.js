@@ -98,15 +98,19 @@ var Options = function(isNotifyMorning, isNotifyNight, isNotifyAssets, notifyMor
 	this.notifyAssetsPeriod = notifyAssetsPeriod;
 };
 
-function findNextTime(entry) {
+function findNextTime(entry, startTime) {
 	var period = entry.period;
 	var start = entry.start;
 	var lastTime;
-	if(entry.nextTime) {
-		lastTime = new Date(entry.nextTime);
+	if(typeof startTime === "undefined") {
+		if(entry.nextTime) {
+			lastTime = new Date(entry.nextTime);
+		} else {
+			lastTime = new Date();
+			lastTime.setDate(lastTime.getDate() - 1);
+		}
 	} else {
-		lastTime = new Date();
-		lastTime.setDate(lastTime.getDate() - 1);
+		lastTime = startTime;
 	}
 	var nextTime = new Date(lastTime);
 	if(period == "monthly") {

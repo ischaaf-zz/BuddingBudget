@@ -32,7 +32,7 @@ var UIView = function(getData, setDataListener) {
 		var arr = getData("savings");
 		arr.forEach(function(ctx) {
 			//Todo: replace with makeTemplate based on object
-			makeTemplate(ctx.name, ctx.amount, updateSavingsEntry, "#savingsList", false)
+			makeTemplate("savings", ctx.name, ctx.amount, updateSavingsEntry, "#savingsList", false)
 		});
 		
 		var arr = getData("options");
@@ -42,7 +42,7 @@ var UIView = function(getData, setDataListener) {
 
 		var arr = getData("charges");
 		arr.forEach(function(ctx) {
-			makeTemplate(ctx.name, ctx.amount, updateChargesEntry, "#chargesList", true);
+			makeTemplate("charges", ctx.name, ctx.amount, updateChargesEntry, "#chargesList", true);
 		});
 	});
 	
@@ -73,7 +73,7 @@ var UIView = function(getData, setDataListener) {
 	});
 	
 	//make new element
-	function makeTemplate(catName, val, updateFn, listId, isRecurring) {
+	function makeTemplate(category, catName, val, updateFn, listId, isRecurring) {
 		var uuid = guid();
 		var li = document.createElement('li');
 		li.id = uuid;
@@ -97,7 +97,7 @@ var UIView = function(getData, setDataListener) {
 		deleteButton.classList.add("ui-btn", "ui-btn-inline");
 		deleteButton.innerHTML = "x";
 		deleteButton.onclick = (function() {
-			removeSavingsEntry(uuid, catName);
+			removeEntry(uuid, category, catName);
 		});
 
 		li.appendChild(h3);
@@ -110,7 +110,19 @@ var UIView = function(getData, setDataListener) {
 			var o1 = document.createElement('option');
 			o1.value = "monthly";
 			o1.innerHTML = "monthly";
+			var o2 = document.createElement('option');
+			o2.value = "weekly";
+			o2.innerHTML = "weekly";
+			var o3 = document.createElement('option');
+			o3.value = "biweekly";
+			o3.innerHTML = "biweekly";
+			var o4 = document.createElement('option');
+			o4.value = "twiceMonthly";
+			o4.innerHTML = "twiceMonthly";
 			select.appendChild(o1);
+			select.appendChild(o2);
+			select.appendChild(o3);
+			select.appendChild(o4);
 			li.appendChild(select);
 		}
 
@@ -122,11 +134,11 @@ var UIView = function(getData, setDataListener) {
 		return uuid;
 	}
 
-	function removeSavingsEntry(uuid, catName) {
-		notifyListeners("removeEntry", ["savings",
+	function removeEntry(uuid, category, catName) {
+		notifyListeners("removeEntry", [category,
 			catName,
 			function() {
-				document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "REMOVE SAVINGS SUCCESS";
+				document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "REMOVE " + category.toUpperCase() + " SUCCESS";
 			}, 
 			function(message) {
 				document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
@@ -144,7 +156,7 @@ var UIView = function(getData, setDataListener) {
 			return;
 		}
 
-		var uuid = makeTemplate(catName, 0, updateSavingsEntry, "#savingsList", false);
+		var uuid = makeTemplate("savings", catName, 0, updateSavingsEntry, "#savingsList", false);
 
 		//generalize this? SavingsEntry
 		//add element to "savings" array
@@ -214,7 +226,7 @@ var UIView = function(getData, setDataListener) {
 			return;
 		}
 
-		var uuid = makeTemplate(catName, 0, updateChargesEntry, "#chargesList", true);
+		var uuid = makeTemplate("charges", catName, 0, updateChargesEntry, "#chargesList", true);
 
 		//generalize this? SavingsEntry
 		//add element to "savings" array

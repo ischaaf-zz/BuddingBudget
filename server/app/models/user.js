@@ -29,8 +29,8 @@ var ChargeEntry = new Schema({
 
 var TrackEntry = new Schema({
   budget: Number,
-  spent: Number,
-  date: {type: String, index: true, unique: true}
+  amount: Number,
+  day: {type: String, index: true, unique: true}
 });
 
 // var OptionsEntry = new Schema ({
@@ -64,12 +64,3 @@ var UserSchema = new Schema ({
 });
 
 module.exports = mongoose.model('User', UserSchema);
-
-// module.exports = {
-//     Savings: mongoose.model('Savings', SavingsEntry),
-//     Income: mongoose.model('Income', IncomeEntry),
-//     Charge: mongoose.model('Charge', ChargeEntry),
-//     Track: mongoose.model('Track', TrackEntry),
-//     Options: mongoose.model('Options', OptionsEntry),
-//     User: mongoose.model('User', UserSchema)
-// };

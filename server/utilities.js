@@ -1,65 +1,169 @@
-var mongoose = require('mongoose');
+var UserModel = require('./app/models/user');
+var session   = require('client-sessions');
 
-function existsAndMatches(value, regex) {
+function validateString(required, value, regex) {
+	var result = new ValidationResult(required, value, true, "", value);
 	if (!value) {
-		return false;
+		result.valid = false;
+		result.message = "Parameter was not defined";
+	} else if (regex && !regex.test(value)) {
+		result.valid = false;
+		result.message = "Parameter failed to pass regex test";
 	}
-	return regex.test(value);
+	return result;
 }
 
-function existsAndNumber(value) {
-	return !isNaN(value);
+function validateNumber(required, value, min, max) {
+	var result = new ValidationResult(required, undefined, true, "", value);
+	if (value == undefined) {
+		result.valid = false;
+		result.message = "Parameter was not defined";
+	} else if (isNaN(value)) {
+		result.valid = false;
+		result.message = "Parameter was not a number";
+	} else if (min && value < min) {
+		result.valid = false;
+		result.message = "Parameter must be greater than " + min;
+	} else if (max && value < max) {
+		result.valid = false;
+		result.message = "Parameter must be less than " + max;
+	} else {
+		result.value = parseFloat(value);
+	}
+	return result;
 }
 
-function validateUsername(username) {
-	return username && 
-		typeof(username) == 'string' && 
-		/^[a-zA-Z0-9]{1,20}$/.test(username);
-}
-
-function validatePassword(password) {
-	return password && 
-		typeof(password) == 'string' && 
-		/^[a-zA-Z0-9]{1,20}$/.test(password);	
-}
-
-function validateName(name) {
-	return name && 
-		typeof(name) == 'string' && 
-		/^[a-zA-Z0-9 ]{1,20}$/.test(name);
-}
-
-function validateNumber(number) {
-	return number && !isNaN(number);
-}
-
-function validateString(string) {
-	return string && typeof(string) == 'string';
-}
-
-function validateDate(date) {
-	if (typeof date != 'Date')
-		date = new Date(date);
-
-	return date && date.toString() != 'Invalid Date';
-}
-
-function modifyUser(req, res, useranme, whatToDo) {
-	mongoose.findOne({'username': username}, function(err, user) {
-		if (!user) {
-			res.status(404);
-			res.json({message: "user not found"});
+function validateDate(required, value) {
+	var result = new ValidationResult(required, undefined, true, "", value);
+	if (!value) {
+		result.valid = false;
+		result.message = "Parameter was not defined";
+	} else if (typeof(value) != "Date") {
+		if (isNaN(value)) {
+			value = new Date(Date.parse(value));
 		} else {
-			whatToDo(req, res, user);
+			value = new Date(value);
 		}
-	});
+		result.value = value;
+		if (isNaN(value.getTime())) {
+			result.valid = false;
+			result.message = "Parameter was not a valid date";
+		}
+	}
+	return result;
+}
+
+function validateBool(required, value) {
+	var result = new ValidationResult(required, undefined, true, "", value);
+	if (value == undefined) {
+		result.valid = false;
+		result.message = "Parameter was not defined";
+	} else if (value.toString().toLowerCase() == 'true') {
+		result.value = true;
+	} else if (value.toString().toLowerCase() == 'false') {
+		result.value = false;
+	} else {
+		result.valid = false;
+		result.message = "Parameter was not a valid boolean";
+	}
+	return result;
+}
+
+function modifyUser(req, res, whatToDo) {
+	if (!session.user) {
+		res.status(401);
+		res.json({message: "not logged in"});
+	} else {
+		UserModel.findOne({'username': session.user}, function(err, user) {
+			if (err) {
+				res.status(500);
+				res.send(err);
+			} else if (!user) {
+				res.status(404);
+				res.json({message: "user not found"});
+			} else {
+				var lastModified = validateDate(true, req.body.lastModified);
+				if (!lastModified.valid || lastModified.value.getTime() != user.lastModified.getTime()) {
+					res.status(409).json({message: "you do not have the most recent update for this user"});
+				} else {
+					var success = whatToDo(req, res, user);
+					if (success) {
+						var date = Date.now();
+						user.lastModified = date;
+						user.save(function(err) {
+							if (err) {
+								res.send(err);
+							} else {
+								res.json({message: "Success", modified: date});
+							}
+						});
+					}
+				}
+			}
+		});
+	}
+}
+
+function getUser(req, res, whatToDo) {
+	if (!session.user) {
+		res.status(401);
+		res.json({message: "not logged in"});
+	} else {
+		UserModel.findOne({'username': session.user}, function(err, user) {
+			if (err) {
+				res.status(500);
+				res.send(err);
+			} else if (!user) {
+				res.status(404);
+				res.json({message: "user not found"});
+			} else {
+				whatToDo(req, res, user);
+			}
+		});
+	}	
+}
+
+function Parameters() {
+	this.entries = {};
+	this.hasRequired = function() {
+		for (var name in this.entries) {
+			if (!this.entries.hasOwnProperty(name))
+				continue;
+			var result = this.entries[name];
+			if (result.required && !result.valid) {
+				return false;
+			}
+		}
+		return true;
+	};
+	this.getInvalid = function() {
+		var res = {};
+		for (var name in this.entries) {
+			if (!this.entries.hasOwnProperty(name))
+				continue;
+			var result = this.entries[name];
+			if (!result.valid) {
+				res[name] = result;
+			}
+		}
+		return res;
+	};
+}
+
+function ValidationResult(required, value, valid, message, original) {
+	this.required = required;
+	this.value = value;
+	this.valid = valid;
+	this.message = message;
+	this.original = original;
 }
 
 module.exports = {
-	username: validateUsername,
-	password: validatePassword,
-	name: validateName,
-	number: validateNumber,
-	string: validateString,
-	date: validateDate
+	validateString: validateString,
+	validateNumber: validateNumber,
+	validateDate: validateDate,
+	validateBool: validateBool,
+	modifyUser: modifyUser,
+	getUser: getUser,
+	Parameters: Parameters
 };

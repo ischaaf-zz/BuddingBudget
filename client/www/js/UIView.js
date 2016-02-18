@@ -240,6 +240,17 @@ var UIView = function(getData, setDataListener) {
 		}]);
 	}
 	
+	$("#habitTrack").change(function() {
+		var label = $("#habitTrack").prop("checked") ? "On" : "Off";
+		//selection and setOption not yet defined in UIController
+		//TODO: Rewrite when defined
+		notifyListeners("budgetNotify", ["budgetNotify", label, function() {
+			//success
+		}, function(message) {
+			//failure
+		}]);
+	});
+	
 	//----------------------------------------------//
 	// This is just an animation for popup callback, 
     // Not part of popup functionality.

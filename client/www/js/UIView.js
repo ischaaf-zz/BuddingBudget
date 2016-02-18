@@ -124,10 +124,9 @@ var UIView = function(getData, setDataListener) {
 	}
 	//add new savings entry - popup with textbox to ask for entry name
 	$("#addSavings").click(function() {
-		//Todo: generalize this to makeTemplate(params)
-		var catName = document.getElementById("catNameDialog").value;
+		var catName = document.getElementById("newSavingsName").value;
 
-		document.getElementById("catNameDialog").value = "";
+		document.getElementById("newSavingsName").value = "";
 
 		if(catName == null || catName == "") {
 			return;
@@ -192,8 +191,8 @@ var UIView = function(getData, setDataListener) {
 
         
 	$("#addCharge").click(function() {
-		var catName = document.getElementById("catNameDialog").value;
-		document.getElementById("catNameDialog").value = "";
+		var catName = document.getElementById("newChargeName").value;
+		document.getElementById("newChargeName").value = "";
 		console.log(catName);
 		if(catName == null || catName == "") {
 			return;

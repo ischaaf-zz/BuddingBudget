@@ -21,8 +21,15 @@ var Calculator = function() {
 		// calculate all changes that occur due to income and charges and save them in "changes".
 		var changes = {};
 		var currentDay = new Date(today);
-		changes[currentDay.getTime()] = data.assets;
-		for(var i = 0; i < data.income.length; i++) {
+
+		var sumOfSavings = 0;
+		for(var i = 0; i < data.savings.length; i++) {
+			sumOfSavings += data.savings[i].amount;
+		}
+		var availableAssets = data.assets - sumOfSavings;
+
+		changes[currentDay.getTime()] = availableAssets;
+		for(i = 0; i < data.income.length; i++) {
 			currentDay = new Date(today);
 			while(findNextTime(data.income[i], currentDay) <= endDate.getTime()) {
 				var nextTime = findNextTime(data.income[i], currentDay);
@@ -34,10 +41,10 @@ var Calculator = function() {
 				currentDay = new Date(nextTime);
 			}
 		}
-		for(var i = 0; i < data.charges.length; i++) {
+		for(i = 0; i < data.charges.length; i++) {
 			currentDay = new Date(today);
 			while(findNextTime(data.charges[i], currentDay) <= endDate.getTime()) {
-				var nextTime = findNextTime(data.charges[i], currentDay);
+				nextTime = findNextTime(data.charges[i], currentDay);
 				if(changes[nextTime]) {
 					changes[nextTime] -= data.charges[i].amount;
 				} else {
@@ -56,7 +63,7 @@ var Calculator = function() {
 
 		// compensate negative income days with earlier positive income to get rid of them
 		var compensationAmount = 0;
-		for(var i = 0; i < dates.length; i++) {
+		for(i = 0; i < dates.length; i++) {
 			changes[dates[i]] += compensationAmount;
 			compensationAmount = 0;
 			if(changes[dates[i]] <= 0) {
@@ -72,7 +79,7 @@ var Calculator = function() {
 		for(var date in changes) {
 			dates.push(date);
 		}
-		dates.sort().reverse();
+		dates.sort();
 
 		return maxAmountToSpend(changes, endDate);
 
@@ -98,7 +105,7 @@ var Calculator = function() {
 			}
 
 			function amountPossible(dailyAmount) {
-				var amountAvailable = data.assets;
+				var amountAvailable = availableAssets;
 				var lastDate = today;
 				for(var i = 0; i < dates.length; i++) {
 					var differenceMilliseconds = dates[i] - lastDate;

@@ -81,6 +81,12 @@ var UIView = function(getData, setDataListener) {
 		});
 	});
 	
+	setDataListener("options", function() {
+		var value = getData("options");
+		
+		$("#minBudget").html("$" + value.minDailyBudget);
+	});
+	
 	//make new element
 	function makeTemplate(catName, val, updateFn, listId, isRecurring) {
 		var uuid = guid();
@@ -228,6 +234,14 @@ var UIView = function(getData, setDataListener) {
             assetsSuccess.textContent = 'FAILED: ' + message;
             assetsSuccess.classList.remove("animatePopupMessage");
             assetsSuccess.classList.add("animatePopupMessage");
+		}]);
+	});
+	
+	$("#buttonMinDaily").click(function() {
+		notifyListeners("setOption", ["minDailyBudget", parseInt($("#setMinBudget").val()), function() {
+			//success
+		}, function(message) {
+			//failure
 		}]);
 	});
 	

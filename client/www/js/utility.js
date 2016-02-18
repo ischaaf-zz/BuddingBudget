@@ -89,13 +89,15 @@ var TrackEntry = function(amount, budget, day) {
 	this.day = day;
 };
 
-var Options = function(isNotifyMorning, isNotifyNight, isNotifyAssets, notifyMorningTime, notifyNightTime, notifyAssetsPeriod) {
+var Options = function(isNotifyMorning, isNotifyNight, isNotifyAssets, isEnableTracking, notifyMorningTime, notifyNightTime, notifyAssetsPeriod, minDailyBudget) {
 	this.isNotifyMorning = isNotifyMorning;
 	this.isNotifyNight = isNotifyNight;
 	this.isNotifyAssets = isNotifyAssets;
+	this.isEnableTracking = isEnableTracking;
 	this.notifyMorningTime = notifyMorningTime;
 	this.notifyNightTime = notifyNightTime;
 	this.notifyAssetsPeriod = notifyAssetsPeriod;
+	this.minDailyBudget = minDailyBudget;
 };
 
 function findNextTime(entry, startTime) {

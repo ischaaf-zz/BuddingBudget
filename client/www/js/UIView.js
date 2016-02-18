@@ -189,7 +189,9 @@ var UIView = function(getData, setDataListener) {
 		document.getElementById(uuid).remove();
 	}
 
-	//add new savings entry - popup with textbox to ask for entry name
+	//--------------------------------------
+	// 			Savings
+	//--------------------------------------
 	$("#addSavings").click(function() {
 		var catName = document.getElementById("newSavingsName").value;
 
@@ -237,6 +239,32 @@ var UIView = function(getData, setDataListener) {
 		}]);
 	}
 
+	//--------------------------------------
+	// 			Charge
+	//--------------------------------------
+	$("#addCharge").click(function() {
+		var catName = document.getElementById("newChargeName").value;
+		document.getElementById("newChargeName").value = "";
+		if(catName == null || catName == "") {
+			return;
+		}
+
+		var uuid = makeRecurringTemplate("charges", catName, 0, "monthly", updateChargesEntry, "#chargesList");
+		
+		//generalize this? SavingsEntry
+		//add element to "savings" array
+		var save = new ChargeEntry(catName, 0, 'monthly', 5, true);
+		notifyListeners("addEntry", ["charges",
+			save,
+			catName,
+			function() {
+				document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "ADD CHARGE SUCCESS";
+			}, 
+			function(message) {
+				document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
+		}]);
+	});
+
 	function updateChargesEntry(uuid, catName) {
 		var li = document.getElementById(uuid);
 		var val = li.getElementsByTagName('input')[0].value;
@@ -261,30 +289,34 @@ var UIView = function(getData, setDataListener) {
 			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
 		}]);
 	}
-
-	$("#addCharge").click(function() {
-		var catName = document.getElementById("newChargeName").value;
-		document.getElementById("newChargeName").value = "";
+	
+	//--------------------------------------
+	// 			Income
+	//--------------------------------------
+	$("#addIncome").click(function() {
+		var catName = document.getElementById("newIncomeName").value;
+		document.getElementById("newIncomeName").value = "";
 		if(catName == null || catName == "") {
 			return;
 		}
 
-		var uuid = makeRecurringTemplate("charges", catName, 0, "monthly", updateChargesEntry, "#chargesList");
-		
+		var uuid = makeRecurringTemplate("income", catName, 0, "monthly", updateIncomeEntry, "#incomeList");
+
 		//generalize this? SavingsEntry
 		//add element to "savings" array
-		var save = new ChargeEntry(catName, 0, 'monthly', 5, true);
-		notifyListeners("addEntry", ["charges",
+		var save = new IncomeEntry(catName, 0, "monthly", 1, 5, true);
+		notifyListeners("addEntry", ["income",
 			save,
 			catName,
 			function() {
-				document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "ADD CHARGE SUCCESS";
+				document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "ADD INCOME SUCCESS";
 			}, 
 			function(message) {
 				document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
 		}]);
 	});
 
+	
 	function updateIncomeEntry(uuid, catName) {
 		var li = document.getElementById(uuid);
 		var val = li.getElementsByTagName('input')[0].value;
@@ -312,29 +344,6 @@ var UIView = function(getData, setDataListener) {
 		console.log(getData("income"));
 	}
 
-	$("#addIncome").click(function() {
-		var catName = document.getElementById("newIncomeName").value;
-		document.getElementById("newIncomeName").value = "";
-		if(catName == null || catName == "") {
-			return;
-		}
-
-		var uuid = makeRecurringTemplate("income", catName, 0, "monthly", updateIncomeEntry, "#incomeList");
-
-		//generalize this? SavingsEntry
-		//add element to "savings" array
-		var save = new IncomeEntry(catName, 0, "monthly", 1, 5, true);
-		notifyListeners("addEntry", ["income",
-			save,
-			catName,
-			function() {
-				document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "ADD INCOME SUCCESS";
-			}, 
-			function(message) {
-				document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
-		}]);
-	});
-	
 	//--------------------------------------
 	// 			Assets
 	//--------------------------------------

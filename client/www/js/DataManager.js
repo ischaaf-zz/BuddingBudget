@@ -11,7 +11,7 @@ var DataManager = function() {
 
 	// DataManager won't fire callbacks unless it's
 	// marked as having started
-	// var isStarted = false;
+	var isStarted = false;
 
 	// Representation of the user's data - a cache of the
 	// data stored in localStorage / network storage
@@ -41,7 +41,9 @@ var DataManager = function() {
 		if(notXorArray && (typeof(data[category]) === typeof(newData))) {
 			var oldBudget = data.budget;
 			data[category] = deepCopy(newData);
-			data.budget = calculator.calculateBudget(data);
+			if(isStarted) {
+				data.budget = calculator.calculateBudget(data);
+			}
 			if(data.budget != oldBudget) {
 				notifyListeners("budget");
 			}
@@ -74,7 +76,7 @@ var DataManager = function() {
 	// calculates the initial budget and fires a ready event
 	this.start = function() {
 		data.budget = calculator.calculateBudget(data);
-		// isStarted = true;
+		isStarted = true;
 		notifyListeners("ready");
 	};
 
@@ -85,14 +87,14 @@ var DataManager = function() {
 	// Notifies all listeners for event with the first argument
 	// event, followed by the arguments in args
 	function notifyListeners(event, args) {
-		// if(isStarted) {
+		if(isStarted) {
 			args = args || [];
 			args.unshift(event);
 			var callbackArr = callbacks[event] || [];
 			for(var i = 0; i < callbackArr.length; i++) {
 				callbackArr[i].apply(window, args);
 			}
-		// }
+		}
 	}
 
 };

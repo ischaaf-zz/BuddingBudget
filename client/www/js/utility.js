@@ -1,7 +1,8 @@
 // Utility functions in the global namespace that may be useful for multiple objects
 
-var PERSIST_DATA = false;
+var PERSIST_DATA = true;
 
+var MILLISECONDS_PER_DAY = 24 * 60 * 60 * 1000;
 
 // Checks if two date objects represent the same day
 // Assumes the user's current time zone applies for both dates.
@@ -97,15 +98,19 @@ var Options = function(isNotifyMorning, isNotifyNight, isNotifyAssets, notifyMor
 	this.notifyAssetsPeriod = notifyAssetsPeriod;
 };
 
-function findNextTime(entry) {
+function findNextTime(entry, startTime) {
 	var period = entry.period;
 	var start = entry.start;
 	var lastTime;
-	if(entry.nextTime) {
-		lastTime = new Date(entry.nextTime);
+	if(typeof startTime === "undefined") {
+		if(entry.nextTime) {
+			lastTime = new Date(entry.nextTime);
+		} else {
+			lastTime = new Date();
+			lastTime.setDate(lastTime.getDate() - 1);
+		}
 	} else {
-		lastTime = new Date();
-		lastTime.setDate(lastTime.getDate() - 1);
+		lastTime = startTime;
 	}
 	var nextTime = new Date(lastTime);
 	if(period == "monthly") {

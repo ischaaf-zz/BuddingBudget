@@ -32,7 +32,7 @@ var UIView = function(getData, setDataListener) {
 		var arr = getData("savings");
 		arr.forEach(function(ctx) {
 			//Todo: replace with makeTemplate based on object
-			appendSavingsList(ctx);
+			makeTemplate(ctx.name, ctx.amount, updateSavingsEntry, "#savingsList", false)
 		});
 		
 		var arr = getData("options");
@@ -42,18 +42,9 @@ var UIView = function(getData, setDataListener) {
 
 		var arr = getData("charges");
 		arr.forEach(function(ctx) {
-			$("#chargesList").append('<div><li id =ch"'+ ctx.name + '"><h3>' + "ch" + ctx.name + '</h3><h3 id="prevCh' + ctx.name + '">$' + ctx.amount +'</h3><input id="chargeInput' + ctx.name + '" data-controller="input-value" type="number" min = "0"><button class="ui-btn ui-btn-inline" id="buttonCh' + ctx.name + '">Update</button><p id="charge' + ctx.name +'"></p></li></div>');
-			
-			$("#chargesList #buttonCh" + ctx.name).click(function() { changeChargeEntry(ctx.name, ctx.isDefault); });
+			makeTemplate(ctx.name, ctx.amount, updateChargesEntry, "#chargesList", true);
 		});
 	});
-	
-	//append to savings entry list
-	function appendSavingsList(ctx) {
-		$("#savingsList").append('<div><li id ="'+ ctx.name + '"><h3>' + ctx.name + '</h3><h3 id="prev' + ctx.name + '">$' + ctx.amount +'</h3><input id="text' + ctx.name + '" data-controller="input-value" type="number" min = "0"><button class="ui-btn ui-btn-inline" id="button' + ctx.name + '" >Update</button><p id="save' + ctx.name +'"></p></li></div>');
-			
-		$("#button" + ctx.name).click(function() { changeSavingEntry(ctx.name, ctx.isDefault); });
-	}
 	
 	//-----------------LISTENERS----------------------
 	// update budget when budget changes
@@ -102,6 +93,13 @@ var UIView = function(getData, setDataListener) {
 			updateFn(uuid, catName);
 		}); 
 
+		var deleteButton = document.createElement('button');
+		deleteButton.classList.add("ui-btn", "ui-btn-inline");
+		deleteButton.innerHTML = "x";
+		deleteButton.onclick = (function() {
+			removeSavingsEntry(uuid, catName);
+		});
+
 		li.appendChild(h3);
 		li.appendChild(h32);
 		li.appendChild(input);
@@ -117,11 +115,25 @@ var UIView = function(getData, setDataListener) {
 		}
 
 		li.appendChild(button);
+		li.appendChild(deleteButton);
 		li.appendChild(p);
 		$(listId).append(li);
 
 		return uuid;
 	}
+
+	function removeSavingsEntry(uuid, catName) {
+		notifyListeners("removeEntry", ["savings",
+			catName,
+			function() {
+				document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "REMOVE SAVINGS SUCCESS";
+			}, 
+			function(message) {
+				document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
+		}]);
+		document.getElementById(uuid).remove();
+	}
+
 	//add new savings entry - popup with textbox to ask for entry name
 	$("#addSavings").click(function() {
 		var catName = document.getElementById("newSavingsName").value;
@@ -146,16 +158,18 @@ var UIView = function(getData, setDataListener) {
 			function(message) {
 				document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
 		}]);
-		console.log(getData("savings"));
 	});
 
 	function updateSavingsEntry(uuid, catName) {
 		var li = document.getElementById(uuid);
 		var val = li.getElementsByTagName('input')[0].value;
+		if(val == "") {
+			return;
+		}
+
 		li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
 		li.getElementsByTagName('input')[0].value = "";
 		
-		//What does isDefault do?! Set to false here
 		var save = new SavingsEntry(catName, parseInt(val), false);
 		notifyListeners("changeEntry", ["savings",
 			catName,
@@ -171,6 +185,10 @@ var UIView = function(getData, setDataListener) {
 	function updateChargesEntry(uuid, catName) {
 		var li = document.getElementById(uuid);
 		var val = li.getElementsByTagName('input')[0].value;
+		if(val == "") {
+			return;
+		}
+
 		li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
 		li.getElementsByTagName('input')[0].value = "";
 		var select = li.getElementsByTagName('select')[0];
@@ -189,11 +207,9 @@ var UIView = function(getData, setDataListener) {
 		}]);
 	}
 
-        
 	$("#addCharge").click(function() {
 		var catName = document.getElementById("newChargeName").value;
 		document.getElementById("newChargeName").value = "";
-		console.log(catName);
 		if(catName == null || catName == "") {
 			return;
 		}
@@ -212,7 +228,6 @@ var UIView = function(getData, setDataListener) {
 			function(message) {
 				document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
 		}]);
-		console.log(getData("charges"));
 	});
 	
 	//update assets

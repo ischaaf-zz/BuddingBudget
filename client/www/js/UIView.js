@@ -29,6 +29,11 @@ var UIView = function(getData, setDataListener) {
 			//Todo: replace with makeTemplate based on object
 			appendSavingsList(ctx);
 		});
+		
+		var arr = getData("options");
+		//TODO: replace with saved options
+		$("#trackTime").datebox('disable');
+		$("#budgetTime").datebox('disable');
 
 		var arr = getData("charges");
 		arr.forEach(function(ctx) {
@@ -242,9 +247,54 @@ var UIView = function(getData, setDataListener) {
 	
 	$("#habitTrack").change(function() {
 		var label = $("#habitTrack").prop("checked") ? "On" : "Off";
-		//selection and setOption not yet defined in UIController
+		//selection not yet defined in UIController
 		//TODO: Rewrite when defined
-		notifyListeners("budgetNotify", ["budgetNotify", label, function() {
+		notifyListeners("options", ["budgetNotify", label, function() {
+			//success
+		}, function(message) {
+			//failure
+		}]);
+	});
+	
+	$("#assetNotice").change(function() {
+		var label = $("#assetNotice").prop("checked") ? "On" : "Off";
+		//selection not yet defined in UIController
+		//TODO: Rewrite when defined
+		notifyListeners("options", ["assetNotice", label, function() {
+			//success
+		}, function(message) {
+			//failure
+		}]);
+	});
+	
+	$("#nightNotice").change(function() {
+		var label = $("#nightNotice").prop("checked") ? "On" : "Off";
+		if(label == 'On') {
+			$("#trackTime").datebox('enable');
+		} else {
+			$("#trackTime").datebox('disable');
+		}
+		
+		//selection not yet defined in UIController
+		//TODO: Rewrite when defined
+		notifyListeners("options", ["nightNotice", label, function() {
+			//success
+		}, function(message) {
+			//failure
+		}]);
+	});
+	
+	$("#morningNotice").change(function() {
+		var label = $("#morningNotice").prop("checked") ? "On" : "Off";
+		if(label == 'On') {
+			$("#budgetTime").datebox('enable');
+		} else {
+			$("#budgetTime").datebox('disable');
+		}
+		
+		//selection not yet defined in UIController
+		//TODO: Rewrite when defined
+		notifyListeners("options", ["morningNotice", label, function() {
 			//success
 		}, function(message) {
 			//failure
@@ -275,50 +325,4 @@ var UIView = function(getData, setDataListener) {
 	  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
 	    s4() + '-' + s4() + s4() + s4();
 	}
-
-	// A mapping of each page to the user-facing
-	// name of the page
-	var pages = {
-		"page-main" : "Daily Budget",
-		"page-assets" : "Assets",
-		"page-savings" : "Savings",
-		"page-charges" : "Recurring Charges",
-		"page-income" : "Recurring Income",
-		"page-tracking" : "Track Spending",
-		"page-options" : "Options"
-	};
-
-	// The page currently being displayed
-	var activePage;
-
-	// Set the onclick for a pageID's button to fade to
-	// the given page.
-	function setUpPageSwitch(pageID) {
-		var pageIDs = Object.keys(pages);
-		$("#" + pageID + "-button").click(function() {
-			if(activePage !== pageID) {
-				$("#" + activePage).fadeOut("fast", function() {
-					$("#titleText").text(pages[pageID]);
-					$("#" + pageID).fadeIn("fast");
-				});
-				activePage = pageID;
-			}
-		});
-	}
-
-	// Set up page switches, and set starting page
-	// to the main budget page
-    function initialSetup() {
-    	var pageIDs = Object.keys(pages);
-    	for(var i = 0; i < pageIDs.length; i++) {
-    		setUpPageSwitch(pageIDs[i]);
-    		$("#" + pageIDs[i]).hide()
-    	}
-    	$("#page-main").show();
-    	$("#titleText").text(pages["page-main"]);
-    	activePage = "page-main";
-    }
-
-	initialSetup();
-
 };

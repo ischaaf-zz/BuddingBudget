@@ -32,18 +32,24 @@ var UIView = function(getData, setDataListener) {
 		var arr = getData("savings");
 		arr.forEach(function(ctx) {
 			//Todo: replace with makeTemplate based on object
-			makeTemplate("savings", ctx.name, ctx.amount, updateSavingsEntry, "#savingsList", false)
+			makeTemplate("savings", ctx.name, ctx.amount, updateSavingsEntry, "#savingsList")
+		});
+
+		var arr = getData("charges");
+		arr.forEach(function(ctx) {
+			makeRecurringTemplate("charges", ctx.name, ctx.amount, ctx.period, updateChargesEntry, "#chargesList");
 		});
 		
+		var arr = getData("income");
+		arr.forEach(function(ctx) {
+			makeRecurringTemplate("income", ctx.name, ctx.amount, ctx.period,
+				updateIncomeEntry, "#incomeList");
+		});
+
 		var arr = getData("options");
 		//TODO: replace with saved options
 		$("#trackTime").datebox('disable');
 		$("#budgetTime").datebox('disable');
-
-		var arr = getData("charges");
-		arr.forEach(function(ctx) {
-			makeTemplate("charges", ctx.name, ctx.amount, updateChargesEntry, "#chargesList", true);
-		});
 	});
 	
 	//-----------------LISTENERS----------------------
@@ -58,22 +64,60 @@ var UIView = function(getData, setDataListener) {
 	
 	// setup savings and update when there are changes
 	// warning: currently dependant on SavingsEntry internals
-	setDataListener("savings", function() {
-		var arr = getData("savings");
-		arr.forEach(function(ctx) {
-			$("#prev" + ctx.name).html("$" + ctx.amount);
-		});
-	});
+	// setDataListener("savings", function() {
+	// 	var arr = getData("savings");
+	// 	arr.forEach(function(ctx) {
+	// 		$("#prev" + ctx.name).html("$" + ctx.amount);
+	// 	});
+	// });
 
-	setDataListener("charges", function() {
-		var arr = getData("charges");
-		arr.forEach(function(ctx) {
-			$("#prevCh" + ctx.name).html("$" + ctx.amount);
-		});
-	});
+	// setDataListener("charges", function() {
+	// 	var arr = getData("charges");
+	// 	arr.forEach(function(ctx) {
+	// 		$("#prevCh" + ctx.name).html("$" + ctx.amount);
+	// 	});
+	// });
 	
 	//make new element
-	function makeTemplate(category, catName, val, updateFn, listId, isRecurring) {
+	function makeTemplate(category, catName, val, updateFn, listId) {
+		var uuid = guid();
+		var li = document.createElement('li');
+		li.id = uuid;
+		var h3 = document.createElement('h3');
+		h3.innerHTML = catName;
+		var h32 = document.createElement('h2');
+		h32.innerHTML = "$" + val;
+		var input = document.createElement('input');
+		input.class = "updateVal";
+		input.type="number";
+		var p = document.createElement('p');
+
+		var button = document.createElement('button');
+		button.classList.add("ui-btn", "ui-btn-inline");
+		button.innerHTML = "Update";
+		button.onclick = (function() {
+			updateFn(uuid, catName);
+		}); 
+
+		var deleteButton = document.createElement('button');
+		deleteButton.classList.add("ui-btn", "ui-btn-inline");
+		deleteButton.innerHTML = "x";
+		deleteButton.onclick = (function() {
+			removeEntry(uuid, category, catName);
+		});
+
+		li.appendChild(h3);
+		li.appendChild(h32);
+		li.appendChild(input);
+		li.appendChild(button);
+		li.appendChild(deleteButton);
+		li.appendChild(p);
+		$(listId).append(li);
+
+		return uuid;
+	}
+
+	function makeRecurringTemplate(category, catName, val, frequency, updateFn, listId) {
 		var uuid = guid();
 		var li = document.createElement('li');
 		li.id = uuid;
@@ -104,28 +148,26 @@ var UIView = function(getData, setDataListener) {
 		li.appendChild(h32);
 		li.appendChild(input);
 
-		if(isRecurring) {
-			var select = document.createElement('select');
-			//TODO add options dynamically
-			var o1 = document.createElement('option');
-			o1.value = "monthly";
-			o1.innerHTML = "monthly";
-			var o2 = document.createElement('option');
-			o2.value = "weekly";
-			o2.innerHTML = "weekly";
-			var o3 = document.createElement('option');
-			o3.value = "biweekly";
-			o3.innerHTML = "biweekly";
-			var o4 = document.createElement('option');
-			o4.value = "twiceMonthly";
-			o4.innerHTML = "twiceMonthly";
-			select.appendChild(o1);
-			select.appendChild(o2);
-			select.appendChild(o3);
-			select.appendChild(o4);
-			li.appendChild(select);
-		}
-
+		var select = document.createElement('select');
+		//TODO add options dynamically?
+		var o1 = document.createElement('option');
+		o1.value = "monthly";
+		o1.innerHTML = "monthly";
+		var o2 = document.createElement('option');
+		o2.value = "weekly";
+		o2.innerHTML = "weekly";
+		var o3 = document.createElement('option');
+		o3.value = "biweekly";
+		o3.innerHTML = "biweekly";
+		var o4 = document.createElement('option');
+		o4.value = "twiceMonthly";
+		o4.innerHTML = "twiceMonthly";
+		select.appendChild(o1);
+		select.appendChild(o2);
+		select.appendChild(o3);
+		select.appendChild(o4);
+		select.value = frequency;
+		li.appendChild(select);
 		li.appendChild(button);
 		li.appendChild(deleteButton);
 		li.appendChild(p);
@@ -133,6 +175,7 @@ var UIView = function(getData, setDataListener) {
 
 		return uuid;
 	}
+
 
 	function removeEntry(uuid, category, catName) {
 		notifyListeners("removeEntry", [category,
@@ -156,7 +199,7 @@ var UIView = function(getData, setDataListener) {
 			return;
 		}
 
-		var uuid = makeTemplate("savings", catName, 0, updateSavingsEntry, "#savingsList", false);
+		var uuid = makeTemplate("savings", catName, 0, updateSavingsEntry, "#savingsList");
 
 		//generalize this? SavingsEntry
 		//add element to "savings" array
@@ -226,7 +269,7 @@ var UIView = function(getData, setDataListener) {
 			return;
 		}
 
-		var uuid = makeTemplate("charges", catName, 0, updateChargesEntry, "#chargesList", true);
+		var uuid = makeRecurringTemplate("charges", catName, 0, updateChargesEntry, "#chargesList");
 
 		//generalize this? SavingsEntry
 		//add element to "savings" array
@@ -241,8 +284,60 @@ var UIView = function(getData, setDataListener) {
 				document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
 		}]);
 	});
+
+	function updateIncomeEntry(uuid, catName) {
+		var li = document.getElementById(uuid);
+		var val = li.getElementsByTagName('input')[0].value;
+		var select = li.getElementsByTagName('select')[0];
+		var frequency = select.options[select.selectedIndex].value;
+		
+		if(val == "") {
+			val = li.getElementsByTagName('h2')[0].innerHTML.split("$")[1];
+		}
+			li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
+			li.getElementsByTagName('input')[0].value = "";
+		
+		//What does isDefault do?! Set to false here
+		var save = new IncomeEntry(catName, val, frequency, 1, 5, true);
+		console.log(getData("income"));
+		notifyListeners("changeEntry", ["income",
+			catName,
+			save,
+			function() {
+			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "CHANGED INCOME SUCCESS";
+			}, 
+			function(message) {
+			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
+		}]);
+		console.log(getData("income"));
+	}
+
+	$("#addIncome").click(function() {
+		var catName = document.getElementById("newIncomeName").value;
+		document.getElementById("newIncomeName").value = "";
+		if(catName == null || catName == "") {
+			return;
+		}
+
+		var uuid = makeRecurringTemplate("income", catName, 0, "monthly", updateIncomeEntry, "#incomeList");
+
+		//generalize this? SavingsEntry
+		//add element to "savings" array
+		var save = new IncomeEntry(catName, 0, "monthly", 1, 5, true);
+		notifyListeners("addEntry", ["income",
+			save,
+			catName,
+			function() {
+				document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "ADD INCOME SUCCESS";
+			}, 
+			function(message) {
+				document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
+		}]);
+	});
 	
-	//update assets
+	//--------------------------------------
+	// 			Assets
+	//--------------------------------------
 	$("#buttonAssets").click(function() {
 		notifyListeners("updateAssets", [parseInt($("#setAssets").val()), function() {
 			document.querySelector('#assetsSuccess');
@@ -255,26 +350,27 @@ var UIView = function(getData, setDataListener) {
             assetsSuccess.classList.remove("animatePopupMessage");
             assetsSuccess.classList.add("animatePopupMessage");
 		}]);
+		document.getElementById("setAssets").value = "";
 	});
 	
-	//attached to buttons defined in .ready()
-	function changeSavingEntry(name, isDefault) {
-		var save = new SavingsEntry(name, parseInt($("#text" + name).val()), isDefault);
-		notifyListeners("changeEntry", ["savings", name, save, function() {
-			$("#save" + name).html("CHANGED SAVINGS SUCCESS");
-		}, function(message) {
-			$("#save" + name).html("FAILED: " + message);
-		}]);
-	}
+	// //attached to buttons defined in .ready()
+	// function changeSavingEntry(name, isDefault) {
+	// 	var save = new SavingsEntry(name, parseInt($("#text" + name).val()), isDefault);
+	// 	notifyListeners("changeEntry", ["savings", name, save, function() {
+	// 		$("#save" + name).html("CHANGED SAVINGS SUCCESS");
+	// 	}, function(message) {
+	// 		$("#save" + name).html("FAILED: " + message);
+	// 	}]);
+	// }
 
-	function changeChargeEntry(name, isDefault) {
-		var save = new ChargeEntry(name, parseInt($("#chargeInput" + name).val()), 1, new Date().toLocaleString(), isDefault);
-		notifyListeners("changeEntry", ["charges", name, save, function() {
-			$("#charge" + name).html("CHANGED CHARGES SUCCESS");
-		}, function(message) {
-			$("#charge" + name).html("FAILED: " + message);
-		}]);
-	}
+	// function changeChargeEntry(name, isDefault) {
+	// 	var save = new ChargeEntry(name, parseInt($("#chargeInput" + name).val()), 1, new Date().toLocaleString(), isDefault);
+	// 	notifyListeners("changeEntry", ["charges", name, save, function() {
+	// 		$("#charge" + name).html("CHANGED CHARGES SUCCESS");
+	// 	}, function(message) {
+	// 		$("#charge" + name).html("FAILED: " + message);
+	// 	}]);
+	// }
 	
 	$("#habitTrack").change(function() {
 		var label = $("#habitTrack").prop("checked") ? "On" : "Off";

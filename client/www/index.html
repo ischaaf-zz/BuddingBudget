@@ -119,7 +119,6 @@
 					<div>
 						<a href='#chargesPopupDialog' data-rel='popup' data-position-to='window' data-role='button' data-icon='external-link' data-transition='pop' data-inline='true' class="ui-btn ui-btn-raised clr-primary">Add Saving</a>
 					</div>
-					<p><button class="ui-btn ui-btn-raised clr-primary" id="removeCharge">Remove Charge</button></p>
 					<!--FOOTER BELOW, can copy paste-->
 				</div>
 			</div>
@@ -146,6 +145,33 @@
 			<div id="page-income">
 				<div role="main" class="ui-content wow fadeIn" data-inset="false" data-wow-delay="0.2s">
 					<!--HEADER ABOVE, can copy paste-->
+					<div id="page-charges">
+				<div role="main" class="ui-content wow fadeIn" data-inset="false" data-wow-delay="0.2s">
+					<!--HEADER ABOVE, can copy paste-->
+					<ul data-role="listview" data-icon="false" id="incomeList">
+					</ul>
+					<div>
+						<a href='#incomePopupDialog' data-rel='popup' data-position-to='window' data-role='button' data-icon='external-link' data-transition='pop' data-inline='true' class="ui-btn ui-btn-raised clr-primary">Add Income</a>
+					</div>
+					<!--FOOTER BELOW, can copy paste-->
+				</div>
+			</div>
+
+			<!-- popup -->
+			<div data-role='popup' id='incomePopupDialog' data-theme='b'>
+				<div data-role='header' data-theme='b'>
+					<h1>Category name:</h1>
+				</div>
+				<div data-role='content' data-theme='b'>
+					<input id="newIncomeName" data-controller="input-value" autofocus="autofocus">
+					<div class='showastabs center nobg'>
+						<a id="addIncome" href='#' data-rel='back' data-icon='ok' data-iconpos='left' data-role='button' data-inline='true'>Okay</a>
+						<a href='#' data-rel='back' data-icon='delete' data-iconpos='left' data-role='button' data-inline='true'>Cancel</a>
+					</div>
+				</div>
+			</div>
+			<!-- popup end -->
+
 					<!--FOOTER BELOW, can copy paste-->
 				</div>
 			</div>

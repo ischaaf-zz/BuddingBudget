@@ -48,7 +48,7 @@ var Calculator = function() {
 		}
 		console.log(changes);
 		// sort date keys in changes
-		dates = [];
+		var dates = [];
 		for(var date in changes) {
 			dates.push(date);
 		}
@@ -67,16 +67,54 @@ var Calculator = function() {
 		console.log(changes);
 		// TODO: error if negative at end
 
-		//return maxAmountToSpend(changes, endDate);
+		// sort date keys in changes again after deleting entries
+		dates = [];
+		for(var date in changes) {
+			dates.push(date);
+		}
+		dates.sort().reverse();
+
+		return maxAmountToSpend(changes, endDate);
 
 		function maxAmountToSpend(changes, endDate) {
-			// TODO
-		}
+			// Concat income
+			var amountAvailable = 0;
+			for(var i = 0; i < dates.length; i++) {
+				if(dates[i] > endDate.getTime()) {
+					break;
+				}
+				amountAvailable += changes[dates[i]];
+			}
 
-		var differenceMilliseconds = endDate - today;
-		// include last day
-		var differenceDays = Math.round(differenceMilliseconds / MILLISECONDS_PER_DAY) + 1;
-		return Math.floor(data.assets / differenceDays);
+			// see where it goes below 0
+			var differenceMilliseconds = endDate - today;
+			var differenceDays = Math.round(differenceMilliseconds / MILLISECONDS_PER_DAY) + 1;
+			var dailyAmount = amountAvailable / differenceDays;
+			var lastDatePossible = amountPossible(dailyAmount);
+			if(lastDatePossible >= endDate) {
+				return Math.floor(dailyAmount);
+			} else {
+				return maxAmountToSpend(changes, lastDatePossible);
+			}
+
+			function amountPossible(dailyAmount) {
+				var amountAvailable = data.assets;
+				var lastDate = today;
+				for(var i = 0; i < dates.length; i++) {
+					var differenceMilliseconds = dates[i] - lastDate;
+					// TODO: check if +1 needed for inclusive end date
+					var differenceDays = Math.round(differenceMilliseconds / MILLISECONDS_PER_DAY);
+					lastDate = dates[i];
+					amountAvailable -= dailyAmount * differenceDays;
+					if(amountAvailable < 0) {
+						lastDate.setDate(lastDate.getDate - 1);
+						return lastDate;
+					}
+					amountAvailable += changes[dates[i]];
+				}
+				return endDate;
+			}
+		}
 	};
 
 };

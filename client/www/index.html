@@ -15,18 +15,7 @@
 		<link rel="stylesheet" href="vendor/waves.min.css" />
 		<link rel="stylesheet" href="vendor/animate.css" />
 		<link rel="stylesheet" href="nativeDroid2-master/css/nativedroid2.css">
-		<div id="head"></div>
-		<!-- Pull out into css file-->
-		<style>
-			#budget {
-			font-size:700%;
-			color: purple;
-			text-align: center;
-			}
-			#titleText {
-			transition: all 0.5s ease;
-			}
-		</style>
+		<link rel="stylesheet" href="css/style.css">
 	</head>
 	<body>
 		<div data-role="page">
@@ -143,6 +132,42 @@
 			<div id="page-options">
 				<div role="main" class="ui-content wow fadeIn" data-inset="false" data-wow-delay="0.2s">
 					<!--HEADER ABOVE, can copy paste-->
+					<fieldset>
+						<div data-role="fieldcontain">
+							<p class="small">Budget notification</p>
+							<fieldset class="ui-grid-a">
+								<div class="ui-block-a"><input type="checkbox" id="morningNotice" data-role="flipswitch"></div>
+								<div class="ui-block-b ui-disabled"><input class="form-control" id="budgetTime" type="text" data-role="datebox" data-options='{"mode":"timeflipbox"}' /></div>
+							</fieldset>
+						</div>
+						<div data-role="fieldcontain">
+							<p class="small">Tracking reminder</p>
+							<fieldset class="ui-grid-a">
+								<div class="ui-block-a"><input type="checkbox" id="nightNotice" data-role="flipswitch"></div>
+								<div class="ui-block-b ui-disabled"><input class="form-control" id="trackTime" type="text" data-role="datebox" data-options='{"mode":"timeflipbox"}' /></div>
+							</fieldset>
+						</div>
+						<div data-role="fieldcontain">
+							<p class="small">Regular asset update reminder</p>
+							<fieldset class="ui-grid-a">
+								<div class="ui-block-a"><input type="checkbox" id="assetNotice" data-role="flipswitch"></div>
+								<div class="ui-block-b"><button class="ui-btn ui-btn-inline ui-btn-right ui-disabled"><i class="zmdi zmdi-time-interval zmd-2x"></i></button></div>
+							</fieldset>
+						</div>
+						<div data-role="fieldcontain">
+							<p class="small">Enable habit tracking</p>
+							<input type="checkbox" id="habitTrack" data-role="flipswitch">
+						</div>
+						<p class="center">Set minimum daily budget</p>
+						<div class="ui-grid-a">
+							<div class="ui-block-a">
+								<p id="minBudget">$10</p>
+							</div>
+							<div class="ui-block-b">
+								<input type="number" id="setMinBudget" data-clear-btn="true" min="0">
+							</div>
+						</div>
+					</fieldset>
 					<!--FOOTER BELOW, can copy paste-->
 				</div>
 			</div>

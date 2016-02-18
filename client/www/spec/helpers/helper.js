@@ -9,7 +9,7 @@ var today = new Date();
 
 var simpleSampleData = {
 	budget: 3,
-	assets: 20,
+	assets: 320,
 	endDate: today.getTime() + MILLISECONDS_PER_DAY * 3, // 3 days from now
 	savings: [new SavingsEntry('testSave', 300, true)],
 	charges: [new ChargeEntry('rent', 600, 'monthly', 1, false)],

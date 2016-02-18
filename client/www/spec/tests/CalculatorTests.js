@@ -34,7 +34,7 @@ describe("Calculator", function() {
             budget = calculator.calculateBudget(simpleSampleData);
             simpleSampleData.assets -= budget;
         }
-        expect(simpleSampleData.assets).toEqual(0);
+        expect(simpleSampleData.assets).toEqual(300);
         jasmine.clock().uninstall();
     });
 

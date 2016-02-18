@@ -29,7 +29,7 @@ var Calculator = function() {
 		var availableAssets = data.assets - sumOfSavings;
 
 		changes[currentDay.getTime()] = availableAssets;
-		for(var i = 0; i < data.income.length; i++) {
+		for(i = 0; i < data.income.length; i++) {
 			currentDay = new Date(today);
 			while(findNextTime(data.income[i], currentDay) <= endDate.getTime()) {
 				var nextTime = findNextTime(data.income[i], currentDay);
@@ -41,10 +41,10 @@ var Calculator = function() {
 				currentDay = new Date(nextTime);
 			}
 		}
-		for(var i = 0; i < data.charges.length; i++) {
+		for(i = 0; i < data.charges.length; i++) {
 			currentDay = new Date(today);
 			while(findNextTime(data.charges[i], currentDay) <= endDate.getTime()) {
-				var nextTime = findNextTime(data.charges[i], currentDay);
+				nextTime = findNextTime(data.charges[i], currentDay);
 				if(changes[nextTime]) {
 					changes[nextTime] -= data.charges[i].amount;
 				} else {
@@ -55,7 +55,7 @@ var Calculator = function() {
 		}
 		console.log(changes);
 		// sort date keys in changes
-		dates = [];
+		var dates = [];
 		for(var date in changes) {
 			dates.push(date);
 		}
@@ -63,7 +63,7 @@ var Calculator = function() {
 
 		// compensate negative income days with earlier positive income to get rid of them
 		var compensationAmount = 0;
-		for(var i = 0; i < dates.length; i++) {
+		for(i = 0; i < dates.length; i++) {
 			changes[dates[i]] += compensationAmount;
 			compensationAmount = 0;
 			if(changes[dates[i]] <= 0) {
@@ -74,16 +74,54 @@ var Calculator = function() {
 		console.log(changes);
 		// TODO: error if negative at end
 
-		//return maxAmountToSpend(changes, endDate);
+		// sort date keys in changes again after deleting entries
+		dates = [];
+		for(var date in changes) {
+			dates.push(date);
+		}
+		dates.sort();
+
+		return maxAmountToSpend(changes, endDate);
 
 		function maxAmountToSpend(changes, endDate) {
-			// TODO
-		}
+			// Concat income
+			var amountAvailable = 0;
+			for(var i = 0; i < dates.length; i++) {
+				if(dates[i] > endDate.getTime()) {
+					break;
+				}
+				amountAvailable += changes[dates[i]];
+			}
 
-		var differenceMilliseconds = endDate - today;
-		// include last day
-		var differenceDays = Math.round(differenceMilliseconds / MILLISECONDS_PER_DAY) + 1;
-		return Math.floor(availableAssets / differenceDays);
+			// see where it goes below 0
+			var differenceMilliseconds = endDate - today;
+			var differenceDays = Math.round(differenceMilliseconds / MILLISECONDS_PER_DAY) + 1;
+			var dailyAmount = amountAvailable / differenceDays;
+			var lastDatePossible = amountPossible(dailyAmount);
+			if(lastDatePossible >= endDate) {
+				return Math.floor(dailyAmount);
+			} else {
+				return maxAmountToSpend(changes, lastDatePossible);
+			}
+
+			function amountPossible(dailyAmount) {
+				var amountAvailable = availableAssets;
+				var lastDate = today;
+				for(var i = 0; i < dates.length; i++) {
+					var differenceMilliseconds = dates[i] - lastDate;
+					// TODO: check if +1 needed for inclusive end date
+					var differenceDays = Math.round(differenceMilliseconds / MILLISECONDS_PER_DAY);
+					lastDate = dates[i];
+					amountAvailable -= dailyAmount * differenceDays;
+					if(amountAvailable < 0) {
+						lastDate.setDate(lastDate.getDate - 1);
+						return lastDate;
+					}
+					amountAvailable += changes[dates[i]];
+				}
+				return endDate;
+			}
+		}
 	};
 
 };

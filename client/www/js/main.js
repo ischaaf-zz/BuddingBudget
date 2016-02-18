@@ -50,3 +50,9 @@ function setTempData() {
 	dataManager.setData('charges', chargesArray);
 	dataManager.setData('income', incomeArray);
 }
+
+function setEndDate(daysInFuture) {
+	storageManager.setEndDate((new Date()).getTime() + (24 * 60 * 60 * 1000 * daysInFuture));
+}
+
+setEndDate(5);

@@ -21,7 +21,14 @@ var Calculator = function() {
 		// calculate all changes that occur due to income and charges and save them in "changes".
 		var changes = {};
 		var currentDay = new Date(today);
-		changes[currentDay.getTime()] = data.assets;
+
+		var sumOfSavings = 0;
+		for(var i = 0; i < data.savings.length; i++) {
+			sumOfSavings += data.savings[i].amount;
+		}
+		var availableAssets = data.assets - sumOfSavings;
+
+		changes[currentDay.getTime()] = availableAssets;
 		for(var i = 0; i < data.income.length; i++) {
 			currentDay = new Date(today);
 			while(findNextTime(data.income[i], currentDay) <= endDate.getTime()) {
@@ -76,7 +83,7 @@ var Calculator = function() {
 		var differenceMilliseconds = endDate - today;
 		// include last day
 		var differenceDays = Math.round(differenceMilliseconds / MILLISECONDS_PER_DAY) + 1;
-		return Math.floor(data.assets / differenceDays);
+		return Math.floor(availableAssets / differenceDays);
 	};
 
 };

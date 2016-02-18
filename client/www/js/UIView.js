@@ -20,11 +20,14 @@ var UIView = function(getData, setDataListener) {
 		}
 	}
 	
-	$(document).ready(function() {
+	setDataListener('ready', function() {
 		//if PERSIST_DATA in utility.js is set to false temp data will be set here
 		if(!PERSIST_DATA) {
 			setTempData();
 		}
+
+		$("#budget").html("$" + getData("budget"));
+		$("#prevAssets").html("$" + getData("assets"));
 		
 		var arr = getData("savings");
 		arr.forEach(function(ctx) {
@@ -154,7 +157,7 @@ var UIView = function(getData, setDataListener) {
 		li.getElementsByTagName('input')[0].value = "";
 		
 		//What does isDefault do?! Set to false here
-		var save = new SavingsEntry(catName, val, false);
+		var save = new SavingsEntry(catName, parseInt(val), false);
 		notifyListeners("changeEntry", ["savings",
 			catName,
 			save,

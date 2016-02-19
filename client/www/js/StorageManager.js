@@ -109,7 +109,7 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 		} else {
 			data[index] = newVal;
 			if(saveData(category, data)) {
-				networkManager.changeEntry(category, name);
+				networkManager.changeEntry(category, name, newVal);
 			}
 			callFunc(success);
 		}

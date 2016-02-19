@@ -91,7 +91,11 @@ var UIView = function(getData, setDataListener) {
 		input.class = "updateVal";
 		input.type="number";
 		var p = document.createElement('p');
-
+		p.classList.add("attentionGrapper");
+		$("#" + uuid + " > p").on("webkitAnimationEnd", function() {
+			this.className = "";
+			this.textContent = "";
+    	});
 		var button = document.createElement('button');
 		button.classList.add("ui-btn", "ui-btn-inline");
 		button.innerHTML = "Update";
@@ -129,6 +133,11 @@ var UIView = function(getData, setDataListener) {
 		input.class = "updateVal";
 		input.type="number";
 		var p = document.createElement('p');
+		p.classList.add("attentionGrapper");
+		$("#" + uuid + " > p").on("webkitAnimationEnd", function() {
+			this.className = "";
+			this.textContent = "";
+    	});
 
 		var button = document.createElement('button');
 		button.classList.add("ui-btn", "ui-btn-inline");
@@ -185,11 +194,24 @@ var UIView = function(getData, setDataListener) {
 			save,
 			catName,
 			function() {
-			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "CHANGED " + category.toUpperCase() + " SUCCESS";
-			}, 
-			function(message) {
-			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
+			var p = document.getElementById(uuid).getElementsByTagName('p')[0];
+            p.html = 'CHANGED ' + category.toUpperCase() + ' SUCCESS';
+            p.classList.remove("animatePopupMessage");          
+            p.classList.add("animatePopupMessage");
+       	}, function(message) {
+			var p = document.getElementById(uuid).getElementsByTagName('p')[0];
+            p.html = 'FAILED: ' + message;
+            p.classList.remove("animatePopupMessage");          
+            p.classList.add("animatePopupMessage");
 		}]);
+		document.getElementById(uuid).getElementsByTagName('p')[0].value = "";
+            
+		// 	function() {
+		// 	document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "CHANGED " + category.toUpperCase() + " SUCCESS";
+		// 	}, 
+		// 	function(message) {
+		// 	document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
+		// }]);
 	}
 
 	//workaround for weird save/catName switch
@@ -198,11 +220,28 @@ var UIView = function(getData, setDataListener) {
 			catName,
 			save,
 			function() {
+			var p = document.getElementById(uuid).getElementsByTagName('p')[0];
+            p.textContent = 'CHANGED ' + category.toUpperCase() + ' SUCCESS';
+            p.classList.remove("animatePopupMessage");          
+            p.classList.add("animatePopupMessage");
+		}, function(message) {
+			var p = document.getElementById(uuid).getElementsByTagName('p')[0];
+            p.textContent = 'FAILED: ' + message;
+            p.classList.remove("animatePopupMessage");          
+            p.classList.add("animatePopupMessage");
+		}]);
+
+		document.getElementById(uuid).getElementsByTagName('p')[0].value = "";
+        
+		/*notifyListeners(call, [category,
+			catName,
+			save,
+			function() {
 			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "CHANGED " + category.toUpperCase() + " SUCCESS";
 			}, 
 			function(message) {
 			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
-		}]);
+		}]);*/
 	}
 
 	//--------------------------------------
@@ -223,6 +262,8 @@ var UIView = function(getData, setDataListener) {
 		//add element to "savings" array
 		var save = new SavingsEntry(catName, 0, true);
 		notify("addEntry", "savings", catName, save, uuid);
+
+		
 	});
 
 	function updateSavingsEntry(uuid, catName) {
@@ -399,6 +440,7 @@ var UIView = function(getData, setDataListener) {
 		this.className = "";
 		this.textContent = "";
     });
+
 	//----------------------------------------------//
 
 	//generates random uuid for html elements

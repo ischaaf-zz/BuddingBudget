@@ -72,13 +72,22 @@ var UIView = function(getData, setDataListener) {
 		var newDate = new Date(theDate);
 		$("#endDate").datebox('setTheDate', newDate).trigger('datebox', {'method':'doset'});
 		
+		//load times
+		var budgetTime = value.notifyMorningTime;
+		var newDate = new Date(budgetTime);
+		$("#budgetTime").datebox('setTheDate', newDate).trigger('datebox', {'method':'doset'});
+		
+		var trackTime = value.notifyNightTime;
+		var newDate = new Date(trackTime);
+		$("#trackTime").datebox('setTheDate', newDate).trigger('datebox', {'method':'doset'});
+		
 		//load min daily budget
 		$("#minBudget").html("$" + value.minDailyBudget);
 		
 		//TODO: replace with saved options
 		$("#trackTime").datebox('disable');
 		$("#budgetTime").datebox('disable');
-		
+		$("#selectAssetNotice").selectmenu('disable');
 	});
 	
 	//-----------------LISTENERS----------------------
@@ -493,7 +502,23 @@ var UIView = function(getData, setDataListener) {
 			//failure
 		}]);
 	});
-
+	
+	//callback for dateboxes
+	window.budgetNotify = function(date, initDate, duration, custom, cancelClose) {
+		notifyListeners("setOption", ["notifyMorningTime", date.date.getTime(), function() {
+			//success
+		}, function(message) {
+			//failure
+		}]);
+	}
+	
+	window.trackNotify = function(date, initDate, duration, custom, cancelClose) {
+		notifyListeners("setOption", ["notifyNightTime", date.date.getTime(), function() {
+			//success
+		}, function(message) {
+			//failure
+		}]);
+	}
 	
 	//----------------------------------------------//
 	// This is just an animation for popup callback, 

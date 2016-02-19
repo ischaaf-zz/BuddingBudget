@@ -45,17 +45,22 @@ var RecurringManager = function(saveAssets, saveCharges, saveIncome) {
 	// charge, and the difference between its nextTime entry
 	// and the current time. Sets a timer for it to be called
 	// again next time.
-	function updateCharge(entry, index) {
-		var now = new Date();
-		while(entry.nextTime < now || isToday(new Date(entry.nextTime))) {
-			saveAssets(-1 * entry.amount);
-			entry.nextTime = findNextTime(entry);
+	function updateCharge(entry, index, remainingTime) {
+		var nextCallTime = remainingTime;
+		if(!remainingTime) {
+			var now = new Date();
+			while(entry.nextTime < now || isToday(new Date(entry.nextTime))) {
+				saveAssets(-1 * entry.amount);
+				entry.nextTime = findNextTime(entry);
+			}
+			saveCharges(charges, entry);
+			var beginningNextDay = entry.nextTime - (entry.nextTime % MILLISECONDS_PER_DAY);
+			var nextCallTime = beginningNextDay + 60000 - now.getTime();
 		}
-		saveCharges(charges, entry);
-		var beginningNextDay = entry.nextTime - (entry.nextTime % MILLISECONDS_PER_DAY);
+		remainingTime = Math.max(nextCallTime - MAX_TIMEOUT, 0);
 		chargeTimeouts[index] = setTimeout(function() {
-			updateCharge(entry, index);
-		}, beginningNextDay + 60000 - now.getTime());
+			updateCharge(entry, index, remainingTime);
+		}, Math.min(nextCallTime, MAX_TIMEOUT));
 	}
 
 	// Updates the assets based upon the given recurring

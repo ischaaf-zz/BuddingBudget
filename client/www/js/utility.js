@@ -3,6 +3,7 @@
 var PERSIST_DATA = true;
 
 var MILLISECONDS_PER_DAY = 24 * 60 * 60 * 1000;
+var MAX_TIMEOUT = 2147483647;
 
 // Checks if two date objects represent the same day
 // Assumes the user's current time zone applies for both dates.

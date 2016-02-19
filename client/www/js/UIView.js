@@ -32,9 +32,20 @@ var UIView = function(getData, setDataListener) {
 		var arr = getData("savings");
 		arr.forEach(function(ctx) {
 			//Todo: replace with makeTemplate based on object
-			makeTemplate("savings", ctx.name, ctx.amount, updateSavingsEntry, "#savingsList", false)
+			makeTemplate("savings", ctx.name, ctx.amount, updateSavingsEntry, "#savingsList")
+		});
+
+		var arr = getData("charges");
+		arr.forEach(function(ctx) {
+			makeRecurringTemplate("charges", ctx.name, ctx.amount, ctx.period, updateChargesEntry, "#chargesList");
 		});
 		
+		var arr = getData("income");
+		arr.forEach(function(ctx) {
+			makeRecurringTemplate("income", ctx.name, ctx.amount, ctx.period,
+				updateIncomeEntry, "#incomeList");
+		});
+
 		var arr = getData("options");
 		//TODO: replace with saved options
 		$("#trackTime").datebox('disable');
@@ -59,19 +70,19 @@ var UIView = function(getData, setDataListener) {
 	
 	// setup savings and update when there are changes
 	// warning: currently dependant on SavingsEntry internals
-	setDataListener("savings", function() {
-		var arr = getData("savings");
-		arr.forEach(function(ctx) {
-			$("#prev" + ctx.name).html("$" + ctx.amount);
-		});
-	});
+	// setDataListener("savings", function() {
+	// 	var arr = getData("savings");
+	// 	arr.forEach(function(ctx) {
+	// 		$("#prev" + ctx.name).html("$" + ctx.amount);
+	// 	});
+	// });
 
-	setDataListener("charges", function() {
-		var arr = getData("charges");
-		arr.forEach(function(ctx) {
-			$("#prevCh" + ctx.name).html("$" + ctx.amount);
-		});
-	});
+	// setDataListener("charges", function() {
+	// 	var arr = getData("charges");
+	// 	arr.forEach(function(ctx) {
+	// 		$("#prevCh" + ctx.name).html("$" + ctx.amount);
+	// 	});
+	// });
 	
 	setDataListener("options", function() {
 		var value = getData("options");
@@ -92,7 +103,7 @@ var UIView = function(getData, setDataListener) {
 	});
 	
 	//make new element
-	function makeTemplate(category, catName, val, updateFn, listId, isRecurring) {
+	function makeTemplate(category, catName, val, updateFn, listId) {
 		var uuid = guid();
 		var li = document.createElement('li');
 		li.id = uuid;
@@ -104,7 +115,11 @@ var UIView = function(getData, setDataListener) {
 		input.class = "updateVal";
 		input.type="number";
 		var p = document.createElement('p');
-
+		p.classList.add("attentionGrapper");
+		$("#" + uuid + " > p").on("webkitAnimationEnd", function() {
+			this.className = "";
+			this.textContent = "";
+    	});
 		var button = document.createElement('button');
 		button.classList.add("ui-btn", "ui-btn-inline");
 		button.innerHTML = "Update";
@@ -122,31 +137,63 @@ var UIView = function(getData, setDataListener) {
 		li.appendChild(h3);
 		li.appendChild(h32);
 		li.appendChild(input);
-
-		if(isRecurring) {
-			var select = document.createElement('select');
-			//TODO add options dynamically
-			var o1 = document.createElement('option');
-			o1.value = "monthly";
-			o1.innerHTML = "monthly";
-			var o2 = document.createElement('option');
-			o2.value = "weekly";
-			o2.innerHTML = "weekly";
-			var o3 = document.createElement('option');
-			o3.value = "biweekly";
-			o3.innerHTML = "biweekly";
-			var o4 = document.createElement('option');
-			o4.value = "twiceMonthly";
-			o4.innerHTML = "twiceMonthly";
-			select.appendChild(o1);
-			select.appendChild(o2);
-			select.appendChild(o3);
-			select.appendChild(o4);
-			li.appendChild(select);
-		}
-
 		li.appendChild(button);
 		li.appendChild(deleteButton);
+		li.appendChild(p);
+		$(listId).append(li);
+
+		return uuid;
+	}
+
+	function makeRecurringTemplate(category, catName, val, frequency, updateFn, listId) {
+		var uuid = guid();
+		var li = document.createElement('li');
+		li.id = uuid;
+		var h3 = document.createElement('h3');
+		h3.innerHTML = catName;
+		var h32 = document.createElement('h2');
+		h32.innerHTML = "$" + val;
+		var input = document.createElement('input');
+		input.class = "updateVal";
+		input.type="number";
+		var p = document.createElement('p');
+		p.classList.add("attentionGrapper");
+		$("#" + uuid + " > p").on("webkitAnimationEnd", function() {
+			this.className = "";
+			this.textContent = "";
+    	});
+
+		var button = document.createElement('button');
+		button.classList.add("ui-btn", "ui-btn-inline");
+		button.innerHTML = "Update";
+		button.onclick = (function() {
+			updateFn(uuid, catName);
+		}); 
+
+		var deleteButton = document.createElement('button');
+		deleteButton.classList.add("ui-btn", "ui-btn-inline");
+		deleteButton.innerHTML = "x";
+		deleteButton.style.float = "right";
+		deleteButton.onclick = (function() {
+			removeEntry(uuid, category, catName);
+		});
+
+		li.appendChild(deleteButton);
+		li.appendChild(h3);
+		li.appendChild(h32);
+		li.appendChild(input);
+
+		var select = document.createElement('select');
+		//TODO add options dynamically?
+		["monthly", "weekly", "biweekly", "twiceMonthly"].forEach(function(f) {
+			var opt = document.createElement('option');
+			opt.value = f;
+			opt.innerHTML = f;
+			select.appendChild(opt);
+		});
+		select.value = frequency;
+		li.appendChild(select);
+		li.appendChild(button);
 		li.appendChild(p);
 		$(listId).append(li);
 
@@ -165,7 +212,65 @@ var UIView = function(getData, setDataListener) {
 		document.getElementById(uuid).remove();
 	}
 
-	//add new savings entry - popup with textbox to ask for entry name
+	//todo: buggy b/c catName and save switches depending on addEntry or changeEntry call?
+	function notify(call, category, catName, save, uuid) {
+		notifyListeners(call, [category,
+			save,
+			catName,
+			function() {
+			var p = document.getElementById(uuid).getElementsByTagName('p')[0];
+            p.html = 'CHANGED ' + category.toUpperCase() + ' SUCCESS';
+            p.classList.remove("animatePopupMessage");          
+            p.classList.add("animatePopupMessage");
+       	}, function(message) {
+			var p = document.getElementById(uuid).getElementsByTagName('p')[0];
+            p.html = 'FAILED: ' + message;
+            p.classList.remove("animatePopupMessage");          
+            p.classList.add("animatePopupMessage");
+		}]);
+		document.getElementById(uuid).getElementsByTagName('p')[0].value = "";
+            
+		// 	function() {
+		// 	document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "CHANGED " + category.toUpperCase() + " SUCCESS";
+		// 	}, 
+		// 	function(message) {
+		// 	document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
+		// }]);
+	}
+
+	//workaround for weird save/catName switch
+	function notify2(call, category, catName, save, uuid) {
+		notifyListeners(call, [category,
+			catName,
+			save,
+			function() {
+			var p = document.getElementById(uuid).getElementsByTagName('p')[0];
+            p.textContent = 'CHANGED ' + category.toUpperCase() + ' SUCCESS';
+            p.classList.remove("animatePopupMessage");          
+            p.classList.add("animatePopupMessage");
+		}, function(message) {
+			var p = document.getElementById(uuid).getElementsByTagName('p')[0];
+            p.textContent = 'FAILED: ' + message;
+            p.classList.remove("animatePopupMessage");          
+            p.classList.add("animatePopupMessage");
+		}]);
+
+		document.getElementById(uuid).getElementsByTagName('p')[0].value = "";
+        
+		/*notifyListeners(call, [category,
+			catName,
+			save,
+			function() {
+			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "CHANGED " + category.toUpperCase() + " SUCCESS";
+			}, 
+			function(message) {
+			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
+		}]);*/
+	}
+
+	//--------------------------------------
+	// 			Savings
+	//--------------------------------------
 	$("#addSavings").click(function() {
 		var catName = document.getElementById("newSavingsName").value;
 
@@ -175,20 +280,14 @@ var UIView = function(getData, setDataListener) {
 			return;
 		}
 
-		var uuid = makeTemplate("savings", catName, 0, updateSavingsEntry, "#savingsList", false);
+		var uuid = makeTemplate("savings", catName, 0, updateSavingsEntry, "#savingsList");
 
 		//generalize this? SavingsEntry
 		//add element to "savings" array
 		var save = new SavingsEntry(catName, 0, true);
-		notifyListeners("addEntry", ["savings",
-			save,
-			catName,
-			function() {
-				document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "ADD SAVINGS SUCCESS";
-			}, 
-			function(message) {
-				document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
-		}]);
+		notify("addEntry", "savings", catName, save, uuid);
+
+		
 	});
 
 	function updateSavingsEntry(uuid, catName) {
@@ -202,42 +301,12 @@ var UIView = function(getData, setDataListener) {
 		li.getElementsByTagName('input')[0].value = "";
 		
 		var save = new SavingsEntry(catName, parseInt(val), false);
-		notifyListeners("changeEntry", ["savings",
-			catName,
-			save,
-			function() {
-			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "CHANGED SAVINGS SUCCESS";
-			}, 
-			function(message) {
-			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
-		}]);
+		notify2("changeEntry", "savings", catName, save, uuid);
 	}
 
-	function updateChargesEntry(uuid, catName) {
-		var li = document.getElementById(uuid);
-		var val = li.getElementsByTagName('input')[0].value;
-		if(val == "") {
-			return;
-		}
-
-		li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
-		li.getElementsByTagName('input')[0].value = "";
-		var select = li.getElementsByTagName('select')[0];
-		var frequency = select.options[select.selectedIndex].value;
-		
-		//What does isDefault do?! Set to false here
-		var save = new ChargeEntry(catName, val, frequency, 5, false);
-		notifyListeners("changeEntry", ["charges",
-			catName,
-			save,
-			function() {
-			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "CHANGED CHARGES SUCCESS";
-			}, 
-			function(message) {
-			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
-		}]);
-	}
-
+	//--------------------------------------
+	// 			Charge
+	//--------------------------------------
 	$("#addCharge").click(function() {
 		var catName = document.getElementById("newChargeName").value;
 		document.getElementById("newChargeName").value = "";
@@ -245,23 +314,70 @@ var UIView = function(getData, setDataListener) {
 			return;
 		}
 
-		var uuid = makeTemplate("charges", catName, 0, updateChargesEntry, "#chargesList", true);
-
+		var uuid = makeRecurringTemplate("charges", catName, 0, "monthly", updateChargesEntry, "#chargesList");
+		
 		//generalize this? SavingsEntry
 		//add element to "savings" array
 		var save = new ChargeEntry(catName, 0, 'monthly', 5, true);
-		notifyListeners("addEntry", ["charges",
-			save,
-			catName,
-			function() {
-				document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "ADD CHARGE SUCCESS";
-			}, 
-			function(message) {
-				document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
-		}]);
+		notify("addEntry", "charges", catName, save, uuid);
 	});
+
+	function updateChargesEntry(uuid, catName) {
+		var li = document.getElementById(uuid);
+		var val = li.getElementsByTagName('input')[0].value;
+		var select = li.getElementsByTagName('select')[0];
+		var frequency = select.options[select.selectedIndex].value;
+		
+		if(val == "") {
+			val = li.getElementsByTagName('h2')[0].innerHTML.split("$")[1];
+		}
+
+		li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
+		li.getElementsByTagName('input')[0].value = "";
+		//What does isDefault do?! Set to false here
+		var save = new ChargeEntry(catName, val, frequency, 5, false);
+		notify2("changeEntry", "charges", catName, save, uuid);
+	}
 	
-	//update assets
+	//--------------------------------------
+	// 			Income
+	//--------------------------------------
+	$("#addIncome").click(function() {
+		var catName = document.getElementById("newIncomeName").value;
+		document.getElementById("newIncomeName").value = "";
+		if(catName == null || catName == "") {
+			return;
+		}
+
+		var uuid = makeRecurringTemplate("income", catName, 0, "monthly", updateIncomeEntry, "#incomeList");
+
+		//generalize this? SavingsEntry
+		//add element to "savings" array
+		var save = new IncomeEntry(catName, 0, "monthly", 1, 5, true);
+		notify("addEntry", "income", catName, save, uuid);
+	});
+
+	
+	function updateIncomeEntry(uuid, catName) {
+		var li = document.getElementById(uuid);
+		var val = li.getElementsByTagName('input')[0].value;
+		var select = li.getElementsByTagName('select')[0];
+		var frequency = select.options[select.selectedIndex].value;
+		if(val == "") {
+			val = li.getElementsByTagName('h2')[0].innerHTML.split("$")[1];
+		
+		}
+			li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
+			li.getElementsByTagName('input')[0].value = "";
+		
+		//What does isDefault do?! Set to false here
+		var save = new IncomeEntry(catName, val, frequency, 1, 5, true);
+		notify2("changeEntry", "income", catName, save, uuid);
+	}
+
+	//--------------------------------------
+	// 			Assets
+	//--------------------------------------
 	$("#buttonAssets").click(function() {
 		notifyListeners("updateAssets", [parseInt($("#setAssets").val()), function() {
 			document.querySelector('#assetsSuccess');
@@ -274,6 +390,7 @@ var UIView = function(getData, setDataListener) {
             assetsSuccess.classList.remove("animatePopupMessage");
             assetsSuccess.classList.add("animatePopupMessage");
 		}]);
+		document.getElementById("setAssets").value = "";
 	});
 	
 	$("#buttonMinDaily").click(function() {
@@ -294,15 +411,9 @@ var UIView = function(getData, setDataListener) {
 		}]);
 	}
 
-	function changeChargeEntry(name, isDefault) {
-		var save = new ChargeEntry(name, parseInt($("#chargeInput" + name).val()), 1, new Date().toLocaleString(), isDefault);
-		notifyListeners("changeEntry", ["charges", name, save, function() {
-			$("#charge" + name).html("CHANGED CHARGES SUCCESS");
-		}, function(message) {
-			$("#charge" + name).html("FAILED: " + message);
-		}]);
-	}
-	
+	//--------------------------------------
+	// 			Options
+	//--------------------------------------
 	$("#habitTrack").change(function() {
 		var label = $("#habitTrack").prop("checked") ? "On" : "Off";
 		notifyListeners("setOption", ["isEnableTracking", label, function() {
@@ -351,6 +462,7 @@ var UIView = function(getData, setDataListener) {
 		this.className = "";
 		this.textContent = "";
     });
+
 	//----------------------------------------------//
 
 	//generates random uuid for html elements

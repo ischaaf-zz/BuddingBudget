@@ -82,8 +82,8 @@ router.put('/', function(req, res, next) {
 
 router.get('/', function(req, res, next) {
     utils.getUser(req, res, function(req, res, user) {
-        var full = utils.validateBool(req.query.getFull);
-        if (!full) {
+        var full = utils.validateBool(false, req.query.getFull);
+        if (!full.valid || !full.value) {
             user.data.savings = [];
             user.data.income = [];
             user.data.entries = [];

@@ -29,33 +29,65 @@ var UIView = function(getData, setDataListener) {
 		$("#budget").html("$" + getData("budget"));
 		$("#prevAssets").html("$" + getData("assets"));
 		
+		//load savings
 		var arr = getData("savings");
 		arr.forEach(function(ctx) {
 			//Todo: replace with makeTemplate based on object
 			makeTemplate("savings", ctx.name, ctx.amount, updateSavingsEntry, "#savingsList")
 		});
 
+		//load recurring charges
 		var arr = getData("charges");
 		arr.forEach(function(ctx) {
 			makeRecurringTemplate("charges", ctx.name, ctx.amount, ctx.period, updateChargesEntry, "#chargesList");
 		});
 		
+		var arr = getData("charges");
+		arr.forEach(function(ctx) {
+			makeTemplate("charges", ctx.name, ctx.amount, updateChargesEntry, "#chargesList", true);
+		});
+		
+		//load recurring income
 		var arr = getData("income");
 		arr.forEach(function(ctx) {
 			makeRecurringTemplate("income", ctx.name, ctx.amount, ctx.period,
 				updateIncomeEntry, "#incomeList");
 		});
-
-		var arr = getData("options");
+		
+		//--Load Options--
+		
+		//---BUGGY---
+		//load flip switch options
+		var value = getData("options");
+		if(value.isNotifyMorning == 'On') {
+			$("#morningNotice").val("On").flipswitch("refresh");
+		}
+		
+		//load asset update reminder period
+		$("#selectAssetNotice option[value='" + value.notifyAssetsPeriod + "']").attr("selected", "selected");
+		$("#selectAssetNotice").selectmenu('refresh', true);
+		
+		//load end date
+		var theDate = getData("endDate");
+		var newDate = new Date(theDate);
+		$("#endDate").datebox('setTheDate', newDate).trigger('datebox', {'method':'doset'});
+		
+		//load times
+		var budgetTime = value.notifyMorningTime;
+		var newDate = new Date(budgetTime);
+		$("#budgetTime").datebox('setTheDate', newDate).trigger('datebox', {'method':'doset'});
+		
+		var trackTime = value.notifyNightTime;
+		var newDate = new Date(trackTime);
+		$("#trackTime").datebox('setTheDate', newDate).trigger('datebox', {'method':'doset'});
+		
+		//load min daily budget
+		$("#minBudget").html("$" + value.minDailyBudget);
+		
 		//TODO: replace with saved options
 		$("#trackTime").datebox('disable');
 		$("#budgetTime").datebox('disable');
-		$("#minBudget").html("$" + arr.minDailyBudget);
-
-		var arr = getData("charges");
-		arr.forEach(function(ctx) {
-			makeTemplate("charges", ctx.name, ctx.amount, updateChargesEntry, "#chargesList", true);
-		});
+		$("#selectAssetNotice").selectmenu('disable');
 	});
 	
 	//-----------------LISTENERS----------------------
@@ -99,6 +131,12 @@ var UIView = function(getData, setDataListener) {
 			$("#trackTime").datebox('enable');
 		} else {
 			$("#trackTime").datebox('disable');
+		}
+		
+		if(value.isNotifyAssets == 'On') {
+			$("#selectAssetNotice").selectmenu('enable');
+		} else {
+			$("#selectAssetNotice").selectmenu('disable');
 		}
 	});
 	
@@ -356,7 +394,6 @@ var UIView = function(getData, setDataListener) {
 		var save = new IncomeEntry(catName, 0, "monthly", 1, 5, true);
 		notify("addEntry", "income", catName, save, uuid);
 	});
-
 	
 	function updateIncomeEntry(uuid, catName) {
 		var li = document.getElementById(uuid);
@@ -391,14 +428,6 @@ var UIView = function(getData, setDataListener) {
             assetsSuccess.classList.add("animatePopupMessage");
 		}]);
 		document.getElementById("setAssets").value = "";
-	});
-	
-	$("#buttonMinDaily").click(function() {
-		notifyListeners("setOption", ["minDailyBudget", parseInt($("#setMinBudget").val()), function() {
-			//success
-		}, function(message) {
-			//failure
-		}]);
 	});
 	
 	//attached to buttons defined in .ready()
@@ -449,6 +478,47 @@ var UIView = function(getData, setDataListener) {
 			//failure
 		}]);
 	});
+	
+	$("#buttonMinDaily").click(function() {
+		notifyListeners("setOption", ["minDailyBudget", parseInt($("#setMinBudget").val()), function() {
+			//success
+		}, function(message) {
+			//failure
+		}]);
+	});
+	
+	$("#selectAssetNotice").change(function() {
+		notifyListeners("setOption", ["notifyAssetsPeriod", $("#selectAssetNotice option:selected" ).text(), function() {
+			//sucess
+		}, function(message) {
+			//failure
+		}])
+	});
+	
+	$("#endDate").change(function() {
+		notifyListeners("setEndDate", [$("#endDate").datebox('getTheDate').getTime(), function() {
+			//success
+		}, function(message) {
+			//failure
+		}]);
+	});
+	
+	//callback for dateboxes
+	window.budgetNotify = function(date, initDate, duration, custom, cancelClose) {
+		notifyListeners("setOption", ["notifyMorningTime", date.date.getTime(), function() {
+			//success
+		}, function(message) {
+			//failure
+		}]);
+	}
+	
+	window.trackNotify = function(date, initDate, duration, custom, cancelClose) {
+		notifyListeners("setOption", ["notifyNightTime", date.date.getTime(), function() {
+			//success
+		}, function(message) {
+			//failure
+		}]);
+	}
 	
 	//----------------------------------------------//
 	// This is just an animation for popup callback, 

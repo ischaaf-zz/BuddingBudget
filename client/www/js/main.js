@@ -9,12 +9,12 @@
 	// Gives notificationManager access to get data, and to listen for when it changes
 	var notificationManager = new NotificationManager(dataManager.getData, dataManager.registerListener);
 
-	// Gives uiView access to get data, and to listen for when it changes
-	var uiView = new UIView(dataManager.getData, dataManager.registerListener);
-
 	// Initializes the network manager. In the future, may give it some access to the UI to listen for
 	// logins, but for now, it doesn't have access to any other objects.
 	var networkManager = new NetworkManager();
+
+	// Gives uiView access to get data, and to listen for when it changes
+	var uiView = new UIView(dataManager.getData, dataManager.registerListener, networkManager.login, networkManager.registerListener);
 
 	// Gives storageManager access to get, set, and listen to data, as well as the networkManager,
 	// and registers a ready callback for it

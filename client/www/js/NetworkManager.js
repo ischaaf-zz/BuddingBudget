@@ -15,7 +15,7 @@ var NetworkManager = function() {
 	// you want.
 	var callbacks = {};
 
-	this.registerCallback = function(event, callback) {
+	this.registerListener = function(event, callback) {
 		callbacks[event] = callbacks[event] || [];
 		callbacks[event].push(callback);
 	};

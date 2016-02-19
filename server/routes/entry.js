@@ -17,7 +17,7 @@ router.post('/', function(req, res, next) {
     	var params = new utils.Parameters();
     	params.entries["budget"] = utils.validateNumber(true, req.body.budget, 0);
     	params.entries["amount"] = utils.validateNumber(true, req.body.amount, 0);
-    	params.entries["day"]    = utils.validateDate(true, req.body.day);
+    	params.entries["day"]    = utils.validateDate(true, req.body.day, true);
     	if (!params.hasRequired()) {
             var invalid = params.getInvalid();
             res.status(422).send(invalid);
@@ -36,7 +36,7 @@ router.post('/', function(req, res, next) {
 router.put('/', function(req, res, next) {
     utils.modifyUser(req, res, function(req, res, user) {
     	var params = new utils.Parameters();
-    	params.entries["date"]   = utils.validateDate(true, req.body.day);
+    	params.entries["date"]   = utils.validateDate(true, req.body.day, true);
     	params.entries["budget"] = utils.validateNumber(false, req.body.budget, 0);
     	params.entries["spent"]  = utils.validateNumber(false, req.body.amount , 0);
     	if (!params.hasRequired()) {
@@ -78,13 +78,13 @@ router.get('/', function(req, res, next) {
 router.delete('/', function(req, res, next) {
     utils.modifyUser(req, res, function(req, res, user) {
     	var params = new utils.Parameters();
-    	params.entries["date"] = utils.validateDate(true, req.body.date);
+    	params.entries["day"] = utils.validateDate(true, req.body.day);
     	if (!params.hasRequired()) {
             var invalid = params.getInvalid();
             res.status(422).json(invalid);
             return false;
         } else {
-    		var i = findEntry(user, params.entries["date"].value);
+    		var i = findEntry(user, params.entries["day"].value);
     		if (i) {
     			user.data.entries.splice(i, 1);
     			return true;
@@ -96,9 +96,14 @@ router.delete('/', function(req, res, next) {
     });
 });
 
-function findEntry(user, date) {
+function findEntry(user, d1) {
     for (var i in user.data.entries) {
-        if (user.data.entries[i].date == date)
+        console.log(user.data.entries[i].day);
+        console.log(typeof(user.data.entries[i].day));
+        var d2 = new Date(Date.parse(user.data.entries[i].day));
+        console.log(d2);
+        console.log(typeof(d2));
+        if (d2.getYear() == d1.getYear() && d2.getMonth() == d1.getMonth() && d2.getDay() == d1.getDay())
             return i;
     }
     return false;

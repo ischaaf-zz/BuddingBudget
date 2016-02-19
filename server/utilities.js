@@ -33,7 +33,7 @@ function validateNumber(required, value, min, max) {
 	return result;
 }
 
-function validateDate(required, value) {
+function validateDate(required, value, stripTime) {
 	var result = new ValidationResult(required, undefined, true, "", value);
 	if (!value) {
 		result.valid = false;
@@ -43,6 +43,9 @@ function validateDate(required, value) {
 			value = new Date(Date.parse(value));
 		} else {
 			value = new Date(value);
+		}
+		if (stripTime) {
+			value.setHours(0, 0, 0, 0);
 		}
 		result.value = value;
 		if (isNaN(value.getTime())) {

@@ -109,6 +109,12 @@ var UIView = function(getData, setDataListener) {
 		} else {
 			$("#trackTime").datebox('disable');
 		}
+		
+		if(value.isNotifyAssets == 'On') {
+			$("#selectAssetNotice").selectmenu('enable');
+		} else {
+			$("#selectAssetNotice").selectmenu('disable');
+		}
 	});
 	
 	//make new element

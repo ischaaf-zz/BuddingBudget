@@ -56,7 +56,11 @@ var UIView = function(getData, setDataListener) {
 		
 		//load track spending
 		var track = getData("trackedEntry");
-		$("#prevSpending").html("$" + track.amount);	
+		if(track.amount == null) {
+			$("#prevSpending").html("$0");
+		} else {
+			$("#prevSpending").html("$" + track.amount);
+		}
 		
 		//--Load Options--
 		
@@ -458,8 +462,8 @@ var UIView = function(getData, setDataListener) {
 		var amount = parseInt($("#setTrack").val());
 		var budget = getData("budget");
 		var day = (new Date).getTime();
-		
 		var tracked = new TrackEntry(amount, budget, day);
+		
 		notifyListeners("trackSpending", [tracked, "distribute", function() {
 			document.querySelector('#trackSuccess');
             trackSuccess.textContent = 'CHANGED ASSETS SUCCESS';

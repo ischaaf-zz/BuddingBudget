@@ -54,6 +54,10 @@ var UIView = function(getData, setDataListener) {
 				updateIncomeEntry, "#incomeList");
 		});
 		
+		//load track spending
+		var track = getData("trackedEntry");
+		$("#prevSpending").html("$" + track.amount);	
+		
 		//--Load Options--
 		
 		//---BUGGY---

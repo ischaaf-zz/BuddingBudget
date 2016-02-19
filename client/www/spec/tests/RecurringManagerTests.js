@@ -36,7 +36,7 @@ describe("RecurringManager", function() {
 			var next = new Date();
 			var msInDay = MILLISECONDS_PER_DAY;
 			next.setMonth(next.getMonth() + 1);
-			var expectedTime = next.getTime() + 60000 - (next.getTime() % MILLISECONDS_PER_DAY) - now.getTime();
+			var expectedTime = Math.min(next.getTime() + 60000 - (next.getTime() % MILLISECONDS_PER_DAY) - now.getTime(), MAX_TIMEOUT);
 			var actualTime = setTimeout.calls.mostRecent().args[1];
 			expect(Math.abs(expectedTime - actualTime)).toBeLessThan(5);
 		});

@@ -29,42 +29,56 @@ var UIView = function(getData, setDataListener) {
 		$("#budget").html("$" + getData("budget"));
 		$("#prevAssets").html("$" + getData("assets"));
 		
-		//BUGGY
-		var value = getData("options");
-		if(value.isNotifyMorning == 'On') {
-			$("#morningNotice").val("On").flipswitch("refresh");
-		}
-		
-		$("#selectAssetNotice option[value='" + value.notifyAssetsPeriod + "']").attr("selected", "selected");
-		$("#selectAssetNotice").selectmenu('refresh', true);
-		
+		//load savings
 		var arr = getData("savings");
 		arr.forEach(function(ctx) {
 			//Todo: replace with makeTemplate based on object
 			makeTemplate("savings", ctx.name, ctx.amount, updateSavingsEntry, "#savingsList")
 		});
 
+		//load recurring charges
 		var arr = getData("charges");
 		arr.forEach(function(ctx) {
 			makeRecurringTemplate("charges", ctx.name, ctx.amount, ctx.period, updateChargesEntry, "#chargesList");
 		});
 		
+		var arr = getData("charges");
+		arr.forEach(function(ctx) {
+			makeTemplate("charges", ctx.name, ctx.amount, updateChargesEntry, "#chargesList", true);
+		});
+		
+		//load recurring income
 		var arr = getData("income");
 		arr.forEach(function(ctx) {
 			makeRecurringTemplate("income", ctx.name, ctx.amount, ctx.period,
 				updateIncomeEntry, "#incomeList");
 		});
-
-		var arr = getData("options");
+		
+		//--Load Options--
+		
+		//---BUGGY---
+		//load flip switch options
+		var value = getData("options");
+		if(value.isNotifyMorning == 'On') {
+			$("#morningNotice").val("On").flipswitch("refresh");
+		}
+		
+		//load asset update reminder period
+		$("#selectAssetNotice option[value='" + value.notifyAssetsPeriod + "']").attr("selected", "selected");
+		$("#selectAssetNotice").selectmenu('refresh', true);
+		
+		//load end date
+		var theDate = getData("endDate");
+		var newDate = new Date(theDate);
+		$("#endDate").datebox('setTheDate', newDate).trigger('datebox', {'method':'doset'});
+		
+		//load min daily budget
+		$("#minBudget").html("$" + value.minDailyBudget);
+		
 		//TODO: replace with saved options
 		$("#trackTime").datebox('disable');
 		$("#budgetTime").datebox('disable');
-		$("#minBudget").html("$" + arr.minDailyBudget);
-
-		var arr = getData("charges");
-		arr.forEach(function(ctx) {
-			makeTemplate("charges", ctx.name, ctx.amount, updateChargesEntry, "#chargesList", true);
-		});
+		
 	});
 	
 	//-----------------LISTENERS----------------------
@@ -470,6 +484,14 @@ var UIView = function(getData, setDataListener) {
 		}, function(message) {
 			//failure
 		}])
+	});
+	
+	$("#endDate").change(function() {
+		notifyListeners("setEndDate", [$("#endDate").datebox('getTheDate').getTime(), function() {
+			//success
+		}, function(message) {
+			//failure
+		}]);
 	});
 
 	

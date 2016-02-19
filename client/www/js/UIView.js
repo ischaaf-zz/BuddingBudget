@@ -39,6 +39,7 @@ var UIView = function(getData, setDataListener) {
 		//TODO: replace with saved options
 		$("#trackTime").datebox('disable');
 		$("#budgetTime").datebox('disable');
+		$("#minBudget").html("$" + arr.minDailyBudget);
 
 		var arr = getData("charges");
 		arr.forEach(function(ctx) {
@@ -76,6 +77,18 @@ var UIView = function(getData, setDataListener) {
 		var value = getData("options");
 		
 		$("#minBudget").html("$" + value.minDailyBudget);
+		
+		if(value.isNotifyMorning == 'On') {
+			$("#budgetTime").datebox('enable');
+		} else {
+			$("#budgetTime").datebox('disable');
+		}
+		
+		if(value.isNotifyNight == 'On') {
+			$("#trackTime").datebox('enable');
+		} else {
+			$("#trackTime").datebox('disable');
+		}
 	});
 	
 	//make new element
@@ -292,9 +305,7 @@ var UIView = function(getData, setDataListener) {
 	
 	$("#habitTrack").change(function() {
 		var label = $("#habitTrack").prop("checked") ? "On" : "Off";
-		//selection not yet defined in UIController
-		//TODO: Rewrite when defined
-		notifyListeners("options", ["budgetNotify", label, function() {
+		notifyListeners("setOption", ["isEnableTracking", label, function() {
 			//success
 		}, function(message) {
 			//failure
@@ -303,9 +314,7 @@ var UIView = function(getData, setDataListener) {
 	
 	$("#assetNotice").change(function() {
 		var label = $("#assetNotice").prop("checked") ? "On" : "Off";
-		//selection not yet defined in UIController
-		//TODO: Rewrite when defined
-		notifyListeners("options", ["assetNotice", label, function() {
+		notifyListeners("setOption", ["isNotifyAssets", label, function() {
 			//success
 		}, function(message) {
 			//failure
@@ -314,15 +323,7 @@ var UIView = function(getData, setDataListener) {
 	
 	$("#nightNotice").change(function() {
 		var label = $("#nightNotice").prop("checked") ? "On" : "Off";
-		if(label == 'On') {
-			$("#trackTime").datebox('enable');
-		} else {
-			$("#trackTime").datebox('disable');
-		}
-		
-		//selection not yet defined in UIController
-		//TODO: Rewrite when defined
-		notifyListeners("options", ["nightNotice", label, function() {
+		notifyListeners("setOption", ["isNotifyNight", label, function() {
 			//success
 		}, function(message) {
 			//failure
@@ -331,15 +332,7 @@ var UIView = function(getData, setDataListener) {
 	
 	$("#morningNotice").change(function() {
 		var label = $("#morningNotice").prop("checked") ? "On" : "Off";
-		if(label == 'On') {
-			$("#budgetTime").datebox('enable');
-		} else {
-			$("#budgetTime").datebox('disable');
-		}
-		
-		//selection not yet defined in UIController
-		//TODO: Rewrite when defined
-		notifyListeners("options", ["morningNotice", label, function() {
+		notifyListeners("setOption", ["isNotifyMorning", label, function() {
 			//success
 		}, function(message) {
 			//failure

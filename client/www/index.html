@@ -181,10 +181,28 @@
 			========================================================= -->
 			<div id="page-tracking">
 				<div role="main" class="ui-content wow fadeIn" data-inset="false" data-wow-delay="0.2s">
-					<!--HEADER ABOVE, can copy paste-->
-					<!--FOOTER BELOW, can copy paste-->
+					<h3>Track Spending</h3>
+					<h3 id="prevSpending"></h3>
+					<input id="setTrack" data-controller="input-value" type="number" min="0">
+					<button class="ui-btn ui-btn-raised clr-primary" id="buttonTrack">Update</button>
+					<p id='trackSuccess' class='attentionGrapper'></p>
 				</div>
 			</div>
+			
+			<!-- popup -->
+			<div data-role='popup' id='overUnderPopup' data-theme='b'>
+				<div data-role='header' data-theme='b'>
+					<h1>Where do you want to apply your surplus/deficit?</h1>
+				</div>
+				<div data-role='content' data-theme='b'>
+					<!-- Add radio buttons -->
+					<div class='showastabs center nobg'>
+						<a id="submitOverUnder" href='#' data-rel='back' data-icon='ok' data-iconpos='left' data-role='button' data-inline='true'>Okay</a>
+						<a href='#' data-rel='back' data-icon='delete' data-iconpos='left' data-role='button' data-inline='true'>Cancel</a>
+					</div>
+				</div>
+			</div>
+			<!-- popup end -->
 
 			<!-- ========================================================
 				OPTIONS PAGE

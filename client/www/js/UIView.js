@@ -53,6 +53,10 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 				updateIncomeEntry, "#incomeList");
 		});
 		
+		//load track spending
+		var track = getData("trackedEntry");
+		$("#prevSpending").html("$" + track.amount);	
+		
 		//--Load Options--
 		
 		//---BUGGY---
@@ -97,6 +101,11 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 	
 	setDataListener("assets", function() {
 		$("#prevAssets").html("$" + getData("assets"));
+	});
+	
+	setDataListener("trackedEntry", function() {
+		var track = getData("trackedEntry");
+		$("#prevSpending").html("$" + track.amount);		
 	});
 	
 	// setup savings and update when there are changes
@@ -340,6 +349,18 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		var save = new SavingsEntry(catName, parseInt(val), false);
 		notify2("changeEntry", "savings", catName, save, uuid);
 	}
+	
+	/* --No longer called anywhere--?
+	//attached to buttons defined in .ready()
+	function changeSavingEntry(name, isDefault) {
+		var save = new SavingsEntry(name, parseInt($("#text" + name).val()), isDefault);
+		notifyListeners("changeEntry", ["savings", name, save, function() {
+			$("#save" + name).html("CHANGED SAVINGS SUCCESS");
+		}, function(message) {
+			$("#save" + name).html("FAILED: " + message);
+		}]);
+	}
+	*/
 
 	//--------------------------------------
 	// 			Charge
@@ -429,15 +450,29 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		document.getElementById("setAssets").value = "";
 	});
 	
-	//attached to buttons defined in .ready()
-	function changeSavingEntry(name, isDefault) {
-		var save = new SavingsEntry(name, parseInt($("#text" + name).val()), isDefault);
-		notifyListeners("changeEntry", ["savings", name, save, function() {
-			$("#save" + name).html("CHANGED SAVINGS SUCCESS");
+	//--------------------------------------
+	// 			Track Spending
+	//--------------------------------------
+	$("#buttonTrack").click(function() {
+		var amount = parseInt($("#setTrack").val());
+		var budget = getData("budget");
+		var day = (new Date).getTime();
+		
+		var tracked = new TrackEntry(amount, budget, day);
+		notifyListeners("trackSpending", [tracked, "distribute", function() {
+			document.querySelector('#trackSuccess');
+            trackSuccess.textContent = 'CHANGED ASSETS SUCCESS';
+            trackSuccess.classList.remove("animatePopupMessage");
+            trackSuccess.classList.add("animatePopupMessage");
 		}, function(message) {
-			$("#save" + name).html("FAILED: " + message);
+			//TODO: over/under case
+			document.querySelector('#trackSuccess');
+            trackSuccess.textContent = 'FAILED: ' + message;
+            trackSuccess.classList.remove("animatePopupMessage");
+            trackSuccess.classList.add("animatePopupMessage");
 		}]);
-	}
+		document.getElementById("setAssets").value = "";
+	});
 
 	//--------------------------------------
 	// 			Options
@@ -528,6 +563,11 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
     });
 	
 	$("#assetsSuccess").on("webkitAnimationEnd", function() {
+		this.className = "";
+		this.textContent = "";
+    });
+	
+	$("#trackSuccess").on("webkitAnimationEnd", function() {
 		this.className = "";
 		this.textContent = "";
     });

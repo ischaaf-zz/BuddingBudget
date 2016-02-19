@@ -127,9 +127,9 @@ function findNextTime(entry, startTime) {
 			nextTime.setDate(nextTime.getDate() + 7);
 		}
 	} else if(period == "biweekly") {
-
+		console.log("biweekly not supported yet");
 	} else if(period == "twiceMonthly") {
-
+		console.log("twicemonthly ont supported yet");
 	}
 	return nextTime.getTime();
 }

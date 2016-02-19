@@ -5,6 +5,13 @@ var UserModel    = require('../app/models/user');
 var session = require('client-sessions');
 var utils = require('../utilities.js');
 
+// initial entry point for all requests
+router.use(function(req, res, next) {
+    console.log(req.method + " /login");
+    console.log(req.body);
+    next();
+});
+
 router.post('/', function(req, res, next) {
     // check if user is already logged in, if so do nothing
     if (session.user) {

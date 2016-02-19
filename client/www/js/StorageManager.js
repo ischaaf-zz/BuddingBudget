@@ -137,10 +137,13 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 	});
 
 	if(PERSIST_DATA) {
-		var getFromForage = function(key) {
+		var getFromForage = function(key, isLast) {
 			localforage.getItem(key, function(err, val) {
 				if(val !== null) {
 					dataManager.setData(key, val);
+				}
+				if(isLast) {
+					readyCallback();
 				}
 			});
 		};
@@ -150,9 +153,9 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 			// phonegap's local storage
 			var keys = dataManager.getKeySet();
 			for(var i = 0; i < keys.length; i++) {
-				getFromForage(keys[i]);
+				var isLast = (i === keys.length - 1);
+				getFromForage(keys[i], isLast);
 			}
-			readyCallback();
 		});	
 	} else {
 		readyCallback();

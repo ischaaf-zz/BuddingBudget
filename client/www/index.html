@@ -1,215 +1,260 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-<head>
-<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="android-mobile-web-app-capable" content="yes">
-  <meta name="msapplication-tap-highlight" content="no">
-  <meta charset="UTF-8">
-  <title>Budding Budget</title>
-  <link rel="stylesheet" href="chui/chui-android-3.9.2.min.css">
-  <script type="text/javascript" src="js/lib/jquery-1.12.0.min.js"></script>
-  <script type="text/javascript" src="js/lib/localforage.min.js"></script>
-  <script src="chui/chui-3.9.2.min.js"></script>
-  
-   <style>
-    #mainList > li:hover {
-      background: #d9d9d9;
-    }
-    #mainList > li:hover > h3,
-    #mainList > li:hover > h4 {
-      color: #000;
-    }
-    #mainList > li.nav:hover::after {
-      border-color: #000;
-    }
-	
-	#budget {
-		font-size: 140%;
-		font-weight: bold;
-		color: green;
-	}
-	
-	/* Popup Demo Styles */
-    .attentionGrapper {
-      opacity: 0;
-      font-size: 12pt;
-      line-height: 14pt;
-      font-weight: 200;
-      font-family: SegoeWP, SegoeUI, HelveticaNeue, Roboto, Sans-serif;
-      padding: 0 15px;
-    }
-    .animatePopupMessage {
-      -webkit-animation-duration: 2s;
-      -webkit-animation-timing-function: linear;
-      -webkit-animation-name: updatePopupMessage;
-      animation-duration: 2s;
-      animation-timing-function: linear;
-      animation-name: updatePopupMessage;
-    }
-    @-webkit-keyframes updatePopupMessage {
-      0% { opacity: 0; }
-      20% { opacity: 1; }
-      90% { opacity: 1; }
-      100% { opacity: 0; }
-    }
-    
-    @keyframes updatePopupMessage {
-      0% { opacity: 0; }
-      20% { opacity: 1; }
-      90% { opacity: 1; }
-      100% { opacity: 0; }
-    }
-  </style>
-  
-</head>
+	<head>
+		<title>Budding Budget</title>
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<meta name="android-mobile-web-app-capable" content="yes">
+		<meta name="msapplication-tap-highlight" content="no">
+		<meta charset="UTF-8">
+		<script type="text/javascript" src="js/lib/jquery-1.12.0.min.js"></script>
+		<script type="text/javascript" src="js/lib/localforage.min.js"></script>
+		<script src="nativeDroid2-master/nd2settings.js"></script>
+		<script rel="stylesheet" href="nativeDroid2-master/css/nativedroid2.css"></script>
+		<link rel="stylesheet" href="css/font-awesome.min.css" />
+		<link rel="stylesheet" href="css/jquery.mobile.min.css" />
+		<link rel="stylesheet" href="vendor/waves.min.css" />
+		<link rel="stylesheet" href="vendor/animate.css" />
+		<link rel="stylesheet" href="nativeDroid2-master/css/nativedroid2.css">
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="DateBox/jtsage-datebox-4.0.0.jqm.min.css" />
+	</head>
 	<body>
-		<nav class="current">
-			<h1> Your Budget Plan </h1>
-		</nav>
-		
-		<article class="current" id="main"> 
-		<section>
-			<h2> Your Budget for Today</h2>
-			<h2 id="budget">$0</h2>
-		
-			<ul class="list" id="mainList">
-				<li class="nav" data-goto="assets">
-					<h3> Assets </h3>
-				</li>
-				<li class="nav" data-goto="savings" id="saveNext">
-					<h3> Savings </h3>
-				</li>
-				<li class="nav" data-goto="charges">
-					<h3> Recurring Charges </h3>
-				</li>
-				<li class="nav" data-goto="income">
-					<h3> Recurring Income </h3>
-				</li>
-				<li class="nav" data-goto="spending">
-					<h3> Track Spending </h3>
-				</li>
-				<li class="nav" data-goto="options">
-					<h3> Options </h3>
-				</li>
-			</ul>
-		</section>
-		</article>
-		
-		<nav class="next">
-			<button class="back"> Main </button>
-			<h1> Assets </h1>
-		</nav>
-		<article id="assets" class ="next">
-			<section>
-				<ul class='list'>
-					<li>
-						<h2> You have </h2>
-						<h2 id="prevAssets">$0</h2>
-						<p id='assetsSuccess' class='attentionGrapper'></p>
-					</li>
-					<li><lable>Enter Value to Update:</lable> 
-						<input id='setAssets' data-controller='input-value' type='number' min = "0">
-						<button id="buttonAssets"> Update </button>
-					</li>
-				</ul>
-			</section>
-		</article>
-		
-		<nav class="next">
-			<button class="back"> Main </button>
-			<h1> Savings </h1>
-		</nav>
-		<article id="savings" class ="next">
-			<section>
-				<p id='popupMessageTarget' class='attentionGrapper'></p>
-				<ul class='list' id='savingsList'>
-				</ul>
-				<p><button id='addSavings' class="button action">Add Entry</button></p>
-			</section>
-		</article>
-		
-		<nav class="next">
-			<button class="back"> Main </button>
-			<h1> Recurring Charges </h1>
-		</nav>
-		<article id="charges" class ="next">
-			<section>
-				<h3> You are here </h3>
-			</section>
-		</article>
-		
-		<nav class="next">
-			<button class="back"> Main </button>
-			<h1> Recurring Income </h1>
-		</nav>
-		<article id="income" class = "next">
-			<section>
-				<h3> You are here </h3>
-			</section>
-		</article>
-		
-		<nav class="next">
-			<button class="back"> Main </button>
-			<h1> Track Spending </h1>
-		</nav>
-		<article id="spending" class = "next">
-			<section>
-				<h3> You are here </h3>
-			</section>
-		</article>
-		
-		<nav class="next">
-			<button class="back"> Main </button>
-			<h1> Options </h1>
-		</nav>
-		<article id="options" class = "next">
-			<section>
-			  <ul class='list'>
-				<li class='comp'>
-				  <div>
-					<h3>Budget notification every morning</h3>
-				  </div>
-				  <aside>
-					<span class="switch" id="morningSwitch">
-					   <input data-controller='switch-value' type="checkbox" value="morning" name="morningSwitch">
-					</span>
-				  </aside>
-				</li>
-				<li class='comp'>
-				  <div>
-					<h3>Tracking reminder every night</h3>
-				  </div>
-				  <aside>
-					<span class="switch" id="nightSwitch">
-					  <input data-controller='switch-value' type="checkbox" value="night" name="nightSwitch">
-					</span>
-				  </aside>
-				</li>
-				<li class='comp'>
-				  <div>
-					<h3>Regular asset update reminder</h3>
-				  </div>
-				  <aside>
-					<span class="switch" id="assetSwitch">
-					  <input data-controller='switch-value' type="checkbox" value="assetReminder" name="assetSwitch">
-					</span>
-				  </aside>
-				</li>
-				<li class='comp'>
-				  <div>
-					<h3>Enable habit tracking</h3>
-				  </div>
-				  <aside>
-					<span class="switch" id="trackingSwitch">
-					  <input data-controller='switch-value' type="checkbox" value="tracking" name="trackingSwitch">
-					</span>
-				  </aside>
-				</li>
-			  </ul>
-			</section>
-		</article>
+		<div data-role="page">
+			<!-- panel left -->
+			<div data-role="panel" id="leftpanel" data-display="overlay" data-position-fixed="true" >
+				<div class='nd2-sidepanel-profile wow fadeInDown'>
+					<div class="row">
+						<div class='col-xs-8'>
+							<div class='box profile-text'>
+								<strong>Your Name</strong>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div data-inset="false"  data-collapsed-icon="carat-d" data-expanded-icon="carat-d" data-iconpos="right">
+					<ul data-role="listview" data-inset="false" data-icon="false" class="ui-listview">
+						<li id="page-main-button"><a data-ajax='false' data-icon="false">Daily Budget</a></li>
+						<li id="page-assets-button"><a data-ajax='false' data-icon="false">Assets</a></li>
+						<li id="page-savings-button"><a data-ajax='false' data-icon="false">Savings</a></li>
+						<li id="page-charges-button"><a data-ajax='false' data-icon="false">Recurring Charges</a></li>
+						<li id="page-income-button"><a data-ajax='false' data-icon="false">Recurring Income</a></li>
+						<li id="page-tracking-button"><a data-ajax='false' data-icon="false">Track Spending</a></li>
+						<li id="page-options-button"><a data-ajax='false' data-icon="false">Options</a></li>
+					</ul>
+				</div>
+			</div>
+			<!-- /panel left -->
 
+			<div data-role="header" data-position="fixed" class="wow fadeIn">
+				<a href="#leftpanel" class="ui-btn ui-btn-left wow fadeIn" data-wow-delay='0.8s'><i class="zmdi zmdi-menu"></i></a>
+				<h1 id="titleText" class="wow fadeIn" data-wow-delay='0.4s'></h1>
+			</div>
+
+			<!-- ========================================================
+				MAIN BUDGET PAGE
+			========================================================= -->
+			<div id="page-main">
+				<div role="main" class="ui-content wow fadeIn" data-inset="false" data-wow-delay="0.2s">
+					<!--HEADER ABOVE, can copy paste-->
+					<h3>Your Budget for Today</h3>
+					<h1 id="budget">$0</h1>
+					<!--FOOTER BELOW, can copy paste-->
+				</div>
+			</div>
+
+			<!-- ========================================================
+				ASSETS PAGE
+			========================================================= -->
+			<div id="page-assets">
+				<div role="main" class="ui-content wow fadeIn" data-inset="false" data-wow-delay="0.2s">
+					<!--HEADER ABOVE, can copy paste-->
+					<h3>Assets</h3>
+					<h3 id="prevAssets"></h3>
+					<input id="setAssets" data-controller="input-value" type="number" min="0">
+					<button class="ui-btn ui-btn-raised clr-primary" id="buttonAssets">Update</button>
+					<p id='assetsSuccess' class='attentionGrapper'></p>
+					<!--FOOTER BELOW, can copy paste-->
+				</div>
+			</div>
+			<!-- ========================================================
+				SAVINGS PAGE
+			========================================================= -->
+			<div id="page-savings">
+				<div role="main" class="ui-content wow fadeIn" data-inset="false" data-wow-delay="0.2s">
+				<!--HEADER ABOVE, can copy paste-->
+					<div>
+						<ul data-role="listview" data-icon="false" id="savingsList">
+						</ul>
+					</div>
+					<div>
+						<a href='#savingsPopupDialog' data-rel='popup' data-position-to='window' data-role='button' data-icon='external-link' data-transition='pop' data-inline='true' class="ui-btn ui-btn-raised clr-primary">Add Saving</a>
+					</div>
+				<!--FOOTER BELOW, can copy paste-->
+				</div>
+			</div>
+
+			<!-- popup -->
+			<div data-role='popup' id='savingsPopupDialog' data-theme='b'>
+				<div data-role='header' data-theme='b'>
+					<h1>Savings name:</h1>
+				</div>
+				<div data-role='content' data-theme='b'>
+					<input id="newSavingsName" data-controller="input-value" autofocus="autofocus">
+					<div class='showastabs center nobg'>
+						<a id="addSavings" href='#' data-rel='back' data-icon='ok' data-iconpos='left' data-role='button' data-inline='true'>Okay</a>
+						<a href='#' data-rel='back' data-icon='delete' data-iconpos='left' data-role='button' data-inline='true'>Cancel</a>
+					</div>
+				</div>
+			</div>
+			<!-- popup end -->
+
+			<!-- ========================================================
+				CHARGES PAGE
+			========================================================= -->
+			<div id="page-charges">
+				<div role="main" class="ui-content wow fadeIn" data-inset="false" data-wow-delay="0.2s">
+					<!--HEADER ABOVE, can copy paste-->
+					<ul data-role="listview" data-icon="false" id="chargesList">
+					</ul>
+					<div>
+						<a href='#chargesPopupDialog' data-rel='popup' data-position-to='window' data-role='button' data-icon='external-link' data-transition='pop' data-inline='true' class="ui-btn ui-btn-raised clr-primary">Add Saving</a>
+					</div>
+					<!--FOOTER BELOW, can copy paste-->
+				</div>
+			</div>
+
+			<!-- popup -->
+			<div data-role='popup' id='chargesPopupDialog' data-theme='b'>
+				<div data-role='header' data-theme='b'>
+					<h1>Category name:</h1>
+				</div>
+				<div data-role='content' data-theme='b'>
+					<input id="newChargeName" data-controller="input-value" autofocus="autofocus">
+					<div class='showastabs center nobg'>
+						<a id="addCharge" href='#' data-rel='back' data-icon='ok' data-iconpos='left' data-role='button' data-inline='true'>Okay</a>
+						<a href='#' data-rel='back' data-icon='delete' data-iconpos='left' data-role='button' data-inline='true'>Cancel</a>
+					</div>
+				</div>
+			</div>
+			<!-- popup end -->
+
+
+			<!-- ========================================================
+				INCOME PAGE
+			========================================================= -->
+			<div id="page-income">
+				<div role="main" class="ui-content wow fadeIn" data-inset="false" data-wow-delay="0.2s">
+					<!--HEADER ABOVE, can copy paste-->
+					<div id="page-charges">
+				<div role="main" class="ui-content wow fadeIn" data-inset="false" data-wow-delay="0.2s">
+					<!--HEADER ABOVE, can copy paste-->
+					<ul data-role="listview" data-icon="false" id="incomeList">
+					</ul>
+					<div>
+						<a href='#incomePopupDialog' data-rel='popup' data-position-to='window' data-role='button' data-icon='external-link' data-transition='pop' data-inline='true' class="ui-btn ui-btn-raised clr-primary">Add Income</a>
+					</div>
+					<!--FOOTER BELOW, can copy paste-->
+				</div>
+			</div>
+
+			<!-- popup -->
+			<div data-role='popup' id='incomePopupDialog' data-theme='b'>
+				<div data-role='header' data-theme='b'>
+					<h1>Category name:</h1>
+				</div>
+				<div data-role='content' data-theme='b'>
+					<input id="newIncomeName" data-controller="input-value" autofocus="autofocus">
+					<div class='showastabs center nobg'>
+						<a id="addIncome" href='#' data-rel='back' data-icon='ok' data-iconpos='left' data-role='button' data-inline='true'>Okay</a>
+						<a href='#' data-rel='back' data-icon='delete' data-iconpos='left' data-role='button' data-inline='true'>Cancel</a>
+					</div>
+				</div>
+			</div>
+			<!-- popup end -->
+
+					<!--FOOTER BELOW, can copy paste-->
+				</div>
+			</div>
+
+			<!-- ========================================================
+				TRACKING PAGE
+			========================================================= -->
+			<div id="page-tracking">
+				<div role="main" class="ui-content wow fadeIn" data-inset="false" data-wow-delay="0.2s">
+					<!--HEADER ABOVE, can copy paste-->
+					<!--FOOTER BELOW, can copy paste-->
+				</div>
+			</div>
+
+			<!-- ========================================================
+				OPTIONS PAGE
+			========================================================= -->
+			<div id="page-options">
+				<div role="main" class="ui-content wow fadeIn" data-inset="false" data-wow-delay="0.2s">
+					<!--HEADER ABOVE, can copy paste-->
+					<fieldset>
+						<div data-role="fieldcontain">
+							<p class="small">Budget notification</p>
+							<fieldset class="ui-grid-a">
+								<div class="ui-block-a" id="bn"><input type="checkbox" id="morningNotice" data-role="flipswitch"></div>
+								<div class="ui-block-b"><input class="form-control" id="budgetTime" type="text" data-role="datebox" data-options='{"mode":"timeflipbox", "closeCallback":"budgetNotify"}' /></div>
+							</fieldset>
+						</div>
+						<div data-role="fieldcontain">
+							<p class="small">Tracking reminder</p>
+							<fieldset class="ui-grid-a">
+								<div class="ui-block-a"><input type="checkbox" id="nightNotice" data-role="flipswitch"></div>
+								<div class="ui-block-b"><input class="form-control" id="trackTime" type="text" data-role="datebox" data-options='{"mode":"timeflipbox", "closeCallback":"trackNotify"}' /></div>
+							</fieldset>
+						</div>
+						<div data-role="fieldcontain">
+							<p class="small">Regular asset update reminder</p>
+							<fieldset class="ui-grid-a">
+								<div class="ui-block-a"><input type="checkbox" id="assetNotice" data-role="flipswitch"></div>
+								<div class="ui-block-b"><button class="ui-btn ui-btn-inline ui-btn-right ui-disabled"></button>
+								<select id="selectAssetNotice">
+									<option value="Weekly">Weekly</option>
+									<option value="Monthly">Monthly</option>
+									<option value="Biweekly">Biweekly</option>
+									<option value="BiMonthly">BiMonthly</option>
+								</select></div>
+							</fieldset>
+						</div>
+						<p class="small">Set End Date</p>
+						<input class="form-control" id="endDate" type="text" data-role="datebox" data-options={"mode":"calbox"} /></div>
+						
+						<p class="center">Set minimum daily budget</p>				
+						<div class="ui-grid-b">
+							<div class="ui-block-a"><p id="minBudget">$10</p></div>
+							<div class="ui-block-b"><input type="number" id="setMinBudget" data-clear-btn="true" min="0"></div>
+							<div class="ui-block-c"><button class="ui-btn" id="buttonMinDaily">Update</button></div>
+						</div>
+					</fieldset>
+					<!--FOOTER BELOW, can copy paste-->
+				</div>
+			</div>
+			
+		</div>
+		<script src="vendor/jquery.min.js"></script>
+		<script src="vendor/jquery-ui.min.js"></script>
+		<script>
+			$(document).bind('mobileinit',function(){
+			    $.mobile.changePage.defaults.changeHash = false;
+			    $.mobile.hashListeningEnabled = false;
+			    $.mobile.pushStateEnabled = false;
+			});
+		</script> 
+		<script src="vendor/jquery.mobile.min.js"></script>
+		<script type="text/javascript" src="DateBox/jtsage-datebox.jqm.min.js"
+		></script>	
+		<script type="text/javascript" src="DateBox/jtsage-datebox.lang.utf8.js"></script>
+		<script src="vendor/waves.min.js"></script>
+		<script src="vendor/wow.min.js"></script>
+		<script src="nativeDroid2-master/js/nativedroid2.js"></script>
+		<script src="nativeDroid2-master/nd2settings.js"></script>
+		<!-- ours -->
 		<script type="text/javascript" src="js/utility.js"></script>
+		<script type="text/javascript" src="js/ui/PageTransitions.js"></script>
 		<script type="text/javascript" src="js/Calculator.js"></script>
 		<script type="text/javascript" src="js/NetworkManager.js"></script>
 		<script type="text/javascript" src="js/DataManager.js"></script>

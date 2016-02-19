@@ -13,7 +13,7 @@ var SavingsEntry = new Schema({
 var IncomeEntry = new Schema({
   name: {type: String, index: true, unique: true},
   amount: Number,
-  period: Number,
+  period: String,
   start: Date,
   holdout: Number,
   isConfirm: Boolean
@@ -22,15 +22,15 @@ var IncomeEntry = new Schema({
 var ChargeEntry = new Schema({
   name: {type: String, index: true, unique: true},
   amount: Number,
-  period: Number,
+  period: String,
   start: Date,
   isConfirm: Boolean
 });
 
 var TrackEntry = new Schema({
   budget: Number,
-  spent: Number,
-  date: {type: String, index: true, unique: true}
+  amount: Number,
+  day: {type: String, index: true, unique: true}
 });
 
 // var OptionsEntry = new Schema ({
@@ -43,6 +43,7 @@ var UserSchema = new Schema ({
   username: {type: String, index: true, unique: true},
   name: {type: String, required: true},
   password: {type: String, required: true},
+  lastModified: {type: Date, required : true},
   data: {
     budget: Number,
     assets: Number,
@@ -52,20 +53,14 @@ var UserSchema = new Schema ({
     charges: [ChargeEntry],
     entries: [TrackEntry],
     userOptions: { 
-      isNotify: Boolean,
-      notifyTime: Date,
-      isTrack: Boolean
+      isNotifyMorning: Boolean,
+      isNotifyNight: Boolean,
+      isNotifyAssets: Boolean,
+      notifyMorningTime: Number,
+      notifyNightTime: Number,
+      notifyAssetsPeriod: String
     }
   }
 });
 
 module.exports = mongoose.model('User', UserSchema);
-
-// module.exports = {
-//     Savings: mongoose.model('Savings', SavingsEntry),
-//     Income: mongoose.model('Income', IncomeEntry),
-//     Charge: mongoose.model('Charge', ChargeEntry),
-//     Track: mongoose.model('Track', TrackEntry),
-//     Options: mongoose.model('Options', OptionsEntry),
-//     User: mongoose.model('User', UserSchema)
-// };

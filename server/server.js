@@ -44,11 +44,6 @@ var port = process.env.PORT || 8081;
 // =============================================================================
 var router = express.Router();              // get an instance of the express Router
 
-// initial entry point for all requests
-router.use(function(req, res, next) {
-    next();
-});
-
 // base route, disable for production
 router.get('/', function(req, res, next) {
         res.json({ message: 'hooray! welcome to our api!' });   

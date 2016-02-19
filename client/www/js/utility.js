@@ -1,7 +1,8 @@
 // Utility functions in the global namespace that may be useful for multiple objects
 
-var PERSIST_DATA = false;
+var PERSIST_DATA = true;
 
+var MILLISECONDS_PER_DAY = 24 * 60 * 60 * 1000;
 
 // Checks if two date objects represent the same day
 // Assumes the user's current time zone applies for both dates.
@@ -88,15 +89,30 @@ var TrackEntry = function(amount, budget, day) {
 	this.day = day;
 };
 
-function findNextTime(entry) {
+var Options = function(isNotifyMorning, isNotifyNight, isNotifyAssets, isEnableTracking, notifyMorningTime, notifyNightTime, notifyAssetsPeriod, minDailyBudget) {
+	this.isNotifyMorning = isNotifyMorning;
+	this.isNotifyNight = isNotifyNight;
+	this.isNotifyAssets = isNotifyAssets;
+	this.isEnableTracking = isEnableTracking;
+	this.notifyMorningTime = notifyMorningTime;
+	this.notifyNightTime = notifyNightTime;
+	this.notifyAssetsPeriod = notifyAssetsPeriod;
+	this.minDailyBudget = minDailyBudget;
+};
+
+function findNextTime(entry, startTime) {
 	var period = entry.period;
 	var start = entry.start;
 	var lastTime;
-	if(entry.nextTime) {
-		lastTime = new Date(entry.nextTime);
+	if(typeof startTime === "undefined") {
+		if(entry.nextTime) {
+			lastTime = new Date(entry.nextTime);
+		} else {
+			lastTime = new Date();
+			lastTime.setDate(lastTime.getDate() - 1);
+		}
 	} else {
-		lastTime = new Date();
-		lastTime.setDate(lastTime.getDate() - 1);
+		lastTime = startTime;
 	}
 	var nextTime = new Date(lastTime);
 	if(period == "monthly") {
@@ -111,9 +127,9 @@ function findNextTime(entry) {
 			nextTime.setDate(nextTime.getDate() + 7);
 		}
 	} else if(period == "biweekly") {
-
+		console.log("biweekly not supported yet");
 	} else if(period == "twiceMonthly") {
-
+		console.log("twicemonthly ont supported yet");
 	}
 	return nextTime.getTime();
 }

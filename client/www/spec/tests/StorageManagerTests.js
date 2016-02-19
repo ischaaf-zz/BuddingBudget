@@ -20,7 +20,14 @@ describe("StorageManager", function() {
             }
         };
         mockNetwork = {
-            fetchInitialData: jasmine.createSpy('fetchInitialData')
+            fetchInitialData: jasmine.createSpy('fetchInitialData'),
+            updateAssets : jasmine.createSpy('updateAssets'),
+            setEndDate : jasmine.createSpy('setEndDate'),
+            trackSpending : jasmine.createSpy('trackSpending'),
+            setOption : jasmine.createSpy('setOption'),
+            addEntry : jasmine.createSpy('addEntry'),
+            changeEntry : jasmine.createSpy('changeEntry'),
+            removeEntry : jasmine.createSpy('removeEntry')
         }
         var MockRecurring = function() {
             this.setIncome = function() {};
@@ -79,12 +86,14 @@ describe("StorageManager", function() {
             var entry;
 
             beforeEach(function() {
-                entry = new TrackEntry(3, 2, new Date());
+                entry = new TrackEntry(3, 2, new Date().getTime());
                 mockData.getData.and.callFake(function(category) {
                     if(category === 'savings') {
                         return [{}];
                     } else if(category === 'assets') {
                         return 5;
+                    } else if(category === 'trackedEntry') {
+                        return {};
                     }
                 });
             });
@@ -146,10 +155,27 @@ describe("StorageManager", function() {
 
         });
 
-        it("should fail with invalid extraOption", function() {
-            storageManager.trackSpending({}, "potato", success, failure);
-            expect(failure).toHaveBeenCalled();
-            expect(success).not.toHaveBeenCalled();
+        describe("given invalid extraOption", function() {
+
+            beforeEach(function() {
+                entry = new TrackEntry(3, 2, new Date().getTime());
+                mockData.getData.and.callFake(function(category) {
+                    if(category === 'savings') {
+                        return [{}];
+                    } else if(category === 'assets') {
+                        return 5;
+                    } else if(category === 'trackedEntry') {
+                        return {};
+                    }
+                });
+            });
+
+            it("should fail", function() {
+                storageManager.trackSpending(entry, "potato", success, failure);
+                expect(failure).toHaveBeenCalled();
+                expect(success).not.toHaveBeenCalled();
+            });
+
         });
 
     });
@@ -316,6 +342,12 @@ describe("StorageManager", function() {
     });
 
     it('should call its ready CB', function() {
+        localforage.getItem.and.callFake(function(a, cb) {
+            if(typeof(cb) === 'function') {
+                cb();
+            }
+        });
+        storageManager = new StorageManager(mockData, mockNetwork, readyCB);
     	expect(readyCB).toHaveBeenCalled();
     });
 

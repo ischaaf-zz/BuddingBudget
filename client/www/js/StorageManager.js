@@ -5,6 +5,8 @@
 
 var StorageManager = function(dataManager, networkManager, readyCallback) {
 
+	var self = this;
+
 	var recurringManager = new RecurringManager(function(val) {
 		saveData("assets", dataManager.getData('assets') + val, true);
 	}, function(val) {
@@ -16,12 +18,16 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 	// Update assets
 	this.updateAssets = function(newVal, success, failure) {
 		// update network and local storage
-		saveData('assets', newVal);
+		if(saveData('assets', newVal)) {
+			networkManager.updateAssets(newVal);
+		}
 		callFunc(success);
 	};
 
 	this.setEndDate = function(endDate, success, failure) {
-		saveData('endDate', endDate);
+		if(saveData('endDate', endDate)) {
+			networkManager.setEndDate(endDate);
+		}
 		callFunc(success);
 	};
 
@@ -47,15 +53,18 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 		} else if(extraOption === "savings") {
 			var savings = dataManager.getData('savings');
 			savings[0].amount += difference;
-			saveData('savings', savings);
+			self.changeEntry("savings", savings[0].name, savings[0]);
 			amountToDeduct = trackedEntry.budget;
 		} else if(extraOption !== "distribute") {
 			callFunc(failure, ["invalid extraOption"]);
 			return;
 		}
 
-		saveData('assets', dataManager.getData('assets') - amountToDeduct);
-		saveData('trackedEntry', trackedEntry);
+		self.updateAssets(dataManager.getData('assets') - amountToDeduct)
+
+		if(saveData('trackedEntry', trackedEntry)) {
+			networkManager.trackSpending(trackedEntry);
+		}
 
 		callFunc(success, [$.isEmptyObject(currentEntry)]);
 	};
@@ -64,7 +73,9 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 	this.setOption = function(selection, value, success, failure) {
 		var options = dataManager.getData('options');
 		options[selection] = value;
-		saveData('options', options);
+		if(saveData('options', options)) {
+			networkManager.setOption(selection, value);
+		}
 		callFunc(success);
 	};
 
@@ -76,7 +87,9 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 			callFunc(failure, ["entry with name " + val.name + " already exists"]);
 		} else {
 			data.push(val);
-			saveData(category, data);
+			if(saveData(category, data)) {
+				networkManager.addEntry(category, val);
+			}
 			callFunc(success);
 		}
 	};
@@ -89,7 +102,9 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 			callFunc(failure, ["entry with name " + name + " does not exist"]);
 		} else {
 			data[index] = newVal;
-			saveData(category, data);
+			if(saveData(category, data)) {
+				networkManager.changeEntry(category, name);
+			}
 			callFunc(success);
 		}
 	};
@@ -102,7 +117,9 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 			callFunc(failure, ["entry with name " + name + " does not exist"]);
 		} else {
 			data.splice(index, 1);
-			saveData(category, data);
+			if(saveData(category, data)) {
+				networkManager.removeEntry(category, name);
+			}
 			callFunc(success);
 		}
 	};

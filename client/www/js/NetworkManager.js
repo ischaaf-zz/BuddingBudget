@@ -15,7 +15,7 @@ var NetworkManager = function() {
 	// you want.
 	var callbacks = {};
 
-	this.registerCallback = function(event, callback) {
+	this.registerListener = function(event, callback) {
 		callbacks[event] = callbacks[event] || [];
 		callbacks[event].push(callback);
 	};
@@ -32,11 +32,41 @@ var NetworkManager = function() {
 	};
 
 	this.fetchInitialData = function(success, failure) {
-		return {};
+		success({});
 	};
 
-	this.store = function(type, newData) {
+	// Update assets
+	this.updateAssets = function(newVal) {
+		
+	};
 
+	this.setEndDate = function(endDate) {
+
+	};
+
+	// Create and add new spending entry
+	this.trackSpending = function(trackedEntry) {
+		
+	};
+
+	// Set the specified option to a new value
+	this.setOption = function(selection, value) {
+		
+	};
+
+	// Add a new entry to savings or recurring charges / income
+	this.addEntry = function(category, val) {
+		
+	};
+
+	// Change an entry to savings or recurring charges / income
+	this.changeEntry = function(category, name, newVal) {
+		
+	};
+
+	// Remove an entry from savings or recurring charges / income
+	this.removeEntry = function(category, name) {
+		
 	};
 
 };

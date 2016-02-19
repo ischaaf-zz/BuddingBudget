@@ -1,8 +1,7 @@
 // THIS FILE SHOULD BE THE ONLY PLACE THE DOM IS MANIPULATED
 // Handles sending new data and commands out from the DOM, and
 // putting new updated data into the DOM.
-
-var UIView = function(getData, setDataListener) {
+var UIView = function(getData, setDataListener, login, setNetworkListener) {
 
 	// events: updateAssets, trackSpending, setOption, 
 	//		   addEntry, changeEntry, removeEntry

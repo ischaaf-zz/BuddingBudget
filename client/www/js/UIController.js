@@ -26,7 +26,15 @@ var UIController = function(getData, storageManager, registerUICallback) {
 		// if success, and not on budget, use success callback to get extraOption, then call storageManager
 		//    valid extraOption values are ("rollover", "savings", "distribute") If they're on budget, call distribute
 		if(trackedEntry instanceof TrackEntry) {
-			storageManager.trackSpending(trackedEntry, extraOption, success, failure);
+			if(isValidNumber(trackedEntry.amount)) {
+				if(isValidNumber(trackedEntry.day)) {
+					storageManager.trackSpending(trackedEntry, extraOption, success, failure);
+				} else {
+					callFunc(failure, ['Invalid day in tracked entry']);
+				}
+			} else {
+				callFunc(failure, ['Invalid amount in tracked entry']);
+			}
 		} else {
 			callFunc(failure, ["trackedEntry isn't an instance of TrackEntry"]);
 		}
@@ -106,6 +114,10 @@ var UIController = function(getData, storageManager, registerUICallback) {
 		} else {
 			return false;
 		}
+	}
+
+	function isValidNumber(val) {
+		return (typeof(val) === 'number' && !isNaN(val));
 	}
 
 };

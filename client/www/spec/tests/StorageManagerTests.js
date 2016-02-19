@@ -20,7 +20,14 @@ describe("StorageManager", function() {
             }
         };
         mockNetwork = {
-            fetchInitialData: jasmine.createSpy('fetchInitialData')
+            fetchInitialData: jasmine.createSpy('fetchInitialData'),
+            updateAssets : jasmine.createSpy('updateAssets'),
+            setEndDate : jasmine.createSpy('setEndDate'),
+            trackSpending : jasmine.createSpy('trackSpending'),
+            setOption : jasmine.createSpy('setOption'),
+            addEntry : jasmine.createSpy('addEntry'),
+            changeEntry : jasmine.createSpy('changeEntry'),
+            removeEntry : jasmine.createSpy('removeEntry')
         }
         var MockRecurring = function() {
             this.setIncome = function() {};
@@ -68,6 +75,10 @@ describe("StorageManager", function() {
             expect(localforage.setItem).toHaveBeenCalledWith("assets", 0);
         });
 
+        it("should update networkManager", function() {
+            expect(mockNetwork.updateAssets).toHaveBeenCalledWith(0);
+        });
+
         succeedNotFail();
 
     });
@@ -79,12 +90,14 @@ describe("StorageManager", function() {
             var entry;
 
             beforeEach(function() {
-                entry = new TrackEntry(3, 2, new Date());
+                entry = new TrackEntry(3, 2, new Date().getTime());
                 mockData.getData.and.callFake(function(category) {
                     if(category === 'savings') {
                         return [{}];
                     } else if(category === 'assets') {
                         return 5;
+                    } else if(category === 'trackedEntry') {
+                        return {};
                     }
                 });
             });
@@ -98,6 +111,10 @@ describe("StorageManager", function() {
 
                 it("should update localforage", function() {
                     expect(localforage.setItem).toHaveBeenCalledWith('trackedEntry', entry);
+                });
+
+                it("should update networkManager", function() {
+                    expect(mockNetwork.trackSpending).toHaveBeenCalledWith(entry);
                 });
             }
 
@@ -146,10 +163,27 @@ describe("StorageManager", function() {
 
         });
 
-        it("should fail with invalid extraOption", function() {
-            storageManager.trackSpending({}, "potato", success, failure);
-            expect(failure).toHaveBeenCalled();
-            expect(success).not.toHaveBeenCalled();
+        describe("given invalid extraOption", function() {
+
+            beforeEach(function() {
+                entry = new TrackEntry(3, 2, new Date().getTime());
+                mockData.getData.and.callFake(function(category) {
+                    if(category === 'savings') {
+                        return [{}];
+                    } else if(category === 'assets') {
+                        return 5;
+                    } else if(category === 'trackedEntry') {
+                        return {};
+                    }
+                });
+            });
+
+            it("should fail", function() {
+                storageManager.trackSpending(entry, "potato", success, failure);
+                expect(failure).toHaveBeenCalled();
+                expect(success).not.toHaveBeenCalled();
+            });
+
         });
 
     });
@@ -167,6 +201,10 @@ describe("StorageManager", function() {
 
         it("should call localforage", function() {
             expect(localforage.setItem).toHaveBeenCalledWith('options', {"selection": "value"});
+        });
+
+        it("should call networkStorage", function() {
+            expect(mockNetwork.setOption).toHaveBeenCalledWith('selection', 'value');
         })
 
         succeedNotFail();
@@ -210,6 +248,10 @@ describe("StorageManager", function() {
                         expect(localforage.setItem).toHaveBeenCalledWith(category, [{name: "nameVal1"}, {name: "nameVal2"}]);
                     });
 
+                    it("should update networkStorage", function() {
+                        expect(mockNetwork.addEntry).toHaveBeenCalledWith(category, {name: "nameVal2"});
+                    })
+
                 });
 
                 describe("with invalid data", function() {
@@ -226,6 +268,10 @@ describe("StorageManager", function() {
 
                     it("should not set localforage", function() {
                         expect(localforage.setItem).not.toHaveBeenCalled();
+                    })
+
+                    it("should not set networkManager", function() {
+                        expect(mockNetwork.addEntry).not.toHaveBeenCalled();
                     })
 
                 });
@@ -250,6 +296,10 @@ describe("StorageManager", function() {
                         expect(localforage.setItem).toHaveBeenCalledWith(category, [{name: "nameVal2"}]);
                     });
 
+                    it("should update NetworkManager", function() {
+                        expect(mockNetwork.changeEntry).toHaveBeenCalledWith(category, "nameVal1", {name: "nameVal2"});
+                    })
+
                 });
 
                 describe("with invalid data", function() {
@@ -267,6 +317,10 @@ describe("StorageManager", function() {
                     it("should not update localforage", function() {
                         expect(localforage.setItem).not.toHaveBeenCalled();
                     });
+
+                    it("should not set networkManager", function() {
+                        expect(mockNetwork.changeEntry).not.toHaveBeenCalled();
+                    })
 
                 });
 
@@ -290,6 +344,10 @@ describe("StorageManager", function() {
                         expect(localforage.setItem).toHaveBeenCalledWith(category, []);
                     });
 
+                    it("should update networkManager", function() {
+                        expect(mockNetwork.removeEntry).toHaveBeenCalledWith(category, "nameVal1");
+                    });
+
                 });
 
                 describe("with invalid data", function() {
@@ -308,6 +366,10 @@ describe("StorageManager", function() {
                         expect(localforage.setItem).not.toHaveBeenCalled();
                     });
 
+                    it("should not set networkManager", function() {
+                        expect(mockNetwork.removeEntry).not.toHaveBeenCalled();
+                    })
+
                 });
 
             });
@@ -316,6 +378,12 @@ describe("StorageManager", function() {
     });
 
     it('should call its ready CB', function() {
+        localforage.getItem.and.callFake(function(a, cb) {
+            if(typeof(cb) === 'function') {
+                cb();
+            }
+        });
+        storageManager = new StorageManager(mockData, mockNetwork, readyCB);
     	expect(readyCB).toHaveBeenCalled();
     });
 

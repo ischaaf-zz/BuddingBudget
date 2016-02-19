@@ -56,7 +56,7 @@ describe("UIController", function() {
     describe("trackSpending callback", function() {
 
         it("should change value when valid", function() {
-            var entry = new TrackEntry(10, 5, new Date());
+            var entry = new TrackEntry(10, 5, 100);
             callbacks.trackSpending(entry, "foo", success, failure);
             expect(mockSM.trackSpending).toHaveBeenCalledWith(entry, "foo", jasmine.any(Function), jasmine.any(Function));
         });

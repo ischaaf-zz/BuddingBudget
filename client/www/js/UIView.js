@@ -29,6 +29,15 @@ var UIView = function(getData, setDataListener) {
 		$("#budget").html("$" + getData("budget"));
 		$("#prevAssets").html("$" + getData("assets"));
 		
+		//BUGGY
+		var value = getData("options");
+		if(value.isNotifyMorning == 'On') {
+			$("#morningNotice").val("On").flipswitch("refresh");
+		}
+		
+		$("#selectAssetNotice option[value='" + value.notifyAssetsPeriod + "']").attr("selected", "selected");
+		$("#selectAssetNotice").selectmenu('refresh', true);
+		
 		var arr = getData("savings");
 		arr.forEach(function(ctx) {
 			//Todo: replace with makeTemplate based on object
@@ -356,7 +365,6 @@ var UIView = function(getData, setDataListener) {
 		var save = new IncomeEntry(catName, 0, "monthly", 1, 5, true);
 		notify("addEntry", "income", catName, save, uuid);
 	});
-
 	
 	function updateIncomeEntry(uuid, catName) {
 		var li = document.getElementById(uuid);
@@ -391,14 +399,6 @@ var UIView = function(getData, setDataListener) {
             assetsSuccess.classList.add("animatePopupMessage");
 		}]);
 		document.getElementById("setAssets").value = "";
-	});
-	
-	$("#buttonMinDaily").click(function() {
-		notifyListeners("setOption", ["minDailyBudget", parseInt($("#setMinBudget").val()), function() {
-			//success
-		}, function(message) {
-			//failure
-		}]);
 	});
 	
 	//attached to buttons defined in .ready()
@@ -449,6 +449,23 @@ var UIView = function(getData, setDataListener) {
 			//failure
 		}]);
 	});
+	
+	$("#buttonMinDaily").click(function() {
+		notifyListeners("setOption", ["minDailyBudget", parseInt($("#setMinBudget").val()), function() {
+			//success
+		}, function(message) {
+			//failure
+		}]);
+	});
+	
+	$("#selectAssetNotice").change(function() {
+		notifyListeners("setOption", ["notifyAssetsPeriod", $("#selectAssetNotice option:selected" ).text(), function() {
+			//sucess
+		}, function(message) {
+			//failure
+		}])
+	});
+
 	
 	//----------------------------------------------//
 	// This is just an animation for popup callback, 

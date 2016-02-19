@@ -5,7 +5,9 @@ describe("RecurringManager", function() {
 	beforeEach(function() {
 		mock = {
 			saveAssets: jasmine.createSpy("saveAssets"),
-			saveCharges: jasmine.createSpy("saveCharges"),
+			saveCharges: jasmine.createSpy("saveCharges").and.callFake(function(a, b) {
+				console.log("SUP");
+			}),
 			saveIncome: jasmine.createSpy("saveIncome")
 		};
 

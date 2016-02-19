@@ -8,11 +8,17 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 	var self = this;
 
 	var recurringManager = new RecurringManager(function(val) {
-		saveData("assets", dataManager.getData('assets') + val, true);
-	}, function(val) {
-		saveData("charges", val, true);
-	}, function(val) {
-		saveData("income", val, true);
+		if(saveData("assets", dataManager.getData('assets') + val, true)) {
+			networkManager.updateAssets(dataManager.getData('assets') + val);
+		}
+	}, function(val, entry) {
+		if(saveData("charges", val, true)) {
+			networkManager.changeEntry("charges", entry.name, val);
+		}
+	}, function(val, entry) {
+		if(saveData("income", val, true)) {
+			networkManager.changeEntry("income", entry.name, val);
+		}
 	});
 
 	// Update assets

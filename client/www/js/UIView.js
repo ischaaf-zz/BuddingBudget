@@ -140,42 +140,32 @@ var UIView = function(getData, setDataListener) {
 		var deleteButton = document.createElement('button');
 		deleteButton.classList.add("ui-btn", "ui-btn-inline");
 		deleteButton.innerHTML = "x";
+		deleteButton.style.float = "right";
 		deleteButton.onclick = (function() {
 			removeEntry(uuid, category, catName);
 		});
 
+		li.appendChild(deleteButton);
 		li.appendChild(h3);
 		li.appendChild(h32);
 		li.appendChild(input);
 
 		var select = document.createElement('select');
 		//TODO add options dynamically?
-		var o1 = document.createElement('option');
-		o1.value = "monthly";
-		o1.innerHTML = "monthly";
-		var o2 = document.createElement('option');
-		o2.value = "weekly";
-		o2.innerHTML = "weekly";
-		var o3 = document.createElement('option');
-		o3.value = "biweekly";
-		o3.innerHTML = "biweekly";
-		var o4 = document.createElement('option');
-		o4.value = "twiceMonthly";
-		o4.innerHTML = "twiceMonthly";
-		select.appendChild(o1);
-		select.appendChild(o2);
-		select.appendChild(o3);
-		select.appendChild(o4);
+		["monthly", "weekly", "biweekly", "twiceMonthly"].forEach(function(f) {
+			var opt = document.createElement('option');
+			opt.value = f;
+			opt.innerHTML = f;
+			select.appendChild(opt);
+		});
 		select.value = frequency;
 		li.appendChild(select);
 		li.appendChild(button);
-		li.appendChild(deleteButton);
 		li.appendChild(p);
 		$(listId).append(li);
 
 		return uuid;
 	}
-
 
 	function removeEntry(uuid, category, catName) {
 		notifyListeners("removeEntry", [category,
@@ -189,6 +179,18 @@ var UIView = function(getData, setDataListener) {
 		document.getElementById(uuid).remove();
 	}
 
+	//todo: buggy b/c catName and save switches depending on addEntry or changeEntry call?
+	function notify(call, category, catName, save, uuid) {
+		notifyListeners(call, [category,
+			catName,
+			save,
+			function() {
+			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "CHANGED " + category.toUpperCase() + " SUCCESS";
+			}, 
+			function(message) {
+			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
+		}]);
+	}
 	//--------------------------------------
 	// 			Savings
 	//--------------------------------------
@@ -206,15 +208,7 @@ var UIView = function(getData, setDataListener) {
 		//generalize this? SavingsEntry
 		//add element to "savings" array
 		var save = new SavingsEntry(catName, 0, true);
-		notifyListeners("addEntry", ["savings",
-			save,
-			catName,
-			function() {
-				document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "ADD SAVINGS SUCCESS";
-			}, 
-			function(message) {
-				document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
-		}]);
+		notify("addEntry", "savings", catName, save, uuid);
 	});
 
 	function updateSavingsEntry(uuid, catName) {
@@ -228,15 +222,7 @@ var UIView = function(getData, setDataListener) {
 		li.getElementsByTagName('input')[0].value = "";
 		
 		var save = new SavingsEntry(catName, parseInt(val), false);
-		notifyListeners("changeEntry", ["savings",
-			catName,
-			save,
-			function() {
-			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "CHANGED SAVINGS SUCCESS";
-			}, 
-			function(message) {
-			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
-		}]);
+		notify("changeEntry", "savings", catName, save, uuid);
 	}
 
 	//--------------------------------------
@@ -254,15 +240,7 @@ var UIView = function(getData, setDataListener) {
 		//generalize this? SavingsEntry
 		//add element to "savings" array
 		var save = new ChargeEntry(catName, 0, 'monthly', 5, true);
-		notifyListeners("addEntry", ["charges",
-			save,
-			catName,
-			function() {
-				document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "ADD CHARGE SUCCESS";
-			}, 
-			function(message) {
-				document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
-		}]);
+		notify("addEntry", "charges", catName, save, uuid);
 	});
 
 	function updateChargesEntry(uuid, catName) {
@@ -279,15 +257,7 @@ var UIView = function(getData, setDataListener) {
 		
 		//What does isDefault do?! Set to false here
 		var save = new ChargeEntry(catName, val, frequency, 5, false);
-		notifyListeners("changeEntry", ["charges",
-			catName,
-			save,
-			function() {
-			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "CHANGED CHARGES SUCCESS";
-			}, 
-			function(message) {
-			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
-		}]);
+		notify("changeEntry", "charges", catName, save, uuid);
 	}
 	
 	//--------------------------------------
@@ -305,15 +275,7 @@ var UIView = function(getData, setDataListener) {
 		//generalize this? SavingsEntry
 		//add element to "savings" array
 		var save = new IncomeEntry(catName, 0, "monthly", 1, 5, true);
-		notifyListeners("addEntry", ["income",
-			save,
-			catName,
-			function() {
-				document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "ADD INCOME SUCCESS";
-			}, 
-			function(message) {
-				document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
-		}]);
+		notify("addEntry", "income", catName, save, uuid);
 	});
 
 	
@@ -331,17 +293,7 @@ var UIView = function(getData, setDataListener) {
 		
 		//What does isDefault do?! Set to false here
 		var save = new IncomeEntry(catName, val, frequency, 1, 5, true);
-		console.log(getData("income"));
-		notifyListeners("changeEntry", ["income",
-			catName,
-			save,
-			function() {
-			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "CHANGED INCOME SUCCESS";
-			}, 
-			function(message) {
-			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
-		}]);
-		console.log(getData("income"));
+		notify("changeEntry", "income", catName, save, uuid);
 	}
 
 	//--------------------------------------
@@ -361,7 +313,10 @@ var UIView = function(getData, setDataListener) {
 		}]);
 		document.getElementById("setAssets").value = "";
 	});
-	
+
+	//--------------------------------------
+	// 			Options
+	//--------------------------------------
 	$("#habitTrack").change(function() {
 		var label = $("#habitTrack").prop("checked") ? "On" : "Off";
 		//selection not yet defined in UIController

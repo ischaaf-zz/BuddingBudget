@@ -31,9 +31,11 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 		// if rollover, set difference
 		// if distribute, change assets
 		// if savings, change savings
+
+		var currentEntry = dataManager.getData('trackedEntry');
 		
 		var difference = trackedEntry.budget - trackedEntry.amount;
-		var amountToDeduct = trackedEntry.amount;
+		var amountToDeduct = trackedEntry.amount - (currentEntry.amount || 0);
 
 		if(extraOption === "rollover") {
 			// This is harder to implement than I thought it would be. May get
@@ -55,7 +57,7 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 		saveData('assets', dataManager.getData('assets') - amountToDeduct);
 		saveData('trackedEntry', trackedEntry);
 
-		callFunc(success);
+		callFunc(success, [$.isEmptyObject(currentEntry)]);
 	};
 
 	// Set the specified option to a new value

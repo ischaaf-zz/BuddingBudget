@@ -182,6 +182,19 @@ var UIView = function(getData, setDataListener) {
 	//todo: buggy b/c catName and save switches depending on addEntry or changeEntry call?
 	function notify(call, category, catName, save, uuid) {
 		notifyListeners(call, [category,
+			save,
+			catName,
+			function() {
+			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "CHANGED " + category.toUpperCase() + " SUCCESS";
+			}, 
+			function(message) {
+			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
+		}]);
+	}
+
+	//workaround for weird save/catName switch
+	function notify2(call, category, catName, save, uuid) {
+		notifyListeners(call, [category,
 			catName,
 			save,
 			function() {
@@ -191,6 +204,7 @@ var UIView = function(getData, setDataListener) {
 			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
 		}]);
 	}
+
 	//--------------------------------------
 	// 			Savings
 	//--------------------------------------
@@ -222,7 +236,7 @@ var UIView = function(getData, setDataListener) {
 		li.getElementsByTagName('input')[0].value = "";
 		
 		var save = new SavingsEntry(catName, parseInt(val), false);
-		notify("changeEntry", "savings", catName, save, uuid);
+		notify2("changeEntry", "savings", catName, save, uuid);
 	}
 
 	//--------------------------------------
@@ -246,18 +260,18 @@ var UIView = function(getData, setDataListener) {
 	function updateChargesEntry(uuid, catName) {
 		var li = document.getElementById(uuid);
 		var val = li.getElementsByTagName('input')[0].value;
+		var select = li.getElementsByTagName('select')[0];
+		var frequency = select.options[select.selectedIndex].value;
+		
 		if(val == "") {
-			return;
+			val = li.getElementsByTagName('h2')[0].innerHTML.split("$")[1];
 		}
 
 		li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
 		li.getElementsByTagName('input')[0].value = "";
-		var select = li.getElementsByTagName('select')[0];
-		var frequency = select.options[select.selectedIndex].value;
-		
 		//What does isDefault do?! Set to false here
 		var save = new ChargeEntry(catName, val, frequency, 5, false);
-		notify("changeEntry", "charges", catName, save, uuid);
+		notify2("changeEntry", "charges", catName, save, uuid);
 	}
 	
 	//--------------------------------------
@@ -284,16 +298,16 @@ var UIView = function(getData, setDataListener) {
 		var val = li.getElementsByTagName('input')[0].value;
 		var select = li.getElementsByTagName('select')[0];
 		var frequency = select.options[select.selectedIndex].value;
-		
 		if(val == "") {
 			val = li.getElementsByTagName('h2')[0].innerHTML.split("$")[1];
+		
 		}
 			li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
 			li.getElementsByTagName('input')[0].value = "";
 		
 		//What does isDefault do?! Set to false here
 		var save = new IncomeEntry(catName, val, frequency, 1, 5, true);
-		notify("changeEntry", "income", catName, save, uuid);
+		notify2("changeEntry", "income", catName, save, uuid);
 	}
 
 	//--------------------------------------

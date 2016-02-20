@@ -178,16 +178,102 @@ describe("nextTime management", function() {
 
 	});
 
-	// describe("for biweekly reccurence", function() {
-	// 	beforeEach(function() {
-	// 		entry = new ChargeEntry("foo", 1, "biweekly", 1, false);
-	// 	});
-	// });
+	describe("for biweekly reccurence", function() {
+		var day;
 
-	// describe("for twiceMonthly recurrence", function() {
-	// 	beforeEach(function() {
-	// 		entry = new ChargeEntry("foo", 1, "twiceMonthly", 1, false);
-	// 	});
-	// });
+		beforeEach(function() {
+			day = (new Date()).getDay();
+			entry = new ChargeEntry("foo", 1, "biweekly", day, false);
+		});
+
+
+		describe("initial nextTime", function() {
+
+			var nextTime;
+
+			beforeEach(function() {
+				nextTime = new Date(entry.nextTime);
+			});
+
+			it("should be later than or equal to current time", function() {
+				expect(nextTime).not.toBeLessThan(today);
+			});
+
+			it("should have a day equal to the start day", function() {
+				expect(nextTime.getDay()).toEqual(day);
+			});
+
+		});
+
+		describe("successive nextTime", function() {
+
+			var prevTime;
+			var nextTime;
+
+			beforeEach(function() {
+				prevTime = new Date(entry.nextTime);
+				nextTime = new Date(findNextTime(entry));
+			});
+
+			it("should be later than the previous time", function() {
+				expect(nextTime).toBeGreaterThan(prevTime);
+			});
+
+			it("should have a day equal to the previous day", function() {
+				expect(nextTime.getDay()).toEqual(prevTime.getDay());
+				expect(nextTime.getDay()).toEqual(day);
+			});
+
+		});
+	});
+
+	describe("for twiceMonthly recurrence", function() {
+		var date;
+
+		beforeEach(function() {
+			date = (new Date()).getDate();
+			entry = new ChargeEntry("foo", 1, "twiceMonthly", date, false);
+		});
+
+		describe("second nextTime", function() {
+
+			var nextTime;
+
+			beforeEach(function() {
+				nextTime = new Date(findNextTime(entry.nextTime));
+			});
+
+			it("should be later than or equal to current time", function() {
+				expect(nextTime).not.toBeLessThan(today);
+			});
+
+			it("should have a date equal to the start date", function() {
+				expect(nextTime.getDate()).toEqual(date);
+			});
+
+		});
+
+		describe("successive nextTimes", function() {
+
+			var prevTime;
+			var nextTime;
+
+			beforeEach(function() {
+				prevTime = new Date(entry.nextTime);
+				entry.nextTime = new Date(findNextTime(entry));
+				nextTime = new Date(findNextTime(entry));
+			});
+
+			it("should be later than the previous time", function() {
+				expect(nextTime).toBeGreaterThan(prevTime);
+			});
+
+			it("should have a date equal to the previous date", function() {
+				expect(nextTime.getDate()).toEqual(prevTime.getDate());
+				expect(nextTime.getDate()).toEqual(date);
+			});
+
+		});
+	});
 
 });

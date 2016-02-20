@@ -66,35 +66,48 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		//---BUGGY---
 		//load flip switch options
 		var value = getData("options");
+		console.log("-----------");
+		console.log(value);
+		
 		if(value.isNotifyMorning == 'On') {
 			$("#morningNotice").val("On").flipswitch("refresh");
 		}
 		
 		//load asset update reminder period
-		$("#selectAssetNotice option[value='" + value.notifyAssetsPeriod + "']").attr("selected", "selected");
-		$("#selectAssetNotice").selectmenu('refresh', true);
+		if(value.notifyAssetsPeriod != undefined) {
+			$("#selectAssetNotice option[value='" + value.notifyAssetsPeriod + "']").attr("selected", "selected");
+			$("#selectAssetNotice").selectmenu('refresh', true);
+		}
 		
-		//load end date
-		var theDate = getData("endDate");
-		var newDate = new Date(theDate);
-		$("#endDate").datebox('setTheDate', newDate).trigger('datebox', {'method':'doset'});
+		if(PERSIST_DATA) {
+			//load end date
+			var theDate = getData("endDate");
+			var newDate = new Date(theDate);
+			$("#endDate").datebox('setTheDate', newDate).trigger('datebox', {'method':'doset'});
+		}
 		
-		//load times
-		var budgetTime = value.notifyMorningTime;
-		var newDate = new Date(budgetTime);
-		$("#budgetTime").datebox('setTheDate', newDate).trigger('datebox', {'method':'doset'});
+		if(value.notifyMorningTime != undefined) {
+			//load times
+			var budgetTime = value.notifyMorningTime;
+			var newDate = new Date(budgetTime);
+			$("#budgetTime").datebox('setTheDate', newDate).trigger('datebox', {'method':'doset'});
+		}
 		
-		var trackTime = value.notifyNightTime;
-		var newDate = new Date(trackTime);
-		$("#trackTime").datebox('setTheDate', newDate).trigger('datebox', {'method':'doset'});
+		if(value.notifyNightTime != undefined) {
+			var trackTime = value.notifyNightTime;
+			var newDate = new Date(trackTime);
+			$("#trackTime").datebox('setTheDate', newDate).trigger('datebox', {'method':'doset'});
+		}
 		
 		//load min daily budget
 		$("#minBudget").html("$" + value.minDailyBudget);
 		
-		//TODO: replace with saved options
-		$("#trackTime").datebox('disable');
-		$("#budgetTime").datebox('disable');
-		$("#selectAssetNotice").selectmenu('disable');
+		if(PERSIST_DATA) {
+			//TODO: replace with saved options
+			$("#trackTime").datebox('disable');
+			$("#budgetTime").datebox('disable');
+			$("#selectAssetNotice").selectmenu('disable');
+		}
 	});
 	
 	//-----------------LISTENERS----------------------
@@ -457,25 +470,43 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 	//--------------------------------------
 	// 			Track Spending
 	//--------------------------------------
+	var tracked = undefined;
 	$("#buttonTrack").click(function() {
 		var amount = parseInt($("#setTrack").val());
 		var budget = getData("budget");
 		var day = (new Date).getTime();
-		var tracked = new TrackEntry(amount, budget, day);
+		tracked = new TrackEntry(amount, budget, day);
 		
-		notifyListeners("trackSpending", [tracked, "distribute", function() {
+		var spendType = "distribute";
+		
+		//check if over/under spent
+		var overUnder = budget - amount;
+		if(overUnder > 0 || overUnder < 0) {
+			$("#overUnderPopup").popup("open");
+		} else {
+			notifyTrackSpend(tracked, spendType);
+		}
+		
+		document.getElementById("setTrack").value = "";
+	});
+	
+	function notifyTrackSpend(tracked, spendType) {
+		notifyListeners("trackSpending", [tracked, spendType, function() {
 			document.querySelector('#trackSuccess');
-            trackSuccess.textContent = 'CHANGED ASSETS SUCCESS';
+            trackSuccess.textContent = 'TRACK SPENDING SUCCESS';
             trackSuccess.classList.remove("animatePopupMessage");
             trackSuccess.classList.add("animatePopupMessage");
 		}, function(message) {
-			//TODO: over/under case
 			document.querySelector('#trackSuccess');
             trackSuccess.textContent = 'FAILED: ' + message;
             trackSuccess.classList.remove("animatePopupMessage");
             trackSuccess.classList.add("animatePopupMessage");
 		}]);
-		document.getElementById("setAssets").value = "";
+	}
+	
+	$("#submitOverUnder").click(function() {
+		var spendType = $("input[name='ou']:checked").val();
+		notifyTrackSpend(tracked, spendType);
 	});
 
 	//--------------------------------------

@@ -183,6 +183,7 @@
 				<div role="main" class="ui-content wow fadeIn" data-inset="false" data-wow-delay="0.2s">
 					<h3>Track Spending</h3>
 					<h3 id="prevSpending"></h3>
+					<p id="lastUpdateSpending">"Last Update: "</p>
 					<input id="setTrack" data-controller="input-value" type="number" min="0">
 					<button class="ui-btn ui-btn-raised clr-primary" id="buttonTrack">Update</button>
 					<p id='trackSuccess' class='attentionGrapper'></p>
@@ -190,7 +191,7 @@
 			</div>
 			
 			<!-- popup -->
-			<div data-role='popup' id='overUnderPopup' data-theme='b'>
+			<div data-role='popup' data-dismissible="false" id='overUnderPopup' data-theme='b'>
 				<div data-role='header' class="ui-content" data-theme='b'>
 					<h1>Over/Under Spent</h1>
 				</div>

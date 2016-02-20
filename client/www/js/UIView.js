@@ -59,6 +59,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 			$("#prevSpending").html("$0");
 		} else {
 			$("#prevSpending").html("$" + track.amount);
+			$("#lastUpdateSpending").html("Last Update: " + new Date(track.day));
 		}
 		
 		//--Load Options--
@@ -122,7 +123,8 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 	
 	setDataListener("trackedEntry", function() {
 		var track = getData("trackedEntry");
-		$("#prevSpending").html("$" + track.amount);		
+		$("#prevSpending").html("$" + track.amount);
+		$("#lastUpdateSpending").html("Last Update: " + new Date(track.day));
 	});
 	
 	// setup savings and update when there are changes
@@ -504,6 +506,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		}]);
 	}
 	
+	//get selected radio button
 	$("#submitOverUnder").click(function() {
 		var spendType = $("input[name='ou']:checked").val();
 		notifyTrackSpend(tracked, spendType);

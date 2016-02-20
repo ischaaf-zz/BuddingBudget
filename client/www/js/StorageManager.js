@@ -66,7 +66,7 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 			return;
 		}
 
-		self.updateAssets(dataManager.getData('assets') - amountToDeduct)
+		self.updateAssets(dataManager.getData('assets') - amountToDeduct);
 
 		if(saveData('trackedEntry', trackedEntry)) {
 			networkManager.trackSpending(trackedEntry);

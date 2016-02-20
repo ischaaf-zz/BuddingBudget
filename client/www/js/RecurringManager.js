@@ -55,7 +55,7 @@ var RecurringManager = function(saveAssets, saveCharges, saveIncome) {
 			}
 			saveCharges(charges, entry);
 			var beginningNextDay = entry.nextTime - (entry.nextTime % MILLISECONDS_PER_DAY);
-			var nextCallTime = beginningNextDay + 60000 - now.getTime();
+			nextCallTime = beginningNextDay + 60000 - now.getTime();
 		}
 		remainingTime = Math.max(nextCallTime - MAX_TIMEOUT, 0);
 		chargeTimeouts[index] = setTimeout(function() {

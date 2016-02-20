@@ -592,6 +592,13 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		}]);
 	};
 	
+	
+	//for testing?
+	$("#resetStorage").click(function() {
+		clearStorage();
+		$("#resetNote").html("Storage cleared. Reload/reopen app to see default state.");
+	});
+	
 	//----------------------------------------------//
 	// This is just an animation for popup callback, 
     // Not part of popup functionality.

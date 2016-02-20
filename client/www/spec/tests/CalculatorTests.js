@@ -23,7 +23,8 @@ describe("Calculator", function() {
     	var budget = calculator.calculateBudget(simpleSampleData);
     	expect(budget).toEqual(5);
     });
-
+    
+    // simulates the budgeting by mocking all days and check that all budgets as well as the final assets are correct
     it('should calculate the right sequence of budgets and use up the available assets', function() {
         jasmine.clock().install();
         var endDate = new Date(simpleSampleData.endDate);

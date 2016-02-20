@@ -7,7 +7,8 @@ var Calculator = function() {
 	// Calculates and returns the budget based upon the
 	// passed in data.
 	this.calculateBudget = function(data) {
-		// calculate budget by dividing the assets by the amount of days left and return that value
+		// calculate budget by basically dividing the assets by the amount of days left and return that value.
+		// Because of possible interleving incomes and charges, the algorithm has to be more sophisticated.
 
 		// make sure dates are have no information about the hour, minute, seconds and milliseconds 
 		var now = new Date();
@@ -18,16 +19,16 @@ var Calculator = function() {
 			return 0;
 		}
 
-		// calculate all changes that occur due to income and charges and save them in "changes".
-		var changes = {};
-		var currentDay = new Date(today);
-
+		// calculate the available assets
 		var sumOfSavings = 0;
 		for(var i = 0; i < data.savings.length; i++) {
 			sumOfSavings += data.savings[i].amount;
 		}
 		var availableAssets = data.assets - sumOfSavings;
 
+		// calculate all changes that occur due to income and charges and save them in "changes" with the date as the key.
+		var changes = {};
+		var currentDay = new Date(today);
 		changes[currentDay.getTime()] = availableAssets;
 		for(i = 0; i < data.income.length; i++) {
 			currentDay = new Date(today);
@@ -53,8 +54,7 @@ var Calculator = function() {
 				currentDay = new Date(nextTime);
 			}
 		}
-		console.log(changes);
-		// sort date keys in changes
+		// sort date keys in changes - decreasing
 		var dates = [];
 		for(var date in changes) {
 			dates.push(date);
@@ -71,10 +71,9 @@ var Calculator = function() {
 				delete changes[dates[i]];
 			}
 		}
-		console.log(changes);
 		// TODO: error if negative at end
 
-		// sort date keys in changes again after deleting entries
+		// sort date keys in changes again after deleting entries, this time increasing
 		dates = [];
 		for(var date in changes) {
 			dates.push(date);
@@ -83,8 +82,10 @@ var Calculator = function() {
 
 		return maxAmountToSpend(changes, endDate);
 
+		// calculates the maximum amount one can spend on the first day to still be able
+		// to get to endDate optimally
 		function maxAmountToSpend(changes, endDate) {
-			// Concat income
+			// We assume we would have all the income on our begin date and sum up all the incomes.
 			var amountAvailable = 0;
 			for(var i = 0; i < dates.length; i++) {
 				if(dates[i] > endDate.getTime()) {
@@ -93,18 +94,21 @@ var Calculator = function() {
 				amountAvailable += changes[dates[i]];
 			}
 
-			// see where it goes below 0
+			// Check how long one can use the daily amount until one runs out of money. If that is the end date
+			// output the daily amount. Else try again with not all the incomes available, but only the ones 
+			// until the point we previously had no more money left.
 			var differenceMilliseconds = endDate - today;
 			var differenceDays = Math.round(differenceMilliseconds / MILLISECONDS_PER_DAY) + 1;
 			var dailyAmount = amountAvailable / differenceDays;
-			var lastDatePossible = amountPossible(dailyAmount);
+			var lastDatePossible = getLastDayPossible(dailyAmount);
 			if(lastDatePossible >= endDate) {
 				return Math.floor(dailyAmount);
 			} else {
 				return maxAmountToSpend(changes, lastDatePossible);
 			}
 
-			function amountPossible(dailyAmount) {
+			// simulate how long the dailyAmount will last with the assets as well as all the incomes.
+			function getLastDayPossible(dailyAmount) {
 				var amountAvailable = availableAssets;
 				var lastDate = today;
 				for(var i = 0; i < dates.length; i++) {

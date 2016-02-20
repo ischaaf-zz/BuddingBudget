@@ -41,11 +41,6 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 			makeRecurringTemplate("charges", ctx.name, ctx.amount, ctx.period, updateChargesEntry, "#chargesList");
 		});
 		
-		arr = getData("charges");
-		arr.forEach(function(ctx) {
-			makeTemplate("charges", ctx.name, ctx.amount, updateChargesEntry, "#chargesList", true);
-		});
-		
 		//load recurring income
 		arr = getData("income");
 		arr.forEach(function(ctx) {
@@ -369,6 +364,17 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		notify2("changeEntry", "savings", catName, save, uuid);
 	}
 	
+	//todo: does not work?
+	$("#savingsPopup").click(function() {
+		$("#newSavingsName").focus();
+	});
+
+	$("#newSavingsName").keyup(function(event) {
+		if(event.keyCode == 13) {
+			$("#addSavings").click();
+		}
+	});
+
 	/* --No longer called anywhere--?
 	//attached to buttons defined in .ready()
 	function changeSavingEntry(name, isDefault) {
@@ -415,7 +421,13 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		var save = new ChargeEntry(catName, val, frequency, 5, false);
 		notify2("changeEntry", "charges", catName, save, uuid);
 	}
-	
+
+	$("#newChargeName").keyup(function(event) {
+		if(event.keyCode == 13) {
+			$("#addCharge").click();
+		}
+	});
+
 	//--------------------------------------
 	// 			Income
 	//--------------------------------------
@@ -450,6 +462,13 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		var save = new IncomeEntry(catName, val, frequency, 1, 5, true);
 		notify2("changeEntry", "income", catName, save, uuid);
 	}
+
+
+	$("#newIncomeName").keyup(function(event) {
+		if(event.keyCode == 13) {
+			$("#addIncome").click();
+		}
+	});
 
 	//--------------------------------------
 	// 			Assets
@@ -591,6 +610,13 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 			//failure
 		}]);
 	};
+	
+	
+	//for testing?
+	$("#resetStorage").click(function() {
+		clearStorage();
+		$("#resetNote").html("Storage cleared. Reload/reopen app to see default state.");
+	});
 	
 	//----------------------------------------------//
 	// This is just an animation for popup callback, 

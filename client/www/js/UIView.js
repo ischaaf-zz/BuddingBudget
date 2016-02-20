@@ -32,22 +32,22 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		var arr = getData("savings");
 		arr.forEach(function(ctx) {
 			//Todo: replace with makeTemplate based on object
-			makeTemplate("savings", ctx.name, ctx.amount, updateSavingsEntry, "#savingsList")
+			makeTemplate("savings", ctx.name, ctx.amount, updateSavingsEntry, "#savingsList");
 		});
 
 		//load recurring charges
-		var arr = getData("charges");
+		arr = getData("charges");
 		arr.forEach(function(ctx) {
 			makeRecurringTemplate("charges", ctx.name, ctx.amount, ctx.period, updateChargesEntry, "#chargesList");
 		});
 		
-		var arr = getData("charges");
+		arr = getData("charges");
 		arr.forEach(function(ctx) {
 			makeTemplate("charges", ctx.name, ctx.amount, updateChargesEntry, "#chargesList", true);
 		});
 		
 		//load recurring income
-		var arr = getData("income");
+		arr = getData("income");
 		arr.forEach(function(ctx) {
 			makeRecurringTemplate("income", ctx.name, ctx.amount, ctx.period,
 				updateIncomeEntry, "#incomeList");
@@ -55,7 +55,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		
 		//load track spending
 		var track = getData("trackedEntry");
-		if(track.amount == null) {
+		if(track.amount === null) {
 			$("#prevSpending").html("$0");
 		} else {
 			$("#prevSpending").html("$" + track.amount);
@@ -75,7 +75,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		}
 		
 		//load asset update reminder period
-		if(value.notifyAssetsPeriod != undefined) {
+		if(value.notifyAssetsPeriod !== undefined) {
 			$("#selectAssetNotice option[value='" + value.notifyAssetsPeriod + "']").attr("selected", "selected");
 			$("#selectAssetNotice").selectmenu('refresh', true);
 		}
@@ -87,17 +87,17 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 			$("#endDate").datebox('setTheDate', newDate).trigger('datebox', {'method':'doset'});
 		}
 		
-		if(value.notifyMorningTime != undefined) {
+		if(value.notifyMorningTime !== undefined) {
 			//load times
 			var budgetTime = value.notifyMorningTime;
-			var newDate = new Date(budgetTime);
-			$("#budgetTime").datebox('setTheDate', newDate).trigger('datebox', {'method':'doset'});
+			var newDateA = new Date(budgetTime);
+			$("#budgetTime").datebox('setTheDate', newDateA).trigger('datebox', {'method':'doset'});
 		}
 		
-		if(value.notifyNightTime != undefined) {
+		if(value.notifyNightTime !== undefined) {
 			var trackTime = value.notifyNightTime;
-			var newDate = new Date(trackTime);
-			$("#trackTime").datebox('setTheDate', newDate).trigger('datebox', {'method':'doset'});
+			var newDateB = new Date(trackTime);
+			$("#trackTime").datebox('setTheDate', newDateB).trigger('datebox', {'method':'doset'});
 		}
 		
 		//load min daily budget
@@ -341,7 +341,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 
 		document.getElementById("newSavingsName").value = "";
 
-		if(catName == null || catName == "") {
+		if(catName === null || catName === "") {
 			return;
 		}
 
@@ -358,7 +358,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 	function updateSavingsEntry(uuid, catName) {
 		var li = document.getElementById(uuid);
 		var val = li.getElementsByTagName('input')[0].value;
-		if(val == "") {
+		if(val === "") {
 			return;
 		}
 
@@ -387,7 +387,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 	$("#addCharge").click(function() {
 		var catName = document.getElementById("newChargeName").value;
 		document.getElementById("newChargeName").value = "";
-		if(catName == null || catName == "") {
+		if(catName === null || catName === "") {
 			return;
 		}
 
@@ -405,7 +405,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		var select = li.getElementsByTagName('select')[0];
 		var frequency = select.options[select.selectedIndex].value;
 		
-		if(val == "") {
+		if(val === "") {
 			val = li.getElementsByTagName('h2')[0].innerHTML.split("$")[1];
 		}
 
@@ -422,7 +422,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 	$("#addIncome").click(function() {
 		var catName = document.getElementById("newIncomeName").value;
 		document.getElementById("newIncomeName").value = "";
-		if(catName == null || catName == "") {
+		if(catName === null || catName === "") {
 			return;
 		}
 
@@ -439,7 +439,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		var val = li.getElementsByTagName('input')[0].value;
 		var select = li.getElementsByTagName('select')[0];
 		var frequency = select.options[select.selectedIndex].value;
-		if(val == "") {
+		if(val === "") {
 			val = li.getElementsByTagName('h2')[0].innerHTML.split("$")[1];
 		
 		}
@@ -472,11 +472,11 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 	//--------------------------------------
 	// 			Track Spending
 	//--------------------------------------
-	var tracked = undefined;
+	var tracked;
 	$("#buttonTrack").click(function() {
 		var amount = parseInt($("#setTrack").val());
 		var budget = getData("budget");
-		var day = (new Date).getTime();
+		var day = (new Date()).getTime();
 		tracked = new TrackEntry(amount, budget, day);
 		
 		var spendType = "distribute";
@@ -564,7 +564,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 			//sucess
 		}, function(message) {
 			//failure
-		}])
+		}]);
 	});
 	
 	$("#endDate").change(function() {
@@ -582,7 +582,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		}, function(message) {
 			//failure
 		}]);
-	}
+	};
 	
 	window.trackNotify = function(date, initDate, duration, custom, cancelClose) {
 		notifyListeners("setOption", ["notifyNightTime", date.date.getTime(), function() {
@@ -590,7 +590,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		}, function(message) {
 			//failure
 		}]);
-	}
+	};
 	
 	//----------------------------------------------//
 	// This is just an animation for popup callback, 

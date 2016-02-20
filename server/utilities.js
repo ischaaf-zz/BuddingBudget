@@ -35,24 +35,34 @@ function validateNumber(required, value, min, max) {
 
 function validateDate(required, value, stripTime) {
 	var result = new ValidationResult(required, undefined, true, "", value);
+	var log = "Parsing date '" + value + "' (" + typeof(value) + ") - ";
 	if (!value) {
 		result.valid = false;
 		result.message = "Parameter was not defined";
 	} else if (typeof(value) != "Date") {
 		if (isNaN(value)) {
+			log += "converting from string - ";
 			value = new Date(Date.parse(value));
 		} else {
-			value = new Date(value);
+			log += "parsing from number - ";
+			value = new Date(parseInt(value));
 		}
 		if (stripTime) {
+			log += "removing time - ";
 			value.setHours(0, 0, 0, 0);
 		}
 		result.value = value;
 		if (isNaN(value.getTime())) {
 			result.valid = false;
 			result.message = "Parameter was not a valid date";
+			log += "failed to create valid date";
+		} else {
+			log += "succcessfully created valid date";
 		}
+	} else {
+		log += "value is already a date";
 	}
+	console.log(log);
 	return result;
 }
 
@@ -61,9 +71,9 @@ function validateBool(required, value) {
 	if (value == undefined) {
 		result.valid = false;
 		result.message = "Parameter was not defined";
-	} else if (value.toString().toLowerCase() == 'true') {
+	} else if (value.toString().toLowerCase() == 'true' || value.toString().toLowerCase() == 'on') {
 		result.value = true;
-	} else if (value.toString().toLowerCase() == 'false') {
+	} else if (value.toString().toLowerCase() == 'false' || value.toString().toLowerCase() == 'off') {
 		result.value = false;
 	} else {
 		result.valid = false;
@@ -73,11 +83,11 @@ function validateBool(required, value) {
 }
 
 function modifyUser(req, res, whatToDo) {
-	if (!session.user) {
+	if (!req.session.user) {
 		res.status(401);
 		res.json({message: "not logged in"});
 	} else {
-		UserModel.findOne({'username': session.user}, function(err, user) {
+		UserModel.findOne({'username': req.session.user}, function(err, user) {
 			if (err) {
 				res.status(500);
 				res.send(err);
@@ -108,11 +118,11 @@ function modifyUser(req, res, whatToDo) {
 }
 
 function getUser(req, res, whatToDo) {
-	if (!session.user) {
+	if (!req.session.user) {
 		res.status(401);
 		res.json({message: "not logged in"});
 	} else {
-		UserModel.findOne({'username': session.user}, function(err, user) {
+		UserModel.findOne({'username': req.session.user}, function(err, user) {
 			if (err) {
 				res.status(500);
 				res.send(err);

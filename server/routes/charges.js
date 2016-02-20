@@ -112,8 +112,7 @@ router.delete('/', function(req, res, next) {
 });
 
 function findCharge(user, name) {
-	var i = 0; 
-	while (i < user.data.charges.length) {
+	for (var i in user.data.chatges) {
 		if (user.data.charges[i].name == name)
 			return i;
 	}

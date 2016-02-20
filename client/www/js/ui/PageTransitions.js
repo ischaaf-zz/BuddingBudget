@@ -39,7 +39,7 @@
     	var pageIDs = Object.keys(pages);
     	for(var i = 0; i < pageIDs.length; i++) {
     		setUpPageSwitch(pageIDs[i]);
-    		$("#" + pageIDs[i]).hide()
+    		$("#" + pageIDs[i]).hide();
     	}
     	$("#page-main").show();
     	$("#titleText").text(pages["page-main"]);

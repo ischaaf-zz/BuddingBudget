@@ -33,7 +33,7 @@ var NetworkManager = function() {
 	function login(user, pass, success) {
 		console.log("loggin in");
 		enqueueSend("POST", {username: user, password: pass}, "login", success, defaultFail);
-	};
+	}
 
 	this.fetchInitialData = function(success, failure) {
 		enqueueSend("GET", {}, "user?getFull=true", function(data) {

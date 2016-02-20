@@ -1,10 +1,3 @@
-// overrides localStorage for testing purposes
-window.localStorage.getItem = function() {
-	return null;
-};
-
-window.localStorage.setItem = function() {};
-
 var today = new Date();
 
 var simpleSampleData = {
@@ -16,4 +9,14 @@ var simpleSampleData = {
 	income: [new IncomeEntry('paycheck', 600, 'monthly', 1, 200, true)],
 	trackEntries: [],
 	options: {}
+};
+
+var cordova = {
+	plugins : {
+		notification : {
+			local : {
+				schedule : function() {}
+			}
+		}
+	}
 };

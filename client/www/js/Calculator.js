@@ -28,12 +28,13 @@ var Calculator = function() {
 
 		// calculate all changes that occur due to income and charges and save them in "changes" with the date as the key.
 		var changes = {};
+		var nextTime;
 		var currentDay = new Date(today);
 		changes[currentDay.getTime()] = availableAssets;
 		for(i = 0; i < data.income.length; i++) {
 			currentDay = new Date(today);
 			while(findNextTime(data.income[i], currentDay) <= endDate.getTime()) {
-				var nextTime = findNextTime(data.income[i], currentDay);
+				nextTime = findNextTime(data.income[i], currentDay);
 				if(changes[nextTime]) {
 					changes[nextTime] += data.income[i].amount;
 				} else {
@@ -75,8 +76,8 @@ var Calculator = function() {
 
 		// sort date keys in changes again after deleting entries, this time increasing
 		dates = [];
-		for(var date in changes) {
-			dates.push(date);
+		for(var dateKey in changes) {
+			dates.push(dateKey);
 		}
 		dates.sort();
 

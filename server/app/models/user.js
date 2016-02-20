@@ -56,9 +56,11 @@ var UserSchema = new Schema ({
       isNotifyMorning: Boolean,
       isNotifyNight: Boolean,
       isNotifyAssets: Boolean,
+      isEnableTracking: Boolean,
       notifyMorningTime: Number,
       notifyNightTime: Number,
-      notifyAssetsPeriod: String
+      notifyAssetsPeriod: String,
+      minDailyBudget: Number
     }
   }
 });

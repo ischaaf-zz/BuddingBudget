@@ -79,33 +79,5 @@ var RecurringManager = function(saveAssets, saveCharges, saveIncome) {
 			updateIncome(entry, index);
 		}, beginningNextDay + 60000 - now.getTime());
 	}
-	
-	// document.addEventListener('resume', function () {
- //        // kill and remake all timeouts
- //        // if remaking one in the past, fire its event,
- //        // and make it at the next time interval.
- //    }, false);
-
-	// THIS CLASS NEEDS TO DETERMINE IF WE ARE AT OR PAST
-	// ANY OF THE nextTime VALUES IN A CHARGE OR INCOME
-	// AND CHANGE ASSETS / THE nextTime VALUE ACCORDINGLY.
-	// SHOULD ALSO MANAGE SETTING NOTIFICATIONS FOR CONFIRMING
-	// THE CHARGE.
-
-
-	// SET TIMEOUT FOR EACH, BIND PHONEGAP RESUME TO KILL ALL
-	// TIMEOUTS AND RECREATE THEM
-
-	// WHILE SETTING TIMEOUT, IF WOULD SET IN PAST, FIRE FUNCTION
-	// REPEAT IF STILL IN PAST / SET TIMEOUT IF NOT
-
-	// while nextTime < today || isToday(nextTime)
-	// fire timeout function immediately
-	// ONCE OUT, SET TIMEOUT AS NORMAL
-
-	// timeout is set to update assets and charges / income
-	// PLUS MAYBE USE NOTIFICATIONS FOR CONFIRM?
-	// then to set nextTime using findNextTime
-	// and to set the next timeout
 
 };

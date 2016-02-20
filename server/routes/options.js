@@ -21,6 +21,8 @@ router.put('/', function(req, res, next) {
     	params.entries["notifyMorningTime"] = utils.validateNumber(false, req.body.notifyMorningTime);
     	params.entries["notifyNightTime"] = utils.validateNumber(false, req.body.notifyNightTime);
     	params.entries["notifyAssetsPeriod"] = utils.validateString(false, req.body.notifyAssetsPeriod);
+        params.entries["isEnableTracking"] = utils.validateBool(false, req.body.isEnableTracking);
+        params.entries["minDailyBudget"] = utils.validateNumber(false, req.body.minDailyBudget);
 
     	if (params.entries["isNotifyMorning"].valid) 
     		user.data.userOptions.isNotifyMorning = params.entries["isNotifyMorning"].value;
@@ -34,6 +36,10 @@ router.put('/', function(req, res, next) {
     		user.data.userOptions.notifyNightTime = params.entries["notifyNightTime"].value;
     	if (params.entries["notifyAssetsPeriod"].valid) 
     		user.data.userOptions.notifyAssetsPeriod = params.entries["notifyAssetsPeriod"].value;
+        if (params.entries["isEnableTracking"].valid) 
+            user.data.userOptions.isEnableTracking = params.entries["isEnableTracking"].value;
+        if (params.entries["minDailyBudget"].valid) 
+            user.data.userOptions.minDailyBudget = params.entries["minDailyBudget"].value;
     	return true;
     });
 });

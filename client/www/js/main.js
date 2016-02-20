@@ -49,6 +49,8 @@ function setTempData() {
 	dataManager.setData('savings', savingsArray);
 	dataManager.setData('charges', chargesArray);
 	dataManager.setData('income', incomeArray);
+	
+	var trackEntry = new TrackEntry();
 }
 
 function setEndDate(daysInFuture) {

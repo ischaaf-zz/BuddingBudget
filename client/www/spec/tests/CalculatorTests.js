@@ -24,15 +24,15 @@ describe("Calculator", function() {
     	expect(budget).toEqual(5);
     });
 
-    it('should use all the assets', function() {
+    it('should calculate the right sequence of budgets and use up the available assets', function() {
         jasmine.clock().install();
-        var budget = calculator.calculateBudget(simpleSampleData);
-        simpleSampleData.assets -= budget;
         var endDate = new Date(simpleSampleData.endDate);
         while(isTodayOrLater(endDate)) {
-            jasmine.clock().tick(MILLISECONDS_PER_DAY); // next day
+            console.log(new Date())
             budget = calculator.calculateBudget(simpleSampleData);
+            expect(budget).toEqual(5);
             simpleSampleData.assets -= budget;
+            jasmine.clock().tick(MILLISECONDS_PER_DAY); // next day
         }
         expect(simpleSampleData.assets).toEqual(300);
         jasmine.clock().uninstall();

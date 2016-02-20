@@ -117,8 +117,7 @@ router.delete('/', function(req, res, next) {
 });
 
 function findIncome(user, name) {
-	var i = 0; 
-	while (i < user.data.income.length) {
+	for (i in user.data.income) {
 		if (user.data.income[i].name == name)
 			return i;
 	}

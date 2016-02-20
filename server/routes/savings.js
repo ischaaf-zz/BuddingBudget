@@ -24,11 +24,17 @@ router.post('/', function(req, res, next) {
             res.status(422).json(invalid);
             return false;
         } else {
-    		user.data.savings.push({
-    			name: params.entries["name"].value, 
-    			amount: params.entries["amount"].value, 
-    			isDefault: params.entries["isDefault"].value
-    		});
+            var i = findSavings(user, params.entries["name"].value);
+            if (i) {
+                res.status(422).json({message: "Entry with that name already exists"});
+                return false;
+            } else {
+                user.data.savings.push({
+                    name: params.entries["name"].value, 
+                    amount: params.entries["amount"].value, 
+                    isDefault: params.entries["isDefault"].value
+                });
+            }
     		return true;
     	}
     });
@@ -37,9 +43,9 @@ router.post('/', function(req, res, next) {
 router.put('/', function(req, res, next) {
     utils.modifyUser(req, res, function(req, res, user) {
     	var params = new utils.Parameters();
-    	params.entries["name"] = utils.validateString(req.body.name);
-    	params.entries["amount"] = utils.validateNumber(req.body.amount);
-    	params.entries["isDefault"] = utils.validateBool(req.body.isDefault);
+    	params.entries["name"] = utils.validateString(true, req.body.name);
+    	params.entries["amount"] = utils.validateNumber(false, req.body.amount);
+    	params.entries["isDefault"] = utils.validateBool(false, req.body.isDefault);
 
     	if (!params.hasRequired()) {
             var invalid = params.getInvalid();
@@ -49,9 +55,9 @@ router.put('/', function(req, res, next) {
     		var i = findSavings(user, params.entries["name"].value);
     		if (i) {
     			if (params.entries["amount"].valid)
-    				user.data.income[i].amount = params.entries["amount"].value;
+    				user.data.savings[i].amount = params.entries["amount"].value;
     			if (params.entries["isDefault"].valid)
-    				user.data.income[i].isDefault = params.entries["isDefault"].value;
+    				user.data.savings[i].isDefault = params.entries["isDefault"].value;
     			return true;
     		} else {
     			res.status(404).json({message: "no savings entry with that name found"});
@@ -100,11 +106,14 @@ router.delete('/', function(req, res, next) {
     });
 });
 
-function findsavings(user, name) {
-	var i = 0; 
-	while (i < user.data.savings.length) {
-		if (user.data.savings[i].name == name)
-			return i;
+function findSavings(user, name) {
+    console.log("searching for savings with name: " + name + "(" + typeof(name) + ")"); 
+	for (var i in user.data.savings) {
+        console.log(user.data.savings[i].name + "(" + typeof(user.data.savings[i].name) + ")");
+		if (user.data.savings[i].name == name) {
+            console.log("found");
+            return i;
+        }
 	}
 	return false;
 }

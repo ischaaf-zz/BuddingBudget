@@ -14,9 +14,11 @@ router.use(function(req, res, next) {
 
 router.post('/', function(req, res, next) {
     // check if user is already logged in, if so do nothing
-    if (session.user) {
+    if (req.session.user == req.body.username) {
         res.json({message: "Already logged in", user: session.user});
         return;
+    } else {
+        req.session.user = undefined;
     }
 
     // check for username and password
@@ -36,7 +38,7 @@ router.post('/', function(req, res, next) {
             res.json({message: "Incorrect username or password"});
             return;
         }
-        session.user = user.username;
+        req.session.user = user.username;
         res.json({message: "logged in"});
     });
 });

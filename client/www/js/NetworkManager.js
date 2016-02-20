@@ -32,11 +32,11 @@ var NetworkManager = function() {
 
 	function login(user, pass, success) {
 		console.log("loggin in");
-		sendAjax("POST", {username: "ischaaf", password: "buddingbudget"}, "login", success, defaultFail);
+		enqueueSend("POST", {username: user, password: pass}, "login", success, defaultFail);
 	};
 
 	this.fetchInitialData = function(success, failure) {
-		sendAjaxLogin("GET", {}, "user?getFull=true", function(data) {
+		enqueueSend("GET", {}, "user?getFull=true", function(data) {
 			console.log(data);
 			lastModified = data.lastModified;
 			console.log("updated lastModified");
@@ -46,77 +46,100 @@ var NetworkManager = function() {
 
 	// Update assets
 	this.updateAssets = function(newVal) {
-		sendAjaxLogin("PUT", {assets: newVal, lastModified: lastModified}, "data", defaultSuccess, defaultFail);
+		enqueueSend("PUT", {assets: newVal}, "data", defaultSuccess, defaultFail);
 	};
 
 	this.setEndDate = function(endDate) {
-		sendAjaxLogin("PUT", {endDate: endDate, lastModified: lastModified}, "data", defaultSuccess, defaultFail);
+		enqueueSend("PUT", {endDate: endDate}, "data", defaultSuccess, defaultFail);
 	};
 
 	// Create and add new spending entry
 	this.trackSpending = function(trackedEntry) {
-		sendAjaxLogin("POST", trackedEntry, "entry", defaultSuccess, defaultFail);
+		enqueueSend("POST", trackedEntry, "entry", defaultSuccess, defaultFail);
 	};
 
 	// Set the specified option to a new value
 	this.setOption = function(selection, value) {
 		var obj = {};
 		obj[selection] = value;
-		sendAjaxLogin("PUT", obj, "options", defaultSuccess, defaultFail);
+		enqueueSend("PUT", obj, "options", defaultSuccess, defaultFail);
 	};
 
 	// Add a new entry to savings or recurring charges / income
 	this.addEntry = function(category, val) {
-		sendAjaxLogin("POST", val, category, defaultSuccess, defaultFail);
+		enqueueSend("POST", val, category, defaultSuccess, defaultFail);
 	};
 
 	// Change an entry to savings or recurring charges / income
 	this.changeEntry = function(category, name, newVal) {
-		sendAjaxLogin("PUT", {name: name}, category, defaultSuccess, defaultFail);
+		enqueueSend("PUT", newVal, category, defaultSuccess, defaultFail);
 	};
 
 	// Remove an entry from savings or recurring charges / income
 	this.removeEntry = function(category, name) {
-		sendAjaxLogin("DELETE", {name: name}, category, defaultSuccess, defaultFail);
+		enqueueSend("DELETE", {name: name}, category, defaultSuccess, defaultFail);
 	};
 
-	var loggedIn = false;
+	var loginMessage = {
+		method: "POST",
+		data: {username: 'ischaaf', password: 'buddingbudget'},
+		page: 'login',
+		success: defaultSuccess,
+		fail: defaultFail
+	};
 
-	function sendAjaxLogin(method, data, page, success, fail) {
-		if(NETWORK_ENABLED) {
-			if (loggedIn) {
-				sendAjax(method, data, page, success, fail);
-			} else {
-				login('ischaaf', 'buddginbudget', function(data) {
-					loggedIn = true;
-					sendAjax(method, data, page, success, fail);
-				});
-			}
+	var sendQueue = [loginMessage];
+	var sendInProgress = false;
+
+	function enqueueSend(method, data, page, success, fail) {
+		sendQueue.push({
+			method: method, 
+			data: data, 
+			page: page,
+			success: success,
+			fail: fail
+		});
+		checkSend();
+	}
+
+	function checkSend() {
+		if (!sendInProgress && sendQueue[0]) {
+			sendInProgress = true;
+			var next = sendQueue[0];
+			sendQueue.splice(0, 1);
+			console.log("sending request: " + next.method + " - " + next.page + " with data: " + JSON.stringify(next.data));
+			sendAjax(next.method, next.data, next.page, next.success, next.fail);
 		}
 	}
-	var reqInProgress = false;
 
 	function sendAjax(method, data, page, success, fail) {
 		if(NETWORK_ENABLED) {
-			while (reqInProgress) { }
+			data.lastModified = lastModified;
 			$.ajax({
 				method: method,
 				url: "http://ischaaf.com:8081/" + page,
 				data: data
-			}).done(success).fail(fail).always(function() { reqInProgress = false; } );	
+			}).done(function(data) {
+				console.log("SUCCESS - request: " + method + " - " + page + " with data: " + JSON.stringify(data));
+				if (data.modified) {
+					console.log("Updating lastModified time to: " + data.modified);
+					lastModified = data.modified;
+				} else {
+					console.log("Request returned no lastModified time");
+				}
+				success(data);
+			}).fail(function(data) {
+				console.log("FAILURE - request: " + method + " - " + page + " with data: " + JSON.stringify(data));
+				fail(data);
+			}).always(function() { 
+				sendInProgress = false; 
+				checkSend(); 
+			});	
 		}
 	}
 
-	function defaultFail(data) {
-		console.log("ajax call failed: " + data.responseJSON.message);
-	}
+	function defaultFail(data) { }
 
-	function defaultSuccess(data) {
-		if (data.modified) {
-			lastModified = data.modified;
-			console.log("updated lastModified");
-		}
-		console.log("ajax call succeeded");
-	}
+	function defaultSuccess(data) { }
 
 };

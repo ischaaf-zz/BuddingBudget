@@ -15,13 +15,21 @@ router.use(function(req, res, next) {
 router.put('/', function(req, res, next) {
     utils.modifyUser(req, res, function(req, res, user) {
     	var params = new utils.Parameters();
-    	params.entries["assets"]  = utils.validateNumber(false, req.body.assets);
-    	params.entries["endDate"] = utils.validateDate(false, req.body.endDate);
+    	params.entries["assets"]  = utils.validateNumber(false, req.body.assets, true);
+    	params.entries["endDate"] = utils.validateDate(false, req.body.endDate, true);
 
     	if (params.entries["assets"].valid)
     		user.data.assets = params.entries["assets"].value;
+        else if (params.entries["assets"].message != "Parameter was not defined") {
+            res.status(422).json({message: "the given assets value could not be parsed"});
+            return false;
+        }
     	if (params.entries["endDate"].valid)
     		user.data.endDate = params.entries["endDate"].value;
+        else if (params.entries["endDate"].message != "Parameter was not defined") {
+            res.status(422).json({message: "the given endDate value could not be parsed"});
+            return false;
+        }
     	return true;
     });
 });

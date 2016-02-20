@@ -154,12 +154,17 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 	// fetch from Phonegap storage, send each data type to dataManager
 	// Then call readyCallback()
 
-	networkManager.fetchInitialData(function(data) {
-		// check against phonegap storage, update phonegap
-		// if newer, and dataManager from that.
-	}, function() {
-		// Failure callback
-	});
+	if(NETWORK_ENABLED) {
+		networkManager.fetchInitialData(function(data) {
+			// check against phonegap storage, update phonegap
+			// if newer, and dataManager from that.
+			for(var key in data) {
+				saveData(key, data[key]);
+			}
+		}, function() {
+			console.log("FAILED TO GET NETWORK DATA");
+		});
+	}
 
 	if(PERSIST_DATA) {
 		var getFromForage = function(key, isLast) {

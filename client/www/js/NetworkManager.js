@@ -83,24 +83,28 @@ var NetworkManager = function() {
 	var loggedIn = false;
 
 	function sendAjaxLogin(method, data, page, success, fail) {
-		if (loggedIn) {
-			sendAjax(method, data, page, success, fail);
-		} else {
-			login('ischaaf', 'buddginbudget', function(data) {
-				loggedIn = true;
+		if(NETWORK_ENABLED) {
+			if (loggedIn) {
 				sendAjax(method, data, page, success, fail);
-			});
+			} else {
+				login('ischaaf', 'buddginbudget', function(data) {
+					loggedIn = true;
+					sendAjax(method, data, page, success, fail);
+				});
+			}
 		}
 	}
 	var reqInProgress = false;
 
 	function sendAjax(method, data, page, success, fail) {
-		while (reqInProgress) { }
-		$.ajax({
-			method: method,
-			url: "http://ischaaf.com:8081/" + page,
-			data: data
-		}).done(success).fail(fail).always(function() { reqInProgress = false; } );
+		if(NETWORK_ENABLED) {
+			while (reqInProgress) { }
+			$.ajax({
+				method: method,
+				url: "http://ischaaf.com:8081/" + page,
+				data: data
+			}).done(success).fail(fail).always(function() { reqInProgress = false; } );	
+		}
 	}
 
 	function defaultFail(data) {

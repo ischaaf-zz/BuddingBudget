@@ -1,6 +1,7 @@
 // Utility functions in the global namespace that may be useful for multiple objects
 
 var PERSIST_DATA = true;
+var NETWORK_ENABLED = false;
 
 var MILLISECONDS_PER_DAY = 24 * 60 * 60 * 1000;
 var MAX_TIMEOUT = 2147483647;

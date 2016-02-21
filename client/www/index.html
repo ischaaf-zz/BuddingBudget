@@ -231,21 +231,33 @@
 						<div data-role="fieldcontain">
 							<p class="small">Budget notification</p>
 							<fieldset class="ui-grid-a">
-								<div class="ui-block-a" id="bn"><input type="checkbox" id="morningNotice" data-role="flipswitch"></div>
+								<div class="ui-block-a" id="bn"><select id="morningNotice" data-role="flipswitch">
+										<option value="Off">Off</option>
+										<option value="On">On</option>
+									</select></div>
 								<div class="ui-block-b"><input class="form-control" id="budgetTime" type="text" data-role="datebox" data-options='{"mode":"timeflipbox", "closeCallback":"budgetNotify"}' /></div>
 							</fieldset>
 						</div>
 						<div data-role="fieldcontain">
 							<p class="small">Tracking reminder</p>
 							<fieldset class="ui-grid-a">
-								<div class="ui-block-a"><input type="checkbox" id="nightNotice" data-role="flipswitch"></div>
+								<div class="ui-block-a">
+									<select id="nightNotice" data-role="flipswitch">
+										<option value="Off">Off</option>
+										<option value="On">On</option>
+									</select>
+								</div>
 								<div class="ui-block-b"><input class="form-control" id="trackTime" type="text" data-role="datebox" data-options='{"mode":"timeflipbox", "closeCallback":"trackNotify"}' /></div>
 							</fieldset>
 						</div>
 						<div data-role="fieldcontain">
 							<p class="small">Regular asset update reminder</p>
 							<fieldset class="ui-grid-a">
-								<div class="ui-block-a"><input type="checkbox" id="assetNotice" data-role="flipswitch"></div>
+								<div class="ui-block-a">
+									<select id="assetNotice" data-role="flipswitch">
+										<option value="Off">Off</option>
+										<option value="On">On</option>
+									</select></div>
 								<div class="ui-block-b"><button class="ui-btn ui-btn-inline ui-btn-right ui-disabled"></button>
 								<select id="selectAssetNotice">
 									<option value="Weekly">Weekly</option>

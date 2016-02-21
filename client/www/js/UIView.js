@@ -67,6 +67,23 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		
 		if(value.isNotifyMorning == 'On') {
 			$("#morningNotice").val("On").flipswitch("refresh");
+			$("#budgetTime").datebox('enable');
+		} else {
+			$("#budgetTime").datebox('disable');
+		}
+		
+		if(value.isNotifyNight == 'On') {
+			$("#nightNotice").val("On").flipswitch("refresh");
+			$("#trackTime").datebox('enable');
+		} else {
+			$("#trackTime").datebox('disable');
+		}
+		
+		if(value.isNotifyAssets == 'On') {
+			$("#assetNotice").val("On").flipswitch("refresh");
+			$("#selectAssetNotice").selectmenu('enable');
+		} else {
+			$("#selectAssetNotice").selectmenu('disable');
 		}
 		
 		//load asset update reminder period
@@ -97,13 +114,6 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		
 		//load min daily budget
 		$("#minBudget").html("$" + value.minDailyBudget);
-		
-		if(PERSIST_DATA) {
-			//TODO: replace with saved options
-			$("#trackTime").datebox('disable');
-			$("#budgetTime").datebox('disable');
-			$("#selectAssetNotice").selectmenu('disable');
-		}
 	});
 	
 	//-----------------LISTENERS----------------------
@@ -142,6 +152,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		var value = getData("options");
 		
 		$("#minBudget").html("$" + value.minDailyBudget);
+		//console.log(value);
 		
 		if(value.isNotifyMorning == 'On') {
 			$("#budgetTime").datebox('enable');
@@ -534,6 +545,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 	//--------------------------------------
 	// 			Options
 	//--------------------------------------
+	/* no longer in use
 	$("#habitTrack").change(function() {
 		var label = $("#habitTrack").prop("checked") ? "On" : "Off";
 		notifyListeners("setOption", ["isEnableTracking", label, function() {
@@ -541,10 +553,10 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		}, function(message) {
 			//failure
 		}]);
-	});
+	}); */
 	
 	$("#assetNotice").change(function() {
-		var label = $("#assetNotice").prop("checked") ? "On" : "Off";
+		var label = $("#assetNotice").val();
 		notifyListeners("setOption", ["isNotifyAssets", label, function() {
 			//success
 		}, function(message) {
@@ -553,7 +565,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 	});
 	
 	$("#nightNotice").change(function() {
-		var label = $("#nightNotice").prop("checked") ? "On" : "Off";
+		var label = $("#nightNotice").val();
 		notifyListeners("setOption", ["isNotifyNight", label, function() {
 			//success
 		}, function(message) {
@@ -562,7 +574,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 	});
 	
 	$("#morningNotice").change(function() {
-		var label = $("#morningNotice").prop("checked") ? "On" : "Off";
+		var label = $("#morningNotice").val();
 		notifyListeners("setOption", ["isNotifyMorning", label, function() {
 			//success
 		}, function(message) {

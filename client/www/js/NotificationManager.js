@@ -3,14 +3,15 @@
 // and the somewhat difficult to understand LocalNotification api.
 var NotificationManager = function(getData, setDataListener) {
 	
-	setDataListener(["budget", "options"], function(type) {
+	setDataListener(["ready", "budget", "options"], function(type) {
 		// get options and budget, destroy and remake notifications
-		console.log("TYPE: " + type);
-	});	
-
-	setDataListener("ready", function() {
-		// set initial notifications
-		console.log("READY");
+		cordova.plugins.notification.local.clearAll(function() {
+			var options = getData('options');
+			var budget = getData('budget');
+			// set morning at time if isNotifyMorning
+			// set night at time if isNotifyNight
+			// set assets at time and date if isNotifyAssets
+		});
 	});
 
 };

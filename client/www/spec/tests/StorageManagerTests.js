@@ -11,6 +11,7 @@ describe("StorageManager", function() {
         });
         spyOn(localforage, 'getItem');
         spyOn(localforage, 'setItem');
+        spyOn(localforage, 'removeItem');
     	mockData = {
             getData: jasmine.createSpy('getData'),
             setData: jasmine.createSpy('setData'),
@@ -27,7 +28,8 @@ describe("StorageManager", function() {
             setOption : jasmine.createSpy('setOption'),
             addEntry : jasmine.createSpy('addEntry'),
             changeEntry : jasmine.createSpy('changeEntry'),
-            removeEntry : jasmine.createSpy('removeEntry')
+            removeEntry : jasmine.createSpy('removeEntry'),
+            setRollover : jasmine.createSpy('setRollover')
         }
         var MockRecurring = function() {
             this.setIncome = function() {};
@@ -379,10 +381,11 @@ describe("StorageManager", function() {
 
     it('should call its ready CB', function() {
         localforage.getItem.and.callFake(function(a, cb) {
-            if(typeof(cb) === 'function') {
-                cb();
-            }
+            callFunc(cb);
         });
+        localforage.removeItem.and.callFake(function(a, cb) {
+            callFunc(cb);
+        })
         storageManager = new StorageManager(mockData, mockNetwork, readyCB);
     	expect(readyCB).toHaveBeenCalled();
     });

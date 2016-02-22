@@ -22,7 +22,7 @@ describe("NotificationManager", function() {
     });
 
     it('should set listener for ready / budget / options', function() {
-        expect(mock.setDataListener).toHaveBeenCalledWith(["ready", "budget", "options"], jasmine.any(Function));
+        expect(mock.setDataListener).toHaveBeenCalledWith(["ready", "tomorrowBudget", "options"], jasmine.any(Function));
     });
 
     it('should schedule a notification', function() {

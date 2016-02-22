@@ -45,17 +45,17 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 		// if savings, change savings
 
 		var currentEntry = dataManager.getData('trackedEntry');
+		var budget = dataManager.getData('budget');
 		
-		var difference = trackedEntry.budget - trackedEntry.amount;
+		var difference = budget - trackedEntry.amount;
 		var amountToDeduct = trackedEntry.amount - (currentEntry.amount || 0);
 
 		if(extraOption === "rollover") {
-			// This is harder to implement than I thought it would be. May get
-			// pushed past the beta stage
-			//
-			// dataManager.setData('assets', currentAssets - trackedEntry.amount);
-			// dataManager.setData('trackedEntry', trackedEntry);
-			// dataManager.setData('nextDayBudget', trackedEntry.budget + difference)
+			amountToDeduct += (budget - trackedEntry.amount)
+			var rollover = budget - trackedEntry.amount;
+			if(saveData('rollover', rollover)) {
+				networkManager.setRollover(rollover);
+			}
 		} else if(extraOption === "savings") {
 			var savings = dataManager.getData('savings');
 			savings[0].amount += difference;
@@ -151,6 +151,17 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 		}
 	}
 
+	dataManager.registerListener('budget', function() {
+		var budget = dataManager.getData('budget');
+		localforage.setItem('budget', budget, function() {
+			networkManager.setBudget(budget);
+		});
+		var now = (new Date()).getTime();
+		localforage.setItem('budgetTime', now, function() {
+			networkManager.setBudgetTime(now);
+		});
+	});
+
 	// fetch from Phonegap storage, send each data type to dataManager
 	// Then call readyCallback()
 
@@ -167,6 +178,16 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 	}
 
 	if(PERSIST_DATA) {
+		// Populate the data cache with information in
+		// phonegap's local storage
+		var setUpDataManager = function() {
+			var keys = dataManager.getKeySet();
+			for(var i = 0; i < keys.length; i++) {
+				var isLast = (i === keys.length - 1);
+				getFromForage(keys[i], isLast);
+			}
+		};
+
 		var getFromForage = function(key, isLast) {
 			localforage.getItem(key, function(err, val) {
 				if(val !== null) {
@@ -179,13 +200,15 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 		};
 
 		localforage.ready(function() {
-			// Populate the data cache with information in
-			// phonegap's local storage
-			var keys = dataManager.getKeySet();
-			for(var i = 0; i < keys.length; i++) {
-				var isLast = (i === keys.length - 1);
-				getFromForage(keys[i], isLast);
-			}
+			localforage.getItem('budgetTime', function(err, val) {
+				if(val === null || !isToday(new Date(val))) {
+					localforage.removeItem('budgetTime', function() {
+						localforage.removeItem('budget', setUpDataManager);
+					});
+				} else {
+					setUpDataManager();
+				}
+			});
 		});	
 	} else {
 		readyCallback();

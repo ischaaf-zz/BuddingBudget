@@ -80,6 +80,18 @@ var NetworkManager = function() {
 		enqueueSend("DELETE", {name: name}, category, defaultSuccess, defaultFail);
 	};
 
+	this.setRollover = function(rollover) {
+
+	};
+
+	this.setBudget = function(budget) {
+
+	};
+
+	this.setBudgetTime = function(budget) {
+
+	};
+
 	var loginMessage = {
 		method: "POST",
 		data: {username: 'ischaaf', password: 'buddingbudget'},

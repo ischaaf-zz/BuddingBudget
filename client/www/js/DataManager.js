@@ -17,6 +17,8 @@ var DataManager = function() {
 	// data stored in localStorage / network storage
 	var data = {
 		budget: 0,
+		tomorrowBudget: 0,
+		rollover: 0,
 		assets: 0,
 		endDate: 0,
 		savings: [],
@@ -25,6 +27,8 @@ var DataManager = function() {
 		trackedEntry: {}, // Only store one tracked entry at a time
 		options: {}
 	};
+
+	var isBudgetRestored = false;
 
 	// events: ready, one per data type
 	var callbacks = {};
@@ -40,12 +44,22 @@ var DataManager = function() {
 		var notXorArray = (data[category].constructor === Array) === (newData.constructor === Array);
 		if(notXorArray && (typeof(data[category]) === typeof(newData))) {
 			var oldBudget = data.budget;
+			var oldTomorrowBudget = data.tomorrowBudget;
 			data[category] = deepCopy(newData);
 			if(isStarted) {
-				data.budget = calculator.calculateBudget(data);
+				if(category !== 'trackedEntry') {
+					data.budget = calculator.calculateBudget(data);
+					if(data.budget != oldBudget) {
+						notifyListeners("budget");
+					}
+				}
+				data.tomorrowBudget = calculator.calculateTomorrowBudget(data);
+				if(data.tomorrowBudget != oldTomorrowBudget) {
+					notifyListeners("tomorrowBudget");
+				}
 			}
-			if(data.budget != oldBudget) {
-				notifyListeners("budget");
+			if(category === 'budget') {
+				isBudgetRestored = true;
 			}
 			notifyListeners(category);
 			return true;
@@ -75,7 +89,10 @@ var DataManager = function() {
 
 	// calculates the initial budget and fires a ready event
 	this.start = function() {
-		data.budget = calculator.calculateBudget(data);
+		if(!isBudgetRestored) {
+			data.budget = calculator.calculateBudget(data);
+		}
+		data.tomorrowBudget = calculator.calculateTomorrowBudget(data);
 		isStarted = true;
 		notifyListeners("ready");
 	};

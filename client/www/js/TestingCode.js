@@ -24,4 +24,26 @@ function setEndDate(daysInFuture) {
 	storageManager.setEndDate((new Date()).getTime() + (24 * 60 * 60 * 1000 * daysInFuture));
 }
 
-setEndDate(5);
+function setTime(days) {
+	localforage.setItem('daysInFuture', days);
+}
+
+// Makes the app think that it's daysInFuture away from the real today
+function timeTravel(daysInFuture) {
+	var OtherDate = Date;
+	Date = function() {
+		if(arguments.length == 0 || arguments[0] === undefined) {
+			var data = (new OtherDate()).getTime() + (daysInFuture * MILLISECONDS_PER_DAY);
+			return(new OtherDate(data));
+		}
+
+		var args = [];
+		for(var i = 0; i < arguments.length; i++) {
+			args[i] = arguments[i];
+		}
+
+		var date = new (Function.prototype.bind.apply(OtherDate, [null].concat(args)))
+
+		return date;
+	}
+}

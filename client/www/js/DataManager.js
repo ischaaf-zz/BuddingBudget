@@ -24,7 +24,7 @@ var DataManager = function() {
 		savings: [],
 		charges: [],
 		income: [],
-		trackedEntry: {}, // Only store one tracked entry at a time
+		trackedEntry: {}, // Only store today's tracked entry
 		options: {}
 	};
 
@@ -114,6 +114,7 @@ var DataManager = function() {
 		}
 	}
 
+	// Clears the tracked entry if it is out of date.
 	function clearTrackedEntry() {
 		if($.isEmptyObject(data.trackedEntry) && !isToday(new Date(data.trackedEntry.day))) {
 			data.trackedEntry = {};

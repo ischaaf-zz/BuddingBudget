@@ -18,7 +18,6 @@ var NotificationManager = function(getData, setDataListener) {
 			cordova.plugins.notification.local.clearAll(setAllNotifications);
 		} catch (e) {
 			console.log("Attempted to set notifications: Budget = " + getData('tomorrowBudget'));
-			setAllNotifications();
 		}
 	});
 

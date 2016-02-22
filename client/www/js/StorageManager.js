@@ -51,7 +51,7 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 		var amountToDeduct = trackedEntry.amount - (currentEntry.amount || 0);
 
 		if(extraOption === "rollover") {
-			amountToDeduct += (budget - trackedEntry.amount)
+			amountToDeduct += (budget - trackedEntry.amount);
 			var rollover = budget - trackedEntry.amount;
 			if(saveData('rollover', rollover)) {
 				networkManager.setRollover(rollover);

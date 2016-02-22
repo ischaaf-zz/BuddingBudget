@@ -41,6 +41,7 @@ var DataManager = function() {
 		if(!(category in data)) {
 			return false;
 		}
+		clearTrackedEntry();
 		var notXorArray = (data[category].constructor === Array) === (newData.constructor === Array);
 		if(notXorArray && (typeof(data[category]) === typeof(newData))) {
 			var oldBudget = data.budget;
@@ -72,9 +73,7 @@ var DataManager = function() {
 		// If we have a trackedEntry from a previous day, evict it before returning.
 		// We do this here because there's no other place the user's going to be able
 		// to see this data, so this is the most efficient place to make this check.
-		if(category === 'trackedEntry' && !isToday(new Date(data.trackedEntry.day))) {
-			data.trackedEntry = {};
-		}
+		clearTrackedEntry();
 		return (data[category] === undefined) ? undefined : deepCopy(data[category]);
 	};
 
@@ -89,6 +88,7 @@ var DataManager = function() {
 
 	// calculates the initial budget and fires a ready event
 	this.start = function() {
+		clearTrackedEntry();
 		if(!isBudgetRestored) {
 			data.budget = calculator.calculateBudget(data);
 		}
@@ -111,6 +111,12 @@ var DataManager = function() {
 			for(var i = 0; i < callbackArr.length; i++) {
 				callbackArr[i].apply(window, args);
 			}
+		}
+	}
+
+	function clearTrackedEntry() {
+		if($.isEmptyObject(data.trackedEntry) && !isToday(new Date(data.trackedEntry.day))) {
+			data.trackedEntry = {};
 		}
 	}
 

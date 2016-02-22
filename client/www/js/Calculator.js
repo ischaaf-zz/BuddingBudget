@@ -8,10 +8,12 @@ var Calculator = function() {
 
 	// Calculates and returns the budget based upon the
 	// passed in data.
-	// if isAlreadyDeducted is true, and rollover is nonzero, add the budget
-	// to our asset pool. If it is true, and rollover is zero, add trackedEntry.amount
-	// to our asset pool. If isAlreadyDeducted is false, continue as normal.
-	this.calculateBudget = function(data, isAlreadyDeducted) {
+	// if a tracked entry exists, and rollover is nonzero, add the budget
+	// to our asset pool. If it exists, and rollover is zero, add trackedEntry.amount
+	// to our asset pool. If it does not exist, continue as normal.
+	// NOTE: If it doesn't exist, data.trackedEntry will equal {}, which is not falsey.
+	// 		 I recommend using $.isEmptyObject()
+	this.calculateBudget = function(data) {
 		// calculate budget by basically dividing the assets by the amount of days left and return that value.
 		// Because of possible interleving incomes and charges, the algorithm has to be more sophisticated.
 
@@ -135,12 +137,12 @@ var Calculator = function() {
 	};
 
 	// calculate tomorrow's budget
-	// If isAlreadyDeducted is true, consider the current assets to be
+	// If a trackedEntry exists, consider the current assets to be
 	// the assets you will have tomorrow. Otherwise, subtract the current
 	// budget from the assets pool. Make sure you don't actually modify
 	// the data object though.
 	// Add rollover to whatever budget is calculated
-	this.calculateTomorrowBudget = function(data, isAlreadyDeducted) {
+	this.calculateTomorrowBudget = function(data) {
 		return parseInt(50 * Math.random());
 	};
 

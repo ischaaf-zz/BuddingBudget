@@ -15,8 +15,11 @@ var cordova = {
 	plugins : {
 		notification : {
 			local : {
-				schedule : function() {}
+				schedule : function() {},
+				clearAll : function() {}
 			}
 		}
 	}
 };
+
+cordova.plugins.notification.local.clearAll

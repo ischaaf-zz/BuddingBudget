@@ -30,7 +30,7 @@ function setTime(days) {
 
 // Makes the app think that it's daysInFuture away from the real today
 function timeTravel(daysInFuture) {
-	var OtherDate = Date;
+	window.OtherDate = Date;
 	Date = function() {
 		if(arguments.length == 0 || arguments[0] === undefined) {
 			var data = (new OtherDate()).getTime() + (daysInFuture * MILLISECONDS_PER_DAY);
@@ -46,4 +46,19 @@ function timeTravel(daysInFuture) {
 
 		return date;
 	}
+}
+
+function setUpFutureDate() {
+	var simuDate = new Date();
+
+	$("#futureDate").val(simuDate.getFullYear() + "-" + padDigits(simuDate.getMonth() + 1, 2) + "-" + padDigits(simuDate.getDate(), 2));
+
+	$("#futureDate").change(function() {
+		var now = window.OtherDate ? new OtherDate() : new Date();
+		var split = $(this).val().split("-").map(function(val) {
+			return parseInt(val);
+		});
+		var future = new Date(split[0], split[1] - 1, split[2]);
+		setTime(Math.ceil((future - now) / MILLISECONDS_PER_DAY));
+	});
 }

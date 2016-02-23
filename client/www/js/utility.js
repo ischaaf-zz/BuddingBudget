@@ -1,5 +1,6 @@
 // Utility functions in the global namespace that may be useful for multiple objects
 
+var DEBUG_MODE = true;
 var PERSIST_DATA = true;
 var NETWORK_ENABLED = false;
 
@@ -47,6 +48,10 @@ function indexOfData(arr, key, value) {
 		}
 	}
 	return -1;
+}
+
+function padDigits(number, digits) {
+    return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
 }
 
 // Clears all localforage data

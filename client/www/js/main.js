@@ -13,7 +13,7 @@ if(DEBUG_MODE) {
 	});
 // Otherwise, hide the controls and init
 } else {
-	$("#futureDate").hide();
+	$("#debug-panel").hide();
 	init();
 }
 

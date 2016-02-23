@@ -208,6 +208,11 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 			localforage.getItem(key, function(err, val) {
 				if(val !== null) {
 					dataManager.setData(key, val);
+					if(key === 'charges') {
+						recurringManager.setCharges(val);
+					} else if(key === 'income') {
+						recurringManager.setIncome(val);
+					}
 				}
 				if(isLast) {
 					dateManager.start(readyCallback);

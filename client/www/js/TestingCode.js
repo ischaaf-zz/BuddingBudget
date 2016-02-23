@@ -68,7 +68,7 @@ function setUpFutureDate() {
 	// Potentially a real date object, or an overwritten date object
 	var simuDate = new Date();
 
-	$("#futureDate").val(simuDate.getFullYear() + "-" + padDigits(simuDate.getMonth() + 1, 2) + "-" + padDigits(simuDate.getDate(), 2));
+	$("#futureDate").val(dateToDateInput(simuDate));
 
 	$("#futureDate").change(function() {
 		// now is a real date object, not an overwritten one

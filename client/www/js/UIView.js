@@ -96,7 +96,8 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 			//load end date
 			var theDate = getData("endDate");
 			var newDate = new Date(theDate);
-			$("#endDate").datebox('setTheDate', newDate).trigger('datebox', {'method':'doset'});
+			$("#endDate").val(dateToDateInput(newDate));
+			// $("#endDate").datebox('setTheDate', newDate).trigger('datebox', {'method':'doset'});
 		}
 		
 		if(value.notifyMorningTime !== undefined) {
@@ -599,11 +600,11 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 	});
 	
 	$("#endDate").change(function() {
-		notifyListeners("setEndDate", [$("#endDate").datebox('getTheDate').getTime(), function() {
-			//success
+		notifyListeners("setEndDate", [dateInputToDate($(this).val()).getTime(), function() {
+			console.log("SUCCESS: " + $("#endDate").val());
 		}, function(message) {
-			//failure
-		}]);
+			console.log("FAILURE: " + message);
+		}])
 	});
 	
 	//callback for dateboxes

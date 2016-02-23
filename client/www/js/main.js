@@ -1,5 +1,6 @@
 // Initializes and connects all of the objects in the application
 
+// If we're in debug mode, set up our time travel controls and then init
 if(DEBUG_MODE) {
 	localforage.ready(function() {
 		localforage.getItem('daysInFuture', function(err, val) {
@@ -10,6 +11,7 @@ if(DEBUG_MODE) {
 			init();
 		});
 	});
+// Otherwise, hide the controls and init
 } else {
 	$("#futureDate").hide();
 	init();
@@ -41,9 +43,13 @@ function init() {
 	// Gives uiController access to get, set, and listen to data, and to listen for events in the view
 	var uiController = new UIController(dataManager.getData, storageManager, uiView.registerCallback);
 
-	window.dataManager = dataManager;
-	window.notificationManager = notificationManager;
-	window.networkManager = networkManager;
-	window.uiView = uiView;
-	window.storageManager = storageManager;
+	// Make these easily accesible in web inspector for debugging if
+	// we're in debug mode.
+	if(DEBUG_MODE) {
+		window.dataManager = dataManager;
+		window.notificationManager = notificationManager;
+		window.networkManager = networkManager;
+		window.uiView = uiView;
+		window.storageManager = storageManager;
+	}
 }

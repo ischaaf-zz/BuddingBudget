@@ -84,11 +84,7 @@ var NetworkManager = function() {
 
 	};
 
-	this.setBudget = function(budget) {
-
-	};
-
-	this.setBudgetTime = function(budget) {
+	this.setTomorrowRollover = function(tomorrowRollover) {
 
 	};
 

@@ -23,22 +23,12 @@ describe("RecurringManager", function() {
 			recurringManager.setCharges([charge]);
 		});
 
-		it("timeout should deduct from assets", function() {
+		it("should deduct from assets", function() {
 			expect(mock.saveAssets).toHaveBeenCalledWith(-10);
 		});
 
-		it("timeout should update charges", function() {
+		it("should update charges", function() {
 			expect(mock.saveCharges).toHaveBeenCalled();
-		});
-
-		it("should set correct timeout", function() {
-			var now = new Date();
-			var next = new Date();
-			var msInDay = MILLISECONDS_PER_DAY;
-			next.setMonth(next.getMonth() + 1);
-			var expectedTime = Math.min(next.getTime() + 60000 - (next.getTime() % MILLISECONDS_PER_DAY) - now.getTime(), MAX_TIMEOUT);
-			var actualTime = setTimeout.calls.mostRecent().args[1];
-			expect(Math.abs(expectedTime - actualTime)).toBeLessThan(5);
 		});
 
 	});
@@ -50,22 +40,12 @@ describe("RecurringManager", function() {
 			recurringManager.setIncome([income]);
 		});
 
-		it("timeout should deduct from assets", function() {
+		it("should deduct from assets", function() {
 			expect(mock.saveAssets).toHaveBeenCalledWith(10);
 		});
 
-		it("timeout should update charges", function() {
+		it("should update charges", function() {
 			expect(mock.saveIncome).toHaveBeenCalled();
-		});
-
-		it("should set correct timeout", function() {
-			var now = new Date();
-			var next = new Date();
-			var msInDay = MILLISECONDS_PER_DAY;
-			next.setMonth(next.getMonth() + 1);
-			var expectedTime = next.getTime() + 60000 - (next.getTime() % MILLISECONDS_PER_DAY) - now.getTime();
-			var actualTime = setTimeout.calls.mostRecent().args[1];
-			expect(Math.abs(expectedTime - actualTime)).toBeLessThan(5);
 		});
 
 	});

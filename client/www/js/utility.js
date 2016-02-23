@@ -50,6 +50,13 @@ function indexOfData(arr, key, value) {
 	return -1;
 }
 
+function dateInputToDate(val) {
+	var split = val.split("-").map(function(val) {
+		return parseInt(val);
+	});
+	return new Date(split[0], split[1] - 1, split[2]);
+}
+
 function padDigits(number, digits) {
     return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
 }

@@ -6,19 +6,40 @@ var Calculator = function() {
 
 	var self = this;
 
-	// Calculates and returns the budget based upon the
+	// Calculates and returns the budget for today based upon the
 	// passed in data.
-	// if a tracked entry exists, and rollover is nonzero, add the budget
-	// to our asset pool. If it exists, and rollover is zero, add trackedEntry.amount
-	// to our asset pool. If it does not exist, continue as normal.
-	// NOTE: If it doesn't exist, data.trackedEntry will equal {}, which is not falsey.
-	// 		 I recommend using $.isEmptyObject()
 	this.calculateBudget = function(data) {
+		var entry = data.trackedEntry;
+		var assetAdjust = -data.rollover;
+		if(entry && !$.isEmptyObject(entry)) {
+			assetAdjust += entry.amount;
+		}
+		return calculate(data, new Date(), assetAdjust, data.rollover);
+	};
+
+	// Calculates and returns the budget for tomorrow based upon
+	// the passed in data
+	this.calculateTomorrowBudget = function(data) {
+		var entry = data.trackedEntry;
+		var assetAdjust = -data.tomorrowRollover;
+		if(!entry || $.isEmptyObject(entry)) {
+			assetAdjust -= data.budget;
+		}
+		var tomorrow = new Date();
+		tomorrow.setDate(tomorrow.getDate() + 1);
+		return calculate(data, tomorrow, assetAdjust, data.tomorrowRollover);
+	};
+
+	// Calculates a budget based upon the passed in data
+	// Assumes that the current day is whatever is contained in "now"
+	// Adjusts the assets by assetAdjust before calculating, and the calculated
+	// budget by budgetAdjust after the calculation.
+	function calculate(data, now, assetAdjust, budgetAdjust) {
 		// calculate budget by basically dividing the assets by the amount of days left and return that value.
 		// Because of possible interleving incomes and charges, the algorithm has to be more sophisticated.
 
 		// make sure dates are have no information about the hour, minute, seconds and milliseconds 
-		var now = new Date();
+		// var now = new Date();
 		var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 		var endDate = new Date(data.endDate);
 		endDate = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
@@ -31,7 +52,7 @@ var Calculator = function() {
 		for(var i = 0; i < data.savings.length; i++) {
 			sumOfSavings += data.savings[i].amount;
 		}
-		var availableAssets = data.assets - sumOfSavings;
+		var availableAssets = data.assets - sumOfSavings + assetAdjust;
 
 		// calculate all changes that occur due to income and charges and save them in "changes" with the date as the key.
 		var changes = {};
@@ -89,7 +110,7 @@ var Calculator = function() {
 		}
 		dates.sort();
 
-		return maxAmountToSpend(changes, endDate);
+		return maxAmountToSpend(changes, endDate) + budgetAdjust;
 
 		// calculates the maximum amount one can spend on the first day to still be able
 		// to get to endDate optimally
@@ -139,16 +160,6 @@ var Calculator = function() {
 				return endDate;
 			}
 		}
-	};
-
-	// calculate tomorrow's budget
-	// If a trackedEntry exists, consider the current assets to be
-	// the assets you will have tomorrow. Otherwise, subtract the current
-	// budget from the assets pool. Make sure you don't actually modify
-	// the data object though.
-	// Add rollover to whatever budget is calculated
-	this.calculateTomorrowBudget = function(data) {
-		return parseInt(50 * Math.random());
-	};
+	}
 
 };

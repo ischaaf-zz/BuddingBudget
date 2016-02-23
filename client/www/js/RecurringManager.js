@@ -5,79 +5,64 @@
 var RecurringManager = function(saveAssets, saveCharges, saveIncome) {
 	
 	var charges = [];
-	var chargeTimeouts = [];
 
 	var income = [];
-	var incomeTimeouts = [];
 
-	// Sets the charges array, and timeouts for
-	// each charge
+	// Sets the charges array and runs an initial check
 	this.setCharges = function(value) {
-		clearTimeouts(chargeTimeouts);
 		charges = value;
 		for(var i = 0; i < charges.length; i++) {
-			updateCharge(charges[i], i);
+			updateCharge(charges[i]);
 		}
 	};
 
-	// Sets the income array, and timeouts for
-	// each income
+	// Sets the income array and runs an initial check
 	this.setIncome = function(value) {
-		clearTimeouts(incomeTimeouts);
 		income = value;
 		for(var i = 0; i < income.length; i++) {
-			updateIncome(income[i], i);
+			updateIncome(income[i]);
 		}
 	};
 
-	// Clears all timeouts in an array.
-	function clearTimeouts(arr) {
-		for(var i = 0; i < arr.length; i++) {
-			if(arr[i] !== undefined) {
-				clearTimeout(arr[i]);
-				arr[i] = undefined;
-			}
+	this.newDay = function() {
+		for(var i = 0; i < charges.length; i++) {
+			updateCharge(charges[i]);
 		}
-		arr.length = 0;
-	}
+		for(var j = 0; j < income.length; j++) {
+			updateIncome(income[j]);
+		}
+	};
 
 	// Updates the assets based upon the given recurring
 	// charge, and the difference between its nextTime entry
-	// and the current time. Sets a timer for it to be called
-	// again next time.
-	function updateCharge(entry, index, remainingTime) {
-		var nextCallTime = remainingTime;
-		if(!remainingTime) {
-			var now = new Date();
-			while(entry.nextTime < now || isToday(new Date(entry.nextTime))) {
-				saveAssets(-1 * entry.amount);
-				entry.nextTime = findNextTime(entry);
-			}
-			saveCharges(charges, entry);
-			var beginningNextDay = entry.nextTime - (entry.nextTime % MILLISECONDS_PER_DAY);
-			nextCallTime = beginningNextDay + 60000 - now.getTime();
+	// and the current time.
+	function updateCharge(entry) {
+		var now = new Date();
+		var isChanged = false;
+		while(entry.nextTime < now || isToday(new Date(entry.nextTime))) {
+			isChanged = true;
+			saveAssets(-1 * entry.amount);
+			entry.nextTime = findNextTime(entry);
 		}
-		remainingTime = Math.max(nextCallTime - MAX_TIMEOUT, 0);
-		chargeTimeouts[index] = setTimeout(function() {
-			updateCharge(entry, index, remainingTime);
-		}, Math.min(nextCallTime, MAX_TIMEOUT));
+		if(isChanged) {
+			saveCharges(charges, entry);
+		}
 	}
 
 	// Updates the assets based upon the given recurring
 	// revenue, and the difference between its nextTime entry
-	// and the current time. Sets a timer for it to be called
-	// again next time.
-	function updateIncome(entry, index) {
+	// and the current time.
+	function updateIncome(entry) {
 		var now = new Date();
+		var isChanged = false;
 		while(entry.nextTime < now || isToday(new Date(entry.nextTime))) {
+			isChanged = true;
 			saveAssets(entry.amount);
 			entry.nextTime = findNextTime(entry);
 		}
-		saveIncome(income, entry);
-		var beginningNextDay = entry.nextTime - (entry.nextTime % MILLISECONDS_PER_DAY);
-		incomeTimeouts[index] = setTimeout(function() {
-			updateIncome(entry, index);
-		}, beginningNextDay + 60000 - now.getTime());
+		if(isChanged) {
+			saveIncome(income, entry);
+		}
 	}
 
 };

@@ -18,7 +18,9 @@ var DataManager = function() {
 	var data = {
 		budget: 0,
 		tomorrowBudget: 0,
-		rollover: 0,
+		rollover: 0, // The rollover that should be applied to today's budget
+		tomorrowRollover: 0, // The rollover that should be applied to tomorrow's budget
+		// Note: "Tomorrow" more refers to whatever the next day the user uses the app
 		assets: 0,
 		endDate: 0,
 		savings: [],
@@ -28,39 +30,38 @@ var DataManager = function() {
 		options: {}
 	};
 
-	var isBudgetRestored = false;
-
-	// events: ready, one per data type
+	// events: ready, one per field in data
 	var callbacks = {};
 
 	// if the data is of a valid category, and the type of the newData
 	// is the same as the type stored, sets the data, recalculates the
 	// budget, and notifies appropriate listeners.
 	// Returns true if insertion succeeded, false if it failed
-	this.setData = function(category, newData) {
+	this.setData = function(category, newData, skipRecalculation) {
 		if(!(category in data)) {
 			return false;
 		}
-		clearTrackedEntry();
+		// if the data is the correct type - last sanity check before insertion
 		var notXorArray = (data[category].constructor === Array) === (newData.constructor === Array);
 		if(notXorArray && (typeof(data[category]) === typeof(newData))) {
 			var oldBudget = data.budget;
 			var oldTomorrowBudget = data.tomorrowBudget;
 			data[category] = deepCopy(newData);
+			// Keeps us from doing a bunch of unnecessary budget calculations while populating
+			// initial data
 			if(isStarted) {
-				if(category !== 'trackedEntry') {
+				// Should be true if this insertion is an intermediate step in a larger process -
+				// for example, deducting assets as part of tracking spending
+				if(!skipRecalculation) {
 					data.budget = calculator.calculateBudget(data);
 					if(data.budget != oldBudget) {
 						notifyListeners("budget");
 					}
+					data.tomorrowBudget = calculator.calculateTomorrowBudget(data);
+					if(data.tomorrowBudget != oldTomorrowBudget) {
+						notifyListeners("tomorrowBudget");
+					}
 				}
-				data.tomorrowBudget = calculator.calculateTomorrowBudget(data);
-				if(data.tomorrowBudget != oldTomorrowBudget) {
-					notifyListeners("tomorrowBudget");
-				}
-			}
-			if(category === 'budget') {
-				isBudgetRestored = true;
 			}
 			notifyListeners(category);
 			return true;
@@ -70,11 +71,7 @@ var DataManager = function() {
 
 	// Gets the data of the given category
 	this.getData = function(category) {
-		// If we have a trackedEntry from a previous day, evict it before returning.
-		// We do this here because there's no other place the user's going to be able
-		// to see this data, so this is the most efficient place to make this check.
-		clearTrackedEntry();
-		return (data[category] === undefined) ? undefined : deepCopy(data[category]);
+		return deepCopy(data[category]);
 	};
 
 	// Registers a listener for each category in categories
@@ -88,15 +85,14 @@ var DataManager = function() {
 
 	// calculates the initial budget and fires a ready event
 	this.start = function() {
-		clearTrackedEntry();
-		if(!isBudgetRestored) {
-			data.budget = calculator.calculateBudget(data);
-		}
+		data.budget = calculator.calculateBudget(data);
 		data.tomorrowBudget = calculator.calculateTomorrowBudget(data);
 		isStarted = true;
 		notifyListeners("ready");
 	};
 
+	// Get a keyset of data. Used to know what entry names to pull from
+	// localforage and network storage
 	this.getKeySet = function() {
 		return Object.keys(data);
 	};
@@ -111,13 +107,6 @@ var DataManager = function() {
 			for(var i = 0; i < callbackArr.length; i++) {
 				callbackArr[i].apply(window, args);
 			}
-		}
-	}
-
-	// Clears the tracked entry if it is out of date.
-	function clearTrackedEntry() {
-		if($.isEmptyObject(data.trackedEntry) && !isToday(new Date(data.trackedEntry.day))) {
-			data.trackedEntry = {};
 		}
 	}
 

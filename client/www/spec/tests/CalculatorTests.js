@@ -45,6 +45,7 @@ describe("Calculator", function() {
         var complexSampleData = {
             budget: 0,
             assets: 1100,
+            rollover: 0,
             endDate: endDate.getTime(),
             savings: [new SavingsEntry('testSave', 600, true)],
             charges: [new ChargeEntry('rent', 500, 'monthly', 1, false), new ChargeEntry('weeklyCharges', 50, 'weekly', 3, false)],

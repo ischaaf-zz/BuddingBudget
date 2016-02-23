@@ -3,17 +3,11 @@
 // and the somewhat difficult to understand LocalNotification api.
 var NotificationManager = function(getData, setDataListener) {
 	
-	try {
-		cordova.plugins.notification.local.on("click", function (notification, state) {
-		    alert(notification.id + " was clicked");
-		});	
-	} catch (e) {
-		console.log("Attempted to set up listener for notification clicks");
-	}
-
-
+	// On ready, a budget change, or an options change
 	setDataListener(["ready", "tomorrowBudget", "options"], function(type) {
-		// get options and budget, destroy and remake notifications
+		// destroy and remake all notifications
+		// Note: This is surrounded by a try-catch so it won't crash a web browser
+		// that cannot access the notification plugin
 		try {
 			cordova.plugins.notification.local.clearAll(setAllNotifications);
 		} catch (e) {
@@ -54,6 +48,7 @@ var NotificationManager = function(getData, setDataListener) {
 		}
 	}
 
+	// Copy the time of day from the sourceDate to the destDate and return destDate
 	function copyTimeOfDay(destDate, sourceDate) {
 		destDate.setHours(sourceDate.getHours());
 		destDate.setMinutes(sourceDate.getMinutes());
@@ -61,6 +56,7 @@ var NotificationManager = function(getData, setDataListener) {
 		return destDate;
 	}
 
+	// Wrapper around cordova's notification setting api
 	function setNotification(id, title, text, time) {
 		cordova.plugins.notification.local.schedule({
 		    id: id,

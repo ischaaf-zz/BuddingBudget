@@ -7,6 +7,8 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 
 	var self = this;
 
+	// Creates a new recurringManager and gives it the hooks it needs to
+	// update data.
 	var recurringManager = new RecurringManager(function(val) {
 		if(saveData("assets", dataManager.getData('assets') + val, true)) {
 			networkManager.updateAssets(dataManager.getData('assets') + val);
@@ -21,10 +23,13 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 		}
 	});
 
+	// Creates a new DateManager to be our timekeeper.
+	var dateManager = new DateManager();
+
 	// Update assets
-	this.updateAssets = function(newVal, success, failure) {
+	this.updateAssets = function(newVal, skipRecalculation, success, failure) {
 		// update network and local storage
-		if(saveData('assets', newVal)) {
+		if(saveData('assets', newVal, skipRecalculation)) {
 			networkManager.updateAssets(newVal);
 		}
 		callFunc(success);
@@ -51,22 +56,30 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 		var amountToDeduct = trackedEntry.amount - (currentEntry.amount || 0);
 
 		if(extraOption === "rollover") {
-			amountToDeduct += (budget - trackedEntry.amount);
+			//amountToDeduct += (budget - trackedEntry.amount);
 			var rollover = budget - trackedEntry.amount;
-			if(saveData('rollover', rollover)) {
+			if(saveData('tomorrowRollover', rollover, true)) {
 				networkManager.setRollover(rollover);
 			}
 		} else if(extraOption === "savings") {
-			var savings = dataManager.getData('savings');
-			savings[0].amount += difference;
-			self.changeEntry("savings", savings[0].name, savings[0]);
-			amountToDeduct = trackedEntry.budget;
+			// Implement later
+			// var savings = dataManager.getData('savings');
+			// savings[0].amount += difference;
+			// self.changeEntry("savings", savings[0].name, savings[0]);
+			// amountToDeduct = trackedEntry.budget;
 		} else if(extraOption !== "distribute") {
 			callFunc(failure, ["invalid extraOption"]);
 			return;
 		}
 
-		self.updateAssets(dataManager.getData('assets') - amountToDeduct);
+		// Make sure tomorrow's rollover is cleared if we select a non-rollover option
+		if(extraOption !== "rollover") {
+			if(saveData('tomorrowRollover', 0, true)) {
+				networkManager.setRollover(0);
+			}
+		}
+
+		self.updateAssets(dataManager.getData('assets') - amountToDeduct, true);
 
 		if(saveData('trackedEntry', trackedEntry)) {
 			networkManager.trackSpending(trackedEntry);
@@ -132,12 +145,12 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 
 	// Saves data to the data cache, phonegap localStorage,
 	// and the cloud storage (once we figure that out)
-	function saveData(key, val, fromRecurringManager) {
-		if(dataManager.setData(key, val)) {
+	function saveData(key, val, skipRecalculation) {
+		if(dataManager.setData(key, val, skipRecalculation)) {
 			if(PERSIST_DATA) {
 				localforage.setItem(key, val);
 			}
-			if(!fromRecurringManager) {
+			if(!skipRecalculation) {
 				if(key === 'charges') {
 					recurringManager.setCharges(val);
 				} else if(key === 'income') {
@@ -151,20 +164,18 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 		}
 	}
 
-	dataManager.registerListener('budget', function() {
-		var budget = dataManager.getData('budget');
-		localforage.setItem('budget', budget, function() {
-			networkManager.setBudget(budget);
-		});
-		var now = (new Date()).getTime();
-		localforage.setItem('budgetTime', now, function() {
-			networkManager.setBudgetTime(now);
-		});
+	// Registers a listener with dateManager that should be called if
+	// this is a new day.
+	dateManager.registerListener(function() {
+		saveData('rollover', dataManager.getData('tomorrowRollover'), true);
+		saveData('tomorrowRollover', 0, true);
+		saveData('trackedEntry', {}, true);
+		recurringManager.newDay();
 	});
 
-	// fetch from Phonegap storage, send each data type to dataManager
-	// Then call readyCallback()
-
+	// Fetch from network storage. If the fetch succeeds and there is new
+	// data, replace what we have.
+	// In the future, this will need to be expanded.
 	if(NETWORK_ENABLED) {
 		networkManager.fetchInitialData(function(data) {
 			// check against phonegap storage, update phonegap
@@ -177,6 +188,8 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 		});
 	}
 
+	// fetch from Phonegap storage, send each data type to dataManager
+	// Then call readyCallback()
 	if(PERSIST_DATA) {
 		// Populate the data cache with information in
 		// phonegap's local storage
@@ -188,13 +201,21 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 			}
 		};
 
+		// Get a single key from localforage and insert it into
+		// dataManager and recurringManager. If it is the last
+		// key, start dateManager and call our ready callback
 		var getFromForage = function(key, isLast) {
 			localforage.getItem(key, function(err, val) {
 				if(val !== null) {
 					dataManager.setData(key, val);
+					if(key === 'charges') {
+						recurringManager.setCharges(val);
+					} else if(key === 'income') {
+						recurringManager.setIncome(val);
+					}
 				}
 				if(isLast) {
-					readyCallback();
+					dateManager.start(readyCallback);
 				}
 			});
 		};
@@ -211,7 +232,7 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 			});
 		});	
 	} else {
-		readyCallback();
+		dateManager.start(readyCallback);
 	}
 
 };

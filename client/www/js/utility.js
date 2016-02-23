@@ -57,6 +57,10 @@ function dateInputToDate(val) {
 	return new Date(split[0], split[1] - 1, split[2]);
 }
 
+function dateToDateInput(val) {
+	return(val.getFullYear() + "-" + padDigits(val.getMonth() + 1, 2) + "-" + padDigits(val.getDate(), 2));
+}
+
 function padDigits(number, digits) {
     return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
 }

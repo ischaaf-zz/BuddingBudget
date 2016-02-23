@@ -22,7 +22,7 @@ var DataManager = function() {
 		tomorrowRollover: 0, // The rollover that should be applied to tomorrow's budget
 		// Note: "Tomorrow" refers to whatever the next day the user uses the app, not literally tomorrow
 		assets: 0,
-		endDate: 0,
+		endDate: (new Date()).getTime(),
 		savings: [],
 		charges: [],
 		income: [],

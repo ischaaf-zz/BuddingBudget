@@ -70,9 +70,9 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 		}
 
 		if(extraOption !== "rollover") {
-			// if(saveData('rollover', 0)) {
-			// 	networkManager.setRollover(0);
-			// }
+			if(saveData('tomorrowRollover', 0)) {
+				networkManager.setRollover(0);
+			}
 		}
 
 		self.updateAssets(dataManager.getData('assets') - amountToDeduct, false);

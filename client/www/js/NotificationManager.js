@@ -23,9 +23,11 @@ var NotificationManager = function(getData, setDataListener) {
 		// set morning at time if isNotifyMorning
 		if(options.isNotifyMorning === 'On') {
 			time = new Date();
-			time.setDate(time.getDate() + 1);
-			time = copyTimeOfDay(time, new Date(options.notifyMorningTime));
-			setNotification(1, "Budget", "Your budget is $" + budget, time);
+			notificationTime = copyTimeOfDay(time, new Date(options.notifyMorningTime));
+			if(notificationTime < time) {
+				notificationTime.setDate(time.getDate() + 1);
+			}
+			setNotification(1, "Budget", "Your budget is $" + budget, notificationTime);
 		}
 
 		// set night at time if isNotifyNight
@@ -50,10 +52,11 @@ var NotificationManager = function(getData, setDataListener) {
 
 	// Copy the time of day from the sourceDate to the destDate and return destDate
 	function copyTimeOfDay(destDate, sourceDate) {
-		destDate.setHours(sourceDate.getHours());
-		destDate.setMinutes(sourceDate.getMinutes());
-		destDate.setSeconds(sourceDate.getSeconds());
-		return destDate;
+		var returnDate = new Date(destDate);
+		returnDate.setHours(sourceDate.getHours());
+		returnDate.setMinutes(sourceDate.getMinutes());
+		returnDate.setSeconds(sourceDate.getSeconds());
+		return returnDate;
 	}
 
 	// Wrapper around cordova's notification setting api

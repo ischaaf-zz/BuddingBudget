@@ -413,7 +413,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		
 		//generalize this? SavingsEntry
 		//add element to "savings" array
-		var save = new ChargeEntry(catName, 0, 'monthly', 5, true);
+		var save = new ChargeEntry(catName, 0, 'monthly', 1, true);
 		notify("addEntry", "charges", catName, save, uuid);
 	});
 
@@ -430,7 +430,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
 		li.getElementsByTagName('input')[0].value = "";
 		//What does isDefault do?! Set to false here
-		var save = new ChargeEntry(catName, val, frequency, 5, false);
+		var save = new ChargeEntry(catName, val, frequency, 1, false);
 		notify2("changeEntry", "charges", catName, save, uuid);
 	}
 

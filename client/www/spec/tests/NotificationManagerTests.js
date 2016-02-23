@@ -4,10 +4,20 @@ describe("NotificationManager", function() {
 
     beforeEach(function() {
         mock = {
-            getData : jasmine.createSpy('getData'),
+            getData : jasmine.createSpy('getData').and.callFake(function(category) {
+                if(category === 'options') {
+                    return {
+                        isNotifyMorning : "On",
+                        isNotifyNight : "On",
+                        isNotifyAssets : "On"
+                    };
+                } else {
+                    return 5;
+                }
+            }),
             setDataListener : jasmine.createSpy('setDataListener').and.callFake(function(events, cb) {
                 callback = cb;
-            });
+            })
         };
 
         spyOn(cordova.plugins.notification.local, "clearAll").and.callFake(function(cb) {

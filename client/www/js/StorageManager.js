@@ -211,8 +211,7 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 					dataManager.setData(key, val);
 				}
 				if(isLast) {
-					dateManager.start();
-					readyCallback();
+					dateManager.start(readyCallback);
 				}
 			});
 		};
@@ -229,8 +228,7 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 			});
 		});	
 	} else {
-		dateManager.start();
-		readyCallback();
+		dateManager.start(readyCallback);
 	}
 
 };

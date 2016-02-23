@@ -19,7 +19,7 @@ var Calculator = function() {
 		if(entry && !$.isEmptyObject(entry)) {
 			assetAdjust += entry.amount;
 		}
-		return calculate(data, new Date(), assetAdjust);
+		return calculate(data, new Date(), assetAdjust, data.rollover);
 	};
 
 	// calculate tomorrow's budget
@@ -29,15 +29,22 @@ var Calculator = function() {
 	// the data object though.
 	// Add rollover to whatever budget is calculated
 	this.calculateTomorrowBudget = function(data) {
-		
+		var entry = data.trackedEntry;
+		var assetAdjust = -data.tomorrowRollover;
+		if(!entry || $.isEmptyObject(entry)) {
+			assetAdjust -= data.budget;
+		}
+		var tomorrow = new Date()
+		tomorrow.setDate(tomorrow.getDate() + 1);
+		return calculate(data, tomorrow, assetAdjust, data.tomorrowRollover);
 	};
 
-	function calculate(data, now, assetAdjust) {
+	function calculate(data, now, assetAdjust, budgetAdjust) {
 		// calculate budget by basically dividing the assets by the amount of days left and return that value.
 		// Because of possible interleving incomes and charges, the algorithm has to be more sophisticated.
 
 		// make sure dates are have no information about the hour, minute, seconds and milliseconds 
-		var now = new Date();
+		// var now = new Date();
 		var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 		var endDate = new Date(data.endDate);
 		endDate = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
@@ -107,7 +114,7 @@ var Calculator = function() {
 		}
 		dates.sort();
 
-		return maxAmountToSpend(changes, endDate) + data.rollover;
+		return maxAmountToSpend(changes, endDate) + budgetAdjust;
 
 		// calculates the maximum amount one can spend on the first day to still be able
 		// to get to endDate optimally

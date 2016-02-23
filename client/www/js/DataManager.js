@@ -18,8 +18,9 @@ var DataManager = function() {
 	var data = {
 		budget: 0,
 		tomorrowBudget: 0,
-		rollover: 0,
-		tomorrowRollover: 0,
+		rollover: 0, // The rollover that should be applied to today's budget
+		tomorrowRollover: 0, // The rollover that should be applied to tomorrow's budget
+		// Note: "Tomorrow" more refers to whatever the next day the user uses the app
 		assets: 0,
 		endDate: 0,
 		savings: [],
@@ -29,9 +30,7 @@ var DataManager = function() {
 		options: {}
 	};
 
-	var isBudgetRestored = false;
-
-	// events: ready, one per data type
+	// events: ready, one per field in data
 	var callbacks = {};
 
 	// if the data is of a valid category, and the type of the newData

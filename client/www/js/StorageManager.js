@@ -72,6 +72,7 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 			return;
 		}
 
+		// Make sure tomorrow's rollover is cleared if we select a non-rollover option
 		if(extraOption !== "rollover") {
 			if(saveData('tomorrowRollover', 0, true)) {
 				networkManager.setRollover(0);

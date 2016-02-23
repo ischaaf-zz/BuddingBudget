@@ -19,7 +19,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		}
 	}
 	
-	setDataListener('ready', function() {
+	setDataListener('ready', function(isNew) {
 		//if PERSIST_DATA in utility.js is set to false temp data will be set here
 		if(!PERSIST_DATA) {
 			setTempData();
@@ -604,7 +604,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 			console.log("SUCCESS: " + $("#endDate").val());
 		}, function(message) {
 			console.log("FAILURE: " + message);
-		}])
+		}]);
 	});
 	
 	//callback for dateboxes

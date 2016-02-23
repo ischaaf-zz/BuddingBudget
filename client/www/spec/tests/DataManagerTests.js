@@ -47,10 +47,10 @@ describe('DataManager', function() {
         });
         // Neither should be called
         expect(savingsCalled || chargesCalled).toEqual(false);
-        dataManager.setData("savings", [1]);
+        dataManager.setData("savings", [1], true);
         // ONLY savings should be called
         expect(savingsCalled && !chargesCalled).toEqual(true);
-        dataManager.setData("charges", [1]);
+        dataManager.setData("charges", [1], true);
         // Both should be called
         expect(savingsCalled && chargesCalled).toEqual(true);
     });

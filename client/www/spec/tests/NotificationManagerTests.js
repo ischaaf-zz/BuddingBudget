@@ -7,7 +7,7 @@ describe("NotificationManager", function() {
             getData : jasmine.createSpy('getData'),
             setDataListener : jasmine.createSpy('setDataListener').and.callFake(function(events, cb) {
                 callback = cb;
-            });
+            })
         };
 
         spyOn(cordova.plugins.notification.local, "clearAll").and.callFake(function(cb) {

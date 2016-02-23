@@ -42,10 +42,11 @@ var Calculator = function() {
 			currentDay = new Date(today);
 			while(findNextTime(data.income[i], currentDay) <= endDate.getTime()) {
 				nextTime = findNextTime(data.income[i], currentDay);
+				var amountUsable = data.income[i].amount - data.income[i].holdout;
 				if(changes[nextTime]) {
-					changes[nextTime] += data.income[i].amount;
+					changes[nextTime] += amountUsable;
 				} else {
-					changes[nextTime] = data.income[i].amount;
+					changes[nextTime] = amountUsable;
 				}
 				currentDay = new Date(nextTime);
 			}
@@ -109,6 +110,10 @@ var Calculator = function() {
 			var differenceDays = Math.round(differenceMilliseconds / MILLISECONDS_PER_DAY) + 1;
 			var dailyAmount = amountAvailable / differenceDays;
 			var lastDatePossible = getLastDayPossible(dailyAmount);
+			if(isNaN(lastDatePossible.getTime())) {
+				console.log("ERROR");
+				return 0;
+			}
 			if(lastDatePossible >= endDate) {
 				return Math.floor(dailyAmount);
 			} else {
@@ -117,16 +122,16 @@ var Calculator = function() {
 
 			// simulate how long the dailyAmount will last with the assets as well as all the incomes.
 			function getLastDayPossible(dailyAmount) {
-				var amountAvailable = availableAssets;
+				var amountAvailable = 0;
 				var lastDate = today;
 				for(var i = 0; i < dates.length; i++) {
-					var differenceMilliseconds = dates[i] - lastDate;
+					var differenceMilliseconds = dates[i] - lastDate.getTime();
 					// TODO: check if +1 needed for inclusive end date
 					var differenceDays = Math.round(differenceMilliseconds / MILLISECONDS_PER_DAY);
-					lastDate = dates[i];
+					lastDate = new Date(Number(dates[i]));
 					amountAvailable -= dailyAmount * differenceDays;
 					if(amountAvailable < 0) {
-						lastDate.setDate(lastDate.getDate - 1);
+						lastDate.setDate(lastDate.getDate() - 1);
 						return lastDate;
 					}
 					amountAvailable += changes[dates[i]];

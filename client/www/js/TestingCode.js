@@ -55,10 +55,7 @@ function setUpFutureDate() {
 
 	$("#futureDate").change(function() {
 		var now = window.OtherDate ? new OtherDate() : new Date();
-		var split = $(this).val().split("-").map(function(val) {
-			return parseInt(val);
-		});
-		var future = new Date(split[0], split[1] - 1, split[2]);
+		var future = dateInputToDate($(this).val());
 		setTime(Math.ceil((future - now) / MILLISECONDS_PER_DAY));
 	});
 }

@@ -19,6 +19,7 @@ var DataManager = function() {
 		budget: 0,
 		tomorrowBudget: 0,
 		rollover: 0,
+		tomorrowRollover: 0,
 		assets: 0,
 		endDate: 0,
 		savings: [],
@@ -37,7 +38,7 @@ var DataManager = function() {
 	// is the same as the type stored, sets the data, recalculates the
 	// budget, and notifies appropriate listeners.
 	// Returns true if insertion succeeded, false if it failed
-	this.setData = function(category, newData) {
+	this.setData = function(category, newData, skipRecalculation) {
 		if(!(category in data)) {
 			return false;
 		}
@@ -48,7 +49,7 @@ var DataManager = function() {
 			var oldTomorrowBudget = data.tomorrowBudget;
 			data[category] = deepCopy(newData);
 			if(isStarted) {
-				if(category !== 'trackedEntry') {
+				if(!skipRecalculation) {
 					data.budget = calculator.calculateBudget(data);
 					if(data.budget != oldBudget) {
 						notifyListeners("budget");
@@ -97,6 +98,13 @@ var DataManager = function() {
 		notifyListeners("ready");
 	};
 
+	this.newDay = function(callback) {
+		data.trackedEntry = {};
+		data.rollover = data.tomorrowRollover;
+		data.tomorrowRollover = 0;
+		callback(data.rollover, data.tomorrowRollover);
+	}
+
 	this.getKeySet = function() {
 		return Object.keys(data);
 	};
@@ -116,9 +124,9 @@ var DataManager = function() {
 
 	// Clears the tracked entry if it is out of date.
 	function clearTrackedEntry() {
-		if($.isEmptyObject(data.trackedEntry) && !isToday(new Date(data.trackedEntry.day))) {
-			data.trackedEntry = {};
-		}
+		// if(!$.isEmptyObject(data.trackedEntry) && !isToday(new Date(data.trackedEntry.day))) {
+		// 	data.trackedEntry = {};
+		// }
 	}
 
 };

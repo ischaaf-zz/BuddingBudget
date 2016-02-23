@@ -21,10 +21,12 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 		}
 	});
 
+	var dateManager = new DateManager();
+
 	// Update assets
-	this.updateAssets = function(newVal, success, failure) {
+	this.updateAssets = function(newVal, isManual, success, failure) {
 		// update network and local storage
-		if(saveData('assets', newVal)) {
+		if(saveData('assets', newVal, false, !isManual)) {
 			networkManager.updateAssets(newVal);
 		}
 		callFunc(success);
@@ -51,22 +53,29 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 		var amountToDeduct = trackedEntry.amount - (currentEntry.amount || 0);
 
 		if(extraOption === "rollover") {
-			amountToDeduct += (budget - trackedEntry.amount);
+			//amountToDeduct += (budget - trackedEntry.amount);
 			var rollover = budget - trackedEntry.amount;
-			if(saveData('rollover', rollover)) {
+			if(saveData('tomorrowRollover', rollover)) {
 				networkManager.setRollover(rollover);
 			}
 		} else if(extraOption === "savings") {
-			var savings = dataManager.getData('savings');
-			savings[0].amount += difference;
-			self.changeEntry("savings", savings[0].name, savings[0]);
-			amountToDeduct = trackedEntry.budget;
+			// Implement later
+			// var savings = dataManager.getData('savings');
+			// savings[0].amount += difference;
+			// self.changeEntry("savings", savings[0].name, savings[0]);
+			// amountToDeduct = trackedEntry.budget;
 		} else if(extraOption !== "distribute") {
 			callFunc(failure, ["invalid extraOption"]);
 			return;
 		}
 
-		self.updateAssets(dataManager.getData('assets') - amountToDeduct);
+		if(extraOption !== "rollover") {
+			// if(saveData('rollover', 0)) {
+			// 	networkManager.setRollover(0);
+			// }
+		}
+
+		self.updateAssets(dataManager.getData('assets') - amountToDeduct, false);
 
 		if(saveData('trackedEntry', trackedEntry)) {
 			networkManager.trackSpending(trackedEntry);
@@ -132,8 +141,8 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 
 	// Saves data to the data cache, phonegap localStorage,
 	// and the cloud storage (once we figure that out)
-	function saveData(key, val, fromRecurringManager) {
-		if(dataManager.setData(key, val)) {
+	function saveData(key, val, fromRecurringManager, skipRecalculation) {
+		if(dataManager.setData(key, val, skipRecalculation)) {
 			if(PERSIST_DATA) {
 				localforage.setItem(key, val);
 			}
@@ -159,6 +168,14 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 		var now = (new Date()).getTime();
 		localforage.setItem('budgetTime', now, function() {
 			networkManager.setBudgetTime(now);
+		});
+	});
+
+	dateManager.registerListener(function() {
+		dataManager.newDay(function(rollover, tomorrowRollover) {
+			saveData('rollover', rollover);
+			saveData('tomorrowRollover', tomorrowRollover);
+			saveData('trackedEntry', {});
 		});
 	});
 
@@ -194,6 +211,7 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 					dataManager.setData(key, val);
 				}
 				if(isLast) {
+					dateManager.start();
 					readyCallback();
 				}
 			});
@@ -211,6 +229,7 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 			});
 		});	
 	} else {
+		dateManager.start();
 		readyCallback();
 	}
 

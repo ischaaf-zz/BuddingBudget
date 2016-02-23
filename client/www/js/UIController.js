@@ -10,7 +10,7 @@ var UIController = function(getData, storageManager, registerUICallback) {
 	registerUICallback("updateAssets", function(newVal, success, failure) {
 		if(typeof(newVal) === 'number') {
 			if(!isNaN(newVal)) {
-				storageManager.updateAssets(newVal, success, failure);
+				storageManager.updateAssets(newVal, true, success, failure);
 			} else {
 				callFunc(failure, ['Cannot set assets to NaN']);
 			}

@@ -14,6 +14,25 @@ var Calculator = function() {
 	// NOTE: If it doesn't exist, data.trackedEntry will equal {}, which is not falsey.
 	// 		 I recommend using $.isEmptyObject()
 	this.calculateBudget = function(data) {
+		var entry = data.trackedEntry;
+		var assetAdjust = -data.rollover;
+		if(entry && !$.isEmptyObject(entry)) {
+			assetAdjust += entry.amount;
+		}
+		return calculate(data, new Date(), assetAdjust);
+	};
+
+	// calculate tomorrow's budget
+	// If a trackedEntry exists, consider the current assets to be
+	// the assets you will have tomorrow. Otherwise, subtract the current
+	// budget from the assets pool. Make sure you don't actually modify
+	// the data object though.
+	// Add rollover to whatever budget is calculated
+	this.calculateTomorrowBudget = function(data) {
+		
+	};
+
+	function calculate(data, now, assetAdjust) {
 		// calculate budget by basically dividing the assets by the amount of days left and return that value.
 		// Because of possible interleving incomes and charges, the algorithm has to be more sophisticated.
 
@@ -31,7 +50,7 @@ var Calculator = function() {
 		for(var i = 0; i < data.savings.length; i++) {
 			sumOfSavings += data.savings[i].amount;
 		}
-		var availableAssets = data.assets - sumOfSavings;
+		var availableAssets = data.assets - sumOfSavings + assetAdjust;
 
 		// calculate all changes that occur due to income and charges and save them in "changes" with the date as the key.
 		var changes = {};
@@ -88,7 +107,7 @@ var Calculator = function() {
 		}
 		dates.sort();
 
-		return maxAmountToSpend(changes, endDate);
+		return maxAmountToSpend(changes, endDate) + data.rollover;
 
 		// calculates the maximum amount one can spend on the first day to still be able
 		// to get to endDate optimally
@@ -134,16 +153,6 @@ var Calculator = function() {
 				return endDate;
 			}
 		}
-	};
-
-	// calculate tomorrow's budget
-	// If a trackedEntry exists, consider the current assets to be
-	// the assets you will have tomorrow. Otherwise, subtract the current
-	// budget from the assets pool. Make sure you don't actually modify
-	// the data object though.
-	// Add rollover to whatever budget is calculated
-	this.calculateTomorrowBudget = function(data) {
-		return parseInt(50 * Math.random());
-	};
+	}
 
 };

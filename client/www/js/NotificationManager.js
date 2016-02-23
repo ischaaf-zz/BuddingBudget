@@ -8,10 +8,13 @@ var NotificationManager = function(getData, setDataListener) {
 		// destroy and remake all notifications
 		// Note: This is surrounded by a try-catch so it won't crash a web browser
 		// that cannot access the notification plugin
-		try {
-			cordova.plugins.notification.local.clearAll(setAllNotifications);
-		} catch (e) {
-			console.log("Attempted to set notifications: Budget = " + getData('tomorrowBudget'));
+		var budget = getData('tomorrowBudget');
+		if(budget !== null) {
+			try {
+				cordova.plugins.notification.local.clearAll(setAllNotifications);
+			} catch (e) {
+				console.log("Attempted to set notifications: Budget = " + budget);
+			}
 		}
 	});
 

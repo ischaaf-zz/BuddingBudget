@@ -36,23 +36,18 @@ describe('DataManager', function() {
     });
 
     it('allows registering multiple callbacks', function() {
-        var savingsCalled = false;
-        var chargesCalled = false;
+        var counter = 0;
         dataManager.registerListener(['savings', 'charges'], function(type) {
-            if(type === 'savings') {
-                savingsCalled = true;
-            } else if(type === 'charges') {
-                chargesCalled = true;
-            }
+            counter++;
         });
         // Neither should be called
-        expect(savingsCalled || chargesCalled).toEqual(false);
+        expect(counter).toEqual(0);
         dataManager.setData("savings", [1], true);
         // ONLY savings should be called
-        expect(savingsCalled && !chargesCalled).toEqual(true);
+        expect(counter).toEqual(1);
         dataManager.setData("charges", [1], true);
         // Both should be called
-        expect(savingsCalled && chargesCalled).toEqual(true);
+        expect(counter).toEqual(2);
     });
 
     it("shouldn't allow access to internal data through setData", function() {

@@ -8,8 +8,7 @@ var RecurringManager = function(saveAssets, saveCharges, saveIncome) {
 
 	var income = [];
 
-	// Sets the charges array, and timeouts for
-	// each charge
+	// Sets the charges array and runs an initial check
 	this.setCharges = function(value) {
 		charges = value;
 		for(var i = 0; i < charges.length; i++) {
@@ -17,8 +16,7 @@ var RecurringManager = function(saveAssets, saveCharges, saveIncome) {
 		}
 	};
 
-	// Sets the income array, and timeouts for
-	// each income
+	// Sets the income array and runs an initial check
 	this.setIncome = function(value) {
 		income = value;
 		for(var i = 0; i < income.length; i++) {
@@ -30,15 +28,14 @@ var RecurringManager = function(saveAssets, saveCharges, saveIncome) {
 		for(var i = 0; i < charges.length; i++) {
 			updateCharge(charges[i]);
 		}
-		for(var i = 0; i < income.length; i++) {
-			updateIncome(income[i]);
+		for(var j = 0; j < income.length; j++) {
+			updateIncome(income[j]);
 		}
 	};
 
 	// Updates the assets based upon the given recurring
 	// charge, and the difference between its nextTime entry
-	// and the current time. Sets a timer for it to be called
-	// again next time.
+	// and the current time.
 	function updateCharge(entry) {
 		var now = new Date();
 		var isChanged = false;
@@ -54,8 +51,7 @@ var RecurringManager = function(saveAssets, saveCharges, saveIncome) {
 
 	// Updates the assets based upon the given recurring
 	// revenue, and the difference between its nextTime entry
-	// and the current time. Sets a timer for it to be called
-	// again next time.
+	// and the current time.
 	function updateIncome(entry) {
 		var now = new Date();
 		var isChanged = false;

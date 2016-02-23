@@ -7,6 +7,8 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 
 	var self = this;
 
+	// Creates a new recurringManager and gives it the hooks it needs to
+	// update data.
 	var recurringManager = new RecurringManager(function(val) {
 		if(saveData("assets", dataManager.getData('assets') + val, true)) {
 			networkManager.updateAssets(dataManager.getData('assets') + val);
@@ -21,14 +23,8 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 		}
 	});
 
+	// Creates a new DateManager to be our timekeeper.
 	var dateManager = new DateManager();
-
-	dateManager.registerListener(function() {
-		saveData('rollover', dataManager.getData('tomorrowRollover'), true);
-		saveData('tomorrowRollover', 0, true);
-		saveData('trackedEntry', {}, true);
-		recurringManager.newDay();
-	});
 
 	// Update assets
 	this.updateAssets = function(newVal, skipRecalculation, success, failure) {
@@ -167,20 +163,18 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 		}
 	}
 
-	dataManager.registerListener('budget', function() {
-		var budget = dataManager.getData('budget');
-		localforage.setItem('budget', budget, function() {
-			networkManager.setBudget(budget);
-		});
-		var now = (new Date()).getTime();
-		localforage.setItem('budgetTime', now, function() {
-			networkManager.setBudgetTime(now);
-		});
+	// Registers a listener with dateManager that should be called if
+	// this is a new day.
+	dateManager.registerListener(function() {
+		saveData('rollover', dataManager.getData('tomorrowRollover'), true);
+		saveData('tomorrowRollover', 0, true);
+		saveData('trackedEntry', {}, true);
+		recurringManager.newDay();
 	});
 
-	// fetch from Phonegap storage, send each data type to dataManager
-	// Then call readyCallback()
-
+	// Fetch from network storage. If the fetch succeeds and there is new
+	// data, replace what we have.
+	// In the future, this will need to be expanded.
 	if(NETWORK_ENABLED) {
 		networkManager.fetchInitialData(function(data) {
 			// check against phonegap storage, update phonegap
@@ -193,6 +187,8 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 		});
 	}
 
+	// fetch from Phonegap storage, send each data type to dataManager
+	// Then call readyCallback()
 	if(PERSIST_DATA) {
 		// Populate the data cache with information in
 		// phonegap's local storage
@@ -204,6 +200,9 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 			}
 		};
 
+		// Get a single key from localforage and insert it into
+		// dataManager and recurringManager. If it is the last
+		// key, start dateManager and call our ready callback
 		var getFromForage = function(key, isLast) {
 			localforage.getItem(key, function(err, val) {
 				if(val !== null) {

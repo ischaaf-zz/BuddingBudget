@@ -6,13 +6,8 @@ var Calculator = function() {
 
 	var self = this;
 
-	// Calculates and returns the budget based upon the
+	// Calculates and returns the budget for today based upon the
 	// passed in data.
-	// if a tracked entry exists, and rollover is nonzero, add the budget
-	// to our asset pool. If it exists, and rollover is zero, add trackedEntry.amount
-	// to our asset pool. If it does not exist, continue as normal.
-	// NOTE: If it doesn't exist, data.trackedEntry will equal {}, which is not falsey.
-	// 		 I recommend using $.isEmptyObject()
 	this.calculateBudget = function(data) {
 		var entry = data.trackedEntry;
 		var assetAdjust = -data.rollover;
@@ -22,23 +17,23 @@ var Calculator = function() {
 		return calculate(data, new Date(), assetAdjust, data.rollover);
 	};
 
-	// calculate tomorrow's budget
-	// If a trackedEntry exists, consider the current assets to be
-	// the assets you will have tomorrow. Otherwise, subtract the current
-	// budget from the assets pool. Make sure you don't actually modify
-	// the data object though.
-	// Add rollover to whatever budget is calculated
+	// Calculates and returns the budget for tomorrow based upon
+	// the passed in data
 	this.calculateTomorrowBudget = function(data) {
 		var entry = data.trackedEntry;
 		var assetAdjust = -data.tomorrowRollover;
 		if(!entry || $.isEmptyObject(entry)) {
 			assetAdjust -= data.budget;
 		}
-		var tomorrow = new Date()
+		var tomorrow = new Date();
 		tomorrow.setDate(tomorrow.getDate() + 1);
 		return calculate(data, tomorrow, assetAdjust, data.tomorrowRollover);
 	};
 
+	// Calculates a budget based upon the passed in data
+	// Assumes that the current day is whatever is contained in "now"
+	// Adjusts the assets by assetAdjust before calculating, and the calculated
+	// budget by budgetAdjust after the calculation.
 	function calculate(data, now, assetAdjust, budgetAdjust) {
 		// calculate budget by basically dividing the assets by the amount of days left and return that value.
 		// Because of possible interleving incomes and charges, the algorithm has to be more sophisticated.

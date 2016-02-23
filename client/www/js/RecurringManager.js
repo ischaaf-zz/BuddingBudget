@@ -10,6 +10,10 @@ var RecurringManager = function(saveAssets, saveCharges, saveIncome) {
 	var income = [];
 	var incomeTimeouts = [];
 
+	this.newDay = function() {
+
+	};
+
 	// Sets the charges array, and timeouts for
 	// each charge
 	this.setCharges = function(value) {

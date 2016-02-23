@@ -54,10 +54,10 @@ var DataManager = function() {
 					if(data.budget != oldBudget) {
 						notifyListeners("budget");
 					}
-				}
-				data.tomorrowBudget = calculator.calculateTomorrowBudget(data);
-				if(data.tomorrowBudget != oldTomorrowBudget) {
-					notifyListeners("tomorrowBudget");
+					data.tomorrowBudget = calculator.calculateTomorrowBudget(data);
+					if(data.tomorrowBudget != oldTomorrowBudget) {
+						notifyListeners("tomorrowBudget");
+					}
 				}
 			}
 			if(category === 'budget') {
@@ -97,13 +97,6 @@ var DataManager = function() {
 		isStarted = true;
 		notifyListeners("ready");
 	};
-
-	this.newDay = function(callback) {
-		data.trackedEntry = {};
-		data.rollover = data.tomorrowRollover;
-		data.tomorrowRollover = 0;
-		callback(data.rollover, data.tomorrowRollover);
-	}
 
 	this.getKeySet = function() {
 		return Object.keys(data);

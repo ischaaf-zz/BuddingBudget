@@ -23,10 +23,17 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 
 	var dateManager = new DateManager();
 
+	dateManager.registerListener(function() {
+		saveData('rollover', dataManager.getData('tomorrowRollover'), true);
+		saveData('tomorrowRollover', 0, true);
+		saveData('trackedEntry', {}, true);
+		recurringManager.newDay();
+	});
+
 	// Update assets
-	this.updateAssets = function(newVal, isManual, success, failure) {
+	this.updateAssets = function(newVal, skipRecalculation, success, failure) {
 		// update network and local storage
-		if(saveData('assets', newVal, false, !isManual)) {
+		if(saveData('assets', newVal, skipRecalculation)) {
 			networkManager.updateAssets(newVal);
 		}
 		callFunc(success);
@@ -55,7 +62,7 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 		if(extraOption === "rollover") {
 			//amountToDeduct += (budget - trackedEntry.amount);
 			var rollover = budget - trackedEntry.amount;
-			if(saveData('tomorrowRollover', rollover)) {
+			if(saveData('tomorrowRollover', rollover, true)) {
 				networkManager.setRollover(rollover);
 			}
 		} else if(extraOption === "savings") {
@@ -70,12 +77,12 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 		}
 
 		if(extraOption !== "rollover") {
-			if(saveData('tomorrowRollover', 0)) {
+			if(saveData('tomorrowRollover', 0, true)) {
 				networkManager.setRollover(0);
 			}
 		}
 
-		self.updateAssets(dataManager.getData('assets') - amountToDeduct, false);
+		self.updateAssets(dataManager.getData('assets') - amountToDeduct, true);
 
 		if(saveData('trackedEntry', trackedEntry)) {
 			networkManager.trackSpending(trackedEntry);
@@ -141,12 +148,12 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 
 	// Saves data to the data cache, phonegap localStorage,
 	// and the cloud storage (once we figure that out)
-	function saveData(key, val, fromRecurringManager, skipRecalculation) {
+	function saveData(key, val, skipRecalculation) {
 		if(dataManager.setData(key, val, skipRecalculation)) {
 			if(PERSIST_DATA) {
 				localforage.setItem(key, val);
 			}
-			if(!fromRecurringManager) {
+			if(!skipRecalculation) {
 				if(key === 'charges') {
 					recurringManager.setCharges(val);
 				} else if(key === 'income') {
@@ -168,14 +175,6 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 		var now = (new Date()).getTime();
 		localforage.setItem('budgetTime', now, function() {
 			networkManager.setBudgetTime(now);
-		});
-	});
-
-	dateManager.registerListener(function() {
-		dataManager.newDay(function(rollover, tomorrowRollover) {
-			saveData('rollover', rollover);
-			saveData('tomorrowRollover', tomorrowRollover);
-			saveData('trackedEntry', {});
 		});
 	});
 

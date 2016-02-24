@@ -52,7 +52,12 @@ var PageTransitions = function() {
     	$("#page-main").show();
     	$("#titleText").text(pages["page-main"]);
     	activePage = "page-main";
+		hideButtons();
     }
+	
+	initialSetup();
+	
+	//--tutorial page transitions--
 	
 	this.tutorialSetup = function() {
 		$("#page-main").hide();
@@ -62,24 +67,66 @@ var PageTransitions = function() {
 		
 		$("#noTutorial").click(function() {
 			$("#page-tutorial").hide();
-			ignoreTutorialCleanup();
-		})
+			$("#page-main").show();
+			activePage = "page-main";
+			$("#menuBar").show();
+			firstOpen = false;
+		});
 		
 		$("#yesTutorial").click(function() {
 			$("#page-tutorial").hide();
 			$("#page-assets").show();
-			$("#titleText").text(pages["page-assets"]);
 			activePage = "page-assets";
-		})
+			showButtons();
+		});
+		
+		$("#page-assets-tutorial").click(function() {
+			$("#page-assets").hide();
+			$("#page-savings").show();
+			activePage = "page-savings";
+		});
+		
+		$("#page-savings-tutorial").click(function() {
+			$("#page-savings").hide();
+			$("#page-income").show();
+			activePage = "page-income";
+		});
+		
+		$("#page-income-tutorial").click(function() {
+			$("#page-income").hide();
+			$("#page-charges").show();
+			activePage = "page-charges";
+		});
+		
+		$("#page-charges-tutorial").click(function() {
+			$("#page-charges").hide();
+			$("#page-options").show();
+			activePage = "page-options";
+		});
+		
+		$("#page-options-tutorial").click(function() {
+			$("#page-options").hide();
+			$("#page-main").show();
+			activePage = "page-main";
+			hideButtons();
+			$("#menuBar").show();
+		});
 	}
 	
-	function ignoreTutorialCleanup() {
-		$("#page-main").show();
-		activePage = "page-main";
-		$("#menuBar").show();
+	function hideButtons() {
 		$("#page-assets-tutorial").hide();
-		firstOpen = false;
+		$("#page-savings-tutorial").hide();
+		$("#page-income-tutorial").hide();
+		$("#page-charges-tutorial").hide();
+		$("#page-options-tutorial").hide();
 	}
-
-	initialSetup();
+	
+	function showButtons() {
+		$("#page-assets-tutorial").show();
+		$("#page-savings-tutorial").show();
+		$("#page-income-tutorial").show();
+		$("#page-charges-tutorial").show();
+		$("#page-options-tutorial").show();
+	}
+	
 };

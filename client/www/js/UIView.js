@@ -26,6 +26,11 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		if(!PERSIST_DATA) {
 			setTempData();
 		}
+		
+		if(isNew) {
+			//setup Tutorial
+			
+		}
 
 		$("#budget").html("$" + getData("budget"));
 		$("#prevAssets").html("$" + getData("assets"));
@@ -60,12 +65,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		}
 		
 		//--Load Options--
-		
-		//---BUGGY---
-		//load flip switch options
 		var value = getData("options");
-		console.log("-----------");
-		console.log(value);
 		
 		if(value.isNotifyMorning == 'On') {
 			$("#morningNotice").val("On").flipswitch("refresh");

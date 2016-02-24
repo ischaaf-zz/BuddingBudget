@@ -15,7 +15,8 @@ var PageTransitions = function() {
 		"page-charges" : "Recurring Charges",
 		"page-income" : "Recurring Income",
 		"page-tracking" : "Track Spending",
-		"page-options" : "Options"
+		"page-options" : "Options",
+		"page-tutorial" : "Tutorial"
 	};
 
 	// The page currently being displayed

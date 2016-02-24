@@ -7,6 +7,8 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 	//		   addEntry, changeEntry, removeEntry
 	var callbacks = {};
 
+	var pageTransitions = new PageTransitions();
+
 	this.registerCallback = function(event, callback) {
 		callbacks[event] = callbacks[event] || [];
 		callbacks[event].push(callback);

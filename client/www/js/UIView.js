@@ -52,7 +52,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		
 		//load track spending
 		var track = getData("trackedEntry");
-		if(track.amount === null) {
+		if(typeof track.amount === "undefined" || track.amount === null) {
 			$("#prevSpending").html("$0");
 		} else {
 			$("#prevSpending").html("$" + track.amount);

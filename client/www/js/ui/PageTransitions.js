@@ -16,7 +16,8 @@ var PageTransitions = function() {
 		"page-income" : "Recurring Income",
 		"page-tracking" : "Track Spending",
 		"page-options" : "Options",
-		"page-tutorial" : "Tutorial"
+		"page-tutorial" : "Tutorial",
+		"page-login" :"Login"
 	};
 
 	// The page currently being displayed

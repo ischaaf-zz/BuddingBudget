@@ -58,11 +58,33 @@
 			<div id="page-login">
 				<div role="main" class="ui-content wow fadeIn" data-inset="false" data-wow-delay="0.2s">
 					<!--HEADER ABOVE, can copy paste-->
+					<p id='loginSuccess' class='attentionGrapper'></p>
 					<h3>Please log in</h3>
+					<input id="username" type='text'>
+					<input id="password" type='password'>
 					<button id='login'>Login</button>
+					<a id='userPopup' href='#userPopupDialog'   data-rel='popup' data-position-to='window' data-role='button' data-icon='external-link' data-transition='pop' data-inline='true' class="ui-btn ui-btn-raised clr-primary">New User</a>
 					<!--FOOTER BELOW, can copy paste-->
 				</div>
 			</div>
+
+			<!-- popup -->
+			<div data-role='popup' id='userPopupDialog' data-theme='b'>
+				<div data-role='header' data-theme='b'>
+					<h1>Create new user:</h1>
+				</div>
+				<div data-role='content' data-theme='b'>
+					<p>Name: </p><input id="newName" data-controller="input-value" autofocus="autofocus">
+					<p>Username: </p><input id="newUsername" data-controller="input-value" autofocus="autofocus">
+					<p>Password: </p><input id="newPassword" type='password' data-controller="input-value" autofocus="autofocus">
+					<p>Verify password: </p><input id="newPasswordVerify" type='password' data-controller="input-value" autofocus="autofocus">
+					<div class='showastabs center nobg'>
+						<a id="addUser" href='#' data-rel='back' data-icon='ok' data-iconpos='left' data-role='button' data-inline='true'>Okay</a>
+						<a href='#' data-rel='back' data-icon='delete' data-iconpos='left' data-role='button' data-inline='true'>Cancel</a>
+					</div>
+				</div>
+			</div>
+			<!-- popup end -->
 
 			<!-- ========================================================
 				MAIN BUDGET PAGE

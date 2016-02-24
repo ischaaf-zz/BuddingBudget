@@ -2,7 +2,6 @@
 // Handles sending new data and commands out from the DOM, and
 // putting new updated data into the DOM.
 var UIView = function(getData, setDataListener, login, setNetworkListener) {
-
 	// events: updateAssets, trackSpending, setOption, 
 	//		   addEntry, changeEntry, removeEntry
 	var callbacks = {};
@@ -149,22 +148,6 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		$("#prevSpending").html("$" + track.amount);
 		$("#lastUpdateSpending").html("Last Update: " + new Date(track.day));
 	});
-	
-	// setup savings and update when there are changes
-	// warning: currently dependant on SavingsEntry internals
-	// setDataListener("savings", function() {
-	// 	var arr = getData("savings");
-	// 	arr.forEach(function(ctx) {
-	// 		$("#prev" + ctx.name).html("$" + ctx.amount);
-	// 	});
-	// });
-
-	// setDataListener("charges", function() {
-	// 	var arr = getData("charges");
-	// 	arr.forEach(function(ctx) {
-	// 		$("#prevCh" + ctx.name).html("$" + ctx.amount);
-	// 	});
-	// });
 	
 	setDataListener("options", function() {
 		var value = getData("options");
@@ -398,7 +381,41 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 	// 			Login
 	//--------------------------------------
 	$("#login").click(function() {
+		var un = $("#username").value;
+		var pw = $("#password").value;
 
+		login(un, pw, function() {
+			console.log("here");
+		})
+	});
+
+	$("#addUser").click(function() {
+		var name = $("#newName").value;
+		var un = $("#newUsername").value;
+		var pw = $("#newPassword").value;
+		var pwv = $("#newPasswordVerify").value;
+
+		if(pw == pwv) {
+			//how to add user?
+			/*notifyListeners("addEntry", [
+				"users",
+				{name, un, pw},
+				function() {
+					document.querySelector('#loginSuccess');
+		            loginSuccess.textContent = 'NEW USER SUCCESS';
+		            loginSuccess.classList.remove("animatePopupMessage");
+		            loginSuccess.classList.add("animatePopupMessage");
+					if(isTutorial) {
+						$("#page-assets-tutorial").show();
+					}
+				}, 
+				function(message) {
+					document.querySelector('#loginSuccess');
+		            loginSuccess.textContent = 'FAILED: ' + message;
+		            loginSuccess.classList.remove("animatePopupMessage");
+		            loginSuccess.classList.add("animatePopupMessage");
+			}]);*/
+		}
 	});
 
 	//--------------------------------------
@@ -446,18 +463,6 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		}
 	});
 
-	/* --No longer called anywhere--?
-	//attached to buttons defined in .ready()
-	function changeSavingEntry(name, isDefault) {
-		var save = new SavingsEntry(name, parseInt($("#text" + name).val()), isDefault);
-		notifyListeners("changeEntry", ["savings", name, save, function() {
-			$("#save" + name).html("CHANGED SAVINGS SUCCESS");
-		}, function(message) {
-			$("#save" + name).html("FAILED: " + message);
-		}]);
-	}
-	*/
-
 	//--------------------------------------
 	// 			Charge
 	//--------------------------------------
@@ -481,15 +486,17 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		var val = li.getElementsByTagName('input')[0].value;
 		var select = li.getElementsByTagName('select')[0];
 		var frequency = select.options[select.selectedIndex].value;
-		
+		var startDate = li.getElementsByTagName('input')[1].value;
+
 		if(val === "") {
 			val = li.getElementsByTagName('h2')[0].innerHTML.split("$")[1];
 		}
 
 		li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
 		li.getElementsByTagName('input')[0].value = "";
-		//What does isDefault do?! Set to false here
-		var save = new ChargeEntry(catName, val, frequency, 1, false);
+
+		var save = new ChargeEntry(catName, val, frequency, startDate, false);
+
 		notify2("changeEntry", "charges", catName, save, uuid);
 	}
 
@@ -522,15 +529,16 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		var val = li.getElementsByTagName('input')[0].value;
 		var select = li.getElementsByTagName('select')[0];
 		var frequency = select.options[select.selectedIndex].value;
+		var startDate = li.getElementsByTagName('input')[1].value;
+
 		if(val === "") {
 			val = li.getElementsByTagName('h2')[0].innerHTML.split("$")[1];
 		
 		}
-			li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
-			li.getElementsByTagName('input')[0].value = "";
+		li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
+		li.getElementsByTagName('input')[0].value = "";
 		
-		//What does isDefault do?! Set to false here
-		var save = new IncomeEntry(catName, val, frequency, 1, 5, true);
+		var save = new IncomeEntry(catName, val, frequency, startDate, 5, true);
 		notify2("changeEntry", "income", catName, save, uuid);
 	}
 
@@ -608,15 +616,6 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 	//--------------------------------------
 	// 			Options
 	//--------------------------------------
-	/* no longer in use
-	$("#habitTrack").change(function() {
-		var label = $("#habitTrack").prop("checked") ? "On" : "Off";
-		notifyListeners("setOption", ["isEnableTracking", label, function() {
-			//success
-		}, function(message) {
-			//failure
-		}]);
-	}); */
 	
 	$("#assetNotice").change(function() {
 		var label = $("#assetNotice").val();

@@ -101,7 +101,7 @@ var UIController = function(getData, storageManager, registerUICallback) {
 	});
 
 	function verifyCategory(category) {
-		return category == "savings" || category == "charges" || category == "income";
+		return category == "savings" || category == "charges" || category == "income" || category == "users";
 	}
 
 	function verifyType(category, value) {
@@ -119,5 +119,4 @@ var UIController = function(getData, storageManager, registerUICallback) {
 	function isValidNumber(val) {
 		return (typeof(val) === 'number' && !isNaN(val));
 	}
-
 };

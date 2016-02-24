@@ -66,48 +66,34 @@ var PageTransitions = function() {
 		activePage = "page-tutorial";
 		
 		$("#noTutorial").click(function() {
-			$("#page-tutorial").hide();
-			$("#page-main").show();
-			activePage = "page-main";
+			self.switchPage("page-main");
 			$("#menuBar").show();
 			firstOpen = false;
 		});
 		
 		$("#yesTutorial").click(function() {
-			$("#page-tutorial").hide();
-			$("#page-assets").show();
-			activePage = "page-assets";
+			self.switchPage("page-assets");
 			showButtons();
 		});
 		
 		$("#page-assets-tutorial").click(function() {
-			$("#page-assets").hide();
-			$("#page-savings").show();
-			activePage = "page-savings";
+			self.switchPage("page-savings");
 		});
 		
 		$("#page-savings-tutorial").click(function() {
-			$("#page-savings").hide();
-			$("#page-income").show();
-			activePage = "page-income";
+			self.switchPage("page-income");
 		});
 		
 		$("#page-income-tutorial").click(function() {
-			$("#page-income").hide();
-			$("#page-charges").show();
-			activePage = "page-charges";
+			self.switchPage("page-charges");
 		});
 		
 		$("#page-charges-tutorial").click(function() {
-			$("#page-charges").hide();
-			$("#page-options").show();
-			activePage = "page-options";
+			self.switchPage("page-options");
 		});
 		
 		$("#page-options-tutorial").click(function() {
-			$("#page-options").hide();
-			$("#page-main").show();
-			activePage = "page-main";
+			self.switchPage("page-main");
 			hideButtons();
 			$("#menuBar").show();
 		});

@@ -35,7 +35,7 @@ var PageTransitions = function() {
 	// Set the onclick for a pageID's button to fade to
 	// the given page.
 	function setUpPageSwitch(pageID) {
-		var pageIDs = Object.keys(pages);
+		//var pageIDs = Object.keys(pages);
 		$("#" + pageID + "-button").click(function() {
 			self.switchPage(pageID);
 		});
@@ -53,6 +53,33 @@ var PageTransitions = function() {
     	$("#titleText").text(pages["page-main"]);
     	activePage = "page-main";
     }
+	
+	this.tutorialSetup = function() {
+		$("#page-main").hide();
+		$("#menuBar").hide();
+		$("#page-tutorial").show();
+		activePage = "page-tutorial";
+		
+		$("#noTutorial").click(function() {
+			$("#page-tutorial").hide();
+			ignoreTutorialCleanup();
+		})
+		
+		$("#yesTutorial").click(function() {
+			$("#page-tutorial").hide();
+			$("#page-assets").show();
+			$("#titleText").text(pages["page-assets"]);
+			activePage = "page-assets";
+		})
+	}
+	
+	function ignoreTutorialCleanup() {
+		$("#page-main").show();
+		activePage = "page-main";
+		$("#menuBar").show();
+		$("#page-assets-tutorial").hide();
+		firstOpen = false;
+	}
 
 	initialSetup();
 };

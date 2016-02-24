@@ -29,7 +29,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		
 		if(isNew) {
 			//setup Tutorial
-			
+			pageTransitions.tutorialSetup();
 		}
 
 		$("#budget").html("$" + getData("budget"));

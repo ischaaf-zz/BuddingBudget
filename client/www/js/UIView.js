@@ -67,7 +67,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		
 		//load track spending
 		var track = getData("trackedEntry");
-		if(track.amount === null) {
+		if(typeof track.amount === "undefined" || track.amount === null) {
 			$("#prevSpending").html("$0");
 		} else {
 			$("#prevSpending").html("$" + track.amount);
@@ -126,7 +126,11 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		}
 		
 		//load min daily budget
-		$("#minBudget").html("$" + value.minDailyBudget);
+		if(value.minDailyBudget !== undefined) {
+			$("#minBudget").html("$" + value.minDailyBudget);
+		} else {
+			$("#minBudget").html("");
+		}
 	});
 	
 	//-----------------LISTENERS----------------------

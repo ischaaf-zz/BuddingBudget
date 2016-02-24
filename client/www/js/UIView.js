@@ -116,7 +116,11 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		}
 		
 		//load min daily budget
-		$("#minBudget").html("$" + value.minDailyBudget);
+		if(value.minDailyBudget !== undefined) {
+			$("#minBudget").html("$" + value.minDailyBudget);
+		} else {
+			$("#minBudget").html("");
+		}
 	});
 	
 	//-----------------LISTENERS----------------------

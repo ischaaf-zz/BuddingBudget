@@ -69,6 +69,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		var track = getData("trackedEntry");
 		if(typeof track.amount === "undefined" || track.amount === null) {
 			$("#prevSpending").html("$0");
+			$("#lastUpdateSpending").html("Last Update: Never Set");
 		} else {
 			$("#prevSpending").html("$" + track.amount);
 			$("#lastUpdateSpending").html("Last Update: " + new Date(track.day));

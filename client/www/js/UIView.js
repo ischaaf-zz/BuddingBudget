@@ -21,6 +21,8 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		}
 	}
 	
+	var isTutorial = false;
+	
 	setDataListener('ready', function(isNew) {
 		//if PERSIST_DATA in utility.js is set to false temp data will be set here
 		if(!PERSIST_DATA) {
@@ -29,7 +31,15 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		
 		if(isNew) {
 			//setup Tutorial
+			isTutorial = true;
+			
 			pageTransitions.tutorialSetup();
+			
+			$("#noTutorial").click(function() {
+				pageTransitions.switchPage("page-main");
+				$("#menuBar").show();
+				isTutorial = false;
+			});
 		}
 
 		$("#budget").html("$" + getData("budget"));
@@ -493,6 +503,9 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
             assetsSuccess.textContent = 'CHANGED ASSETS SUCCESS';
             assetsSuccess.classList.remove("animatePopupMessage");
             assetsSuccess.classList.add("animatePopupMessage");
+			if(isTutorial) {
+				$("#page-assets-tutorial").show();
+			}
 		}, function(message) {
 			document.querySelector('#assetsSuccess');
             assetsSuccess.textContent = 'FAILED: ' + message;
@@ -604,6 +617,10 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 	$("#endDate").change(function() {
 		notifyListeners("setEndDate", [dateInputToDate($(this).val()).getTime(), function() {
 			console.log("SUCCESS: " + $("#endDate").val());
+			if(isTutorial) {
+				$("#page-options-tutorial").show();
+				isTutorial = false;
+			}
 		}, function(message) {
 			console.log("FAILURE: " + message);
 		}]);

@@ -65,12 +65,6 @@ var PageTransitions = function() {
 		$("#page-tutorial").show();
 		activePage = "page-tutorial";
 		
-		$("#noTutorial").click(function() {
-			self.switchPage("page-main");
-			$("#menuBar").show();
-			firstOpen = false;
-		});
-		
 		$("#yesTutorial").click(function() {
 			self.switchPage("page-assets");
 			showButtons();
@@ -108,11 +102,11 @@ var PageTransitions = function() {
 	}
 	
 	function showButtons() {
-		$("#page-assets-tutorial").show();
+		//$("#page-assets-tutorial").show();
 		$("#page-savings-tutorial").show();
 		$("#page-income-tutorial").show();
 		$("#page-charges-tutorial").show();
-		$("#page-options-tutorial").show();
+		//$("#page-options-tutorial").show();
 	}
 	
 };

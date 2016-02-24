@@ -238,6 +238,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		button.classList.add("ui-btn", "ui-btn-inline");
 		button.innerHTML = "Update";
 		button.onclick = (function() {
+			$("#" + uuid).children('div')[0].style.display = "none";
 			updateFn(uuid, catName);
 		}); 
 
@@ -298,6 +299,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		button.classList.add("ui-btn", "ui-btn-inline");
 		button.innerHTML = "Update";
 		button.onclick = (function() {
+			$("#" + uuid).children('div')[0].style.display = "none";
 			updateFn(uuid, catName);
 		}); 
 

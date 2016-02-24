@@ -196,10 +196,30 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		var uuid = guid();
 		var li = document.createElement('li');
 		li.id = uuid;
+
 		var h3 = document.createElement('h3');
 		h3.innerHTML = catName;
 		var h32 = document.createElement('h2');
 		h32.innerHTML = "$" + val;
+		var deleteButton = document.createElement('button');
+		deleteButton.classList.add("ui-btn", "ui-btn-inline");
+		deleteButton.innerHTML = "x";
+		deleteButton.style.float = "right";
+		deleteButton.onclick = (function() {
+			removeEntry(uuid, category, catName);
+		});
+		var editButton = document.createElement("button");
+		editButton.classList.add("ui-btn", "ui-btn-inline");
+		editButton.innerHTML = "edit";
+		editButton.onclick = (function() {
+			$("#" + uuid).children('div')[0].style.display = "block";
+		});
+
+		li.appendChild(deleteButton);
+		li.appendChild(h3);
+		li.appendChild(h32);
+		li.appendChild(editButton);
+
 		var input = document.createElement('input');
 		input.class = "updateVal";
 		input.type="number";
@@ -209,6 +229,11 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 			this.className = "";
 			this.textContent = "";
     	});
+
+    	var date = document.createElement('input');
+    	date.classList.add("form-control");
+    	date.type = "date";
+
 		var button = document.createElement('button');
 		button.classList.add("ui-btn", "ui-btn-inline");
 		button.innerHTML = "Update";
@@ -216,18 +241,11 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 			updateFn(uuid, catName);
 		}); 
 
-		var deleteButton = document.createElement('button');
-		deleteButton.classList.add("ui-btn", "ui-btn-inline");
-		deleteButton.innerHTML = "x";
-		deleteButton.onclick = (function() {
-			removeEntry(uuid, category, catName);
-		});
-
-		li.appendChild(h3);
-		li.appendChild(h32);
-		li.appendChild(input);
-		li.appendChild(button);
-		li.appendChild(deleteButton);
+		var editDiv = document.createElement('div');
+		editDiv.style.display = "none";
+		editDiv.appendChild(input);
+		editDiv.appendChild(button);
+		li.appendChild(editDiv);
 		li.appendChild(p);
 		$(listId).append(li);
 
@@ -238,10 +256,30 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		var uuid = guid();
 		var li = document.createElement('li');
 		li.id = uuid;
+
 		var h3 = document.createElement('h3');
 		h3.innerHTML = catName;
 		var h32 = document.createElement('h2');
 		h32.innerHTML = "$" + val;
+		var deleteButton = document.createElement('button');
+		deleteButton.classList.add("ui-btn", "ui-btn-inline");
+		deleteButton.innerHTML = "x";
+		deleteButton.style.float = "right";
+		deleteButton.onclick = (function() {
+			removeEntry(uuid, category, catName);
+		});
+		var editButton = document.createElement("button");
+		editButton.classList.add("ui-btn", "ui-btn-inline");
+		editButton.innerHTML = "edit";
+		editButton.onclick = (function() {
+			$("#" + uuid).children('div')[0].style.display = "block";
+		});
+
+		li.appendChild(deleteButton);
+		li.appendChild(h3);
+		li.appendChild(h32);
+		li.appendChild(editButton);
+
 		var input = document.createElement('input');
 		input.class = "updateVal";
 		input.type="number";
@@ -252,6 +290,10 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 			this.textContent = "";
     	});
 
+    	var date = document.createElement('input');
+    	date.classList.add("form-control");
+    	date.type = "date";
+
 		var button = document.createElement('button');
 		button.classList.add("ui-btn", "ui-btn-inline");
 		button.innerHTML = "Update";
@@ -259,21 +301,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 			updateFn(uuid, catName);
 		}); 
 
-		var deleteButton = document.createElement('button');
-		deleteButton.classList.add("ui-btn", "ui-btn-inline");
-		deleteButton.innerHTML = "x";
-		deleteButton.style.float = "right";
-		deleteButton.onclick = (function() {
-			removeEntry(uuid, category, catName);
-		});
-
-		li.appendChild(deleteButton);
-		li.appendChild(h3);
-		li.appendChild(h32);
-		li.appendChild(input);
-
 		var select = document.createElement('select');
-		//TODO add options dynamically?
 		["monthly", "weekly", "biweekly", "twiceMonthly"].forEach(function(f) {
 			var opt = document.createElement('option');
 			opt.value = f;
@@ -281,8 +309,14 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 			select.appendChild(opt);
 		});
 		select.value = frequency;
-		li.appendChild(select);
-		li.appendChild(button);
+		
+		var editDiv = document.createElement('div');
+		editDiv.style.display = "none";
+		editDiv.appendChild(input);
+		editDiv.appendChild(select);
+		editDiv.appendChild(date);
+		editDiv.appendChild(button);
+		li.appendChild(editDiv);
 		li.appendChild(p);
 		$(listId).append(li);
 
@@ -357,6 +391,14 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		}]);*/
 	}
 
+
+	//--------------------------------------
+	// 			Login
+	//--------------------------------------
+	$("#login").click(function() {
+
+	});
+
 	//--------------------------------------
 	// 			Savings
 	//--------------------------------------
@@ -375,8 +417,6 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		//add element to "savings" array
 		var save = new SavingsEntry(catName, 0, true);
 		notify("addEntry", "savings", catName, save, uuid);
-
-		
 	});
 
 	function updateSavingsEntry(uuid, catName) {

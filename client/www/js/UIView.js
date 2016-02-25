@@ -497,6 +497,9 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		//add element to "savings" array
 		var save = new ChargeEntry(catName, 0, 'monthly', 1, true);
 		notify("addEntry", "charges", catName, save, uuid);
+		if(isTutorial) {
+			$("#page-charges-tutorial").html("NEXT");
+		}
 	});
 
 	function updateChargesEntry(uuid, catName) {
@@ -540,6 +543,9 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		//add element to "savings" array
 		var save = new IncomeEntry(catName, 0, "monthly", 1, 5, true);
 		notify("addEntry", "income", catName, save, uuid);
+		if(isTutorial) {
+			$("#page-income-tutorial").html("NEXT");
+		}
 	});
 	
 	function updateIncomeEntry(uuid, catName) {

@@ -70,8 +70,8 @@ function timeInputToDate(val) {
 		return parseInt(val);
 	});
 	var returnDate = new Date();
-	returnDate.setHours(val[0]);
-	returnDate.setMinutes(val[1]);
+	returnDate.setHours(split[0]);
+	returnDate.setMinutes(split[1]);
 	return returnDate;
 }
 

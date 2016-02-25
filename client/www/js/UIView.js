@@ -706,7 +706,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 	}; */
 	
 	$("#budgetTime").change(function() {
-		var val = timeInputToDate($("#budgetTime").val());
+		var val = timeInputToDate($("#budgetTime").val()).getTime();
 		
 		notifyListeners("setOption", ["notifyMorningTime", val, function() {
 			//success

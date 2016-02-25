@@ -402,6 +402,10 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		login(un, pw, function() {
 			console.log("here");
 		})
+		
+		if(isTutorial) {
+			$("#page-login-tutorial").html("NEXT");
+		}
 	});
 
 	$("#addUser").click(function() {
@@ -430,6 +434,10 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		            loginSuccess.classList.remove("animatePopupMessage");
 		            loginSuccess.classList.add("animatePopupMessage");
 			}]);*/
+		}
+		
+		if(isTutorial) {
+			$("#page-login-tutorial").html("NEXT");
 		}
 	});
 

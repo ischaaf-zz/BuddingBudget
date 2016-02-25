@@ -162,7 +162,7 @@ describe("nextTime management", function() {
 		var day;
 
 		beforeEach(function() {
-			day = (new Date()).getDay();
+			day = (new Date()).getTime();
 			entry = new ChargeEntry("foo", 1, "biweekly", day, false);
 		});
 
@@ -180,7 +180,7 @@ describe("nextTime management", function() {
 			});
 
 			it("should have a day equal to the start day", function() {
-				expect(nextTime.getDay()).toEqual(day);
+				expect(nextTime.getDay()).toEqual(new Date(day).getDay());
 			});
 
 		});
@@ -201,7 +201,14 @@ describe("nextTime management", function() {
 
 			it("should have a day equal to the previous day", function() {
 				expect(nextTime.getDay()).toEqual(prevTime.getDay());
-				expect(nextTime.getDay()).toEqual(day);
+			});
+
+			it("should be more than seven days in the future", function() {
+				expect((nextTime - prevTime) / MILLISECONDS_PER_DAY).toBeGreaterThan(7);
+			});
+
+			it("should be less than or equal to fourteen days in the future", function() {
+				expect((nextTime - prevTime) / MILLISECONDS_PER_DAY).toBeLessThan(15);
 			});
 
 		});

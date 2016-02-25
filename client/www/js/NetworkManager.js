@@ -28,9 +28,37 @@ var NetworkManager = function() {
 		}
 	}
 
-	var lastModified;
 
-	this.login = function(user, pass, success) {
+	
+	//var lastModified;
+
+	function updateLastModified(newDate){
+		if(!localStorage.getItem('lastModified')) {
+  			populateStorage();
+			}
+		else {
+		localStorage.setItem('lastModified', newDate);
+		}
+	}
+
+	function populateStorage(){
+		localStorage.setItem('lastModified','');
+	}
+	function checkLastModified(){
+		if (localStorage.getItem('lastModified')== data.lastModified){
+			return true;
+		}
+		else{
+			return false;
+		}
+		
+	}
+
+	function createUser(user, pass, success){
+
+	}
+
+	function login(user, pass, success) {
 		console.log("loggin in");
 		enqueueSend("POST", {username: user, password: pass}, "login", success, defaultFail);
 	}
@@ -38,7 +66,8 @@ var NetworkManager = function() {
 	this.fetchInitialData = function(success, failure) {
 		enqueueSend("GET", {}, "user?getFull=true", function(data) {
 			console.log(data);
-			lastModified = data.lastModified;
+			//lastModified = data.lastModified;
+			updateLastModified(data.lastModified);
 			console.log("updated lastModified");
 			success(data);
 		}, failure);
@@ -122,7 +151,8 @@ var NetworkManager = function() {
 
 	function sendAjax(method, data, page, success, fail) {
 		if(NETWORK_ENABLED) {
-			data.lastModified = lastModified;
+			//lastModified = data.lastModified;
+			updateLastModified(data.lastModified);
 			$.ajax({
 				method: method,
 				url: "http://ischaaf.com:8081/" + page,
@@ -131,7 +161,8 @@ var NetworkManager = function() {
 				console.log("SUCCESS - request: " + method + " - " + page + " with data: " + JSON.stringify(data));
 				if (data.modified) {
 					console.log("Updating lastModified time to: " + data.modified);
-					lastModified = data.modified;
+					//lastModified = data.lastModified;
+					updateLastModified(data.lastModified);
 				} else {
 					console.log("Request returned no lastModified time");
 				}

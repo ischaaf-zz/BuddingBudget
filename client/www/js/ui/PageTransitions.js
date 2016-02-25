@@ -67,8 +67,12 @@ var PageTransitions = function() {
 		activePage = "page-tutorial";
 		
 		$("#yesTutorial").click(function() {
-			self.switchPage("page-assets");
+			self.switchPage("page-login");
 			showButtons();
+		});
+		
+		$("#page-login-tutorial").click(function() {
+			self.switchPage("page-assets");
 		});
 		
 		$("#page-assets-tutorial").click(function() {
@@ -100,6 +104,7 @@ var PageTransitions = function() {
 		$("#page-income-tutorial").hide();
 		$("#page-charges-tutorial").hide();
 		$("#page-options-tutorial").hide();
+		$("#page-login-tutorial").hide();
 	}
 	
 	function showButtons() {
@@ -108,6 +113,7 @@ var PageTransitions = function() {
 		$("#page-income-tutorial").show();
 		$("#page-charges-tutorial").show();
 		//$("#page-options-tutorial").show();
+		$("#page-login-tutorial").show();
 	}
 	
 };

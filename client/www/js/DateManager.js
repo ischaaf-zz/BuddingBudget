@@ -16,7 +16,11 @@ var DateManager = function() {
 	this.start = function(cb) {
 		localforage.ready(function() {
 			localforage.getItem('lastTouched', function(err, val) {
-				lastTouched = new Date(val);
+				if(val !== null) {
+					lastTouched = new Date(val);
+				} else {
+					lastTouched = new Date();
+				}
 				checkDate();
 				callFunc(cb);
 			});

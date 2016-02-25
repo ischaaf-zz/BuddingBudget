@@ -14,7 +14,7 @@ var Calculator = function() {
 		if(entry && !$.isEmptyObject(entry)) {
 			assetAdjust += entry.amount;
 		}
-		return calculate(data, new Date(), assetAdjust, data.rollover);
+		return calculate(data, new Date(), assetAdjust, data.rollover, false);
 	};
 
 	// Calculates and returns the budget for tomorrow based upon
@@ -27,14 +27,17 @@ var Calculator = function() {
 		}
 		var tomorrow = new Date();
 		tomorrow.setDate(tomorrow.getDate() + 1);
-		return calculate(data, tomorrow, assetAdjust, data.tomorrowRollover);
+		return calculate(data, tomorrow, assetAdjust, data.tomorrowRollover, true);
 	};
 
 	// Calculates a budget based upon the passed in data
 	// Assumes that the current day is whatever is contained in "now"
 	// Adjusts the assets by assetAdjust before calculating, and the calculated
 	// budget by budgetAdjust after the calculation.
-	function calculate(data, now, assetAdjust, budgetAdjust) {
+	// If considerTodayRecurring is true, considers recurring charges that go through today.
+	// This must be false if we're calculating today's budget, since assets will already be modified with the
+	// charges / income, and must be true otherwise.
+	function calculate(data, now, assetAdjust, budgetAdjust, considerTodayRecurring) {
 		// calculate budget by basically dividing the assets by the amount of days left and return that value.
 		// Because of possible interleving incomes and charges, the algorithm has to be more sophisticated.
 
@@ -61,6 +64,9 @@ var Calculator = function() {
 		changes[currentDay.getTime()] = availableAssets;
 		for(i = 0; i < data.income.length; i++) {
 			currentDay = new Date(today);
+			if(considerTodayRecurring) {
+				currentDay.setDate(currentDay.getDate() - 1);
+			}
 			while(findNextTime(data.income[i], currentDay) <= endDate.getTime()) {
 				nextTime = findNextTime(data.income[i], currentDay);
 				var amountUsable = data.income[i].amount - data.income[i].holdout;
@@ -74,6 +80,9 @@ var Calculator = function() {
 		}
 		for(i = 0; i < data.charges.length; i++) {
 			currentDay = new Date(today);
+			if(considerTodayRecurring) {
+				currentDay.setDate(currentDay.getDate() - 1);
+			}
 			while(findNextTime(data.charges[i], currentDay) <= endDate.getTime()) {
 				nextTime = findNextTime(data.charges[i], currentDay);
 				if(changes[nextTime]) {

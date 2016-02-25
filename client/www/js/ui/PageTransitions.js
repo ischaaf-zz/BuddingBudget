@@ -2,7 +2,10 @@
 // Handles page transitions
 //----------------------------------------------//
 
-(function() {
+var PageTransitions = function() {
+
+	var self = this;
+
 	// A mapping of each page to the user-facing
 	// name of the page
 	var pages = {
@@ -18,18 +21,22 @@
 	// The page currently being displayed
 	var activePage;
 
+	this.switchPage = function(pageID) {
+		if(activePage !== pageID) {
+			$("#" + activePage).fadeOut("fast", function() {
+				$("#titleText").text(pages[pageID]);
+				$("#" + pageID).fadeIn("fast");
+			});
+			activePage = pageID;
+		}
+	};
+
 	// Set the onclick for a pageID's button to fade to
 	// the given page.
 	function setUpPageSwitch(pageID) {
 		var pageIDs = Object.keys(pages);
 		$("#" + pageID + "-button").click(function() {
-			if(activePage !== pageID) {
-				$("#" + activePage).fadeOut("fast", function() {
-					$("#titleText").text(pages[pageID]);
-					$("#" + pageID).fadeIn("fast");
-				});
-				activePage = pageID;
-			}
+			self.switchPage(pageID);
 		});
 	}
 
@@ -47,4 +54,4 @@
     }
 
 	initialSetup();
-})();
+};

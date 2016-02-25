@@ -75,5 +75,6 @@ function setUpFutureDate() {
 		var now = window.OtherDate ? new OtherDate() : new Date();
 		var future = dateInputToDate($(this).val());
 		setTimeTravel(Math.ceil((future - now) / MILLISECONDS_PER_DAY));
+		$("#timeMachineControls").html("Refresh to change date");
 	});
 }

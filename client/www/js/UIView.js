@@ -7,6 +7,8 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 	//		   addEntry, changeEntry, removeEntry
 	var callbacks = {};
 
+	var pageTransitions = new PageTransitions();
+
 	this.registerCallback = function(event, callback) {
 		callbacks[event] = callbacks[event] || [];
 		callbacks[event].push(callback);
@@ -19,7 +21,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		}
 	}
 	
-	setDataListener('ready', function() {
+	setDataListener('ready', function(isNew) {
 		//if PERSIST_DATA in utility.js is set to false temp data will be set here
 		if(!PERSIST_DATA) {
 			setTempData();
@@ -50,7 +52,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		
 		//load track spending
 		var track = getData("trackedEntry");
-		if(track.amount === null) {
+		if(typeof track.amount === "undefined" || track.amount === null) {
 			$("#prevSpending").html("$0");
 		} else {
 			$("#prevSpending").html("$" + track.amount);
@@ -114,7 +116,11 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		}
 		
 		//load min daily budget
-		$("#minBudget").html("$" + value.minDailyBudget);
+		if(value.minDailyBudget !== undefined) {
+			$("#minBudget").html("$" + value.minDailyBudget);
+		} else {
+			$("#minBudget").html("");
+		}
 	});
 	
 	//-----------------LISTENERS----------------------
@@ -604,7 +610,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 			console.log("SUCCESS: " + $("#endDate").val());
 		}, function(message) {
 			console.log("FAILURE: " + message);
-		}])
+		}]);
 	});
 	
 	//callback for dateboxes

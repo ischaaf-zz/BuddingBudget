@@ -13,6 +13,10 @@ var DataManager = function() {
 	// marked as having started
 	var isStarted = false;
 
+	// Will be set to false when the data is modified by local storage or user interaction
+	// Sent along with ready callback
+	var isNew = true;
+
 	// Representation of the user's data - a cache of the
 	// data stored in localStorage / network storage
 	var data = {
@@ -64,6 +68,7 @@ var DataManager = function() {
 				}
 			}
 			notifyListeners(category);
+			isNew = false;
 			return true;
 		}
 		return false;
@@ -88,7 +93,7 @@ var DataManager = function() {
 		data.budget = calculator.calculateBudget(data);
 		data.tomorrowBudget = calculator.calculateTomorrowBudget(data);
 		isStarted = true;
-		notifyListeners("ready");
+		notifyListeners("ready", [isNew]);
 	};
 
 	// Get a keyset of data. Used to know what entry names to pull from
@@ -97,12 +102,11 @@ var DataManager = function() {
 		return Object.keys(data);
 	};
 
-	// Notifies all listeners for event with the first argument
-	// event, followed by the arguments in args
+	// Notifies all listeners for event with the arguments
+	// contained in args
 	function notifyListeners(event, args) {
 		if(isStarted) {
 			args = args || [];
-			args.unshift(event);
 			var callbackArr = callbacks[event] || [];
 			for(var i = 0; i < callbackArr.length; i++) {
 				callbackArr[i].apply(window, args);

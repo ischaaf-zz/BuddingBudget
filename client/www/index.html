@@ -123,7 +123,6 @@
 				SAVINGS PAGE
 			========================================================= -->
 			<div id="page-savings">
-				<p> This page is still experimental. </p>
 				<div role="main" class="ui-content wow fadeIn" data-inset="false" data-wow-delay="0.2s">
 				<!--HEADER ABOVE, can copy paste-->
 					<div>
@@ -157,7 +156,6 @@
 				CHARGES PAGE
 			========================================================= -->
 			<div id="page-charges">
-				<p> This page is still experimental. </p>
 				<div role="main" class="ui-content wow fadeIn" data-inset="false" data-wow-delay="0.2s">
 					<!--HEADER ABOVE, can copy paste-->
 					<ul data-role="listview" data-icon="false" id="chargesList">
@@ -190,7 +188,6 @@
 				INCOME PAGE
 			========================================================= -->
 			<div id="page-income">
-				<p> This page is still experimental. </p>
 				<div role="main" class="ui-content wow fadeIn" data-inset="false" data-wow-delay="0.2s">
 					<!--HEADER ABOVE, can copy paste-->
 					<div id="page-charges">
@@ -279,7 +276,10 @@
 										<option value="Off">Off</option>
 										<option value="On">On</option>
 									</select></div>
-								<div class="ui-block-b"><input class="form-control" id="budgetTime" type="text" data-role="datebox" data-options='{"mode":"timeflipbox", "closeCallback":"budgetNotify"}' /></div>
+								<div class="ui-block-b">
+									<!--<input class="form-control" id="budgetTime" type="text" data-role="datebox" data-options='{"mode":"timeflipbox", "closeCallback":"budgetNotify"}' /> -->
+									<input type="time" id="budgetTime">
+								</div>
 							</fieldset>
 						</div>
 						<div data-role="fieldcontain">
@@ -291,7 +291,10 @@
 										<option value="On">On</option>
 									</select>
 								</div>
-								<div class="ui-block-b"><input class="form-control" id="trackTime" type="text" data-role="datebox" data-options='{"mode":"timeflipbox", "closeCallback":"trackNotify"}' /></div>
+								<div class="ui-block-b">
+									<!--<input class="form-control" id="trackTime" type="text" data-role="datebox" data-options='{"mode":"timeflipbox", "closeCallback":"trackNotify"}' /> -->
+									<input type="time" id="trackTime">
+								</div>
 							</fieldset>
 						</div>
 						<div data-role="fieldcontain">
@@ -314,12 +317,14 @@
 						<p class="small">Set End Date</p>
 						<!-- <input class="form-control" id="endDate" type="text" data-role="datebox" data-options={"mode":"calbox"} /> -->
 						<input id="endDate" type="date">
+						<!--
 						<p class="center">Set minimum daily budget</p>				
 						<div class="ui-grid-b">
 							<div class="ui-block-a"><p id="minBudget">$10</p></div>
 							<div class="ui-block-b"><input type="number" id="setMinBudget" data-clear-btn="true" min="0"></div>
 							<div class="ui-block-c"><button class="ui-btn" id="buttonMinDaily">Update</button></div>
 						</div>
+						-->
 						<button class="ui-btn ui-btn-raised" id="page-options-tutorial">NEXT</button>
 					</fieldset>
 					<!--FOOTER BELOW, can copy paste-->

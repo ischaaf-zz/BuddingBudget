@@ -145,11 +145,17 @@ function findNextTime(entry, startTime) {
 			nextTime.setDate(nextTime.getDate() + 7);
 		}
 	} else if(period == "biweekly") {
-		console.log("biweekly not supported yet");
+		var diff = (trimToDay(nextTime.getTime()) - trimToDay(start)) / MILLISECONDS_PER_DAY;
+		var offset = diff % 14;
+		nextTime.setDate(nextTime.getDate() + 14 - offset);
 	} else if(period == "twiceMonthly") {
 		console.log("twicemonthly ont supported yet");
 	}
 	return nextTime.getTime();
+}
+
+function trimToDay(dateLong) {
+	return dateLong - (dateLong % MILLISECONDS_PER_DAY);
 }
 
 // ---------------------------------------------------------------------------------

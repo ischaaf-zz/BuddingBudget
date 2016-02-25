@@ -381,8 +381,8 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 	// 			Login
 	//--------------------------------------
 	$("#login").click(function() {
-		var un = $("#username").value;
-		var pw = $("#password").value;
+		var un = $("#username").val();
+		var pw = $("#password").val();
 
 		login(un, pw, function() {
 			console.log("here");
@@ -390,10 +390,10 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 	});
 
 	$("#addUser").click(function() {
-		var name = $("#newName").value;
-		var un = $("#newUsername").value;
-		var pw = $("#newPassword").value;
-		var pwv = $("#newPasswordVerify").value;
+		var name = $("#newName").val();
+		var un = $("#newUsername").val();
+		var pw = $("#newPassword").val();
+		var pwv = $("#newPasswordVerify").val();
 
 		if(pw == pwv) {
 			//how to add user?

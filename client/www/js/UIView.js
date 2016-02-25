@@ -2,7 +2,6 @@
 // Handles sending new data and commands out from the DOM, and
 // putting new updated data into the DOM.
 var UIView = function(getData, setDataListener, login, setNetworkListener) {
-
 	// events: updateAssets, trackSpending, setOption, 
 	//		   addEntry, changeEntry, removeEntry
 	var callbacks = {};
@@ -21,10 +20,25 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		}
 	}
 	
+	var isTutorial = false;
+	
 	setDataListener('ready', function(isNew) {
 		//if PERSIST_DATA in utility.js is set to false temp data will be set here
 		if(!PERSIST_DATA) {
 			setTempData();
+		}
+		
+		if(isNew) {
+			//setup Tutorial
+			isTutorial = true;
+			
+			pageTransitions.tutorialSetup();
+			
+			$("#noTutorial").click(function() {
+				pageTransitions.switchPage("page-main");
+				$("#menuBar").show();
+				isTutorial = false;
+			});
 		}
 
 		$("#budget").html("$" + getData("budget"));
@@ -54,31 +68,32 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		var track = getData("trackedEntry");
 		if(typeof track.amount === "undefined" || track.amount === null) {
 			$("#prevSpending").html("$0");
+			$("#lastUpdateSpending").html("Last Update: Never Set");
 		} else {
 			$("#prevSpending").html("$" + track.amount);
 			$("#lastUpdateSpending").html("Last Update: " + new Date(track.day));
 		}
 		
 		//--Load Options--
-		
-		//---BUGGY---
-		//load flip switch options
 		var value = getData("options");
-		console.log("-----------");
-		console.log(value);
+		
 		
 		if(value.isNotifyMorning == 'On') {
 			$("#morningNotice").val("On").flipswitch("refresh");
-			$("#budgetTime").datebox('enable');
+			//$("#budgetTime").datebox('enable');
+			$("#budgetTime").attr('disabled', false);
 		} else {
-			$("#budgetTime").datebox('disable');
+			//$("#budgetTime").datebox('disable');
+			$("#budgetTime").attr('disabled', true);
 		}
 		
 		if(value.isNotifyNight == 'On') {
 			$("#nightNotice").val("On").flipswitch("refresh");
-			$("#trackTime").datebox('enable');
+			//$("#trackTime").datebox('enable');
+			$("#nightNotice").attr('disabled', false);
 		} else {
-			$("#trackTime").datebox('disable');
+			//$("#trackTime").datebox('disable');
+			$("#nightNotice").attr('disabled', true);
 		}
 		
 		if(value.isNotifyAssets == 'On') {
@@ -102,25 +117,30 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 			// $("#endDate").datebox('setTheDate', newDate).trigger('datebox', {'method':'doset'});
 		}
 		
+		
 		if(value.notifyMorningTime !== undefined) {
 			//load times
 			var budgetTime = value.notifyMorningTime;
 			var newDateA = new Date(budgetTime);
-			$("#budgetTime").datebox('setTheDate', newDateA).trigger('datebox', {'method':'doset'});
+			//console.log(dateToTimeInput(newDateA));
+			//$("#budgetTime").datebox('setTheDate', newDateA).trigger('datebox', {'method':'doset'});
+			$("#budgetTime").val(dateToTimeInput(newDateA));
 		}
 		
 		if(value.notifyNightTime !== undefined) {
 			var trackTime = value.notifyNightTime;
 			var newDateB = new Date(trackTime);
-			$("#trackTime").datebox('setTheDate', newDateB).trigger('datebox', {'method':'doset'});
+			//$("#trackTime").datebox('setTheDate', newDateB).trigger('datebox', {'method':'doset'});
+			$("#trackTime").val(dateToTimeInput(newDateB));
 		}
 		
+		/* No longer used
 		//load min daily budget
 		if(value.minDailyBudget !== undefined) {
 			$("#minBudget").html("$" + value.minDailyBudget);
 		} else {
 			$("#minBudget").html("");
-		}
+		} */
 	});
 	
 	//-----------------LISTENERS----------------------
@@ -139,38 +159,27 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		$("#lastUpdateSpending").html("Last Update: " + new Date(track.day));
 	});
 	
-	// setup savings and update when there are changes
-	// warning: currently dependant on SavingsEntry internals
-	// setDataListener("savings", function() {
-	// 	var arr = getData("savings");
-	// 	arr.forEach(function(ctx) {
-	// 		$("#prev" + ctx.name).html("$" + ctx.amount);
-	// 	});
-	// });
-
-	// setDataListener("charges", function() {
-	// 	var arr = getData("charges");
-	// 	arr.forEach(function(ctx) {
-	// 		$("#prevCh" + ctx.name).html("$" + ctx.amount);
-	// 	});
-	// });
-	
 	setDataListener("options", function() {
 		var value = getData("options");
 		
 		$("#minBudget").html("$" + value.minDailyBudget);
 		//console.log(value);
 		
+		
 		if(value.isNotifyMorning == 'On') {
-			$("#budgetTime").datebox('enable');
+			//$("#budgetTime").datebox('enable');
+			$("#budgetTime").attr('disabled', false);
 		} else {
-			$("#budgetTime").datebox('disable');
+			//$("#budgetTime").datebox('disable');
+			$("#budgetTime").attr('disabled', true);
 		}
 		
 		if(value.isNotifyNight == 'On') {
-			$("#trackTime").datebox('enable');
+			//$("#trackTime").datebox('enable');
+			$("#trackTime").attr('disabled', false);
 		} else {
-			$("#trackTime").datebox('disable');
+			//$("#trackTime").datebox('disable');
+			$("#trackTime").attr('disabled', true);
 		}
 		
 		if(value.isNotifyAssets == 'On') {
@@ -185,10 +194,30 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		var uuid = guid();
 		var li = document.createElement('li');
 		li.id = uuid;
+
 		var h3 = document.createElement('h3');
 		h3.innerHTML = catName;
 		var h32 = document.createElement('h2');
 		h32.innerHTML = "$" + val;
+		var deleteButton = document.createElement('button');
+		deleteButton.classList.add("ui-btn", "ui-btn-inline");
+		deleteButton.innerHTML = "x";
+		deleteButton.style.float = "right";
+		deleteButton.onclick = (function() {
+			removeEntry(uuid, category, catName);
+		});
+		var editButton = document.createElement("button");
+		editButton.classList.add("ui-btn", "ui-btn-inline");
+		editButton.innerHTML = "edit";
+		editButton.onclick = (function() {
+			$("#" + uuid).children('div')[0].style.display = "block";
+		});
+
+		li.appendChild(deleteButton);
+		li.appendChild(h3);
+		li.appendChild(h32);
+		li.appendChild(editButton);
+
 		var input = document.createElement('input');
 		input.class = "updateVal";
 		input.type="number";
@@ -198,25 +227,24 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 			this.className = "";
 			this.textContent = "";
     	});
+
+    	var date = document.createElement('input');
+    	date.classList.add("form-control");
+    	date.type = "date";
+
 		var button = document.createElement('button');
 		button.classList.add("ui-btn", "ui-btn-inline");
 		button.innerHTML = "Update";
 		button.onclick = (function() {
+			$("#" + uuid).children('div')[0].style.display = "none";
 			updateFn(uuid, catName);
 		}); 
 
-		var deleteButton = document.createElement('button');
-		deleteButton.classList.add("ui-btn", "ui-btn-inline");
-		deleteButton.innerHTML = "x";
-		deleteButton.onclick = (function() {
-			removeEntry(uuid, category, catName);
-		});
-
-		li.appendChild(h3);
-		li.appendChild(h32);
-		li.appendChild(input);
-		li.appendChild(button);
-		li.appendChild(deleteButton);
+		var editDiv = document.createElement('div');
+		editDiv.style.display = "none";
+		editDiv.appendChild(input);
+		editDiv.appendChild(button);
+		li.appendChild(editDiv);
 		li.appendChild(p);
 		$(listId).append(li);
 
@@ -227,10 +255,30 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		var uuid = guid();
 		var li = document.createElement('li');
 		li.id = uuid;
+
 		var h3 = document.createElement('h3');
 		h3.innerHTML = catName;
 		var h32 = document.createElement('h2');
 		h32.innerHTML = "$" + val;
+		var deleteButton = document.createElement('button');
+		deleteButton.classList.add("ui-btn", "ui-btn-inline");
+		deleteButton.innerHTML = "x";
+		deleteButton.style.float = "right";
+		deleteButton.onclick = (function() {
+			removeEntry(uuid, category, catName);
+		});
+		var editButton = document.createElement("button");
+		editButton.classList.add("ui-btn", "ui-btn-inline");
+		editButton.innerHTML = "edit";
+		editButton.onclick = (function() {
+			$("#" + uuid).children('div')[0].style.display = "block";
+		});
+
+		li.appendChild(deleteButton);
+		li.appendChild(h3);
+		li.appendChild(h32);
+		li.appendChild(editButton);
+
 		var input = document.createElement('input');
 		input.class = "updateVal";
 		input.type="number";
@@ -241,28 +289,19 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 			this.textContent = "";
     	});
 
+    	var date = document.createElement('input');
+    	date.classList.add("form-control");
+    	date.type = "date";
+
 		var button = document.createElement('button');
 		button.classList.add("ui-btn", "ui-btn-inline");
 		button.innerHTML = "Update";
 		button.onclick = (function() {
+			$("#" + uuid).children('div')[0].style.display = "none";
 			updateFn(uuid, catName);
 		}); 
 
-		var deleteButton = document.createElement('button');
-		deleteButton.classList.add("ui-btn", "ui-btn-inline");
-		deleteButton.innerHTML = "x";
-		deleteButton.style.float = "right";
-		deleteButton.onclick = (function() {
-			removeEntry(uuid, category, catName);
-		});
-
-		li.appendChild(deleteButton);
-		li.appendChild(h3);
-		li.appendChild(h32);
-		li.appendChild(input);
-
 		var select = document.createElement('select');
-		//TODO add options dynamically?
 		["monthly", "weekly", "biweekly", "twiceMonthly"].forEach(function(f) {
 			var opt = document.createElement('option');
 			opt.value = f;
@@ -270,8 +309,14 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 			select.appendChild(opt);
 		});
 		select.value = frequency;
-		li.appendChild(select);
-		li.appendChild(button);
+		
+		var editDiv = document.createElement('div');
+		editDiv.style.display = "none";
+		editDiv.appendChild(input);
+		editDiv.appendChild(select);
+		editDiv.appendChild(date);
+		editDiv.appendChild(button);
+		li.appendChild(editDiv);
 		li.appendChild(p);
 		$(listId).append(li);
 
@@ -346,6 +391,56 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		}]);*/
 	}
 
+
+	//--------------------------------------
+	// 			Login
+	//--------------------------------------
+	$("#login").click(function() {
+		var un = $("#username").val();
+		var pw = $("#password").val();
+
+		login(un, pw, function() {
+			console.log("here");
+		})
+		
+		if(isTutorial) {
+			$("#page-login-tutorial").html("NEXT");
+		}
+	});
+
+	$("#addUser").click(function() {
+		var name = $("#newName").val();
+		var un = $("#newUsername").val();
+		var pw = $("#newPassword").val();
+		var pwv = $("#newPasswordVerify").val();
+
+		if(pw == pwv) {
+			//how to add user?
+			/*notifyListeners("addEntry", [
+				"users",
+				{name, un, pw},
+				function() {
+					document.querySelector('#loginSuccess');
+		            loginSuccess.textContent = 'NEW USER SUCCESS';
+		            loginSuccess.classList.remove("animatePopupMessage");
+		            loginSuccess.classList.add("animatePopupMessage");
+					if(isTutorial) {
+						$("#page-assets-tutorial").show();
+					}
+				}, 
+				function(message) {
+					document.querySelector('#loginSuccess');
+		            loginSuccess.textContent = 'FAILED: ' + message;
+		            loginSuccess.classList.remove("animatePopupMessage");
+		            loginSuccess.classList.add("animatePopupMessage");
+			}]);*/
+		}
+		
+		if(isTutorial) {
+			$("#page-login-tutorial").html("NEXT");
+		}
+	});
+
 	//--------------------------------------
 	// 			Savings
 	//--------------------------------------
@@ -364,8 +459,9 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		//add element to "savings" array
 		var save = new SavingsEntry(catName, 0, true);
 		notify("addEntry", "savings", catName, save, uuid);
-
-		
+		if(isTutorial) {
+			$("#page-savings-tutorial").html("NEXT");
+		}
 	});
 
 	function updateSavingsEntry(uuid, catName) {
@@ -393,18 +489,6 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		}
 	});
 
-	/* --No longer called anywhere--?
-	//attached to buttons defined in .ready()
-	function changeSavingEntry(name, isDefault) {
-		var save = new SavingsEntry(name, parseInt($("#text" + name).val()), isDefault);
-		notifyListeners("changeEntry", ["savings", name, save, function() {
-			$("#save" + name).html("CHANGED SAVINGS SUCCESS");
-		}, function(message) {
-			$("#save" + name).html("FAILED: " + message);
-		}]);
-	}
-	*/
-
 	//--------------------------------------
 	// 			Charge
 	//--------------------------------------
@@ -421,6 +505,9 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		//add element to "savings" array
 		var save = new ChargeEntry(catName, 0, 'monthly', 1, true);
 		notify("addEntry", "charges", catName, save, uuid);
+		if(isTutorial) {
+			$("#page-charges-tutorial").html("NEXT");
+		}
 	});
 
 	function updateChargesEntry(uuid, catName) {
@@ -428,15 +515,17 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		var val = li.getElementsByTagName('input')[0].value;
 		var select = li.getElementsByTagName('select')[0];
 		var frequency = select.options[select.selectedIndex].value;
-		
+		var startDate = li.getElementsByTagName('input')[1].value;
+
 		if(val === "") {
 			val = li.getElementsByTagName('h2')[0].innerHTML.split("$")[1];
 		}
 
 		li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
 		li.getElementsByTagName('input')[0].value = "";
-		//What does isDefault do?! Set to false here
-		var save = new ChargeEntry(catName, val, frequency, 1, false);
+
+		var save = new ChargeEntry(catName, val, frequency, startDate, false);
+
 		notify2("changeEntry", "charges", catName, save, uuid);
 	}
 
@@ -462,6 +551,9 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		//add element to "savings" array
 		var save = new IncomeEntry(catName, 0, "monthly", 1, 5, true);
 		notify("addEntry", "income", catName, save, uuid);
+		if(isTutorial) {
+			$("#page-income-tutorial").html("NEXT");
+		}
 	});
 	
 	function updateIncomeEntry(uuid, catName) {
@@ -469,15 +561,16 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		var val = li.getElementsByTagName('input')[0].value;
 		var select = li.getElementsByTagName('select')[0];
 		var frequency = select.options[select.selectedIndex].value;
+		var startDate = li.getElementsByTagName('input')[1].value;
+
 		if(val === "") {
 			val = li.getElementsByTagName('h2')[0].innerHTML.split("$")[1];
 		
 		}
-			li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
-			li.getElementsByTagName('input')[0].value = "";
+		li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
+		li.getElementsByTagName('input')[0].value = "";
 		
-		//What does isDefault do?! Set to false here
-		var save = new IncomeEntry(catName, val, frequency, 1, 5, true);
+		var save = new IncomeEntry(catName, val, frequency, startDate, 5, true);
 		notify2("changeEntry", "income", catName, save, uuid);
 	}
 
@@ -497,6 +590,9 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
             assetsSuccess.textContent = 'CHANGED ASSETS SUCCESS';
             assetsSuccess.classList.remove("animatePopupMessage");
             assetsSuccess.classList.add("animatePopupMessage");
+			if(isTutorial) {
+				$("#page-assets-tutorial").show();
+			}
 		}, function(message) {
 			document.querySelector('#assetsSuccess');
             assetsSuccess.textContent = 'FAILED: ' + message;
@@ -552,15 +648,6 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 	//--------------------------------------
 	// 			Options
 	//--------------------------------------
-	/* no longer in use
-	$("#habitTrack").change(function() {
-		var label = $("#habitTrack").prop("checked") ? "On" : "Off";
-		notifyListeners("setOption", ["isEnableTracking", label, function() {
-			//success
-		}, function(message) {
-			//failure
-		}]);
-	}); */
 	
 	$("#assetNotice").change(function() {
 		var label = $("#assetNotice").val();
@@ -608,11 +695,16 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 	$("#endDate").change(function() {
 		notifyListeners("setEndDate", [dateInputToDate($(this).val()).getTime(), function() {
 			console.log("SUCCESS: " + $("#endDate").val());
+			if(isTutorial) {
+				$("#page-options-tutorial").show();
+				isTutorial = false;
+			}
 		}, function(message) {
 			console.log("FAILURE: " + message);
 		}]);
 	});
 	
+	/*
 	//callback for dateboxes
 	window.budgetNotify = function(date, initDate, duration, custom, cancelClose) {
 		notifyListeners("setOption", ["notifyMorningTime", date.date.getTime(), function() {
@@ -628,7 +720,27 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		}, function(message) {
 			//failure
 		}]);
-	};
+	}; */
+	
+	$("#budgetTime").change(function() {
+		var val = timeInputToDate($("#budgetTime").val()).getTime();
+		
+		notifyListeners("setOption", ["notifyMorningTime", val, function() {
+			//success
+		}, function(message) {
+			//failure
+		}]);
+	});
+	
+	$("#trackTime").change(function() {
+		var val = timeInputToDate($("#trackTime").val());
+		
+		notifyListeners("setOption", ["notifyNightTime", val, function() {
+			//success
+		}, function(message) {
+			//failure
+		}]);
+	});
 	
 	
 	//for testing?

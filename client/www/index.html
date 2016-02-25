@@ -40,15 +40,53 @@
 						<li id="page-income-button"><a data-ajax='false' data-icon="false">Recurring Income</a></li>
 						<li id="page-tracking-button"><a data-ajax='false' data-icon="false">Track Spending</a></li>
 						<li id="page-options-button"><a data-ajax='false' data-icon="false">Options</a></li>
+						<li id="page-login-button"><a data-ajax='false' data-icon='false'>Login</a></li>
 					</ul>
 				</div>
 			</div>
 			<!-- /panel left -->
 
 			<div data-role="header" data-position="fixed" class="wow fadeIn">
-				<a href="#leftpanel" class="ui-btn ui-btn-left wow fadeIn" data-wow-delay='0.8s'><i class="zmdi zmdi-menu"></i></a>
+				<a href="#leftpanel" id="menuBar" class="ui-btn ui-btn-left wow fadeIn" data-wow-delay='0.8s'><i class="zmdi zmdi-menu"></i></a>
 				<h1 id="titleText" class="wow fadeIn" data-wow-delay='0.4s'></h1>
 			</div>
+
+
+			<!-- ========================================================
+				LOGIN PAGE
+			========================================================= -->
+			<div id="page-login">
+				<div role="main" class="ui-content wow fadeIn" data-inset="false" data-wow-delay="0.2s">
+					<!--HEADER ABOVE, can copy paste-->
+					<p id='loginSuccess' class='attentionGrapper'></p>
+					<h3>Please log in</h3>
+					<input id="username" type='text'>
+					<input id="password" type='password'>
+					<button id='login'>Login</button>
+					<a id='userPopup' href='#userPopupDialog'   data-rel='popup' data-position-to='window' data-role='button' data-icon='external-link' data-transition='pop' data-inline='true' class="ui-btn ui-btn-raised clr-primary">New User</a>
+					
+					<button id="page-login-tutorial">CONTINUE WITHOUT LOGIN</button>
+					<!--FOOTER BELOW, can copy paste-->
+				</div>
+			</div>
+
+			<!-- popup -->
+			<div data-role='popup' id='userPopupDialog' data-theme='b'>
+				<div data-role='header' data-theme='b'>
+					<h1>Create new user:</h1>
+				</div>
+				<div data-role='content' data-theme='b'>
+					<p>Name: </p><input id="newName" data-controller="input-value" autofocus="autofocus">
+					<p>Username: </p><input id="newUsername" data-controller="input-value" autofocus="autofocus">
+					<p>Password: </p><input id="newPassword" type='password' data-controller="input-value" autofocus="autofocus">
+					<p>Verify password: </p><input id="newPasswordVerify" type='password' data-controller="input-value" autofocus="autofocus">
+					<div class='showastabs center nobg'>
+						<a id="addUser" href='#' data-rel='back' data-icon='ok' data-iconpos='left' data-role='button' data-inline='true'>Okay</a>
+						<a href='#' data-rel='back' data-icon='delete' data-iconpos='left' data-role='button' data-inline='true'>Cancel</a>
+					</div>
+				</div>
+			</div>
+			<!-- popup end -->
 
 			<!-- ========================================================
 				MAIN BUDGET PAGE
@@ -78,6 +116,7 @@
 					<h3 id="prevAssets"></h3>
 					<input id="setAssets" data-controller="input-value" type="number" min="0">
 					<button class="ui-btn ui-btn-raised clr-primary" id="buttonAssets">Update</button>
+					<button class="ui-btn ui-btn-raised" id="page-assets-tutorial">NEXT</button>
 					<p id='assetsSuccess' class='attentionGrapper'></p>
 					<!--FOOTER BELOW, can copy paste-->
 				</div>
@@ -86,7 +125,6 @@
 				SAVINGS PAGE
 			========================================================= -->
 			<div id="page-savings">
-				<p> This page is still experimental. </p>
 				<div role="main" class="ui-content wow fadeIn" data-inset="false" data-wow-delay="0.2s">
 				<!--HEADER ABOVE, can copy paste-->
 					<div>
@@ -96,6 +134,7 @@
 					<div>
 						<a id='savingsPopup' href='#savingsPopupDialog'   data-rel='popup' data-position-to='window' data-role='button' data-icon='external-link' data-transition='pop' data-inline='true' class="ui-btn ui-btn-raised clr-primary">Add Saving</a>
 					</div>
+					<button class="ui-btn ui-btn-raised" id="page-savings-tutorial">SKIP</button>
 				<!--FOOTER BELOW, can copy paste-->
 				</div>
 			</div>
@@ -119,14 +158,14 @@
 				CHARGES PAGE
 			========================================================= -->
 			<div id="page-charges">
-				<p> This page is still experimental. </p>
 				<div role="main" class="ui-content wow fadeIn" data-inset="false" data-wow-delay="0.2s">
 					<!--HEADER ABOVE, can copy paste-->
 					<ul data-role="listview" data-icon="false" id="chargesList">
 					</ul>
 					<div>
-						<a href='#chargesPopupDialog' data-rel='popup' data-position-to='window' data-role='button' data-icon='external-link' data-transition='pop' data-inline='true' class="ui-btn ui-btn-raised clr-primary">Add Saving</a>
+						<a href='#chargesPopupDialog' data-rel='popup' data-position-to='window' data-role='button' data-icon='external-link' data-transition='pop' data-inline='true' class="ui-btn ui-btn-raised clr-primary">Add Charge</a>
 					</div>
+					<button class="ui-btn ui-btn-raised" id="page-charges-tutorial">SKIP</button>
 					<!--FOOTER BELOW, can copy paste-->
 				</div>
 			</div>
@@ -151,7 +190,6 @@
 				INCOME PAGE
 			========================================================= -->
 			<div id="page-income">
-				<p> This page is still experimental. </p>
 				<div role="main" class="ui-content wow fadeIn" data-inset="false" data-wow-delay="0.2s">
 					<!--HEADER ABOVE, can copy paste-->
 					<div id="page-charges">
@@ -162,6 +200,7 @@
 					<div>
 						<a href='#incomePopupDialog' data-rel='popup' data-position-to='window' data-role='button' data-icon='external-link' data-transition='pop' data-inline='true' class="ui-btn ui-btn-raised clr-primary">Add Income</a>
 					</div>
+					<button class="ui-btn ui-btn-raised" id="page-income-tutorial">SKIP</button>
 					<!--FOOTER BELOW, can copy paste-->
 				</div>
 			</div>
@@ -239,7 +278,10 @@
 										<option value="Off">Off</option>
 										<option value="On">On</option>
 									</select></div>
-								<div class="ui-block-b"><input class="form-control" id="budgetTime" type="text" data-role="datebox" data-options='{"mode":"timeflipbox", "closeCallback":"budgetNotify"}' /></div>
+								<div class="ui-block-b">
+									<!--<input class="form-control" id="budgetTime" type="text" data-role="datebox" data-options='{"mode":"timeflipbox", "closeCallback":"budgetNotify"}' /> -->
+									<input type="time" id="budgetTime">
+								</div>
 							</fieldset>
 						</div>
 						<div data-role="fieldcontain">
@@ -251,7 +293,10 @@
 										<option value="On">On</option>
 									</select>
 								</div>
-								<div class="ui-block-b"><input class="form-control" id="trackTime" type="text" data-role="datebox" data-options='{"mode":"timeflipbox", "closeCallback":"trackNotify"}' /></div>
+								<div class="ui-block-b">
+									<!--<input class="form-control" id="trackTime" type="text" data-role="datebox" data-options='{"mode":"timeflipbox", "closeCallback":"trackNotify"}' /> -->
+									<input type="time" id="trackTime">
+								</div>
 							</fieldset>
 						</div>
 						<div data-role="fieldcontain">
@@ -274,13 +319,29 @@
 						<p class="small">Set End Date</p>
 						<!-- <input class="form-control" id="endDate" type="text" data-role="datebox" data-options={"mode":"calbox"} /> -->
 						<input id="endDate" type="date">
+						<!--
 						<p class="center">Set minimum daily budget</p>				
 						<div class="ui-grid-b">
 							<div class="ui-block-a"><p id="minBudget">$10</p></div>
 							<div class="ui-block-b"><input type="number" id="setMinBudget" data-clear-btn="true" min="0"></div>
 							<div class="ui-block-c"><button class="ui-btn" id="buttonMinDaily">Update</button></div>
 						</div>
+						-->
+						<button class="ui-btn ui-btn-raised" id="page-options-tutorial">NEXT</button>
 					</fieldset>
+					<!--FOOTER BELOW, can copy paste-->
+				</div>
+			</div>
+			
+			<!-- ========================================================
+				TUTORIAL PAGE
+			========================================================= -->
+			<div id="page-tutorial">
+				<div role="main" class="ui-content wow fadeIn" data-inset="false" data-wow-delay="0.2s">
+					<!--HEADER ABOVE, can copy paste-->
+					<h2> Would you like to follow the setup tutorial? </h2>
+					<button id = "yesTutorial" class="ui-btn ui-btn-raised clr-primary"> YES </button>
+					<button id = "noTutorial" class="ui-btn ui-btn-raised clr-warning"> NO </button>
 					<!--FOOTER BELOW, can copy paste-->
 				</div>
 			</div>

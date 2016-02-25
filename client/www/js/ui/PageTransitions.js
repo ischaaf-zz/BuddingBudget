@@ -15,7 +15,9 @@ var PageTransitions = function() {
 		"page-charges" : "Recurring Charges",
 		"page-income" : "Recurring Income",
 		"page-tracking" : "Track Spending",
-		"page-options" : "Options"
+		"page-options" : "Options",
+		"page-tutorial" : "Tutorial",
+		"page-login" :"Login"
 	};
 
 	// The page currently being displayed
@@ -34,7 +36,7 @@ var PageTransitions = function() {
 	// Set the onclick for a pageID's button to fade to
 	// the given page.
 	function setUpPageSwitch(pageID) {
-		var pageIDs = Object.keys(pages);
+		//var pageIDs = Object.keys(pages);
 		$("#" + pageID + "-button").click(function() {
 			self.switchPage(pageID);
 		});
@@ -51,7 +53,67 @@ var PageTransitions = function() {
     	$("#page-main").show();
     	$("#titleText").text(pages["page-main"]);
     	activePage = "page-main";
+		hideButtons();
     }
-
+	
 	initialSetup();
+	
+	//--tutorial page transitions--
+	
+	this.tutorialSetup = function() {
+		$("#page-main").hide();
+		$("#menuBar").hide();
+		$("#page-tutorial").show();
+		activePage = "page-tutorial";
+		
+		$("#yesTutorial").click(function() {
+			self.switchPage("page-login");
+			showButtons();
+		});
+		
+		$("#page-login-tutorial").click(function() {
+			self.switchPage("page-assets");
+		});
+		
+		$("#page-assets-tutorial").click(function() {
+			self.switchPage("page-savings");
+		});
+		
+		$("#page-savings-tutorial").click(function() {
+			self.switchPage("page-income");
+		});
+		
+		$("#page-income-tutorial").click(function() {
+			self.switchPage("page-charges");
+		});
+		
+		$("#page-charges-tutorial").click(function() {
+			self.switchPage("page-options");
+		});
+		
+		$("#page-options-tutorial").click(function() {
+			self.switchPage("page-main");
+			hideButtons();
+			$("#menuBar").show();
+		});
+	}
+	
+	function hideButtons() {
+		$("#page-assets-tutorial").hide();
+		$("#page-savings-tutorial").hide();
+		$("#page-income-tutorial").hide();
+		$("#page-charges-tutorial").hide();
+		$("#page-options-tutorial").hide();
+		$("#page-login-tutorial").hide();
+	}
+	
+	function showButtons() {
+		//$("#page-assets-tutorial").show();
+		$("#page-savings-tutorial").show();
+		$("#page-income-tutorial").show();
+		$("#page-charges-tutorial").show();
+		//$("#page-options-tutorial").show();
+		$("#page-login-tutorial").show();
+	}
+	
 };

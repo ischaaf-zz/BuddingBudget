@@ -30,7 +30,7 @@ var NetworkManager = function() {
 
 	var lastModified;
 
-	function login(user, pass, success) {
+	this.login = function(user, pass, success) {
 		console.log("loggin in");
 		enqueueSend("POST", {username: user, password: pass}, "login", success, defaultFail);
 	}

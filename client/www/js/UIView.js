@@ -451,6 +451,9 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		//add element to "savings" array
 		var save = new SavingsEntry(catName, 0, true);
 		notify("addEntry", "savings", catName, save, uuid);
+		if(isTutorial) {
+			$("#page-savings-tutorial").html("NEXT");
+		}
 	});
 
 	function updateSavingsEntry(uuid, catName) {

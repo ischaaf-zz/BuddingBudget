@@ -191,6 +191,46 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		deleteButton.onclick = (function() {
 			removeEntry(uuid, category, catName);
 		});
+
+		/*
+		<div class="ui-flipswitch ui-shadow-inset ui-bar-inherit ui-corner-all ui-flipswitch-active">
+			<a href="#" class="ui-flipswitch-on ui-btn ui-shadow ui-btn-inherit">On</a>
+			<span class="ui-flipswitch-off">Off</span>
+			<select id="morningNotice" data-role="flipswitch" class="ui-flipswitch-input" tabindex="-1">
+			<option value="Off">Off</option>
+			<option value="On">On</option>
+		</select></div>
+		*/
+
+		/*var editDiv = document.createElement('div');
+		editDiv.classList.add("ui-flipswitch", "ui-shadow-inset", "ui-bar-inherit", "ui-corner-all", "ui-flipswitch-active");
+		
+		var editA = document.createElement('a');
+		editA.classList.add("ui-flipswitch-on", "ui-btn", "ui-shadow", "ui-btn-inherit");
+		editA.innerHTML = "On";
+
+		var editSpan = document.createElement('span');
+		editSpan.innerHTML = "Off";
+		var editSelect = document.createElement('select');
+		editSelect.setAttribute("data-role", "flipswitch");
+		editSelect.classList.add("ui-flipswitch-input");
+		editSelect.setAttribute("tabindex", "-1");
+
+		var op1 = document.createElement('option');
+		op1.value = "Off";
+		op1.innerHTML = "Off";
+
+		var op2 = document.createElement('option');
+		op2.value = "On";
+		op2.innerHTML = "On";
+
+		editSelect.appendChild(op1);
+		editSelect.appendChild(op2);
+
+		editDiv.appendChild(editA);
+		editDiv.appendChild(editSpan);
+		editDiv.appendChild(editSelect);
+*/
 		var editButton = document.createElement("button");
 		editButton.classList.add("ui-btn", "ui-btn-inline");
 		editButton.innerHTML = "edit";
@@ -202,6 +242,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		li.appendChild(h3);
 		li.appendChild(h32);
 		li.appendChild(editButton);
+		// li.appendChild(editDiv);
 
 		var input = document.createElement('input');
 		input.class = "updateVal";
@@ -225,11 +266,11 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 			updateFn(uuid, catName);
 		}); 
 
-		var editDiv = document.createElement('div');
-		editDiv.style.display = "none";
-		editDiv.appendChild(input);
-		editDiv.appendChild(button);
-		li.appendChild(editDiv);
+		var editField = document.createElement('div');
+		editField.style.display = "none";
+		editField.appendChild(input);
+		editField.appendChild(button);
+		li.appendChild(editField);
 		li.appendChild(p);
 		$(listId).append(li);
 
@@ -320,11 +361,11 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		document.getElementById(uuid).remove();
 	}
 
-	//todo: buggy b/c catName and save switches depending on addEntry or changeEntry call?
-	function notify(call, category, catName, save, uuid) {
+	//todo: buggy b/c catName and save switches depending on addEntr
+	function notifyAdd(call, category, catName, save, uuid) {
 		notifyListeners(call, [category,
 			save,
-			catName,
+			//catName,
 			function() {
 			var p = document.getElementById(uuid).getElementsByTagName('p')[0];
             p.html = 'CHANGED ' + category.toUpperCase() + ' SUCCESS';
@@ -337,17 +378,10 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
             p.classList.add("animatePopupMessage");
 		}]);
 		document.getElementById(uuid).getElementsByTagName('p')[0].value = "";
-            
-		// 	function() {
-		// 	document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "CHANGED " + category.toUpperCase() + " SUCCESS";
-		// 	}, 
-		// 	function(message) {
-		// 	document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
-		// }]);
 	}
 
-	//workaround for weird save/catName switch
-	function notify2(call, category, catName, save, uuid) {
+	//used for changeEntry
+	function notifyChange(call, category, catName, save, uuid) {
 		notifyListeners(call, [category,
 			catName,
 			save,
@@ -364,16 +398,20 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		}]);
 
 		document.getElementById(uuid).getElementsByTagName('p')[0].value = "";
-        
-		/*notifyListeners(call, [category,
-			catName,
-			save,
-			function() {
-			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "CHANGED " + category.toUpperCase() + " SUCCESS";
-			}, 
-			function(message) {
-			document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
-		}]);*/
+	}
+
+	function notifyTrackSpend(tracked, spendType) {
+		notifyListeners("trackSpending", [tracked, spendType, function() {
+			document.querySelector('#trackSuccess');
+            trackSuccess.textContent = 'TRACK SPENDING SUCCESS';
+            trackSuccess.classList.remove("animatePopupMessage");
+            trackSuccess.classList.add("animatePopupMessage");
+		}, function(message) {
+			document.querySelector('#trackSuccess');
+            trackSuccess.textContent = 'FAILED: ' + message;
+            trackSuccess.classList.remove("animatePopupMessage");
+            trackSuccess.classList.add("animatePopupMessage");
+		}]);
 	}
 
 
@@ -381,8 +419,8 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 	// 			Login
 	//--------------------------------------
 	$("#login").click(function() {
-		var un = $("#username").val();
-		var pw = $("#password").val();
+		var un = $("#username").value;
+		var pw = $("#password").value;
 
 		login(un, pw, function() {
 			console.log("here");
@@ -390,10 +428,10 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 	});
 
 	$("#addUser").click(function() {
-		var name = $("#newName").val();
-		var un = $("#newUsername").val();
-		var pw = $("#newPassword").val();
-		var pwv = $("#newPasswordVerify").val();
+		var name = $("#newName").value;
+		var un = $("#newUsername").value;
+		var pw = $("#newPassword").value;
+		var pwv = $("#newPasswordVerify").value;
 
 		if(pw == pwv) {
 			//how to add user?
@@ -435,7 +473,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		//generalize this? SavingsEntry
 		//add element to "savings" array
 		var save = new SavingsEntry(catName, 0, true);
-		notify("addEntry", "savings", catName, save, uuid);
+		notifyAdd("addEntry", "savings", catName, save, uuid);
 	});
 
 	function updateSavingsEntry(uuid, catName) {
@@ -449,7 +487,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		li.getElementsByTagName('input')[0].value = "";
 		
 		var save = new SavingsEntry(catName, parseInt(val), false);
-		notify2("changeEntry", "savings", catName, save, uuid);
+		notifyChange("changeEntry", "savings", catName, save, uuid);
 	}
 	
 	//todo: does not work?
@@ -478,7 +516,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		//generalize this? SavingsEntry
 		//add element to "savings" array
 		var save = new ChargeEntry(catName, 0, 'monthly', 1, true);
-		notify("addEntry", "charges", catName, save, uuid);
+		notifyAdd("addEntry", "charges", catName, save, uuid);
 	});
 
 	function updateChargesEntry(uuid, catName) {
@@ -497,7 +535,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 
 		var save = new ChargeEntry(catName, val, frequency, startDate, false);
 
-		notify2("changeEntry", "charges", catName, save, uuid);
+		notifyChange("changeEntry", "charges", catName, save, uuid);
 	}
 
 	$("#newChargeName").keyup(function(event) {
@@ -521,7 +559,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		//generalize this? SavingsEntry
 		//add element to "savings" array
 		var save = new IncomeEntry(catName, 0, "monthly", 1, 5, true);
-		notify("addEntry", "income", catName, save, uuid);
+		notifyAdd("addEntry", "income", catName, save, uuid);
 	});
 	
 	function updateIncomeEntry(uuid, catName) {
@@ -539,7 +577,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		li.getElementsByTagName('input')[0].value = "";
 		
 		var save = new IncomeEntry(catName, val, frequency, startDate, 5, true);
-		notify2("changeEntry", "income", catName, save, uuid);
+		notifyChange("changeEntry", "income", catName, save, uuid);
 	}
 
 
@@ -592,20 +630,6 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		
 		document.getElementById("setTrack").value = "";
 	});
-	
-	function notifyTrackSpend(tracked, spendType) {
-		notifyListeners("trackSpending", [tracked, spendType, function() {
-			document.querySelector('#trackSuccess');
-            trackSuccess.textContent = 'TRACK SPENDING SUCCESS';
-            trackSuccess.classList.remove("animatePopupMessage");
-            trackSuccess.classList.add("animatePopupMessage");
-		}, function(message) {
-			document.querySelector('#trackSuccess');
-            trackSuccess.textContent = 'FAILED: ' + message;
-            trackSuccess.classList.remove("animatePopupMessage");
-            trackSuccess.classList.add("animatePopupMessage");
-		}]);
-	}
 	
 	//get selected radio button
 	$("#submitOverUnder").click(function() {

@@ -61,6 +61,20 @@ function dateToDateInput(val) {
 	return(val.getFullYear() + "-" + padDigits(val.getMonth() + 1, 2) + "-" + padDigits(val.getDate(), 2));
 }
 
+function dateToTimeInput(val) {
+	return(padDigits(val.getHours(), 2) + ":" + padDigits(val.getMinutes(), 2));
+}
+
+function timeInputToDate(val) {
+	var split = val.split(":").map(function(val) {
+		return parseInt(val);
+	});
+	var returnDate = new Date();
+	returnDate.setHours(val[0]);
+	returnDate.setMinutes(val[1]);
+	return returnDate;
+}
+
 function padDigits(number, digits) {
     return Array(Math.max(digits - String(number).length + 1, 0)).join(0) + number;
 }
@@ -122,6 +136,7 @@ function findNextTime(entry, startTime) {
 	var period = entry.period;
 	var start = entry.start;
 	var lastTime;
+	var diff;
 	if(typeof startTime === "undefined") {
 		if(entry.nextTime) {
 			lastTime = new Date(entry.nextTime);
@@ -139,13 +154,13 @@ function findNextTime(entry, startTime) {
 			nextTime.setMonth(nextTime.getMonth() + 1);
 		}
 	} else if(period == "weekly") {
-		var diff = start - nextTime.getDay();
+		diff = start - nextTime.getDay();
 		nextTime.setDate(nextTime.getDate() + diff);
 		if(nextTime < lastTime || isSameDay(nextTime, lastTime)) {
 			nextTime.setDate(nextTime.getDate() + 7);
 		}
 	} else if(period == "biweekly") {
-		var diff = (trimToDay(nextTime.getTime()) - trimToDay(start)) / MILLISECONDS_PER_DAY;
+		diff = (trimToDay(nextTime.getTime()) - trimToDay(start)) / MILLISECONDS_PER_DAY;
 		var offset = diff % 14;
 		nextTime.setDate(nextTime.getDate() + 14 - offset);
 	} else if(period == "twiceMonthly") {

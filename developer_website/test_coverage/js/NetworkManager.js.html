@@ -1,0 +1,617 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for js/NetworkManager.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">all files</a> / <a href="index.html">js/</a> NetworkManager.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">50% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>39/78</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">25% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>4/16</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">18.52% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>5/27</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">50% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>39/78</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line medium'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// This is by far the most poorly defined of the classes, because
+// I'm not 100% sure how it interfaces or what it needs to do.
+&nbsp;
+var NetworkManager = function() {
+&nbsp;
+	var credentials = {};
+	this.host = "http://ischaaf.com:8081";
+&nbsp;
+	// possible callbacks:
+	// loginFailure, loggedIn, networkError, dataConflict, etc
+&nbsp;
+	// This is just how I think you could potentially inform
+	// the rest of the app of what's going on with asynchronous
+	// network goings-ons. If you guys can think of a better way
+	// to do this, feel free to replace anything and everything
+	// you want.
+	var callbacks = {};
+&nbsp;
+	this.registerListener = <span class="fstat-no" title="function not covered" >function(event, callback) {</span>
+<span class="cstat-no" title="statement not covered" >		callbacks[event] = callbacks[event] || [];</span>
+<span class="cstat-no" title="statement not covered" >		callbacks[event].push(callback);</span>
+	};
+&nbsp;
+<span class="fstat-no" title="function not covered" >	function notifyListeners(event, args) {</span>
+<span class="cstat-no" title="statement not covered" >		var callbackArr = callbacks[event] || [];</span>
+<span class="cstat-no" title="statement not covered" >		for(var i = 0; i &lt; callbackArr.length; i++) {</span>
+<span class="cstat-no" title="statement not covered" >			callbackArr[i].apply(window, args);</span>
+		}
+	}
+&nbsp;
+&nbsp;
+	
+	//var lastModified;
+&nbsp;
+<span class="fstat-no" title="function not covered" >	function updateLastModified(newDate){</span>
+<span class="cstat-no" title="statement not covered" >		if(!localStorage.getItem('lastModified')) {</span>
+<span class="cstat-no" title="statement not covered" >  			populateStorage();</span>
+			}
+		else {
+<span class="cstat-no" title="statement not covered" >		localStorage.setItem('lastModified', newDate);</span>
+		}
+	}
+&nbsp;
+<span class="fstat-no" title="function not covered" >	function populateStorage(){</span>
+<span class="cstat-no" title="statement not covered" >		localStorage.setItem('lastModified','');</span>
+	}
+<span class="fstat-no" title="function not covered" >	function checkLastModified(){</span>
+<span class="cstat-no" title="statement not covered" >		if (localStorage.getItem('lastModified')== data.lastModified){</span>
+<span class="cstat-no" title="statement not covered" >			return true;</span>
+		}
+		else{
+<span class="cstat-no" title="statement not covered" >			return false;</span>
+		}
+		
+	}
+&nbsp;
+<span class="fstat-no" title="function not covered" >	function createUser(user, pass, success){</span>
+&nbsp;
+	}
+&nbsp;
+<span class="fstat-no" title="function not covered" >	function login(user, pass, success) {</span>
+<span class="cstat-no" title="statement not covered" >		console.log("loggin in");</span>
+<span class="cstat-no" title="statement not covered" >		enqueueSend("POST", {username: user, password: pass}, "login", success, defaultFail);</span>
+	}
+&nbsp;
+	this.fetchInitialData = <span class="fstat-no" title="function not covered" >function(success, failure) {</span>
+<span class="cstat-no" title="statement not covered" >		enqueueSend("GET", {}, "user?getFull=true", <span class="fstat-no" title="function not covered" >function(data) {</span></span>
+<span class="cstat-no" title="statement not covered" >			console.log(data);</span>
+			//lastModified = data.lastModified;
+<span class="cstat-no" title="statement not covered" >			updateLastModified(data.lastModified);</span>
+<span class="cstat-no" title="statement not covered" >			console.log("updated lastModified");</span>
+<span class="cstat-no" title="statement not covered" >			success(data);</span>
+		}, failure);
+	};
+&nbsp;
+	// Update assets
+	this.updateAssets = function(newVal) {
+		enqueueSend("PUT", {assets: newVal}, "data", defaultSuccess, defaultFail);
+	};
+&nbsp;
+	this.setEndDate = <span class="fstat-no" title="function not covered" >function(endDate) {</span>
+<span class="cstat-no" title="statement not covered" >		enqueueSend("PUT", {endDate: endDate}, "data", defaultSuccess, defaultFail);</span>
+	};
+&nbsp;
+	// Create and add new spending entry
+	this.trackSpending = <span class="fstat-no" title="function not covered" >function(trackedEntry) {</span>
+<span class="cstat-no" title="statement not covered" >		enqueueSend("POST", trackedEntry, "entry", defaultSuccess, defaultFail);</span>
+	};
+&nbsp;
+	// Set the specified option to a new value
+	this.setOption = <span class="fstat-no" title="function not covered" >function(selection, value) {</span>
+<span class="cstat-no" title="statement not covered" >		var obj = {};</span>
+<span class="cstat-no" title="statement not covered" >		obj[selection] = value;</span>
+<span class="cstat-no" title="statement not covered" >		enqueueSend("PUT", obj, "options", defaultSuccess, defaultFail);</span>
+	};
+&nbsp;
+	// Add a new entry to savings or recurring charges / income
+	this.addEntry = <span class="fstat-no" title="function not covered" >function(category, val) {</span>
+<span class="cstat-no" title="statement not covered" >		enqueueSend("POST", val, category, defaultSuccess, defaultFail);</span>
+	};
+&nbsp;
+	// Change an entry to savings or recurring charges / income
+	this.changeEntry = <span class="fstat-no" title="function not covered" >function(category, name, newVal) {</span>
+<span class="cstat-no" title="statement not covered" >		enqueueSend("PUT", newVal, category, defaultSuccess, defaultFail);</span>
+	};
+&nbsp;
+	// Remove an entry from savings or recurring charges / income
+	this.removeEntry = <span class="fstat-no" title="function not covered" >function(category, name) {</span>
+<span class="cstat-no" title="statement not covered" >		enqueueSend("DELETE", {name: name}, category, defaultSuccess, defaultFail);</span>
+	};
+&nbsp;
+	this.setRollover = <span class="fstat-no" title="function not covered" >function(rollover) {</span>
+&nbsp;
+	};
+&nbsp;
+	this.setTomorrowRollover = <span class="fstat-no" title="function not covered" >function(tomorrowRollover) {</span>
+&nbsp;
+	};
+&nbsp;
+	var loginMessage = {
+		method: "POST",
+		data: {username: 'ischaaf', password: 'buddingbudget'},
+		page: 'login',
+		success: defaultSuccess,
+		fail: defaultFail
+	};
+&nbsp;
+	var sendQueue = [loginMessage];
+	var sendInProgress = false;
+&nbsp;
+	function enqueueSend(method, data, page, success, fail) {
+		sendQueue.push({
+			method: method, 
+			data: data, 
+			page: page,
+			success: success,
+			fail: fail
+		});
+		checkSend();
+	}
+&nbsp;
+	function checkSend() {
+		<span class="missing-if-branch" title="else path not taken" >E</span>if (!sendInProgress &amp;&amp; sendQueue[0]) {
+			sendInProgress = true;
+			var next = sendQueue[0];
+			sendQueue.splice(0, 1);
+			console.log("sending request: " + next.method + " - " + next.page + " with data: " + JSON.stringify(next.data));
+			sendAjax(next.method, next.data, next.page, next.success, next.fail);
+		}
+	}
+&nbsp;
+	function sendAjax(method, data, page, success, fail) {
+		<span class="missing-if-branch" title="if path not taken" >I</span>if(NETWORK_ENABLED) {
+			//lastModified = data.lastModified;
+<span class="cstat-no" title="statement not covered" >			updateLastModified(data.lastModified);</span>
+<span class="cstat-no" title="statement not covered" >			$.ajax({</span>
+				method: method,
+				url: "http://ischaaf.com:8081/" + page,
+				data: data
+			}).done(<span class="fstat-no" title="function not covered" >function(data) {</span>
+<span class="cstat-no" title="statement not covered" >				console.log("SUCCESS - request: " + method + " - " + page + " with data: " + JSON.stringify(data));</span>
+<span class="cstat-no" title="statement not covered" >				if (data.modified) {</span>
+<span class="cstat-no" title="statement not covered" >					console.log("Updating lastModified time to: " + data.modified);</span>
+					//lastModified = data.lastModified;
+<span class="cstat-no" title="statement not covered" >					updateLastModified(data.lastModified);</span>
+				} else {
+<span class="cstat-no" title="statement not covered" >					console.log("Request returned no lastModified time");</span>
+				}
+<span class="cstat-no" title="statement not covered" >				success(data);</span>
+			}).fail(<span class="fstat-no" title="function not covered" >function(data) {</span>
+<span class="cstat-no" title="statement not covered" >				console.log("FAILURE - request: " + method + " - " + page + " with data: " + JSON.stringify(data));</span>
+<span class="cstat-no" title="statement not covered" >				fail(data);</span>
+			}).always(<span class="fstat-no" title="function not covered" >function() { </span>
+<span class="cstat-no" title="statement not covered" >				sendInProgress = false; </span>
+<span class="cstat-no" title="statement not covered" >				checkSend(); </span>
+			});	
+		}
+	}
+&nbsp;
+<span class="fstat-no" title="function not covered" >	function defaultFail(data) {</span> }
+&nbsp;
+<span class="fstat-no" title="function not covered" >	function defaultSuccess(data) {</span> }
+&nbsp;
+};
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Feb 26 2016 02:26:27 GMT-0800 (PST)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

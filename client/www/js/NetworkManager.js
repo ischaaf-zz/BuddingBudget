@@ -55,8 +55,26 @@ var NetworkManager = function() {
 	}
 
 	function createUser(user, pass, success){
+		$.ajax({
+    	url : "AJAX_POST_URL",
+    	type: "POST",
+    	data : user,
+    	success: function(data, textStatus, jqXHR)
+    	{
+        //data - response from server
+    	},
+    	error: function (jqXHR, textStatus, errorThrown)
+    	{
+    	alert("Something went wrong"); };
+    	}
+		});
 
 	}
+	function createUser2(user, pass, success) {
+		console.log("Creating user");
+		enqueueSend("POST", {username: user, password: pass}, "user created", success, defaultFail);
+	}
+
 
 	function login(user, pass, success) {
 		console.log("loggin in");

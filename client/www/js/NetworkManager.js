@@ -65,7 +65,7 @@ var NetworkManager = function() {
     	},
     	error: function (jqXHR, textStatus, errorThrown)
     	{
-    	alert("Something went wrong"); };
+    	alert("Something went wrong");
     	}
 		});
 

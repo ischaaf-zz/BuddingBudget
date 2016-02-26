@@ -82,14 +82,24 @@ router.put('/', function(req, res, next) {
 
 router.get('/', function(req, res, next) {
     utils.getUser(req, res, function(req, res, user) {
-        var full = utils.validateBool(false, req.query.getFull);
-        if (!full.valid || !full.value) {
-            user.data.savings = [];
-            user.data.income = [];
-            user.data.entries = [];
-            user.data.charges = [];
+        user.password = '*****';
+        var mode = utils.validateString(false, req.query.mode);
+        if (mode.valid) {
+            if (mode.value == 'full') {
+                res.json(user);
+                return;
+            } else if (mode == 'fullSingleTrack') {
+                var last = user.data.entries[user.entries.length - 1];
+                user.data.entries = [];
+                user.data.entries.push(last);
+                res.json(user);
+                return;
+            }
         }
-        user.password = "*****";
+        user.data.savings = [];
+        user.data.income = [];
+        user.data.entries = [];
+        user.data.charges = [];
         res.json(user);
     });
 });

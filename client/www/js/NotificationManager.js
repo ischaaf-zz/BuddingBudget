@@ -20,7 +20,8 @@ var NotificationManager = function(getData, setDataListener) {
 
 	function setAllNotifications() {
 		var options = getData('options');
-		var budget = getData('tomorrowBudget');
+		var budget = getData('budget');
+		var tomorrowBudget = getData('tomorrowBudget');
 		var time;
 
 		// set morning at time if isNotifyMorning
@@ -28,7 +29,9 @@ var NotificationManager = function(getData, setDataListener) {
 			time = new Date();
 			notificationTime = copyTimeOfDay(time, new Date(options.notifyMorningTime));
 			if(notificationTime < time) {
-				notificationTime.setDate(time.getDate() + 1);
+				var tomorrowNotificationTime = new Date(notificationTime);
+				tomorrowNotificationTime.setDate(tomorrowNotificationTime.getDate());
+				setNotification(4, "Budget", "Your budget is $" + tomorrowBudget, tomorrowNotificationTime);
 			}
 			setNotification(1, "Budget", "Your budget is $" + budget, notificationTime);
 		}

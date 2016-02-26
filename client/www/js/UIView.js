@@ -77,18 +77,23 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		//--Load Options--
 		var value = getData("options");
 		
+		
 		if(value.isNotifyMorning == 'On') {
 			$("#morningNotice").val("On").flipswitch("refresh");
-			$("#budgetTime").datebox('enable');
+			//$("#budgetTime").datebox('enable');
+			$("#budgetTime").attr('disabled', false);
 		} else {
-			$("#budgetTime").datebox('disable');
+			//$("#budgetTime").datebox('disable');
+			$("#budgetTime").attr('disabled', true);
 		}
 		
 		if(value.isNotifyNight == 'On') {
 			$("#nightNotice").val("On").flipswitch("refresh");
-			$("#trackTime").datebox('enable');
+			//$("#trackTime").datebox('enable');
+			$("#nightNotice").attr('disabled', false);
 		} else {
-			$("#trackTime").datebox('disable');
+			//$("#trackTime").datebox('disable');
+			$("#nightNotice").attr('disabled', true);
 		}
 		
 		if(value.isNotifyAssets == 'On') {
@@ -112,25 +117,30 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 			// $("#endDate").datebox('setTheDate', newDate).trigger('datebox', {'method':'doset'});
 		}
 		
+		
 		if(value.notifyMorningTime !== undefined) {
 			//load times
 			var budgetTime = value.notifyMorningTime;
 			var newDateA = new Date(budgetTime);
-			$("#budgetTime").datebox('setTheDate', newDateA).trigger('datebox', {'method':'doset'});
+			//console.log(dateToTimeInput(newDateA));
+			//$("#budgetTime").datebox('setTheDate', newDateA).trigger('datebox', {'method':'doset'});
+			$("#budgetTime").val(dateToTimeInput(newDateA));
 		}
 		
 		if(value.notifyNightTime !== undefined) {
 			var trackTime = value.notifyNightTime;
 			var newDateB = new Date(trackTime);
-			$("#trackTime").datebox('setTheDate', newDateB).trigger('datebox', {'method':'doset'});
+			//$("#trackTime").datebox('setTheDate', newDateB).trigger('datebox', {'method':'doset'});
+			$("#trackTime").val(dateToTimeInput(newDateB));
 		}
 		
+		/* No longer used
 		//load min daily budget
 		if(value.minDailyBudget !== undefined) {
 			$("#minBudget").html("$" + value.minDailyBudget);
 		} else {
 			$("#minBudget").html("");
-		}
+		} */
 	});
 	
 	//-----------------LISTENERS----------------------
@@ -156,15 +166,19 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		//console.log(value);
 		
 		if(value.isNotifyMorning == 'On') {
-			$("#budgetTime").datebox('enable');
+			//$("#budgetTime").datebox('enable');
+			$("#budgetTime").attr('disabled', false);
 		} else {
-			$("#budgetTime").datebox('disable');
+			//$("#budgetTime").datebox('disable');
+			$("#budgetTime").attr('disabled', true);
 		}
 		
 		if(value.isNotifyNight == 'On') {
-			$("#trackTime").datebox('enable');
+			//$("#trackTime").datebox('enable');
+			$("#trackTime").attr('disabled', false);
 		} else {
-			$("#trackTime").datebox('disable');
+			//$("#trackTime").datebox('disable');
+			$("#trackTime").attr('disabled', true);
 		}
 		
 		if(value.isNotifyAssets == 'On') {
@@ -425,6 +439,10 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		login(un, pw, function() {
 			console.log("here");
 		})
+		
+		if(isTutorial) {
+			$("#page-login-tutorial").html("NEXT");
+		}
 	});
 
 	$("#addUser").click(function() {
@@ -454,6 +472,10 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		            loginSuccess.classList.add("animatePopupMessage");
 			}]);*/
 		}
+		
+		if(isTutorial) {
+			$("#page-login-tutorial").html("NEXT");
+		}
 	});
 
 	//--------------------------------------
@@ -474,6 +496,9 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		//add element to "savings" array
 		var save = new SavingsEntry(catName, 0, true);
 		notifyAdd("addEntry", "savings", catName, save, uuid);
+		if(isTutorial) {
+			$("#page-savings-tutorial").html("NEXT");
+		}
 	});
 
 	function updateSavingsEntry(uuid, catName) {
@@ -517,6 +542,9 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		//add element to "savings" array
 		var save = new ChargeEntry(catName, 0, 'monthly', 1, true);
 		notifyAdd("addEntry", "charges", catName, save, uuid);
+		if(isTutorial) {
+			$("#page-charges-tutorial").html("NEXT");
+		}
 	});
 
 	function updateChargesEntry(uuid, catName) {
@@ -560,6 +588,9 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		//add element to "savings" array
 		var save = new IncomeEntry(catName, 0, "monthly", 1, 5, true);
 		notifyAdd("addEntry", "income", catName, save, uuid);
+		if(isTutorial) {
+			$("#page-income-tutorial").html("NEXT");
+		}
 	});
 	
 	function updateIncomeEntry(uuid, catName) {
@@ -696,6 +727,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		}]);
 	});
 	
+	/*
 	//callback for dateboxes
 	window.budgetNotify = function(date, initDate, duration, custom, cancelClose) {
 		notifyListeners("setOption", ["notifyMorningTime", date.date.getTime(), function() {
@@ -711,7 +743,27 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		}, function(message) {
 			//failure
 		}]);
-	};
+	}; */
+	
+	$("#budgetTime").change(function() {
+		var val = timeInputToDate($("#budgetTime").val()).getTime();
+		
+		notifyListeners("setOption", ["notifyMorningTime", val, function() {
+			//success
+		}, function(message) {
+			//failure
+		}]);
+	});
+	
+	$("#trackTime").change(function() {
+		var val = timeInputToDate($("#trackTime").val());
+		
+		notifyListeners("setOption", ["notifyNightTime", val, function() {
+			//success
+		}, function(message) {
+			//failure
+		}]);
+	});
 	
 	
 	//for testing?

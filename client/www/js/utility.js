@@ -6,7 +6,7 @@ var DEBUG_MODE = false;
 //allow data to presist
 var PERSIST_DATA = true;
 
-var NETWORK_ENABLED = false;
+var NETWORK_ENABLED = true;
 
 var MILLISECONDS_PER_DAY = 24 * 60 * 60 * 1000;
 var MAX_TIMEOUT = 2147483647;

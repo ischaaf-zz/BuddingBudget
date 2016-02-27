@@ -1,6 +1,6 @@
 // Utility functions in the global namespace that may be useful for multiple objects
 
-var DEBUG_MODE = true;
+var DEBUG_MODE = false;
 var PERSIST_DATA = true;
 var NETWORK_ENABLED = false;
 

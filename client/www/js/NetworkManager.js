@@ -147,7 +147,7 @@ var NetworkManager = function() {
 	var sendInProgress = false;
 
 	function enqueueSend(method, data, page, success, fail) {
-		if (checkLastModified()== true){
+		if(checkLastModified()) {
 			sendQueue.push({
 			method: method, 
 			data: data, 
@@ -156,13 +156,13 @@ var NetworkManager = function() {
 			fail: fail
 		});
 		checkSend();
-		}
-		else{
-			statusCode: {
-    				409: function() {
-      				failCaseDataDump();
-      				}
-    			}
+		} else {
+			// TODO	
+			//statusCode: {
+	    			//409: function() {
+	      			//failCaseDataDump();
+	      			//}
+	    		//}
 		}
 	}
 

@@ -44,7 +44,7 @@ var NetworkManager = function() {
 	function populateStorage(){
 		localStorage.setItem('lastModified','');
 	}
-	function checkLastModified(){
+	function checkLastModified(data){
 		if (localStorage.getItem('lastModified')== data.lastModified){
 			return true;
 		}
@@ -147,7 +147,7 @@ var NetworkManager = function() {
 	var sendInProgress = false;
 
 	function enqueueSend(method, data, page, success, fail) {
-		if(checkLastModified()) {
+		if(checkLastModified(data)) {
 			sendQueue.push({
 			method: method, 
 			data: data, 

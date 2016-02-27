@@ -4,7 +4,7 @@
 var NetworkManager = function() {
 
 	var credentials = {};
-	this.host = "http://ischaaf.com:8081";
+	this.host = "www.bbapi.ischaaf.com";
 
 	// possible callbacks:
 	// loginFailure, loggedIn, networkError, dataConflict, etc
@@ -82,7 +82,7 @@ var NetworkManager = function() {
 	};
 
 	this.fetchInitialData = function(success, failure) {
-		enqueueSend("GET", {}, "user?getFull=true", function(data) {
+		enqueueSend("GET", {}, "?mode=full", function(data) {
 			console.log(data);
 			//lastModified = data.lastModified;
 			updateLastModified(data.lastModified);
@@ -144,6 +144,7 @@ var NetworkManager = function() {
 	};
 
 	var sendQueue = [loginMessage];
+	//var sendQueue = [];
 	var sendInProgress = false;
 
 	function enqueueSend(method, data, page, success, fail) {
@@ -182,7 +183,7 @@ var NetworkManager = function() {
 			updateLastModified(data.lastModified);
 			$.ajax({
 				method: method,
-				url: "http://ischaaf.com:8081/" + page,
+				url: "www.bbapi.ischaaf.com" + page,
 				data: data
 			}).done(function(data) {
 				console.log("SUCCESS - request: " + method + " - " + page + " with data: " + JSON.stringify(data));
@@ -208,7 +209,7 @@ var NetworkManager = function() {
 
 	function defaultSuccess(data) { }
 
-	function failCaseDataDump() {
+	/*function failCaseDataDump() {
 		enqueueSend("GET", data, "user?getFull=true", function(data) {
 			console.log(data);
 			for (var key in data){
@@ -218,6 +219,6 @@ var NetworkManager = function() {
 			}
 			success(data);
 		}, failure);
-	} 
+	} */
 
 };

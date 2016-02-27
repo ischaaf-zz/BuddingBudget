@@ -1,7 +1,7 @@
 // Utility functions in the global namespace that may be useful for multiple objects
 
 //enable debug options (reset and time travel)
-var DEBUG_MODE = false;
+var DEBUG_MODE = true;
 
 //allow data to presist
 var PERSIST_DATA = true;

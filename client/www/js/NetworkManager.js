@@ -70,16 +70,16 @@ var NetworkManager = function() {
 		});
 
 	}
-	function createUser2(user, pass, success) {
+	this.createUser2 = function(user, pass, success) {
 		console.log("Creating user");
 		enqueueSend("POST", {username: user, password: pass}, "user created", success, defaultFail);
-	}
+	};
 
 
-	function login(user, pass, success) {
+	this.login = function(user, pass, success) {
 		console.log("loggin in");
 		enqueueSend("POST", {username: user, password: pass}, "login", success, defaultFail);
-	}
+	};
 
 	this.fetchInitialData = function(success, failure) {
 		enqueueSend("GET", {}, "user?getFull=true", function(data) {
@@ -197,9 +197,11 @@ var NetworkManager = function() {
 
 	function defaultFail(data) {
 		statusCode: {
+			/* Unexpected token : error
     			409: function() {
       				failCaseDataDump();
       			}
+			*/
     		}
 	}
 
@@ -215,6 +217,6 @@ var NetworkManager = function() {
 			}
 			success(data);
 		}, failure);
-	}; 
+	} 
 
 };

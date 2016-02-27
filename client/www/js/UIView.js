@@ -433,8 +433,8 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 	// 			Login
 	//--------------------------------------
 	$("#login").click(function() {
-		var un = $("#username").value;
-		var pw = $("#password").value;
+		var un = $("#username").val();
+		var pw = $("#password").val();
 
 		login(un, pw, function() {
 			console.log("here");
@@ -446,31 +446,16 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 	});
 
 	$("#addUser").click(function() {
-		var name = $("#newName").value;
-		var un = $("#newUsername").value;
-		var pw = $("#newPassword").value;
-		var pwv = $("#newPasswordVerify").value;
+		var name = $("#newName").val();
+		var un = $("#newUsername").val();
+		var pw = $("#newPassword").val();
+		var pwv = $("#newPasswordVerify").val();
 
 		if(pw == pwv) {
 			//how to add user?
-			/*notifyListeners("addEntry", [
-				"users",
-				{name, un, pw},
-				function() {
-					document.querySelector('#loginSuccess');
-		            loginSuccess.textContent = 'NEW USER SUCCESS';
-		            loginSuccess.classList.remove("animatePopupMessage");
-		            loginSuccess.classList.add("animatePopupMessage");
-					if(isTutorial) {
-						$("#page-assets-tutorial").show();
-					}
-				}, 
-				function(message) {
-					document.querySelector('#loginSuccess');
-		            loginSuccess.textContent = 'FAILED: ' + message;
-		            loginSuccess.classList.remove("animatePopupMessage");
-		            loginSuccess.classList.add("animatePopupMessage");
-			}]);*/
+			notifyListeners("createUser2", [un, pw, function() {
+				console.log("created new user: " + name);
+			}]);
 		}
 		
 		if(isTutorial) {

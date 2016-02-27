@@ -17,10 +17,8 @@ var cordova = {
 		notification : {
 			local : {
 				schedule : function() {},
-				clearAll : function() {}
+				cancelAll : function() {}
 			}
 		}
 	}
 };
-
-cordova.plugins.notification.local.clearAll

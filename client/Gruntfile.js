@@ -1,11 +1,25 @@
 module.exports = function(grunt) {
   grunt.initConfig({
     jasmine : {
-      // Your project's source files
-      src : ['www/js/utility.js', 'www/js/**/*.js', 'www/js/*.js', 'www/spec/helpers/*.js'],
-      options : {
-        // Your Jasmine spec files
-        specs : 'www/spec/tests/*.js'
+      coverage: {
+        // Your project's source files
+        src : ['www/js/utility.js', 'www/js/**/*.js', 'www/js/*.js', 'www/spec/helpers/*.js'],
+        options : {
+          // Your Jasmine spec files
+          specs : 'www/spec/tests/*.js',
+          template: require('grunt-template-jasmine-istanbul'),
+          templateOptions: {
+            files: 'www/js/*.js',
+            coverage: 'bin/coverage/coverage.json',
+            report: 'bin/coverage',
+            // thresholds: {
+            //     lines: 75,
+            //     statements: 75,
+            //     branches: 75,
+            //     functions: 90
+            // }
+          }
+        }
       }
     },
     shell: {

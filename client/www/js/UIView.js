@@ -438,7 +438,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 
 		login(un, pw, function() {
 			console.log("here");
-		})
+		});
 		
 		if(isTutorial) {
 			$("#page-login-tutorial").html("NEXT");

@@ -96,7 +96,7 @@ var PageTransitions = function() {
 			hideButtons();
 			$("#menuBar").show();
 		});
-	}
+	};
 	
 	function hideButtons() {
 		$("#page-assets-tutorial").hide();

@@ -147,7 +147,8 @@ var NetworkManager = function() {
 	var sendInProgress = false;
 
 	function enqueueSend(method, data, page, success, fail) {
-		sendQueue.push({
+		if (checkLastModified()== true){
+			sendQueue.push({
 			method: method, 
 			data: data, 
 			page: page,
@@ -155,6 +156,14 @@ var NetworkManager = function() {
 			fail: fail
 		});
 		checkSend();
+		}
+		else{
+			statusCode: {
+    				409: function() {
+      				failCaseDataDump();
+      				}
+    			}
+		}
 	}
 
 	function checkSend() {
@@ -195,15 +204,7 @@ var NetworkManager = function() {
 		}
 	}
 
-	function defaultFail(data) {
-		statusCode: {
-			/* Unexpected token : error
-    			409: function() {
-      				failCaseDataDump();
-      			}
-			*/
-    		}
-	}
+	function defaultFail(data) { }
 
 	function defaultSuccess(data) { }
 

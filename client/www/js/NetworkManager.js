@@ -195,8 +195,26 @@ var NetworkManager = function() {
 		}
 	}
 
-	function defaultFail(data) { }
+	function defaultFail(data) {
+		statusCode: {
+    			409: function() {
+      				failCaseDataDump();
+      			}
+    		}
+	}
 
 	function defaultSuccess(data) { }
+
+	function failCaseDataDump() {
+		enqueueSend("GET", data, "user?getFull=true", function(data) {
+			console.log(data);
+			for (var key in data){
+
+
+				StorageManager.saveData(key,data[key], true);
+			}
+			success(data);
+		}, failure);
+	}; 
 
 };

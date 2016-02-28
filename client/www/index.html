@@ -16,7 +16,7 @@
 		<link rel="stylesheet" href="vendor/animate.css" />
 		<link rel="stylesheet" href="nativeDroid2-master/css/nativedroid2.css">
 		<link rel="stylesheet" href="css/style.css">
-		<link rel="stylesheet" href="DateBox/jtsage-datebox-4.0.0.jqm.min.css" />
+		<link rel="stylesheet" href="joyride/joyride-2.1.css">
 	</head>
 	<body>
 		<div data-role="page">
@@ -59,10 +59,10 @@
 				<div role="main" class="ui-content wow fadeIn" data-inset="false" data-wow-delay="0.2s">
 					<!--HEADER ABOVE, can copy paste-->
 					<p id='loginSuccess' class='attentionGrapper'></p>
-					<h3>Please log in</h3>
+					<h3 id="loginTitle">Please log in</h3>
 					<input id="username" type='text'>
 					<input id="password" type='password'>
-					<button id='login'>Login</button>
+					<button id="login">Login</button>
 					<a id='userPopup' href='#userPopupDialog'   data-rel='popup' data-position-to='window' data-role='button' data-icon='external-link' data-transition='pop' data-inline='true' class="ui-btn ui-btn-raised clr-primary">New User</a>
 					
 					<button id="page-login-tutorial">CONTINUE WITHOUT LOGIN</button>
@@ -279,7 +279,6 @@
 										<option value="On">On</option>
 									</select></div>
 								<div class="ui-block-b">
-									<!--<input class="form-control" id="budgetTime" type="text" data-role="datebox" data-options='{"mode":"timeflipbox", "closeCallback":"budgetNotify"}' /> -->
 									<input type="time" id="budgetTime">
 								</div>
 							</fieldset>
@@ -294,7 +293,6 @@
 									</select>
 								</div>
 								<div class="ui-block-b">
-									<!--<input class="form-control" id="trackTime" type="text" data-role="datebox" data-options='{"mode":"timeflipbox", "closeCallback":"trackNotify"}' /> -->
 									<input type="time" id="trackTime">
 								</div>
 							</fieldset>
@@ -317,16 +315,7 @@
 							</fieldset>
 						</div>
 						<p class="small">Set End Date</p>
-						<!-- <input class="form-control" id="endDate" type="text" data-role="datebox" data-options={"mode":"calbox"} /> -->
 						<input id="endDate" type="date">
-						<!--
-						<p class="center">Set minimum daily budget</p>				
-						<div class="ui-grid-b">
-							<div class="ui-block-a"><p id="minBudget">$10</p></div>
-							<div class="ui-block-b"><input type="number" id="setMinBudget" data-clear-btn="true" min="0"></div>
-							<div class="ui-block-c"><button class="ui-btn" id="buttonMinDaily">Update</button></div>
-						</div>
-						-->
 						<button class="ui-btn ui-btn-raised" id="page-options-tutorial">NEXT</button>
 					</fieldset>
 					<!--FOOTER BELOW, can copy paste-->
@@ -344,9 +333,27 @@
 					<button id = "noTutorial" class="ui-btn ui-btn-raised clr-warning"> NO </button>
 					<!--FOOTER BELOW, can copy paste-->
 				</div>
-			</div>
-			
+			</div>			
 		</div>
+		
+		<!-- ========================================================
+			TUTORIAL WALKTHROUGH
+		========================================================= -->
+		<ol id="joyRideLogin">
+		  <li data-id="loginTitle" data-text="Next">
+			<h2>Optional Login</h2>
+			<p>You can login here if you already have an account with us.</p>
+		  </li>
+		  <li data-id="userPopup" data-text="Next">
+			<h2>New User</h2>
+			<p>Don't already have an account? Create one here.</p>
+		  </li>
+		  <li data-id="page-login-tutorial" data-text="Close">
+			<h2>Skip Login</h2>
+			<p>Don't want to login? Totally fine. Click here.</p>
+		  </li>
+		</ol>
+		
 		<script type="text/javascript" src="cordova.js"></script>
 		<script src="vendor/jquery.min.js"></script>
 		<script src="vendor/jquery-ui.min.js"></script>
@@ -358,13 +365,11 @@
 			});
 		</script> 
 		<script src="vendor/jquery.mobile.min.js"></script>
-		<script type="text/javascript" src="DateBox/jtsage-datebox.jqm.min.js"
-		></script>	
-		<script type="text/javascript" src="DateBox/jtsage-datebox.lang.utf8.js"></script>
 		<script src="vendor/waves.min.js"></script>
 		<script src="vendor/wow.min.js"></script>
 		<script src="nativeDroid2-master/js/nativedroid2.js"></script>
 		<script src="nativeDroid2-master/nd2settings.js"></script>
+		<script src="joyride/jquery.joyride-2.1.js"></script>
 		<!-- ours -->
 		<script type="text/javascript" src="js/utility.js"></script>
 		<script type="text/javascript" src="js/ui/PageTransitions.js"></script>

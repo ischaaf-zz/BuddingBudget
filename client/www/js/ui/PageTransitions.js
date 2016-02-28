@@ -23,11 +23,14 @@ var PageTransitions = function() {
 	// The page currently being displayed
 	var activePage;
 
-	this.switchPage = function(pageID) {
+	this.switchPage = function(pageID, callback) {
 		if(activePage !== pageID) {
 			$("#" + activePage).fadeOut("fast", function() {
 				$("#titleText").text(pages[pageID]);
 				$("#" + pageID).fadeIn("fast");
+				if(callback !== null) {
+					callback();
+				}
 			});
 			activePage = pageID;
 		}
@@ -38,7 +41,7 @@ var PageTransitions = function() {
 	function setUpPageSwitch(pageID) {
 		//var pageIDs = Object.keys(pages);
 		$("#" + pageID + "-button").click(function() {
-			self.switchPage(pageID);
+			self.switchPage(pageID, null);
 		});
 	}
 
@@ -60,6 +63,13 @@ var PageTransitions = function() {
 	
 	//--tutorial page transitions--
 	
+	function joyLogin() {		
+		$("#joyRideLogin").joyride({
+			autoStart : true,
+			modal: true
+		});
+	}
+	
 	this.tutorialSetup = function() {
 		$("#page-main").hide();
 		$("#menuBar").hide();
@@ -67,32 +77,32 @@ var PageTransitions = function() {
 		activePage = "page-tutorial";
 		
 		$("#yesTutorial").click(function() {
-			self.switchPage("page-login");
+			self.switchPage("page-login", joyLogin);
 			showButtons();
 		});
 		
 		$("#page-login-tutorial").click(function() {
-			self.switchPage("page-assets");
+			self.switchPage("page-assets", null);
 		});
 		
 		$("#page-assets-tutorial").click(function() {
-			self.switchPage("page-savings");
+			self.switchPage("page-savings", null);
 		});
 		
 		$("#page-savings-tutorial").click(function() {
-			self.switchPage("page-income");
+			self.switchPage("page-income", null);
 		});
 		
 		$("#page-income-tutorial").click(function() {
-			self.switchPage("page-charges");
+			self.switchPage("page-charges", null);
 		});
 		
 		$("#page-charges-tutorial").click(function() {
-			self.switchPage("page-options");
+			self.switchPage("page-options", null);
 		});
 		
 		$("#page-options-tutorial").click(function() {
-			self.switchPage("page-main");
+			self.switchPage("page-main", null);
 			hideButtons();
 			$("#menuBar").show();
 		});

@@ -16,7 +16,7 @@
 		<link rel="stylesheet" href="vendor/animate.css" />
 		<link rel="stylesheet" href="nativeDroid2-master/css/nativedroid2.css">
 		<link rel="stylesheet" href="css/style.css">
-		<link rel="stylesheet" href="DateBox/jtsage-datebox-4.0.0.jqm.min.css" />
+		<link rel="stylesheet" href="joyride/joyride-2.1.css">
 	</head>
 	<body>
 		<div data-role="page">
@@ -46,7 +46,7 @@
 			</div>
 			<!-- /panel left -->
 
-			<div data-role="header" data-position="fixed" class="wow fadeIn">
+			<div data-role="header" data-position="fixed" data-tap-toggle="false"class="wow fadeIn">
 				<a href="#leftpanel" id="menuBar" class="ui-btn ui-btn-left wow fadeIn" data-wow-delay='0.8s'><i class="zmdi zmdi-menu"></i></a>
 				<h1 id="titleText" class="wow fadeIn" data-wow-delay='0.4s'></h1>
 			</div>
@@ -59,10 +59,10 @@
 				<div role="main" class="ui-content wow fadeIn" data-inset="false" data-wow-delay="0.2s">
 					<!--HEADER ABOVE, can copy paste-->
 					<p id='loginSuccess' class='attentionGrapper'></p>
-					<h3>Please log in</h3>
+					<h3 id="loginTitle">Please log in</h3>
 					<input id="username" type='text'>
 					<input id="password" type='password'>
-					<button id='login'>Login</button>
+					<button id="login">Login</button>
 					<a id='userPopup' href='#userPopupDialog'   data-rel='popup' data-position-to='window' data-role='button' data-icon='external-link' data-transition='pop' data-inline='true' class="ui-btn ui-btn-raised clr-primary">New User</a>
 					
 					<button id="page-login-tutorial">CONTINUE WITHOUT LOGIN</button>
@@ -163,7 +163,7 @@
 					<ul data-role="listview" data-icon="false" id="chargesList">
 					</ul>
 					<div>
-						<a href='#chargesPopupDialog' data-rel='popup' data-position-to='window' data-role='button' data-icon='external-link' data-transition='pop' data-inline='true' class="ui-btn ui-btn-raised clr-primary">Add Charge</a>
+						<a id="chargesPopup" href='#chargesPopupDialog' data-rel='popup' data-position-to='window' data-role='button' data-icon='external-link' data-transition='pop' data-inline='true' class="ui-btn ui-btn-raised clr-primary">Add Charge</a>
 					</div>
 					<button class="ui-btn ui-btn-raised" id="page-charges-tutorial">SKIP</button>
 					<!--FOOTER BELOW, can copy paste-->
@@ -198,7 +198,7 @@
 					<ul data-role="listview" data-icon="false" id="incomeList">
 					</ul>
 					<div>
-						<a href='#incomePopupDialog' data-rel='popup' data-position-to='window' data-role='button' data-icon='external-link' data-transition='pop' data-inline='true' class="ui-btn ui-btn-raised clr-primary">Add Income</a>
+						<a id="incomePopup" href='#incomePopupDialog' data-rel='popup' data-position-to='window' data-role='button' data-icon='external-link' data-transition='pop' data-inline='true' class="ui-btn ui-btn-raised clr-primary">Add Income</a>
 					</div>
 					<button class="ui-btn ui-btn-raised" id="page-income-tutorial">SKIP</button>
 					<!--FOOTER BELOW, can copy paste-->
@@ -279,7 +279,6 @@
 										<option value="On">On</option>
 									</select></div>
 								<div class="ui-block-b">
-									<!--<input class="form-control" id="budgetTime" type="text" data-role="datebox" data-options='{"mode":"timeflipbox", "closeCallback":"budgetNotify"}' /> -->
 									<input type="time" id="budgetTime">
 								</div>
 							</fieldset>
@@ -294,7 +293,6 @@
 									</select>
 								</div>
 								<div class="ui-block-b">
-									<!--<input class="form-control" id="trackTime" type="text" data-role="datebox" data-options='{"mode":"timeflipbox", "closeCallback":"trackNotify"}' /> -->
 									<input type="time" id="trackTime">
 								</div>
 							</fieldset>
@@ -317,17 +315,8 @@
 							</fieldset>
 						</div>
 						<p class="small">Set End Date</p>
-						<!-- <input class="form-control" id="endDate" type="text" data-role="datebox" data-options={"mode":"calbox"} /> -->
 						<input id="endDate" type="date">
-						<!--
-						<p class="center">Set minimum daily budget</p>				
-						<div class="ui-grid-b">
-							<div class="ui-block-a"><p id="minBudget">$10</p></div>
-							<div class="ui-block-b"><input type="number" id="setMinBudget" data-clear-btn="true" min="0"></div>
-							<div class="ui-block-c"><button class="ui-btn" id="buttonMinDaily">Update</button></div>
-						</div>
-						-->
-						<button class="ui-btn ui-btn-raised" id="page-options-tutorial">NEXT</button>
+						<button class="ui-btn ui-btn-raised" id="page-options-tutorial">FINISH</button>
 					</fieldset>
 					<!--FOOTER BELOW, can copy paste-->
 				</div>
@@ -344,9 +333,76 @@
 					<button id = "noTutorial" class="ui-btn ui-btn-raised clr-warning"> NO </button>
 					<!--FOOTER BELOW, can copy paste-->
 				</div>
-			</div>
-			
+			</div>			
 		</div>
+		
+		<!-- ========================================================
+			TUTORIAL WALKTHROUGH
+		========================================================= -->
+		<div id="joyPop">
+			<ol id="joyRideLogin">
+			  <li data-id="loginTitle" data-text="Next">
+				<h2>Optional Login</h2>
+				<p>You can login here if you already have an account with us.</p>
+			  </li>
+			  <li data-id="userPopup" data-text="Next">
+				<h2>New User</h2>
+				<p>Don't already have an account? Create one here.</p>
+			  </li>
+			  <li data-id="page-login-tutorial" data-text="Close">
+				<h2>Skip Login</h2>
+				<p>Don't want to login? Totally fine. Click here.</p>
+			  </li>
+			</ol>
+			
+			<ol id="joyRideAssets">
+			  <li data-id="setAssets" data-text="Next">
+				<h2>Required Field</h2>
+				<p>Input your assets - Which is the sum of the cash in your wallet and how much is in your bank account.</p>
+			  </li>
+			</ol>
+			
+			<ol id="joyRideSavings">
+			  <li data-id="savingsPopup" data-text="Next">
+				<h2>Optional</h2>
+				<p>Add a savings entry if you want. Saving entry is how much in your assets that should never be spent in your daily budget. (e.g. minimum bank account balance) </p>
+			  </li>
+			</ol>
+			
+			<ol id="joyRideIncome">
+			  <li data-id="incomePopup" data-text="Next">
+				<h2>Optional</h2>
+				<p>Add a reoccurring income entry if you want. (e.g. Your job) </p>
+			  </li>
+			</ol>
+			
+			<ol id="joyRideCharges">
+			  <li data-id="chargesPopup" data-text="Next">
+				<h2>Optional</h2>
+				<p>Add a reoccurring charge entry if you want. (e.g. Rent, cellphone bill, etc). </p>
+			  </li>
+			</ol>
+			
+			<ol id="joyRideOptions">
+			  <li data-id="endDate" data-text="Next">
+				<h2>Required</h2>
+				<p>You must set an end date. How long do you want your current budget plan to last?</p>
+			  </li>
+			  <li data-id="morningNotice" data-text="Next">
+				<h2>Optional</h2>
+				<p>Do you want to be notified about your budget daily?</p>
+			  </li>
+			  <li data-id="nightNotice" data-text="Next">
+				<h2>Optional</h2>
+				<p>Do you want to be notified to track your daily spending?</p>
+			  </li>
+			  <li data-id="assetNotice" data-text="Next">
+				<h2>Optional</h2>
+				<p>Do you want to be notified to update your assets at a regular interval of your choice?</p>
+			  </li>
+			</ol>
+		</div>
+		
 		<script type="text/javascript" src="cordova.js"></script>
 		<script src="vendor/jquery.min.js"></script>
 		<script src="vendor/jquery-ui.min.js"></script>
@@ -358,13 +414,11 @@
 			});
 		</script> 
 		<script src="vendor/jquery.mobile.min.js"></script>
-		<script type="text/javascript" src="DateBox/jtsage-datebox.jqm.min.js"
-		></script>	
-		<script type="text/javascript" src="DateBox/jtsage-datebox.lang.utf8.js"></script>
 		<script src="vendor/waves.min.js"></script>
 		<script src="vendor/wow.min.js"></script>
 		<script src="nativeDroid2-master/js/nativedroid2.js"></script>
 		<script src="nativeDroid2-master/nd2settings.js"></script>
+		<script src="joyride/jquery.joyride-2.1.js"></script>
 		<!-- ours -->
 		<script type="text/javascript" src="js/utility.js"></script>
 		<script type="text/javascript" src="js/ui/PageTransitions.js"></script>

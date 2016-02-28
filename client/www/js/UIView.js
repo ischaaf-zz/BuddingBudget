@@ -28,6 +28,7 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 			setTempData();
 		}
 		
+		$("#joyPop").hide();
 		if(isNew) {
 			//setup Tutorial
 			isTutorial = true;
@@ -80,19 +81,15 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		
 		if(value.isNotifyMorning == 'On') {
 			$("#morningNotice").val("On").flipswitch("refresh");
-			//$("#budgetTime").datebox('enable');
 			$("#budgetTime").attr('disabled', false);
 		} else {
-			//$("#budgetTime").datebox('disable');
 			$("#budgetTime").attr('disabled', true);
 		}
 		
 		if(value.isNotifyNight == 'On') {
 			$("#nightNotice").val("On").flipswitch("refresh");
-			//$("#trackTime").datebox('enable');
 			$("#nightNotice").attr('disabled', false);
 		} else {
-			//$("#trackTime").datebox('disable');
 			$("#nightNotice").attr('disabled', true);
 		}
 		
@@ -114,7 +111,6 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 			var theDate = getData("endDate");
 			var newDate = new Date(theDate);
 			$("#endDate").val(dateToDateInput(newDate));
-			// $("#endDate").datebox('setTheDate', newDate).trigger('datebox', {'method':'doset'});
 		}
 		
 		
@@ -122,25 +118,14 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 			//load times
 			var budgetTime = value.notifyMorningTime;
 			var newDateA = new Date(budgetTime);
-			//console.log(dateToTimeInput(newDateA));
-			//$("#budgetTime").datebox('setTheDate', newDateA).trigger('datebox', {'method':'doset'});
 			$("#budgetTime").val(dateToTimeInput(newDateA));
 		}
 		
 		if(value.notifyNightTime !== undefined) {
 			var trackTime = value.notifyNightTime;
 			var newDateB = new Date(trackTime);
-			//$("#trackTime").datebox('setTheDate', newDateB).trigger('datebox', {'method':'doset'});
 			$("#trackTime").val(dateToTimeInput(newDateB));
 		}
-		
-		/* No longer used
-		//load min daily budget
-		if(value.minDailyBudget !== undefined) {
-			$("#minBudget").html("$" + value.minDailyBudget);
-		} else {
-			$("#minBudget").html("");
-		} */
 	});
 	
 	//-----------------LISTENERS----------------------
@@ -163,21 +148,16 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		var value = getData("options");
 		
 		$("#minBudget").html("$" + value.minDailyBudget);
-		//console.log(value);
 		
 		if(value.isNotifyMorning == 'On') {
-			//$("#budgetTime").datebox('enable');
 			$("#budgetTime").attr('disabled', false);
 		} else {
-			//$("#budgetTime").datebox('disable');
 			$("#budgetTime").attr('disabled', true);
 		}
 		
 		if(value.isNotifyNight == 'On') {
-			//$("#trackTime").datebox('enable');
 			$("#trackTime").attr('disabled', false);
 		} else {
-			//$("#trackTime").datebox('disable');
 			$("#trackTime").attr('disabled', true);
 		}
 		
@@ -712,24 +692,6 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 			console.log("FAILURE: " + message);
 		}]);
 	});
-	
-	/*
-	//callback for dateboxes
-	window.budgetNotify = function(date, initDate, duration, custom, cancelClose) {
-		notifyListeners("setOption", ["notifyMorningTime", date.date.getTime(), function() {
-			//success
-		}, function(message) {
-			//failure
-		}]);
-	};
-	
-	window.trackNotify = function(date, initDate, duration, custom, cancelClose) {
-		notifyListeners("setOption", ["notifyNightTime", date.date.getTime(), function() {
-			//success
-		}, function(message) {
-			//failure
-		}]);
-	}; */
 	
 	$("#budgetTime").change(function() {
 		var val = timeInputToDate($("#budgetTime").val()).getTime();

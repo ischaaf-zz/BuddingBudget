@@ -45,7 +45,6 @@ var UserSchema = new Schema ({
   password: {type: String, required: true},
   lastModified: {type: Date, required : true},
   data: {
-    budget: Number,
     assets: Number,
     endDate: Date,
     rollover: Number,
@@ -54,7 +53,7 @@ var UserSchema = new Schema ({
     income: [IncomeEntry],
     charges: [ChargeEntry],
     entries: [TrackEntry],
-    userOptions: { 
+    options: { 
       isNotifyMorning: Boolean,
       isNotifyNight: Boolean,
       isNotifyAssets: Boolean,

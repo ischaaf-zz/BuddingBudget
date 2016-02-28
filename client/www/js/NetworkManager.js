@@ -30,49 +30,24 @@ var NetworkManager = function() {
 
 
 	
-	//var lastModified;
+	var lastModified = "";
+	localforage.getItem('lastModified', function(err, val) {
+		lastModified = val;
+	});
 
 	function updateLastModified(newDate){
-		if(!localStorage.getItem('lastModified')) {
-  			populateStorage();
-			}
-		else {
-		localStorage.setItem('lastModified', newDate);
-		}
+		lastModified = newDate;
+		localforage.setItem('lastModified', newDate);
 	}
 
-	function populateStorage(){
-		localStorage.setItem('lastModified','');
-	}
-	function checkLastModified(data){
-		if (localStorage.getItem('lastModified')== data.lastModified){
-			return true;
-		}
-		else{
-			return false;
-		}
-		
+	function getLastModified() {
+		return lastModified;
+		// return localforage.getItem('lastModified');
 	}
 
-	function createUser(user, pass, success){
-		$.ajax({
-    	url : "AJAX_POST_URL",
-    	type: "POST",
-    	data : user,
-    	success: function(data, textStatus, jqXHR)
-    	{
-        //data - response from server
-    	},
-    	error: function (jqXHR, textStatus, errorThrown)
-    	{
-    	alert("Something went wrong");
-    	}
-		});
-
-	}
-	this.createUser2 = function(user, pass, success) {
+	this.addUser = function(user, pass, name, success) {
 		console.log("Creating user");
-		enqueueSend("POST", {username: user, password: pass}, "user created", success, defaultFail);
+		enqueueSend("POST", {username: user, password: pass, name: name, token: "pmlWoKIm2XSes7jBHdPtl8UtGgiSnn1PW8xMFPQ1N2X5c1uY9fa3Zu3QYNODkpuy"}, "user", success, defaultFail);
 	};
 
 
@@ -82,12 +57,12 @@ var NetworkManager = function() {
 	};
 
 	this.fetchInitialData = function(success, failure) {
-		enqueueSend("GET", {}, "?mode=full", function(data) {
+		enqueueSend("GET", {}, "user?mode=full", function(data) {
 			console.log(data);
 			//lastModified = data.lastModified;
 			updateLastModified(data.lastModified);
 			console.log("updated lastModified");
-			success(data);
+			success(data.data);
 		}, failure);
 	};
 
@@ -135,21 +110,14 @@ var NetworkManager = function() {
 
 	};
 
-	var loginMessage = {
-		method: "POST",
-		data: {username: 'ischaaf', password: 'buddingbudget'},
-		page: 'login',
-		success: defaultSuccess,
-		fail: defaultFail
-	};
-
-	var sendQueue = [loginMessage];
-	//var sendQueue = [];
+	var sendQueue = [];
 	var sendInProgress = false;
 
 	function enqueueSend(method, data, page, success, fail) {
-		if(checkLastModified(data)) {
-			sendQueue.push({
+		if (method != 'GET') {
+			data.lastModified = getLastModified();
+		}
+		sendQueue.push({
 			method: method, 
 			data: data, 
 			page: page,
@@ -157,14 +125,6 @@ var NetworkManager = function() {
 			fail: fail
 		});
 		checkSend();
-		} else {
-			// TODO	
-			//statusCode: {
-	    			//409: function() {
-	      			//failCaseDataDump();
-	      			//}
-	    		//}
-		}
 	}
 
 	function checkSend() {
@@ -177,26 +137,33 @@ var NetworkManager = function() {
 		}
 	}
 
-	function sendAjax(method, data, page, success, fail) {
+	function sendAjax(method, sendData, page, success, fail) {
 		if(NETWORK_ENABLED) {
-			//lastModified = data.lastModified;
-			updateLastModified(data.lastModified);
+			
 			$.ajax({
 				method: method,
-				url: "www.bbapi.ischaaf.com" + page,
-				data: data
+				url: "http://bbapi.ischaaf.com/" + page,
+				data: sendData
 			}).done(function(data) {
 				console.log("SUCCESS - request: " + method + " - " + page + " with data: " + JSON.stringify(data));
-				if (data.modified) {
-					console.log("Updating lastModified time to: " + data.modified);
-					//lastModified = data.lastModified;
+				if (data.lastModified) {
+					console.log("Updating lastModified time to: " + data.lastModified);
 					updateLastModified(data.lastModified);
 				} else {
 					console.log("Request returned no lastModified time");
 				}
 				success(data);
 			}).fail(function(data) {
-				console.log("FAILURE - request: " + method + " - " + page + " with data: " + JSON.stringify(data));
+				console.log("FAILURE - request: " + method + " - " + page + " (" + data.status + ") with data: " + JSON.stringify(data));
+				// check for fail conditions
+				if (data.status == 409) {
+					// conflict, we need to get the latest data
+					console.log("Conflict, updating data...");
+					updateData();
+					enqueueSend(method, sendData, page, success, fail);
+				} else if (data.status == 401) {
+					// we need to login
+				}
 				fail(data);
 			}).always(function() { 
 				sendInProgress = false; 
@@ -205,20 +172,18 @@ var NetworkManager = function() {
 		}
 	}
 
+	function updateData() {
+		enqueueSend("GET", {}, "user?mode=full", function(data) {
+			console.log("UPDATING DATA to timestamp: " + data.lastModified);
+			updateLastModified(data.lastModified);
+			console.log("updated lastModified");
+			for(var key in data.data) {
+				localforage.setItem(key, data.data[key]);
+			}
+		}, function() { });
+	}
+
 	function defaultFail(data) { }
 
 	function defaultSuccess(data) { }
-
-	/*function failCaseDataDump() {
-		enqueueSend("GET", data, "user?getFull=true", function(data) {
-			console.log(data);
-			for (var key in data){
-
-
-				StorageManager.saveData(key,data[key], true);
-			}
-			success(data);
-		}, failure);
-	} */
-
 };

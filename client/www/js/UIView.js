@@ -1,7 +1,7 @@
 // THIS FILE SHOULD BE THE ONLY PLACE THE DOM IS MANIPULATED
 // Handles sending new data and commands out from the DOM, and
 // putting new updated data into the DOM.
-var UIView = function(getData, setDataListener, login, setNetworkListener) {
+var UIView = function(getData, setDataListener, login, createUser, setNetworkListener) {
 	// events: updateAssets, trackSpending, setOption, 
 	//		   addEntry, changeEntry, removeEntry
 	var callbacks = {};
@@ -450,12 +450,13 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		var un = $("#newUsername").val();
 		var pw = $("#newPassword").val();
 		var pwv = $("#newPasswordVerify").val();
-
+		console.log("Add User");
 		if(pw == pwv) {
+			console.log("passwords verified");
 			//how to add user?
-			notifyListeners("createUser2", [un, pw, function() {
+			createUser(un, pw, name, function() {
 				console.log("created new user: " + name);
-			}]);
+			});
 		}
 		
 		if(isTutorial) {

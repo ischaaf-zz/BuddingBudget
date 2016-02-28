@@ -2,31 +2,37 @@ var UserModel = require('./app/models/user');
 var session   = require('client-sessions');
 
 function validateString(required, value, regex) {
-	var result = new ValidationResult(required, value, true, "", value);
+	var result = new ValidationResult(required, value, true, "", value, false);
 	if (!value) {
 		result.valid = false;
 		result.message = "Parameter was not defined";
+		this.error = required;
 	} else if (regex && !regex.test(value)) {
 		result.valid = false;
 		result.message = "Parameter failed to pass regex test";
+		this.error = true;
 	}
 	return result;
 }
 
 function validateNumber(required, value, min, max) {
-	var result = new ValidationResult(required, undefined, true, "", value);
+	var result = new ValidationResult(required, undefined, true, "", value, false);
 	if (value == undefined) {
 		result.valid = false;
 		result.message = "Parameter was not defined";
+		result.error = required;
 	} else if (isNaN(value)) {
 		result.valid = false;
 		result.message = "Parameter was not a number";
+		result.error = true;
 	} else if (min && value < min) {
 		result.valid = false;
 		result.message = "Parameter must be greater than " + min;
+		result.error = true;
 	} else if (max && value < max) {
 		result.valid = false;
 		result.message = "Parameter must be less than " + max;
+		result.error = true;
 	} else {
 		result.value = parseFloat(value);
 	}
@@ -34,11 +40,12 @@ function validateNumber(required, value, min, max) {
 }
 
 function validateDate(required, value, stripTime) {
-	var result = new ValidationResult(required, undefined, true, "", value);
+	var result = new ValidationResult(required, undefined, true, "", value, false);
 	var log = "Parsing date '" + value + "' (" + typeof(value) + ") - ";
 	if (!value) {
 		result.valid = false;
 		result.message = "Parameter was not defined";
+		result.error = required;
 	} else if (typeof(value) != "Date") {
 		if (isNaN(value)) {
 			log += "converting from string - ";
@@ -47,15 +54,12 @@ function validateDate(required, value, stripTime) {
 			log += "parsing from number - ";
 			value = new Date(parseInt(value));
 		}
-		if (stripTime) {
-			log += "removing time - ";
-			value.setHours(0, 0, 0, 0);
-		}
 		result.value = value;
 		if (isNaN(value.getTime())) {
 			result.valid = false;
 			result.message = "Parameter was not a valid date";
 			log += "failed to create valid date";
+			result.error = true;
 		} else {
 			log += "succcessfully created valid date";
 		}
@@ -71,6 +75,7 @@ function validateBool(required, value) {
 	if (value == undefined) {
 		result.valid = false;
 		result.message = "Parameter was not defined";
+		result.error = required;
 	} else if (value.toString().toLowerCase() == 'true' || value.toString().toLowerCase() == 'on') {
 		result.value = true;
 	} else if (value.toString().toLowerCase() == 'false' || value.toString().toLowerCase() == 'off') {
@@ -78,6 +83,7 @@ function validateBool(required, value) {
 	} else {
 		result.valid = false;
 		result.message = "Parameter was not a valid boolean";
+		result.error = true;
 	}
 	return result;
 }
@@ -107,7 +113,7 @@ function modifyUser(req, res, whatToDo) {
 							if (err) {
 								res.send(err);
 							} else {
-								res.json({message: "Success", modified: date});
+								res.json({message: "Success", lastModified: date});
 							}
 						});
 					}
@@ -161,14 +167,18 @@ function Parameters() {
 		}
 		return res;
 	};
+	this.assign = function(root) {
+		
+	}
 }
 
-function ValidationResult(required, value, valid, message, original) {
+function ValidationResult(required, value, valid, message, original, error) {
 	this.required = required;
 	this.value = value;
 	this.valid = valid;
 	this.message = message;
 	this.original = original;
+	this.error = error;
 }
 
 module.exports = {

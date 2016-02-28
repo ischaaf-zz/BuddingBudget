@@ -25,28 +25,28 @@ router.put('/', function(req, res, next) {
         params.entries["minDailyBudget"] = utils.validateNumber(false, req.body.minDailyBudget);
 
     	if (params.entries["isNotifyMorning"].valid) 
-    		user.data.userOptions.isNotifyMorning = params.entries["isNotifyMorning"].value;
+    		user.data.options.isNotifyMorning = params.entries["isNotifyMorning"].value;
     	if (params.entries["isNotifyNight"].valid) 
-    		user.data.userOptions.isNotifyNight = params.entries["isNotifyNight"].value;
+    		user.data.options.isNotifyNight = params.entries["isNotifyNight"].value;
     	if (params.entries["isNotifyAssets"].valid) 
-    		user.data.userOptions.isNotifyAssets = params.entries["isNotifyAssets"].value;
+    		user.data.options.isNotifyAssets = params.entries["isNotifyAssets"].value;
     	if (params.entries["notifyMorningTime"].valid) 
-    		user.data.userOptions.notifyMorningTime = params.entries["notifyMorningTime"].value;
+    		user.data.options.notifyMorningTime = params.entries["notifyMorningTime"].value;
     	if (params.entries["notifyNightTime"].valid) 
-    		user.data.userOptions.notifyNightTime = params.entries["notifyNightTime"].value;
+    		user.data.options.notifyNightTime = params.entries["notifyNightTime"].value;
     	if (params.entries["notifyAssetsPeriod"].valid) 
-    		user.data.userOptions.notifyAssetsPeriod = params.entries["notifyAssetsPeriod"].value;
+    		user.data.options.notifyAssetsPeriod = params.entries["notifyAssetsPeriod"].value;
         if (params.entries["isEnableTracking"].valid) 
-            user.data.userOptions.isEnableTracking = params.entries["isEnableTracking"].value;
+            user.data.options.isEnableTracking = params.entries["isEnableTracking"].value;
         if (params.entries["minDailyBudget"].valid) 
-            user.data.userOptions.minDailyBudget = params.entries["minDailyBudget"].value;
+            user.data.options.minDailyBudget = params.entries["minDailyBudget"].value;
     	return true;
     });
 });
 
 router.get('/', function(req, res, next) {
     utils.getUser(req, res, function(req, res, user) {
-    	res.json(user.data.userOptions);
+    	res.json(user.data.options);
     });
 });
 

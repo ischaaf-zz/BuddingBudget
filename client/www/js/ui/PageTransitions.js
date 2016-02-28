@@ -23,13 +23,13 @@ var PageTransitions = function() {
 	// The page currently being displayed
 	var activePage;
 
-	this.switchPage = function(pageID, callback) {
+	this.switchPage = function(pageID, name) {
 		if(activePage !== pageID) {
 			$("#" + activePage).fadeOut("fast", function() {
 				$("#titleText").text(pages[pageID]);
 				$("#" + pageID).fadeIn("fast");
-				if(callback !== null) {
-					callback();
+				if(name !== undefined) {
+					joyStart(name);
 				}
 			});
 			activePage = pageID;
@@ -63,10 +63,13 @@ var PageTransitions = function() {
 	
 	//--tutorial page transitions--
 	
-	function joyLogin() {		
-		$("#joyRideLogin").joyride({
+	function joyStart(name) {		
+		$(name).joyride({
 			autoStart : true,
-			modal: true
+			modal: true,
+			postRideCallback: function() {
+				$(this).joyride('destroy');
+			}
 		});
 	}
 	
@@ -77,32 +80,32 @@ var PageTransitions = function() {
 		activePage = "page-tutorial";
 		
 		$("#yesTutorial").click(function() {
-			self.switchPage("page-login", joyLogin);
+			self.switchPage("page-login", "#joyRideLogin");
 			showButtons();
 		});
 		
 		$("#page-login-tutorial").click(function() {
-			self.switchPage("page-assets", null);
+			self.switchPage("page-assets", "#joyRideAssets");
 		});
 		
 		$("#page-assets-tutorial").click(function() {
-			self.switchPage("page-savings", null);
+			self.switchPage("page-savings", "#joyRideSavings");
 		});
 		
 		$("#page-savings-tutorial").click(function() {
-			self.switchPage("page-income", null);
+			self.switchPage("page-income", "#joyRideIncome");
 		});
 		
 		$("#page-income-tutorial").click(function() {
-			self.switchPage("page-charges", null);
+			self.switchPage("page-charges", "#joyRideCharges");
 		});
 		
 		$("#page-charges-tutorial").click(function() {
-			self.switchPage("page-options", null);
+			self.switchPage("page-options", "#joyRideOptions");
 		});
 		
 		$("#page-options-tutorial").click(function() {
-			self.switchPage("page-main", null);
+			self.switchPage("page-main");
 			hideButtons();
 			$("#menuBar").show();
 		});

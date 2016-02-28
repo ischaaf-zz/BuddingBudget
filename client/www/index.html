@@ -163,7 +163,7 @@
 					<ul data-role="listview" data-icon="false" id="chargesList">
 					</ul>
 					<div>
-						<a href='#chargesPopupDialog' data-rel='popup' data-position-to='window' data-role='button' data-icon='external-link' data-transition='pop' data-inline='true' class="ui-btn ui-btn-raised clr-primary">Add Charge</a>
+						<a id="chargesPopup" href='#chargesPopupDialog' data-rel='popup' data-position-to='window' data-role='button' data-icon='external-link' data-transition='pop' data-inline='true' class="ui-btn ui-btn-raised clr-primary">Add Charge</a>
 					</div>
 					<button class="ui-btn ui-btn-raised" id="page-charges-tutorial">SKIP</button>
 					<!--FOOTER BELOW, can copy paste-->
@@ -198,7 +198,7 @@
 					<ul data-role="listview" data-icon="false" id="incomeList">
 					</ul>
 					<div>
-						<a href='#incomePopupDialog' data-rel='popup' data-position-to='window' data-role='button' data-icon='external-link' data-transition='pop' data-inline='true' class="ui-btn ui-btn-raised clr-primary">Add Income</a>
+						<a id="incomePopup" href='#incomePopupDialog' data-rel='popup' data-position-to='window' data-role='button' data-icon='external-link' data-transition='pop' data-inline='true' class="ui-btn ui-btn-raised clr-primary">Add Income</a>
 					</div>
 					<button class="ui-btn ui-btn-raised" id="page-income-tutorial">SKIP</button>
 					<!--FOOTER BELOW, can copy paste-->
@@ -316,7 +316,7 @@
 						</div>
 						<p class="small">Set End Date</p>
 						<input id="endDate" type="date">
-						<button class="ui-btn ui-btn-raised" id="page-options-tutorial">NEXT</button>
+						<button class="ui-btn ui-btn-raised" id="page-options-tutorial">FINISH</button>
 					</fieldset>
 					<!--FOOTER BELOW, can copy paste-->
 				</div>
@@ -339,20 +339,69 @@
 		<!-- ========================================================
 			TUTORIAL WALKTHROUGH
 		========================================================= -->
-		<ol id="joyRideLogin">
-		  <li data-id="loginTitle" data-text="Next">
-			<h2>Optional Login</h2>
-			<p>You can login here if you already have an account with us.</p>
-		  </li>
-		  <li data-id="userPopup" data-text="Next">
-			<h2>New User</h2>
-			<p>Don't already have an account? Create one here.</p>
-		  </li>
-		  <li data-id="page-login-tutorial" data-text="Close">
-			<h2>Skip Login</h2>
-			<p>Don't want to login? Totally fine. Click here.</p>
-		  </li>
-		</ol>
+		<div id="joyPop">
+			<ol id="joyRideLogin">
+			  <li data-id="loginTitle" data-text="Next">
+				<h2>Optional Login</h2>
+				<p>You can login here if you already have an account with us.</p>
+			  </li>
+			  <li data-id="userPopup" data-text="Next">
+				<h2>New User</h2>
+				<p>Don't already have an account? Create one here.</p>
+			  </li>
+			  <li data-id="page-login-tutorial" data-text="Close">
+				<h2>Skip Login</h2>
+				<p>Don't want to login? Totally fine. Click here.</p>
+			  </li>
+			</ol>
+			
+			<ol id="joyRideAssets">
+			  <li data-id="setAssets" data-text="Next">
+				<h2>Required Field</h2>
+				<p>Input your assets.</p>
+			  </li>
+			</ol>
+			
+			<ol id="joyRideSavings">
+			  <li data-id="savingsPopup" data-text="Next">
+				<h2>Optional</h2>
+				<p>Add a savings entry if you want.</p>
+			  </li>
+			</ol>
+			
+			<ol id="joyRideIncome">
+			  <li data-id="incomePopup" data-text="Next">
+				<h2>Optional</h2>
+				<p>Add a reocurring income entry if you want.</p>
+			  </li>
+			</ol>
+			
+			<ol id="joyRideCharges">
+			  <li data-id="chargesPopup" data-text="Next">
+				<h2>Optional</h2>
+				<p>Add a reocurring entry if you want.</p>
+			  </li>
+			</ol>
+			
+			<ol id="joyRideOptions">
+			  <li data-id="endDate" data-text="Next">
+				<h2>Required</h2>
+				<p>You must set an end date.</p>
+			  </li>
+			  <li data-id="morningNotice" data-text="Next">
+				<h2>Optional</h2>
+				<p>Do you want to be notified about your budget daily?</p>
+			  </li>
+			  <li data-id="nightNotice" data-text="Next">
+				<h2>Optional</h2>
+				<p>Do you want to be notified to track your daily spending?</p>
+			  </li>
+			  <li data-id="assetNotice" data-text="Next">
+				<h2>Optional</h2>
+				<p>Do you want to be notified to update your assets at a regular interval of your choice?</p>
+			  </li>
+			</ol>
+		</div>
 		
 		<script type="text/javascript" src="cordova.js"></script>
 		<script src="vendor/jquery.min.js"></script>

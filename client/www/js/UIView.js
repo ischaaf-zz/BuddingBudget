@@ -28,6 +28,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 			setTempData();
 		}
 		
+		$("#joyPop").hide();
 		if(isNew) {
 			//setup Tutorial
 			isTutorial = true;
@@ -35,7 +36,7 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 			pageTransitions.tutorialSetup();
 			
 			$("#noTutorial").click(function() {
-				pageTransitions.switchPage("page-main", null);
+				pageTransitions.switchPage("page-main");
 				$("#menuBar").show();
 				isTutorial = false;
 			});
@@ -716,31 +717,6 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 	$("#resetStorage").click(function() {
 		clearStorage();
 		$("#resetNote").html("Storage cleared. Reload/reopen app to see default state.");
-	});
-	
-	//--------------------------------------
-	// 			Tutorial
-	//--------------------------------------
-	
-	$("#yesTutorial").click(function() {
-		// setup tour
-		/*
-		var tour = new Tour({
-			name: 'myTour'
-		});
-		
-		tour.addSteps([
-		  {
-			element: "#loginTitle",
-			title: "Login",
-			content: "Input your username and password then hit LOGIN if you already have an account."
-		  }
-		]);
-		
-		console.log(tour);
-		
-		tour.init();
-		tour.start(); */
 	});
 	
 	//----------------------------------------------//

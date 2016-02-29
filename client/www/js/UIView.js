@@ -86,11 +86,12 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 			$("#budgetTime").attr('disabled', true);
 		}
 		
+		console.log(value.isNotifyNight);
 		if(value.isNotifyNight == 'On') {
 			$("#nightNotice").val("On").flipswitch("refresh");
-			$("#nightNotice").attr('disabled', false);
+			$("#trackTime").attr('disabled', false);
 		} else {
-			$("#nightNotice").attr('disabled', true);
+			$("#trackTime").attr('disabled', true);
 		}
 		
 		if(value.isNotifyAssets == 'On') {

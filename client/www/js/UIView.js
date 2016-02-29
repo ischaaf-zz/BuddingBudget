@@ -88,9 +88,9 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		
 		if(value.isNotifyNight == 'On') {
 			$("#nightNotice").val("On").flipswitch("refresh");
-			$("#nightNotice").attr('disabled', false);
+			$("#trackTime").attr('disabled', false);
 		} else {
-			$("#nightNotice").attr('disabled', true);
+			$("#trackTime").attr('disabled', true);
 		}
 		
 		if(value.isNotifyAssets == 'On') {
@@ -242,7 +242,6 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		input.class = "updateVal";
 		input.type="number";
 		var p = document.createElement('p');
-		p.classList.add("attentionGrapper");
 		$("#" + uuid + " > p").on("webkitAnimationEnd", function() {
 			this.className = "";
 			this.textContent = "";
@@ -303,7 +302,6 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		input.class = "updateVal";
 		input.type="number";
 		var p = document.createElement('p');
-		p.classList.add("attentionGrapper");
 		$("#" + uuid + " > p").on("webkitAnimationEnd", function() {
 			this.className = "";
 			this.textContent = "";
@@ -361,17 +359,12 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 			save,
 			//catName,
 			function() {
-			var p = document.getElementById(uuid).getElementsByTagName('p')[0];
-            p.html = 'CHANGED ' + category.toUpperCase() + ' SUCCESS';
-            p.classList.remove("animatePopupMessage");          
-            p.classList.add("animatePopupMessage");
+			$("#titleText").notify("ADD " + category.toUpperCase() + " SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
+			document.getElementById(uuid).getElementsByTagName('p')[0].value = "";
        	}, function(message) {
-			var p = document.getElementById(uuid).getElementsByTagName('p')[0];
-            p.html = 'FAILED: ' + message;
-            p.classList.remove("animatePopupMessage");          
-            p.classList.add("animatePopupMessage");
+			document.getElementById(uuid).remove();
+			$("#titleText").notify("FAILURE: " + message, {position:"bottom center", autoHideDelay:1500, arrowShow:false});
 		}]);
-		document.getElementById(uuid).getElementsByTagName('p')[0].value = "";
 	}
 
 	//used for changeEntry
@@ -380,15 +373,9 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 			catName,
 			save,
 			function() {
-			var p = document.getElementById(uuid).getElementsByTagName('p')[0];
-            p.textContent = 'CHANGED ' + category.toUpperCase() + ' SUCCESS';
-            p.classList.remove("animatePopupMessage");          
-            p.classList.add("animatePopupMessage");
+			$("#titleText").notify("UPDATE " + category.toUpperCase() + " SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
 		}, function(message) {
-			var p = document.getElementById(uuid).getElementsByTagName('p')[0];
-            p.textContent = 'FAILED: ' + message;
-            p.classList.remove("animatePopupMessage");          
-            p.classList.add("animatePopupMessage");
+			$("#titleText").notify("FAILURE: " + message, {position:"bottom center", autoHideDelay:1500, arrowShow:false});
 		}]);
 
 		document.getElementById(uuid).getElementsByTagName('p')[0].value = "";
@@ -396,15 +383,9 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 
 	function notifyTrackSpend(tracked, spendType) {
 		notifyListeners("trackSpending", [tracked, spendType, function() {
-			document.querySelector('#trackSuccess');
-            trackSuccess.textContent = 'TRACK SPENDING SUCCESS';
-            trackSuccess.classList.remove("animatePopupMessage");
-            trackSuccess.classList.add("animatePopupMessage");
+			$("#buttonTrack").notify("TRACK SPENDING SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false, gap:15});
 		}, function(message) {
-			document.querySelector('#trackSuccess');
-            trackSuccess.textContent = 'FAILED: ' + message;
-            trackSuccess.classList.remove("animatePopupMessage");
-            trackSuccess.classList.add("animatePopupMessage");
+			$("#buttonTrack").notify("FAILURE: " + message, {position:"bottom center", autoHideDelay:1500, arrowShow:false, gap:15});
 		}]);
 	}
 
@@ -589,18 +570,12 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 	//--------------------------------------
 	$("#buttonAssets").click(function() {
 		notifyListeners("updateAssets", [parseInt($("#setAssets").val()), function() {
-			document.querySelector('#assetsSuccess');
-            assetsSuccess.textContent = 'CHANGED ASSETS SUCCESS';
-            assetsSuccess.classList.remove("animatePopupMessage");
-            assetsSuccess.classList.add("animatePopupMessage");
+		   $("#buttonAssets").notify("CHANGED ASSETS SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false, gap:15});
 			if(isTutorial) {
 				$("#page-assets-tutorial").show();
 			}
 		}, function(message) {
-			document.querySelector('#assetsSuccess');
-            assetsSuccess.textContent = 'FAILED: ' + message;
-            assetsSuccess.classList.remove("animatePopupMessage");
-            assetsSuccess.classList.add("animatePopupMessage");
+			$("#buttonAssets").notify('FAILED: ' + message, {position:"bottom center", autoHideDelay:1500, arrowShow:false, gap:15});
 		}]);
 		document.getElementById("setAssets").value = "";
 	});
@@ -689,7 +664,7 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 				isTutorial = false;
 			}
 		}, function(message) {
-			console.log("FAILURE: " + message);
+			$("#endDate").notify("FAILURE: " + message);
 		}]);
 	});
 	
@@ -719,24 +694,6 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		clearStorage();
 		$("#resetNote").html("Storage cleared. Reload/reopen app to see default state.");
 	});
-	
-	//----------------------------------------------//
-	// This is just an animation for popup callback, 
-    // Not part of popup functionality.
-    $("#popupMessageTarget").on("webkitAnimationEnd", function() {
-		this.className = "";
-		this.textContent = "";
-    });
-	
-	$("#assetsSuccess").on("webkitAnimationEnd", function() {
-		this.className = "";
-		this.textContent = "";
-    });
-	
-	$("#trackSuccess").on("webkitAnimationEnd", function() {
-		this.className = "";
-		this.textContent = "";
-    });
 
 	//----------------------------------------------//
 

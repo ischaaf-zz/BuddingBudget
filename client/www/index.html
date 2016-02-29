@@ -58,7 +58,6 @@
 			<div id="page-login">
 				<div role="main" class="ui-content wow fadeIn" data-inset="false" data-wow-delay="0.2s">
 					<!--HEADER ABOVE, can copy paste-->
-					<p id='loginSuccess' class='attentionGrapper'></p>
 					<h3 id="loginTitle">Please log in</h3>
 					<input id="username" type='text'>
 					<input id="password" type='password'>
@@ -117,7 +116,6 @@
 					<input id="setAssets" data-controller="input-value" type="number" min="0">
 					<button class="ui-btn ui-btn-raised clr-primary" id="buttonAssets">Update</button>
 					<button class="ui-btn ui-btn-raised" id="page-assets-tutorial">NEXT</button>
-					<p id='assetsSuccess' class='attentionGrapper'></p>
 					<!--FOOTER BELOW, can copy paste-->
 				</div>
 			</div>
@@ -234,7 +232,6 @@
 					<p id="lastUpdateSpending">"Last Update: "</p>
 					<input id="setTrack" data-controller="input-value" type="number" min="0">
 					<button class="ui-btn ui-btn-raised clr-primary" id="buttonTrack">Update</button>
-					<p id='trackSuccess' class='attentionGrapper'></p>
 				</div>
 			</div>
 			
@@ -279,7 +276,7 @@
 										<option value="On">On</option>
 									</select></div>
 								<div class="ui-block-b">
-									<input type="time" id="budgetTime">
+									<input class="inputBox" type="time" id="budgetTime">
 								</div>
 							</fieldset>
 						</div>
@@ -293,7 +290,7 @@
 									</select>
 								</div>
 								<div class="ui-block-b">
-									<input type="time" id="trackTime">
+									<input class="inputBox" type="time" id="trackTime">
 								</div>
 							</fieldset>
 						</div>
@@ -419,6 +416,7 @@
 		<script src="nativeDroid2-master/js/nativedroid2.js"></script>
 		<script src="nativeDroid2-master/nd2settings.js"></script>
 		<script src="joyride/jquery.joyride-2.1.js"></script>
+		<script src="Notify/notify.min.js"></script>
 		<!-- ours -->
 		<script type="text/javascript" src="js/utility.js"></script>
 		<script type="text/javascript" src="js/ui/PageTransitions.js"></script>

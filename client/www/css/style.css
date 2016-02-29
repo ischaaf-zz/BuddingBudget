@@ -53,5 +53,6 @@ p.small {
 	text-align: center;
 }
 
-
-
+.inputBox:disabled { 
+    color: lightgrey;
+}

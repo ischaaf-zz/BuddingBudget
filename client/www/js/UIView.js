@@ -360,10 +360,11 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 			//catName,
 			function() {
 			$("#titleText").notify("ADD " + category.toUpperCase() + " SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
+			document.getElementById(uuid).getElementsByTagName('p')[0].value = "";
        	}, function(message) {
+			document.getElementById(uuid).remove();
 			$("#titleText").notify("FAILURE: " + message, {position:"bottom center", autoHideDelay:1500, arrowShow:false});
 		}]);
-		document.getElementById(uuid).getElementsByTagName('p')[0].value = "";
 	}
 
 	//used for changeEntry

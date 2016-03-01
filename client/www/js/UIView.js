@@ -411,13 +411,33 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		var un = $("#newUsername").val();
 		var pw = $("#newPassword").val();
 		var pwv = $("#newPasswordVerify").val();
-		console.log("Add User");
+
 		if(pw == pwv) {
 			console.log("passwords verified");
 			//how to add user?
-			createUser(un, pw, name, function() {
+			createUser(un, pw, name, 
+			function() {
 				console.log("created new user: " + name);
-			});
+			},
+			function(response) {
+				console.log(response)
+				if(response.status == 422) {
+					
+				} else if(response.status == 401) {
+
+				} else if(rewponse.status == 500) {
+
+				}
+				//response.status
+				//	422, missing a parameter or improperly formed
+				//		response.responseJSON
+				//	401, unauthorized
+				//	incorrect login info
+				//	create user was disabled
+				//	create user token failed
+				//	500, internal server error, db failed (nonunique username)
+				console.log("failed to create:")
+			}); 
 		}
 		
 		if(isTutorial) {

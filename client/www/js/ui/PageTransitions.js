@@ -23,11 +23,14 @@ var PageTransitions = function() {
 	// The page currently being displayed
 	var activePage;
 
-	this.switchPage = function(pageID) {
+	this.switchPage = function(pageID, name) {
 		if(activePage !== pageID) {
 			$("#" + activePage).fadeOut("fast", function() {
 				$("#titleText").text(pages[pageID]);
 				$("#" + pageID).fadeIn("fast");
+				if(name !== undefined) {
+					joyStart(name);
+				}
 			});
 			activePage = pageID;
 		}
@@ -38,7 +41,7 @@ var PageTransitions = function() {
 	function setUpPageSwitch(pageID) {
 		//var pageIDs = Object.keys(pages);
 		$("#" + pageID + "-button").click(function() {
-			self.switchPage(pageID);
+			self.switchPage(pageID, null);
 		});
 	}
 
@@ -60,6 +63,16 @@ var PageTransitions = function() {
 	
 	//--tutorial page transitions--
 	
+	function joyStart(name) {		
+		$(name).joyride({
+			autoStart : true,
+			modal: true,
+			postRideCallback: function() {
+				$(this).joyride('destroy');
+			}
+		});
+	}
+	
 	this.tutorialSetup = function() {
 		$("#page-main").hide();
 		$("#menuBar").hide();
@@ -67,28 +80,28 @@ var PageTransitions = function() {
 		activePage = "page-tutorial";
 		
 		$("#yesTutorial").click(function() {
-			self.switchPage("page-login");
+			self.switchPage("page-login", "#joyRideLogin");
 			showButtons();
 		});
 		
 		$("#page-login-tutorial").click(function() {
-			self.switchPage("page-assets");
+			self.switchPage("page-assets", "#joyRideAssets");
 		});
 		
 		$("#page-assets-tutorial").click(function() {
-			self.switchPage("page-savings");
+			self.switchPage("page-savings", "#joyRideSavings");
 		});
 		
 		$("#page-savings-tutorial").click(function() {
-			self.switchPage("page-income");
+			self.switchPage("page-income", "#joyRideIncome");
 		});
 		
 		$("#page-income-tutorial").click(function() {
-			self.switchPage("page-charges");
+			self.switchPage("page-charges", "#joyRideCharges");
 		});
 		
 		$("#page-charges-tutorial").click(function() {
-			self.switchPage("page-options");
+			self.switchPage("page-options", "#joyRideOptions");
 		});
 		
 		$("#page-options-tutorial").click(function() {

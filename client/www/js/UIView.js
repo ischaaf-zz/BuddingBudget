@@ -1,6 +1,6 @@
 // THIS FILE SHOULD BE THE ONLY PLACE THE DOM IS MANIPULATED
 // Handles sending new data and commands out from the DOM, and
-// putting new updated data into the DOM.
+// putting new updated data into the DOM
 var UIView = function(getData, setDataListener, login, createUser, setNetworkListener) {
 	// events: updateAssets, trackSpending, setOption, 
 	//		   addEntry, changeEntry, removeEntry
@@ -28,6 +28,7 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 			setTempData();
 		}
 		
+		$("#joyPop").hide();
 		if(isNew) {
 			//setup Tutorial
 			isTutorial = true;
@@ -80,20 +81,16 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		
 		if(value.isNotifyMorning == 'On') {
 			$("#morningNotice").val("On").flipswitch("refresh");
-			//$("#budgetTime").datebox('enable');
 			$("#budgetTime").attr('disabled', false);
 		} else {
-			//$("#budgetTime").datebox('disable');
 			$("#budgetTime").attr('disabled', true);
 		}
 		
 		if(value.isNotifyNight == 'On') {
 			$("#nightNotice").val("On").flipswitch("refresh");
-			//$("#trackTime").datebox('enable');
-			$("#nightNotice").attr('disabled', false);
+			$("#trackTime").attr('disabled', false);
 		} else {
-			//$("#trackTime").datebox('disable');
-			$("#nightNotice").attr('disabled', true);
+			$("#trackTime").attr('disabled', true);
 		}
 		
 		if(value.isNotifyAssets == 'On') {
@@ -114,7 +111,6 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 			var theDate = getData("endDate");
 			var newDate = new Date(theDate);
 			$("#endDate").val(dateToDateInput(newDate));
-			// $("#endDate").datebox('setTheDate', newDate).trigger('datebox', {'method':'doset'});
 		}
 		
 		
@@ -122,25 +118,14 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 			//load times
 			var budgetTime = value.notifyMorningTime;
 			var newDateA = new Date(budgetTime);
-			//console.log(dateToTimeInput(newDateA));
-			//$("#budgetTime").datebox('setTheDate', newDateA).trigger('datebox', {'method':'doset'});
 			$("#budgetTime").val(dateToTimeInput(newDateA));
 		}
 		
 		if(value.notifyNightTime !== undefined) {
 			var trackTime = value.notifyNightTime;
 			var newDateB = new Date(trackTime);
-			//$("#trackTime").datebox('setTheDate', newDateB).trigger('datebox', {'method':'doset'});
 			$("#trackTime").val(dateToTimeInput(newDateB));
 		}
-		
-		/* No longer used
-		//load min daily budget
-		if(value.minDailyBudget !== undefined) {
-			$("#minBudget").html("$" + value.minDailyBudget);
-		} else {
-			$("#minBudget").html("");
-		} */
 	});
 	
 	//-----------------LISTENERS----------------------
@@ -163,21 +148,16 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		var value = getData("options");
 		
 		$("#minBudget").html("$" + value.minDailyBudget);
-		//console.log(value);
 		
 		if(value.isNotifyMorning == 'On') {
-			//$("#budgetTime").datebox('enable');
 			$("#budgetTime").attr('disabled', false);
 		} else {
-			//$("#budgetTime").datebox('disable');
 			$("#budgetTime").attr('disabled', true);
 		}
 		
 		if(value.isNotifyNight == 'On') {
-			//$("#trackTime").datebox('enable');
 			$("#trackTime").attr('disabled', false);
 		} else {
-			//$("#trackTime").datebox('disable');
 			$("#trackTime").attr('disabled', true);
 		}
 		
@@ -262,7 +242,6 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		input.class = "updateVal";
 		input.type="number";
 		var p = document.createElement('p');
-		p.classList.add("attentionGrapper");
 		$("#" + uuid + " > p").on("webkitAnimationEnd", function() {
 			this.className = "";
 			this.textContent = "";
@@ -323,7 +302,6 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		input.class = "updateVal";
 		input.type="number";
 		var p = document.createElement('p');
-		p.classList.add("attentionGrapper");
 		$("#" + uuid + " > p").on("webkitAnimationEnd", function() {
 			this.className = "";
 			this.textContent = "";
@@ -381,17 +359,12 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 			save,
 			//catName,
 			function() {
-			var p = document.getElementById(uuid).getElementsByTagName('p')[0];
-            p.html = 'CHANGED ' + category.toUpperCase() + ' SUCCESS';
-            p.classList.remove("animatePopupMessage");          
-            p.classList.add("animatePopupMessage");
-       	}, function(message) {
-			var p = document.getElementById(uuid).getElementsByTagName('p')[0];
-            p.html = 'FAILED: ' + message;
-            p.classList.remove("animatePopupMessage");          
-            p.classList.add("animatePopupMessage");
-		}]);
-		document.getElementById(uuid).getElementsByTagName('p')[0].value = "";
+			$("#titleText").notify("ADD " + category.toUpperCase() + " SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
+			document.getElementById(uuid).getElementsByTagName('p')[0].value = "";
+	       	}, function(message) {
+				document.getElementById(uuid).remove();
+				$("#titleText").notify("FAILURE: " + message, {position:"bottom center", autoHideDelay:1500, arrowShow:false});
+			}]);
 	}
 
 	//used for changeEntry
@@ -400,15 +373,9 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 			catName,
 			save,
 			function() {
-			var p = document.getElementById(uuid).getElementsByTagName('p')[0];
-            p.textContent = 'CHANGED ' + category.toUpperCase() + ' SUCCESS';
-            p.classList.remove("animatePopupMessage");          
-            p.classList.add("animatePopupMessage");
+			$("#titleText").notify("UPDATE " + category.toUpperCase() + " SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
 		}, function(message) {
-			var p = document.getElementById(uuid).getElementsByTagName('p')[0];
-            p.textContent = 'FAILED: ' + message;
-            p.classList.remove("animatePopupMessage");          
-            p.classList.add("animatePopupMessage");
+			$("#titleText").notify("FAILURE: " + message, {position:"bottom center", autoHideDelay:1500, arrowShow:false});
 		}]);
 
 		document.getElementById(uuid).getElementsByTagName('p')[0].value = "";
@@ -416,15 +383,9 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 
 	function notifyTrackSpend(tracked, spendType) {
 		notifyListeners("trackSpending", [tracked, spendType, function() {
-			document.querySelector('#trackSuccess');
-            trackSuccess.textContent = 'TRACK SPENDING SUCCESS';
-            trackSuccess.classList.remove("animatePopupMessage");
-            trackSuccess.classList.add("animatePopupMessage");
+			$("#buttonTrack").notify("TRACK SPENDING SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false, gap:15});
 		}, function(message) {
-			document.querySelector('#trackSuccess');
-            trackSuccess.textContent = 'FAILED: ' + message;
-            trackSuccess.classList.remove("animatePopupMessage");
-            trackSuccess.classList.add("animatePopupMessage");
+			$("#buttonTrack").notify("FAILURE: " + message, {position:"bottom center", autoHideDelay:1500, arrowShow:false, gap:15});
 		}]);
 	}
 
@@ -436,8 +397,13 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		var un = $("#username").val();
 		var pw = $("#password").val();
 
-		login(un, pw, function() {
-			console.log("here");
+		login(un, pw, 
+		function() {
+			$("#titleText").notify("LOGIN SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
+			document.getElementById(uuid).getElementsByTagName('p')[0].value = "";
+	       	},
+		function() {
+			$("#titleText").notify("LOGIN FAILURE", {position:"bottom center", autoHideDelay:1500, arrowShow:false});
 		});
 		
 		if(isTutorial) {
@@ -450,13 +416,34 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		var un = $("#newUsername").val();
 		var pw = $("#newPassword").val();
 		var pwv = $("#newPasswordVerify").val();
-		console.log("Add User");
+
 		if(pw == pwv) {
 			console.log("passwords verified");
 			//how to add user?
-			createUser(un, pw, name, function() {
-				console.log("created new user: " + name);
-			});
+			createUser(un, pw, name, 
+			function() {
+				$("#titleText").notify("LOGIN SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
+				document.getElementById(uuid).getElementsByTagName('p')[0].value = "";
+			},
+			function(response) {
+				console.log(response)
+				if(response.status == 422) {
+					
+				} else if(response.status == 401) {
+
+				} else if(rewponse.status == 500) {
+
+				}
+				//response.status
+				//	422, missing a parameter or improperly formed
+				//		response.responseJSON
+				//	401, unauthorized
+				//	incorrect login info
+				//	create user was disabled
+				//	create user token failed
+				//	500, internal server error, db failed (nonunique username)
+				console.log("failed to create:")
+			}); 
 		}
 		
 		if(isTutorial) {
@@ -547,7 +534,7 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
 		li.getElementsByTagName('input')[0].value = "";
 
-		var save = new ChargeEntry(catName, val, frequency, startDate, false);
+		var save = new ChargeEntry(catName, val, frequency, dateInputToDate(startDate), false);
 
 		notifyChange("changeEntry", "charges", catName, save, uuid);
 	}
@@ -593,7 +580,7 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
 		li.getElementsByTagName('input')[0].value = "";
 		
-		var save = new IncomeEntry(catName, val, frequency, startDate, 5, true);
+		var save = new IncomeEntry(catName, val, frequency, dateInputToDate(startDate), 0, true);
 		notifyChange("changeEntry", "income", catName, save, uuid);
 	}
 
@@ -609,18 +596,12 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 	//--------------------------------------
 	$("#buttonAssets").click(function() {
 		notifyListeners("updateAssets", [parseInt($("#setAssets").val()), function() {
-			document.querySelector('#assetsSuccess');
-            assetsSuccess.textContent = 'CHANGED ASSETS SUCCESS';
-            assetsSuccess.classList.remove("animatePopupMessage");
-            assetsSuccess.classList.add("animatePopupMessage");
+		   $("#buttonAssets").notify("CHANGED ASSETS SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false, gap:15});
 			if(isTutorial) {
 				$("#page-assets-tutorial").show();
 			}
 		}, function(message) {
-			document.querySelector('#assetsSuccess');
-            assetsSuccess.textContent = 'FAILED: ' + message;
-            assetsSuccess.classList.remove("animatePopupMessage");
-            assetsSuccess.classList.add("animatePopupMessage");
+			$("#buttonAssets").notify('FAILED: ' + message, {position:"bottom center", autoHideDelay:1500, arrowShow:false, gap:15});
 		}]);
 		document.getElementById("setAssets").value = "";
 	});
@@ -709,27 +690,9 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 				isTutorial = false;
 			}
 		}, function(message) {
-			console.log("FAILURE: " + message);
+			$("#endDate").notify("FAILURE: " + message);
 		}]);
 	});
-	
-	/*
-	//callback for dateboxes
-	window.budgetNotify = function(date, initDate, duration, custom, cancelClose) {
-		notifyListeners("setOption", ["notifyMorningTime", date.date.getTime(), function() {
-			//success
-		}, function(message) {
-			//failure
-		}]);
-	};
-	
-	window.trackNotify = function(date, initDate, duration, custom, cancelClose) {
-		notifyListeners("setOption", ["notifyNightTime", date.date.getTime(), function() {
-			//success
-		}, function(message) {
-			//failure
-		}]);
-	}; */
 	
 	$("#budgetTime").change(function() {
 		var val = timeInputToDate($("#budgetTime").val()).getTime();
@@ -757,24 +720,6 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		clearStorage();
 		$("#resetNote").html("Storage cleared. Reload/reopen app to see default state.");
 	});
-	
-	//----------------------------------------------//
-	// This is just an animation for popup callback, 
-    // Not part of popup functionality.
-    $("#popupMessageTarget").on("webkitAnimationEnd", function() {
-		this.className = "";
-		this.textContent = "";
-    });
-	
-	$("#assetsSuccess").on("webkitAnimationEnd", function() {
-		this.className = "";
-		this.textContent = "";
-    });
-	
-	$("#trackSuccess").on("webkitAnimationEnd", function() {
-		this.className = "";
-		this.textContent = "";
-    });
 
 	//----------------------------------------------//
 

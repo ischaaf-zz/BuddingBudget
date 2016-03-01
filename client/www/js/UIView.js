@@ -402,31 +402,27 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 			$("#titleText").notify("LOGIN SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
 			document.getElementById("username").value = "";
 			document.getElementById("password").value = "";
+			pageTransitions.switchPage("page-main");
 	    },
 		function(response) {
 			console.log("me")
 			var json = JSON.parse(response.responseJSON)
 			console.log(json)
-			if(json.status == 422) {
-				
-			} else if(json.status == 401) {
+			if(json.status == 422 || json.status == 401 || json.status == 500) {
 				$("#titleText").notify(json.message, {position:"bottom center", autoHideDelay:1500, arrowShow:false});
-			} else if(json.status == 500) {
-
+			} else {
+				$("#titleText").notify("ERROR", {position:"bottom center", autoHideDelay:1500, arrowShow:false});
 			}
-			//response.status
-			//	422, missing a parameter or improperly formed
-			//		response.responseJSON
-			//	401, unauthorized
-			//	incorrect login info
-			//	create user was disabled
-			//	create user token failed
-			//	500, internal server error, db failed (nonunique username)
-			console.log("failed to login:")
 		});
 		
 		if(isTutorial) {
 			$("#page-login-tutorial").html("NEXT");
+		}
+	});
+
+	$("#password").keyup(function(event) {
+		if(event.keyCode == 13) {
+			$("#login").click();
 		}
 	});
 
@@ -444,23 +440,12 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 				$("#titleText").notify("CREATE USER SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
 			},
 			function(response) {
-				var json = response.responseJSON 
-				if(json.status == 422) {
-					
-				} else if(json.status == 401) {
-					$("#titleText").notify(json.message, {position:"bottom center", autoHideDelay:1500, arrowShow:false});
-				} else if(json.status == 500) {
-
+				var json = JSON.parse(response.responseJSON)
+				if(json.status == 422 || json.status == 401 || json.status == 500) {
+				$("#titleText").notify(json.message, {position:"bottom center", autoHideDelay:1500, arrowShow:false});
+				} else {
+					$("#titleText").notify("ERROR", {position:"bottom center", autoHideDelay:1500, arrowShow:false});
 				}
-				//response.status
-				//	422, missing a parameter or improperly formed
-				//		response.responseJSON
-				//	401, unauthorized
-				//	incorrect login info
-				//	create user was disabled
-				//	create user token failed
-				//	500, internal server error, db failed (nonunique username)
-				console.log("failed to create:")
 			}); 
 		}
 		

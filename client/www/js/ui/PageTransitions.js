@@ -53,9 +53,12 @@ var PageTransitions = function() {
     		setUpPageSwitch(pageIDs[i]);
     		$("#" + pageIDs[i]).hide();
     	}
-    	$("#page-main").show();
-    	$("#titleText").text(pages["page-main"]);
-    	activePage = "page-main";
+    	//$("#page-main").show();
+    	//$("#titleText").text(pages["page-main"]);
+    	//activePage = "page-main";
+    	$("#page-login").show();
+    	$("#titleText").text(pages["page-login"]);
+    	activePage = "page-login";
 		hideButtons();
     }
 	

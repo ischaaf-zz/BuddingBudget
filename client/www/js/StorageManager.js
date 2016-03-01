@@ -10,7 +10,7 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 	// Creates a new recurringManager and gives it the hooks it needs to
 	// update data.
 	var recurringManager = new RecurringManager(function(val) {
-		if(saveData("assets", dataManager.getData('assets') + val, true)) {
+		if(saveData("assets", dataManager.getData('assets') + val, false)) {
 			networkManager.updateAssets(dataManager.getData('assets') + val);
 		}
 	}, function(val, entry) {

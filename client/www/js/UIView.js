@@ -320,7 +320,7 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		}); 
 
 		var select = document.createElement('select');
-		["monthly", "weekly", "biweekly", "twiceMonthly"].forEach(function(f) {
+		["monthly", "weekly"].forEach(function(f) {
 			var opt = document.createElement('option');
 			opt.value = f;
 			opt.innerHTML = f;

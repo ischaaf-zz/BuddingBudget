@@ -361,10 +361,10 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 			function() {
 			$("#titleText").notify("ADD " + category.toUpperCase() + " SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
 			document.getElementById(uuid).getElementsByTagName('p')[0].value = "";
-       	}, function(message) {
-			document.getElementById(uuid).remove();
-			$("#titleText").notify("FAILURE: " + message, {position:"bottom center", autoHideDelay:1500, arrowShow:false});
-		}]);
+	       	}, function(message) {
+				document.getElementById(uuid).remove();
+				$("#titleText").notify("FAILURE: " + message, {position:"bottom center", autoHideDelay:1500, arrowShow:false});
+			}]);
 	}
 
 	//used for changeEntry
@@ -397,8 +397,13 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		var un = $("#username").val();
 		var pw = $("#password").val();
 
-		login(un, pw, function() {
-			console.log("here");
+		login(un, pw, 
+		function() {
+			$("#titleText").notify("LOGIN SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
+			document.getElementById(uuid).getElementsByTagName('p')[0].value = "";
+	       	},
+		function() {
+			$("#titleText").notify("LOGIN FAILURE", {position:"bottom center", autoHideDelay:1500, arrowShow:false});
 		});
 		
 		if(isTutorial) {
@@ -417,7 +422,9 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 			//how to add user?
 			createUser(un, pw, name, 
 			function() {
-				console.log("created new user: " + name);
+				$("#titleText").notify("LOGIN SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
+				document.getElementById(uuid).getElementsByTagName('p')[0].value = "";
+		       	}
 			},
 			function(response) {
 				console.log(response)

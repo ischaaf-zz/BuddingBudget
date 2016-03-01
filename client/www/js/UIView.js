@@ -400,9 +400,9 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 
 	function notifyTrackSpend(tracked, spendType) {
 		notifyListeners("trackSpending", [tracked, spendType, function() {
-			$("#buttonTrack").notify("TRACK SPENDING SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false, gap:15});
+			$("#titleText").notify("TRACK SPENDING SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
 		}, function(message) {
-			$("#buttonTrack").notify("FAILURE: " + message, {position:"bottom center", autoHideDelay:1500, arrowShow:false, gap:15});
+			$("#titleText").notify("FAILURE: " + message, {position:"bottom center", autoHideDelay:1500, arrowShow:false});
 		}]);
 	}
 
@@ -617,12 +617,12 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 	//--------------------------------------
 	$("#buttonAssets").click(function() {
 		notifyListeners("updateAssets", [parseInt($("#setAssets").val()), function() {
-		   $("#buttonAssets").notify("CHANGED ASSETS SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false, gap:15});
+		   $("#titleText").notify("CHANGED ASSETS SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
 			if(isTutorial) {
 				$("#page-assets-tutorial").show();
 			}
 		}, function(message) {
-			$("#buttonAssets").notify('FAILED: ' + message, {position:"bottom center", autoHideDelay:1500, arrowShow:false, gap:15});
+			$("#titleText").notify('FAILED: ' + message, {position:"bottom center", autoHideDelay:1500, arrowShow:false});
 		}]);
 		document.getElementById("setAssets").value = "";
 	});

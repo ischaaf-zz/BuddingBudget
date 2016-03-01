@@ -173,6 +173,11 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 		recurringManager.newDay();
 	});
 
+	// If the budget changes, update tomorrowRollover in our local storage
+	dataManager.registerListener('budget', function() {
+		saveData('tomorrowRollover', dataManager.getData('tomorrowRollover'), true);
+	});
+
 	// Fetch from network storage. If the fetch succeeds and there is new
 	// data, replace what we have.
 	// In the future, this will need to be expanded.

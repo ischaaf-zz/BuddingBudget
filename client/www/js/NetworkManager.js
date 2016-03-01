@@ -47,15 +47,15 @@ var NetworkManager = function() {
 		// return localforage.getItem('lastModified');
 	}
 
-	this.addUser = function(user, pass, name, success) {
+	this.addUser = function(user, pass, name, success, failure) {
 		console.log("Creating user");
-		enqueueSend("POST", {username: user, password: pass, name: name, token: "pmlWoKIm2XSes7jBHdPtl8UtGgiSnn1PW8xMFPQ1N2X5c1uY9fa3Zu3QYNODkpuy"}, "user", success, defaultFail);
+		enqueueSend("POST", {username: user, password: pass, name: name, token: "pmlWoKIm2XSes7jBHdPtl8UtGgiSnn1PW8xMFPQ1N2X5c1uY9fa3Zu3QYNODkpuy"}, "user", success, failure);
 	};
 
 
-	this.login = function(user, pass, success) {
+	this.login = function(user, pass, success, failure) {
 		console.log("loggin in");
-		enqueueSend("POST", {username: user, password: pass}, "login", success, defaultFail);
+		enqueueSend("POST", {username: user, password: pass}, "login", success, failure);
 	};
 
 	this.fetchInitialData = function(success, failure) {
@@ -144,7 +144,7 @@ var NetworkManager = function() {
 			
 			$.ajax({
 				method: method,
-				url: host + page,
+				url: 'http://bbapi.ischaaf.com/' + page,
 				data: sendData
 			}).done(function(data) {
 				console.log("SUCCESS - request: " + method + " - " + page + " with data: " + JSON.stringify(data));

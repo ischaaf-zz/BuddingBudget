@@ -422,10 +422,9 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 			pageTransitions.switchPage("page-main");
 	    },
 		function(response) {
-			console.log("me")
-			var json = JSON.parse(response.responseJSON)
+			var json = response.responseJSON
 			console.log(json)
-			if(json.status == 422 || json.status == 401 || json.status == 500) {
+			if(response.status == 422 || response.status == 401 || response.status == 500) {
 				$("#titleText").notify(json.message, {position:"bottom center", autoHideDelay:1500, arrowShow:false});
 			} else {
 				$("#titleText").notify("ERROR", {position:"bottom center", autoHideDelay:1500, arrowShow:false});
@@ -458,8 +457,10 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 			},
 			function(response) {
 				var json = JSON.parse(response.responseJSON)
-				if(json.status == 422 || json.status == 401 || json.status == 500) {
+				if(response.status == 422 || response.status == 401) {
 				$("#titleText").notify(json.message, {position:"bottom center", autoHideDelay:1500, arrowShow:false});
+				} else if(response.status == 500) {
+					$("#titleText").notify("Username is taken", {position:"bottom center", autoHideDelay:1500, arrowShow:false});
 				} else {
 					$("#titleText").notify("ERROR", {position:"bottom center", autoHideDelay:1500, arrowShow:false});
 				}

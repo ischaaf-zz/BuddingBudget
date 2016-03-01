@@ -59,6 +59,9 @@ var DataManager = function() {
 				if(!skipRecalculation) {
 					data.budget = calculator.calculateBudget(data);
 					if(data.budget != oldBudget) {
+						if(data.tomorrowRollover) {
+							data.tomorrowRollover += (data.budget - oldBudget);
+						}
 						notifyListeners("budget");
 					}
 					data.tomorrowBudget = calculator.calculateTomorrowBudget(data);

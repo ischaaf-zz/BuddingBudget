@@ -27,13 +27,23 @@ var NetworkManager = function() {
 			callbackArr[i].apply(window, args);
 		}
 	}
-
-
 	
 	var lastModified = "";
 	localforage.ready(function() {
 		localforage.getItem('lastModified', function(err, val) {
 			lastModified = val;
+		});
+
+		localforage.getItem('username', function(err, val) {
+			if(val) {
+				credentials.user = val;
+			}
+		});
+
+		localforage.getItem('password', function(err, val) {
+			if(val) {
+				credentials.password = val;
+			}
 		});
 	});
 
@@ -54,8 +64,11 @@ var NetworkManager = function() {
 
 
 	this.login = function(user, pass, success, failure) {
-		console.log("loggin in");
-		enqueueSend("POST", {username: user, password: pass}, "login", success, failure);
+		enqueueSend("POST", {username: user, password: pass}, "login", function() {
+			success.apply(window, arguments);
+			localforage.setItem('username', user);
+			localforage.setItem('password', pass);
+		}, failure);
 	};
 
 	this.fetchInitialData = function(success, failure) {

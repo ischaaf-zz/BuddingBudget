@@ -109,6 +109,7 @@ var NetworkManager = function() {
 
 	// Change an entry to savings or recurring charges / income
 	this.changeEntry = function(category, name, newVal) {
+		console.log(newVal);
 		enqueueSend("PUT", newVal, category, defaultSuccess, defaultFail);
 	};
 
@@ -130,7 +131,9 @@ var NetworkManager = function() {
 
 	function enqueueSend(method, data, page, success, fail) {
 		if (method != 'GET') {
-			data.lastModified = getLastModified();
+			var lm = getLastModified();
+			data.lastModified = lm;
+			console.log("Injecting lastModified '" + lm + "' into request");
 		}
 		sendQueue.push({
 			method: method, 

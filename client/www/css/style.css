@@ -27,3 +27,7 @@ p.small {
 	-webkit-box-shadow: none !important;
 	box-shadow: none !important;
 }
+
+.red {
+	color : red;
+}

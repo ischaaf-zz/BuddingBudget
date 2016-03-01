@@ -43,7 +43,16 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		}
 
 		$("#budget").html("$" + getData("budget"));
-		$("#prevAssets").html("$" + getData("assets"));
+		
+		var val = getData("assets");
+		if(val >= 0) {
+			$("#prevAssets").removeClass("red");
+			$("#prevAssets").html("$" + val);
+		} else {
+			val = val * -1;
+			$("#prevAssets").addClass("red");
+			$("#prevAssets").html("-$" + val);
+		}
 		
 		//load savings
 		var arr = getData("savings");
@@ -135,7 +144,15 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 	});
 	
 	setDataListener("assets", function() {
-		$("#prevAssets").html("$" + getData("assets"));
+		var val = getData("assets");
+		if(val >= 0) {
+			$("#prevAssets").removeClass("red");
+			$("#prevAssets").html("$" + val);
+		} else {
+			val = val * -1;
+			$("#prevAssets").addClass("red");
+			$("#prevAssets").html("-$" + val);
+		}
 	});
 	
 	setDataListener("trackedEntry", function() {

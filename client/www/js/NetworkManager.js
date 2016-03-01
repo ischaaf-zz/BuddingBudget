@@ -4,7 +4,7 @@
 var NetworkManager = function() {
 
 	var credentials = {};
-	this.host = "www.bbapi.ischaaf.com";
+	var host = "http://bbapi.ischaaf.com/";
 
 	// possible callbacks:
 	// loginFailure, loggedIn, networkError, dataConflict, etc
@@ -31,8 +31,10 @@ var NetworkManager = function() {
 
 	
 	var lastModified = "";
-	localforage.getItem('lastModified', function(err, val) {
-		lastModified = val;
+	localforage.ready(function() {
+		localforage.getItem('lastModified', function(err, val) {
+			lastModified = val;
+		});
 	});
 
 	function updateLastModified(newDate){
@@ -142,7 +144,7 @@ var NetworkManager = function() {
 			
 			$.ajax({
 				method: method,
-				url: "http://bbapi.ischaaf.com/" + page,
+				url: host + page,
 				data: sendData
 			}).done(function(data) {
 				console.log("SUCCESS - request: " + method + " - " + page + " with data: " + JSON.stringify(data));

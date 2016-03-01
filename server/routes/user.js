@@ -11,8 +11,8 @@ var enableUserCreation = true;
 // required token for adding new users, super simple bit of security to help avoid unwanted users, 
 // anyone with the token can add a user
 var userCreationToken = "pmlWoKIm2XSes7jBHdPtl8UtGgiSnn1PW8xMFPQ1N2X5c1uY9fa3Zu3QYNODkpuy";
-var userAndPassRegex = /^[a-zA-Z0-9]{1,20}$/;
-var nameRegex = /^[a-zA-Z0-9 ]{1,20}$/;
+var userAndPassRegex = /^[a-zA-Z0-9]{8,20}$/;
+var nameRegex = /^[a-zA-Z0-9 ]{2,20}$/;
 
 // initial entry point for all requests
 router.use(function(req, res, next) {

@@ -400,10 +400,29 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		login(un, pw, 
 		function() {
 			$("#titleText").notify("LOGIN SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
-			document.getElementById(uuid).getElementsByTagName('p')[0].value = "";
-	       	},
-		function() {
-			$("#titleText").notify("LOGIN FAILURE", {position:"bottom center", autoHideDelay:1500, arrowShow:false});
+			document.getElementById("username").value = "";
+			document.getElementById("password").value = "";
+	    },
+		function(response) {
+			console.log("me")
+			var json = JSON.parse(response.responseJSON)
+			console.log(json)
+			if(json.status == 422) {
+				
+			} else if(json.status == 401) {
+				$("#titleText").notify(json.message, {position:"bottom center", autoHideDelay:1500, arrowShow:false});
+			} else if(json.status == 500) {
+
+			}
+			//response.status
+			//	422, missing a parameter or improperly formed
+			//		response.responseJSON
+			//	401, unauthorized
+			//	incorrect login info
+			//	create user was disabled
+			//	create user token failed
+			//	500, internal server error, db failed (nonunique username)
+			console.log("failed to login:")
 		});
 		
 		if(isTutorial) {
@@ -422,16 +441,15 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 			//how to add user?
 			createUser(un, pw, name, 
 			function() {
-				$("#titleText").notify("LOGIN SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
-				document.getElementById(uuid).getElementsByTagName('p')[0].value = "";
+				$("#titleText").notify("CREATE USER SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
 			},
 			function(response) {
-				console.log(response)
-				if(response.status == 422) {
+				var json = response.responseJSON 
+				if(json.status == 422) {
 					
-				} else if(response.status == 401) {
-
-				} else if(rewponse.status == 500) {
+				} else if(json.status == 401) {
+					$("#titleText").notify(json.message, {position:"bottom center", autoHideDelay:1500, arrowShow:false});
+				} else if(json.status == 500) {
 
 				}
 				//response.status

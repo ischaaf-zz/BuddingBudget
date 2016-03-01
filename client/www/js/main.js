@@ -26,7 +26,7 @@ function init() {
 
 	// Initializes the network manager. In the future, may give it some access to the UI to listen for
 	// logins, but for now, it doesn't have access to any other objects.
-	var networkManager = new NetworkManager();
+	var networkManager = new NetworkManager(dataManager.getData);
 
 	// Gives uiView access to get data, and to listen for when it changes
 	var uiView = new UIView(dataManager.getData, dataManager.registerListener, networkManager.login, networkManager.addUser, networkManager.registerListener);

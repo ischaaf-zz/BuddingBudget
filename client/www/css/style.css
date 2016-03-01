@@ -9,41 +9,6 @@
 	transition: all 0.5s ease;
 }
 
-
-/*Assets Styles*/
-.attentionGrapper {
-	opacity: 0;
-	font-size: 12pt;
-	line-height: 14pt;
-	font-weight: 200;
-	font-family: SegoeWP, SegoeUI, HelveticaNeue, Roboto, Sans-serif;
-	padding: 0 15px;
-}
-
-.animatePopupMessage {
-	-webkit-animation-duration: 2s;
-	-webkit-animation-timing-function: linear;
-	-webkit-animation-name: updatePopupMessage;
-	animation-duration: 2s;
-	animation-timing-function: linear;
-	animation-name: updatePopupMessage;
-}
-
-@-webkit-keyframes updatePopupMessage {
-	0% { opacity: 0; }
-	20% { opacity: 1; }
-	90% { opacity: 1; }
-	100% { opacity: 0; }
-}
-
-@keyframes updatePopupMessage {
-	0% { opacity: 0; }
-	20% { opacity: 1; }
-	90% { opacity: 1; }
-	100% { opacity: 0; }
-}
-
-
 /*Options Styles*/
 p.small {
 	line-height: 0px;
@@ -55,4 +20,10 @@ p.small {
 
 .inputBox:disabled { 
     color: lightgrey;
+}
+
+.ui-focus {
+	-moz-box-shadow: none !important;
+	-webkit-box-shadow: none !important;
+	box-shadow: none !important;
 }

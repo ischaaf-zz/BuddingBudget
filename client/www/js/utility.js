@@ -179,4 +179,12 @@ function trimToDay(dateLong) {
 	return dateLong - (dateLong % MILLISECONDS_PER_DAY);
 }
 
+function getTimeDate(hours, minutes, seconds) {
+	var date = new Date();
+	date.setHours(hours);
+	date.setMinutes(minutes);
+	date.setSeconds(seconds);
+	return date;
+}
+
 // ---------------------------------------------------------------------------------

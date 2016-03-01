@@ -400,9 +400,9 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 
 	function notifyTrackSpend(tracked, spendType) {
 		notifyListeners("trackSpending", [tracked, spendType, function() {
-			$("#buttonTrack").notify("TRACK SPENDING SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false, gap:15});
+			$("#titleText").notify("TRACK SPENDING SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
 		}, function(message) {
-			$("#buttonTrack").notify("FAILURE: " + message, {position:"bottom center", autoHideDelay:1500, arrowShow:false, gap:15});
+			$("#titleText").notify("FAILURE: " + message, {position:"bottom center", autoHideDelay:1500, arrowShow:false});
 		}]);
 	}
 
@@ -422,8 +422,8 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 			pageTransitions.switchPage("page-main");
 	    },
 		function(response) {
-			var json = response.responseJSON
-			console.log(json)
+			var json = response.responseJSON;
+			console.log(json);
 			if(response.status == 422 || response.status == 401 || response.status == 500) {
 				$("#titleText").notify(json.message, {position:"bottom center", autoHideDelay:1500, arrowShow:false});
 			} else {
@@ -456,7 +456,7 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 				$("#titleText").notify("CREATE USER SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
 			},
 			function(response) {
-				var json = JSON.parse(response.responseJSON)
+				var json = JSON.parse(response.responseJSON);
 				if(response.status == 422 || response.status == 401) {
 				$("#titleText").notify(json.message, {position:"bottom center", autoHideDelay:1500, arrowShow:false});
 				} else if(response.status == 500) {
@@ -555,7 +555,7 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
 		li.getElementsByTagName('input')[0].value = "";
 
-		var save = new ChargeEntry(catName, val, frequency, dateInputToDate(startDate), false);
+		var save = new ChargeEntry(catName, val, frequency, dateInputToDate(startDate).getTime(), false);
 
 		notifyChange("changeEntry", "charges", catName, save, uuid);
 	}
@@ -601,7 +601,7 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
 		li.getElementsByTagName('input')[0].value = "";
 		
-		var save = new IncomeEntry(catName, val, frequency, dateInputToDate(startDate), 0, true);
+		var save = new IncomeEntry(catName, val, frequency, dateInputToDate(startDate).getTime(), 0, true);
 		notifyChange("changeEntry", "income", catName, save, uuid);
 	}
 
@@ -617,12 +617,12 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 	//--------------------------------------
 	$("#buttonAssets").click(function() {
 		notifyListeners("updateAssets", [parseInt($("#setAssets").val()), function() {
-		   $("#buttonAssets").notify("CHANGED ASSETS SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false, gap:15});
+		   $("#titleText").notify("CHANGED ASSETS SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
 			if(isTutorial) {
 				$("#page-assets-tutorial").show();
 			}
 		}, function(message) {
-			$("#buttonAssets").notify('FAILED: ' + message, {position:"bottom center", autoHideDelay:1500, arrowShow:false, gap:15});
+			$("#titleText").notify('FAILED: ' + message, {position:"bottom center", autoHideDelay:1500, arrowShow:false});
 		}]);
 		document.getElementById("setAssets").value = "";
 	});

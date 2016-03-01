@@ -53,12 +53,9 @@ var PageTransitions = function() {
     		setUpPageSwitch(pageIDs[i]);
     		$("#" + pageIDs[i]).hide();
     	}
-    	//$("#page-main").show();
-    	//$("#titleText").text(pages["page-main"]);
-    	//activePage = "page-main";
-    	$("#page-login").show();
-    	$("#titleText").text(pages["page-login"]);
-    	activePage = "page-login";
+    	$("#page-main").show();
+    	$("#titleText").text(pages["page-main"]);
+    	activePage = "page-main";
 		hideButtons();
     }
 	
@@ -77,10 +74,9 @@ var PageTransitions = function() {
 	}
 	
 	this.tutorialSetup = function() {
-		$("#page-main").hide();
-		$("#menuBar").hide();
+		self.switchPage("page-tutorial");
 		$("#page-tutorial").show();
-		activePage = "page-tutorial";
+		$("#menuBar").hide();
 		
 		$("#yesTutorial").click(function() {
 			self.switchPage("page-login", "#joyRideLogin");

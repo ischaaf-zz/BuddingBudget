@@ -11,7 +11,7 @@ var NotificationManager = function(getData, setDataListener) {
 		var budget = getData('tomorrowBudget');
 		if(budget !== null) {
 			try {
-				cordova.plugins.notification.local.clearAll(setAllNotifications);
+				cordova.plugins.notification.local.cancelAll(setAllNotifications);
 			} catch (e) {
 				console.log("Attempted to set notifications: Budget = " + budget);
 			}
@@ -67,6 +67,7 @@ var NotificationManager = function(getData, setDataListener) {
 
 	// Wrapper around cordova's notification setting api
 	function setNotification(id, title, text, time) {
+		alert('setting notification ' + title);
 		cordova.plugins.notification.local.schedule({
 		    id: id,
             title: title,

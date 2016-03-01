@@ -17,7 +17,7 @@ router.post('/', function(req, res, next) {
     	var params = new utils.Parameters();
     	params.entries["budget"] = utils.validateNumber(true, req.body.budget, 0);
     	params.entries["amount"] = utils.validateNumber(true, req.body.amount, 0);
-    	params.entries["day"]    = utils.validateDate(true, req.body.day, true);
+    	params.entries["day"]    = utils.validateDate(true, req.body.day, false);
     	if (!params.hasRequired()) {
             var invalid = params.getInvalid();
             res.status(422).send(invalid);
@@ -98,11 +98,7 @@ router.delete('/', function(req, res, next) {
 
 function findEntry(user, d1) {
     for (var i in user.data.entries) {
-        console.log(user.data.entries[i].day);
-        console.log(typeof(user.data.entries[i].day));
         var d2 = new Date(Date.parse(user.data.entries[i].day));
-        console.log(d2);
-        console.log(typeof(d2));
         if (d2.getYear() == d1.getYear() && d2.getMonth() == d1.getMonth() && d2.getDay() == d1.getDay())
             return i;
     }

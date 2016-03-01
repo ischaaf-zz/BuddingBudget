@@ -1,7 +1,7 @@
 // THIS FILE SHOULD BE THE ONLY PLACE THE DOM IS MANIPULATED
 // Handles sending new data and commands out from the DOM, and
 // putting new updated data into the DOM.
-var UIView = function(getData, setDataListener, login, setNetworkListener) {
+var UIView = function(getData, setDataListener, login, createUser, setNetworkListener) {
 	// events: updateAssets, trackSpending, setOption, 
 	//		   addEntry, changeEntry, removeEntry
 	var callbacks = {};
@@ -413,10 +413,31 @@ var UIView = function(getData, setDataListener, login, setNetworkListener) {
 		var pwv = $("#newPasswordVerify").val();
 
 		if(pw == pwv) {
+			console.log("passwords verified");
 			//how to add user?
-			notifyListeners("createUser2", [un, pw, function() {
+			createUser(un, pw, name, 
+			function() {
 				console.log("created new user: " + name);
-			}]);
+			},
+			function(response) {
+				console.log(response)
+				if(response.status == 422) {
+					
+				} else if(response.status == 401) {
+
+				} else if(rewponse.status == 500) {
+
+				}
+				//response.status
+				//	422, missing a parameter or improperly formed
+				//		response.responseJSON
+				//	401, unauthorized
+				//	incorrect login info
+				//	create user was disabled
+				//	create user token failed
+				//	500, internal server error, db failed (nonunique username)
+				console.log("failed to create:")
+			}); 
 		}
 		
 		if(isTutorial) {

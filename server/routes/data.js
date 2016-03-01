@@ -15,10 +15,10 @@ router.use(function(req, res, next) {
 router.put('/', function(req, res, next) {
     utils.modifyUser(req, res, function(req, res, user) {
     	var params = new utils.Parameters();
-    	params.entries["assets"]  = utils.validateNumber(false, req.body.assets, true);
-    	params.entries["endDate"] = utils.validateDate(false, req.body.endDate, true);
-        params.entries["rollover"]  = utils.validateNumber(false, req.body.rollover, true);
-        params.entries["tomorrowRollover"]  = utils.validateNumber(false, req.body.tomorrowRollover, true);
+    	params.entries.assets  = utils.validateNumber(false, req.body.assets);
+    	params.entries.endDate = utils.validateDate(false, req.body.endDate);
+        params.entries.rollover  = utils.validateNumber(false, req.body.rollover);
+        params.entries.tomorrowRollover  = utils.validateNumber(false, req.body.tomorrowRollover);
 
     	if (params.entries["assets"].valid)
     		user.data.assets = params.entries["assets"].value;

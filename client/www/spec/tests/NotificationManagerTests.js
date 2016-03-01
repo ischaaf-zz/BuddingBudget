@@ -20,7 +20,7 @@ describe("NotificationManager", function() {
             })
         };
 
-        spyOn(cordova.plugins.notification.local, "clearAll").and.callFake(function(cb) {
+        spyOn(cordova.plugins.notification.local, "cancelAll").and.callFake(function(cb) {
             cb();
         });
 

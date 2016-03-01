@@ -153,11 +153,13 @@ function findNextTime(entry, startTime) {
 	}
 	var nextTime = new Date(lastTime);
 	if(period == "monthly") {
+		start = (new Date(start)).getDate();
 		nextTime.setDate(start);
 		if(nextTime < lastTime || isSameDay(nextTime, lastTime)) {
 			nextTime.setMonth(nextTime.getMonth() + 1);
 		}
 	} else if(period == "weekly") {
+		start = (new Date(start)).getDay();
 		diff = start - nextTime.getDay();
 		nextTime.setDate(nextTime.getDate() + diff);
 		if(nextTime < lastTime || isSameDay(nextTime, lastTime)) {

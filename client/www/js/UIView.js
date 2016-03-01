@@ -42,6 +42,8 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 			});
 		}
 
+		
+		
 		$("#budget").html("$" + getData("budget"));
 		
 		var val = getData("assets");
@@ -450,7 +452,6 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 
 		if(pw == pwv) {
 			console.log("passwords verified");
-			//how to add user?
 			createUser(un, pw, name, 
 			function() {
 				$("#titleText").notify("CREATE USER SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});

@@ -555,7 +555,7 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
 		li.getElementsByTagName('input')[0].value = "";
 
-		var save = new ChargeEntry(catName, val, frequency, dateInputToDate(startDate), false);
+		var save = new ChargeEntry(catName, val, frequency, dateInputToDate(startDate).getTime(), false);
 
 		notifyChange("changeEntry", "charges", catName, save, uuid);
 	}
@@ -601,7 +601,7 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
 		li.getElementsByTagName('input')[0].value = "";
 		
-		var save = new IncomeEntry(catName, val, frequency, dateInputToDate(startDate), 0, true);
+		var save = new IncomeEntry(catName, val, frequency, dateInputToDate(startDate).getTime(), 0, true);
 		notifyChange("changeEntry", "income", catName, save, uuid);
 	}
 

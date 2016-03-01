@@ -1,6 +1,6 @@
 // THIS FILE SHOULD BE THE ONLY PLACE THE DOM IS MANIPULATED
 // Handles sending new data and commands out from the DOM, and
-// putting new updated data into the DOM.
+// putting new updated data into the DOM
 var UIView = function(getData, setDataListener, login, createUser, setNetworkListener) {
 	// events: updateAssets, trackSpending, setOption, 
 	//		   addEntry, changeEntry, removeEntry
@@ -424,7 +424,6 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 			function() {
 				$("#titleText").notify("LOGIN SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
 				document.getElementById(uuid).getElementsByTagName('p')[0].value = "";
-		       	}
 			},
 			function(response) {
 				console.log(response)
@@ -581,7 +580,7 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
 		li.getElementsByTagName('input')[0].value = "";
 		
-		var save = new IncomeEntry(catName, val, frequency, startDate, 5, true);
+		var save = new IncomeEntry(catName, val, frequency, startDate.split('-')[2], 5, true);
 		notifyChange("changeEntry", "income", catName, save, uuid);
 	}
 

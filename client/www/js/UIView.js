@@ -221,6 +221,11 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 	// 			Assets
 	//--------------------------------------
 	$("#buttonAssets").click(function() {
+		notifyAssets();
+		document.getElementById("setAssets").value = "";
+	});
+	
+	function notifyAssets() {
 		notifyListeners("updateAssets", [parseInt($("#setAssets").val()), function() {
 		   $("#titleText").notify("CHANGED ASSETS SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
 			if(isTutorial) {
@@ -229,8 +234,7 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		}, function(message) {
 			$("#titleText").notify('FAILED: ' + message, {position:"bottom center", autoHideDelay:1500, arrowShow:false});
 		}]);
-		document.getElementById("setAssets").value = "";
-	});
+	}
 	
 	setDataListener("assets", function() {
 		var val = getData("assets");
@@ -452,11 +456,13 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 			return;
 		}
 
-		li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
-		li.getElementsByTagName('input')[0].value = "";
-		
 		var save = new SavingsEntry(catName, parseInt(val), false);
 		notifyChange("changeEntry", "savings", catName, save, uuid);
+		
+		if(val >= 0) {
+			li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
+			li.getElementsByTagName('input')[0].value = "";		
+		}
 	}
 
 	$("#newSavingsName").keyup(function(event) {
@@ -496,13 +502,15 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		if(val === "") {
 			val = li.getElementsByTagName('h2')[0].innerHTML.split("$")[1];
 		}
-
-		li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
-		li.getElementsByTagName('input')[0].value = "";
-
+		console.log(val);
 		var save = new ChargeEntry(catName, val, frequency, dateInputToDate(startDate).getTime(), false);
 
 		notifyChange("changeEntry", "charges", catName, save, uuid);
+		
+		if(val >= 0) {
+			li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
+			li.getElementsByTagName('input')[0].value = "";
+		}
 	}
 
 	$("#newChargeName").keyup(function(event) {
@@ -543,11 +551,14 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 			val = li.getElementsByTagName('h2')[0].innerHTML.split("$")[1];
 		
 		}
-		li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
-		li.getElementsByTagName('input')[0].value = "";
 		
 		var save = new IncomeEntry(catName, val, frequency, dateInputToDate(startDate).getTime(), 0, true);
 		notifyChange("changeEntry", "income", catName, save, uuid);
+		
+		if(val >= 0) {
+			li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
+			li.getElementsByTagName('input')[0].value = "";
+		}
 	}
 
 	$("#newIncomeName").keyup(function(event) {
@@ -570,7 +581,7 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		
 		//check if over/under spent
 		var overUnder = budget - amount;
-		if(overUnder > 0 || overUnder < 0) {
+		if((overUnder > 0 || overUnder < 0) && amount >= 0) {
 			$("#overUnderPopup").popup("open");
 		} else {
 			notifyTrackSpend(tracked, spendType);

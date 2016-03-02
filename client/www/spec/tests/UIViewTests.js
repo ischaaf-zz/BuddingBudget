@@ -41,21 +41,21 @@ $( document ).ready(function() {
 	    });
 
 	    function fireDataListeners(event, args) {
-			var callbackArr = callbacks[event] || [];
+			var callbackArr = dataListeners[event] || [];
 			for(var i = 0; i < callbackArr.length; i++) {
 				callbackArr[i].apply(window, args);
 			}
 		}
 
-		// describe('mockTest', function() {
+		describe('mockTest', function() {
 
-		// 	it('should pass kyle\'s test', function() {
-		// 		mock.getData.and.returnValue(5);
-		// 		fireDataListeners('budget');
-		// 		expect($('#budget').html()).toEqual('5');
-		// 	});
+			it('should pass kyle\'s test', function() {
+				mock.getData.and.returnValue(5);
+				fireDataListeners('budget');
+				expect($('#budget').html()).toEqual('$5');
+			});
 
-		// });
+		});
 
 	});
 

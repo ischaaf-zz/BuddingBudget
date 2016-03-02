@@ -70,15 +70,15 @@
 			</div>
 
 			<!-- popup -->
-			<div data-role='popup' id='userPopupDialog' data-theme='b'>
+			<div style="overflow:hidden" data-role='popup' id='userPopupDialog' data-theme='b'>
 				<div data-role='header' data-theme='b'>
 					<h1>Create new user:</h1>
 				</div>
 				<div data-role='content' data-theme='b'>
 					<p>Name: </p><input id="newName" data-controller="input-value" autofocus="autofocus">
-					<p>Username: </p><input id="newUsername" data-controller="input-value" autofocus="autofocus">
-					<p>Password: </p><input id="newPassword" type='password' data-controller="input-value" autofocus="autofocus">
-					<p>Verify password: </p><input id="newPasswordVerify" type='password' data-controller="input-value" autofocus="autofocus">
+					<p>Username: </p><input id="newUsername" data-controller="input-value">
+					<p>Password: </p><input id="newPassword" type='password' data-controller="input-value">
+					<p>Verify password: </p><input id="newPasswordVerify" type='password' data-controller="input-value" >
 					<div class='showastabs center nobg'>
 						<a id="addUser" href='#' data-rel='back' data-icon='ok' data-iconpos='left' data-role='button' data-inline='true'>Okay</a>
 						<a href='#' data-rel='back' data-icon='delete' data-iconpos='left' data-role='button' data-inline='true'>Cancel</a>
@@ -138,7 +138,7 @@
 			</div>
 
 			<!-- popup -->
-			<div data-role='popup' id='savingsPopupDialog' data-theme='b'>
+			<div style="overflow:hidden" data-role='popup' id='savingsPopupDialog' data-theme='b'>
 				<div data-role='header' data-theme='b'>
 					<h1>Savings name:</h1>
 				</div>
@@ -169,7 +169,7 @@
 			</div>
 
 			<!-- popup -->
-			<div data-role='popup' id='chargesPopupDialog' data-theme='b'>
+			<div style="overflow:hidden" data-role='popup' id='chargesPopupDialog' data-theme='b'>
 				<div data-role='header' data-theme='b'>
 					<h1>Category name:</h1>
 				</div>
@@ -204,7 +204,7 @@
 			</div>
 
 			<!-- popup -->
-			<div data-role='popup' id='incomePopupDialog' data-theme='b'>
+			<div style="overflow:hidden" data-role='popup' id='incomePopupDialog' data-theme='b'>
 				<div data-role='header' data-theme='b'>
 					<h1>Category name:</h1>
 				</div>
@@ -236,7 +236,7 @@
 			</div>
 			
 			<!-- popup -->
-			<div data-role='popup' data-dismissible="false" id='overUnderPopup' data-theme='b'>
+			<div style="overflow:hidden" data-role='popup' data-dismissible="false" id='overUnderPopup' data-theme='b'>
 				<div data-role='header' class="ui-content" data-theme='b'>
 					<h1>Over/Under Spent</h1>
 				</div>

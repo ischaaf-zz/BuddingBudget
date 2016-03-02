@@ -120,6 +120,7 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 		if(index === -1) {
 			callFunc(failure, ["entry with name " + name + " does not exist"]);
 		} else {
+			newVal.nextTime = data[index].nextTime;
 			data[index] = newVal;
 			if(saveData(category, data)) {
 				networkManager.changeEntry(category, name, newVal);
@@ -191,6 +192,8 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 		}, function() {
 			console.log("FAILED TO GET NETWORK DATA");
 		});
+
+		networkManager.registerListener('saveData', saveData);
 	}
 
 	// fetch from Phonegap storage, send each data type to dataManager

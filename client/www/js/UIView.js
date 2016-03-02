@@ -22,6 +22,7 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 	
 	var isTutorial = false;
 	
+	//initially loaded elements
 	setDataListener('ready', function(isNew) {
 		//if PERSIST_DATA in utility.js is set to false temp data will be set here
 		if(!PERSIST_DATA) {
@@ -40,10 +41,12 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 				$("#menuBar").show();
 				isTutorial = false;
 			});
-		}
-
+		}		
+		
+		//load budget
 		$("#budget").html("$" + getData("budget"));
 		
+		//load assets
 		var val = getData("assets");
 		if(val >= 0) {
 			$("#prevAssets").removeClass("red");
@@ -87,7 +90,7 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		//--Load Options--
 		var value = getData("options");
 		
-		
+		//flip switches
 		if(value.isNotifyMorning == 'On') {
 			$("#morningNotice").val("On").flipswitch("refresh");
 			$("#budgetTime").attr('disabled', false);
@@ -109,39 +112,129 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 			$("#selectAssetNotice").selectmenu('disable');
 		}
 		
+		//load budget notification time
+		if(value.notifyMorningTime !== undefined) {
+			var budgetTime = value.notifyMorningTime;
+			var newDateA = new Date(budgetTime);
+			$("#budgetTime").val(dateToTimeInput(newDateA));
+		}
+		
+		//load tracking reminder time
+		if(value.notifyNightTime !== undefined) {
+			var trackTime = value.notifyNightTime;
+			var newDateB = new Date(trackTime);
+			$("#trackTime").val(dateToTimeInput(newDateB));
+		}
+		
 		//load asset update reminder period
 		if(value.notifyAssetsPeriod !== undefined) {
 			$("#selectAssetNotice option[value='" + value.notifyAssetsPeriod + "']").attr("selected", "selected");
 			$("#selectAssetNotice").selectmenu('refresh', true);
 		}
 		
+		//load end date
 		if(PERSIST_DATA) {
-			//load end date
 			var theDate = getData("endDate");
 			var newDate = new Date(theDate);
 			$("#endDate").val(dateToDateInput(newDate));
-		}
-		
-		
-		if(value.notifyMorningTime !== undefined) {
-			//load times
-			var budgetTime = value.notifyMorningTime;
-			var newDateA = new Date(budgetTime);
-			$("#budgetTime").val(dateToTimeInput(newDateA));
-		}
-		
-		if(value.notifyNightTime !== undefined) {
-			var trackTime = value.notifyNightTime;
-			var newDateB = new Date(trackTime);
-			$("#trackTime").val(dateToTimeInput(newDateB));
-		}
+		}		
 	});
 	
-	//-----------------LISTENERS----------------------
-	// update budget when budget changes
+	//--------------------------------------
+	// 			Main Page
+	//--------------------------------------
 	setDataListener("budget", function() {
 		$("#budget").html("$" + getData("budget"));
 	});
+	
+	//for testing?
+	$("#resetStorage").click(function() {
+		clearStorage();
+		$("#resetNote").html("Storage cleared. Reload/reopen app to see default state.");
+	});
+	
+	//--------------------------------------
+	// 			Login
+	//--------------------------------------
+	$("#login").click(function() {
+		var un = $("#username").val();
+		var pw = $("#password").val();
+
+		login(un, pw, 
+		function() {
+			$("#titleText").notify("LOGIN SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
+			document.getElementById("username").value = "";
+			document.getElementById("password").value = "";
+			pageTransitions.switchPage("page-main");
+	    },
+		function(response) {
+			var json = response.responseJSON;
+			console.log(json);
+			if(response.status == 422 || response.status == 401 || response.status == 500) {
+				$("#titleText").notify(json.message, {position:"bottom center", autoHideDelay:1500, arrowShow:false});
+			} else {
+				$("#titleText").notify("ERROR", {position:"bottom center", autoHideDelay:1500, arrowShow:false});
+			}
+		});
+		
+		if(isTutorial) {
+			$("#page-login-tutorial").html("NEXT");
+		}
+	});
+
+	$("#password").keyup(function(event) {
+		if(event.keyCode == 13) {
+			$("#login").click();
+		}
+	});
+
+	$("#addUser").click(function() {
+		var name = $("#newName").val();
+		var un = $("#newUsername").val();
+		var pw = $("#newPassword").val();
+		var pwv = $("#newPasswordVerify").val();
+
+		if(pw == pwv) {
+			console.log("passwords verified");
+			createUser(un, pw, name, 
+			function() {
+				$("#titleText").notify("CREATE USER SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
+			},
+			function(response) {
+				var json = JSON.parse(response.responseJSON);
+				if(response.status == 422 || response.status == 401) {
+				$("#titleText").notify(json.message, {position:"bottom center", autoHideDelay:1500, arrowShow:false});
+				} else if(response.status == 500) {
+					$("#titleText").notify("Username is taken", {position:"bottom center", autoHideDelay:1500, arrowShow:false});
+				} else {
+					$("#titleText").notify("ERROR", {position:"bottom center", autoHideDelay:1500, arrowShow:false});
+				}
+			}); 
+		}
+		
+		if(isTutorial) {
+			$("#page-login-tutorial").html("NEXT");
+		}
+	});
+	
+	//--------------------------------------
+	// 			Assets
+	//--------------------------------------
+	$("#buttonAssets").click(function() {
+		notifyAssets();
+		document.getElementById("setAssets").value = "";
+	});
+	
+	function notifyAssets() {
+		notifyListeners("updateAssets", [parseInt($("#setAssets").val()), function() {
+		   $("#titleText").notify("CHANGED ASSETS SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
+			if(isTutorial) {
+				$("#page-assets-tutorial").show();
+			}
+		}, function(message) {
+			$("#titleText").notify('FAILED: ' + message, {position:"bottom center", autoHideDelay:1500, arrowShow:false});
+		}]);
+	}
 	
 	setDataListener("assets", function() {
 		var val = getData("assets");
@@ -153,37 +246,11 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 			$("#prevAssets").addClass("red");
 			$("#prevAssets").html("-$" + val);
 		}
-	});
-	
-	setDataListener("trackedEntry", function() {
-		var track = getData("trackedEntry");
-		$("#prevSpending").html("$" + track.amount);
-		$("#lastUpdateSpending").html("Last Update: " + new Date(track.day));
-	});
-	
-	setDataListener("options", function() {
-		var value = getData("options");
-		
-		$("#minBudget").html("$" + value.minDailyBudget);
-		
-		if(value.isNotifyMorning == 'On') {
-			$("#budgetTime").attr('disabled', false);
-		} else {
-			$("#budgetTime").attr('disabled', true);
-		}
-		
-		if(value.isNotifyNight == 'On') {
-			$("#trackTime").attr('disabled', false);
-		} else {
-			$("#trackTime").attr('disabled', true);
-		}
-		
-		if(value.isNotifyAssets == 'On') {
-			$("#selectAssetNotice").selectmenu('enable');
-		} else {
-			$("#selectAssetNotice").selectmenu('disable');
-		}
-	});
+	});	
+
+	//--------------------------------------
+	// 	Dynamically create elements (savings, charges, income)
+	//--------------------------------------
 	
 	//make new element
 	function makeTemplate(category, catName, val, updateFn, listId) {
@@ -203,45 +270,6 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 			removeEntry(uuid, category, catName);
 		});
 
-		/*
-		<div class="ui-flipswitch ui-shadow-inset ui-bar-inherit ui-corner-all ui-flipswitch-active">
-			<a href="#" class="ui-flipswitch-on ui-btn ui-shadow ui-btn-inherit">On</a>
-			<span class="ui-flipswitch-off">Off</span>
-			<select id="morningNotice" data-role="flipswitch" class="ui-flipswitch-input" tabindex="-1">
-			<option value="Off">Off</option>
-			<option value="On">On</option>
-		</select></div>
-		*/
-
-		/*var editDiv = document.createElement('div');
-		editDiv.classList.add("ui-flipswitch", "ui-shadow-inset", "ui-bar-inherit", "ui-corner-all", "ui-flipswitch-active");
-		
-		var editA = document.createElement('a');
-		editA.classList.add("ui-flipswitch-on", "ui-btn", "ui-shadow", "ui-btn-inherit");
-		editA.innerHTML = "On";
-
-		var editSpan = document.createElement('span');
-		editSpan.innerHTML = "Off";
-		var editSelect = document.createElement('select');
-		editSelect.setAttribute("data-role", "flipswitch");
-		editSelect.classList.add("ui-flipswitch-input");
-		editSelect.setAttribute("tabindex", "-1");
-
-		var op1 = document.createElement('option');
-		op1.value = "Off";
-		op1.innerHTML = "Off";
-
-		var op2 = document.createElement('option');
-		op2.value = "On";
-		op2.innerHTML = "On";
-
-		editSelect.appendChild(op1);
-		editSelect.appendChild(op2);
-
-		editDiv.appendChild(editA);
-		editDiv.appendChild(editSpan);
-		editDiv.appendChild(editSelect);
-*/
 		var editButton = document.createElement("button");
 		editButton.classList.add("ui-btn", "ui-btn-inline");
 		editButton.innerHTML = "edit";
@@ -398,80 +426,6 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		document.getElementById(uuid).getElementsByTagName('p')[0].value = "";
 	}
 
-	function notifyTrackSpend(tracked, spendType) {
-		notifyListeners("trackSpending", [tracked, spendType, function() {
-			$("#titleText").notify("TRACK SPENDING SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
-		}, function(message) {
-			$("#titleText").notify("FAILURE: " + message, {position:"bottom center", autoHideDelay:1500, arrowShow:false});
-		}]);
-	}
-
-
-	//--------------------------------------
-	// 			Login
-	//--------------------------------------
-	$("#login").click(function() {
-		var un = $("#username").val();
-		var pw = $("#password").val();
-
-		login(un, pw, 
-		function() {
-			$("#titleText").notify("LOGIN SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
-			document.getElementById("username").value = "";
-			document.getElementById("password").value = "";
-			pageTransitions.switchPage("page-main");
-	    },
-		function(response) {
-			var json = response.responseJSON;
-			console.log(json);
-			if(response.status == 422 || response.status == 401 || response.status == 500) {
-				$("#titleText").notify(json.message, {position:"bottom center", autoHideDelay:1500, arrowShow:false});
-			} else {
-				$("#titleText").notify("ERROR", {position:"bottom center", autoHideDelay:1500, arrowShow:false});
-			}
-		});
-		
-		if(isTutorial) {
-			$("#page-login-tutorial").html("NEXT");
-		}
-	});
-
-	$("#password").keyup(function(event) {
-		if(event.keyCode == 13) {
-			$("#login").click();
-		}
-	});
-
-	$("#addUser").click(function() {
-		var name = $("#newName").val();
-		var un = $("#newUsername").val();
-		var pw = $("#newPassword").val();
-		var pwv = $("#newPasswordVerify").val();
-
-		if(pw == pwv) {
-			console.log("passwords verified");
-			//how to add user?
-			createUser(un, pw, name, 
-			function() {
-				$("#titleText").notify("CREATE USER SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
-			},
-			function(response) {
-				var json = JSON.parse(response.responseJSON);
-				if(response.status == 422 || response.status == 401) {
-				$("#titleText").notify(json.message, {position:"bottom center", autoHideDelay:1500, arrowShow:false});
-				} else if(response.status == 500) {
-					$("#titleText").notify("Username is taken", {position:"bottom center", autoHideDelay:1500, arrowShow:false});
-				} else {
-					$("#titleText").notify("ERROR", {position:"bottom center", autoHideDelay:1500, arrowShow:false});
-				}
-			}); 
-		}
-		
-		if(isTutorial) {
-			$("#page-login-tutorial").html("NEXT");
-		}
-	});
-
 	//--------------------------------------
 	// 			Savings
 	//--------------------------------------
@@ -502,17 +456,14 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 			return;
 		}
 
-		li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
-		li.getElementsByTagName('input')[0].value = "";
-		
 		var save = new SavingsEntry(catName, parseInt(val), false);
 		notifyChange("changeEntry", "savings", catName, save, uuid);
+		
+		if(val >= 0) {
+			li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
+			li.getElementsByTagName('input')[0].value = "";		
+		}
 	}
-	
-	//todo: does not work?
-	$("#savingsPopup").click(function() {
-		$("#newSavingsName").focus();
-	});
 
 	$("#newSavingsName").keyup(function(event) {
 		if(event.keyCode == 13) {
@@ -551,13 +502,15 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		if(val === "") {
 			val = li.getElementsByTagName('h2')[0].innerHTML.split("$")[1];
 		}
-
-		li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
-		li.getElementsByTagName('input')[0].value = "";
-
+		console.log(val);
 		var save = new ChargeEntry(catName, val, frequency, dateInputToDate(startDate).getTime(), false);
 
 		notifyChange("changeEntry", "charges", catName, save, uuid);
+		
+		if(val >= 0) {
+			li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
+			li.getElementsByTagName('input')[0].value = "";
+		}
 	}
 
 	$("#newChargeName").keyup(function(event) {
@@ -598,33 +551,20 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 			val = li.getElementsByTagName('h2')[0].innerHTML.split("$")[1];
 		
 		}
-		li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
-		li.getElementsByTagName('input')[0].value = "";
 		
 		var save = new IncomeEntry(catName, val, frequency, dateInputToDate(startDate).getTime(), 0, true);
 		notifyChange("changeEntry", "income", catName, save, uuid);
+		
+		if(val >= 0) {
+			li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
+			li.getElementsByTagName('input')[0].value = "";
+		}
 	}
-
 
 	$("#newIncomeName").keyup(function(event) {
 		if(event.keyCode == 13) {
 			$("#addIncome").click();
 		}
-	});
-
-	//--------------------------------------
-	// 			Assets
-	//--------------------------------------
-	$("#buttonAssets").click(function() {
-		notifyListeners("updateAssets", [parseInt($("#setAssets").val()), function() {
-		   $("#titleText").notify("CHANGED ASSETS SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
-			if(isTutorial) {
-				$("#page-assets-tutorial").show();
-			}
-		}, function(message) {
-			$("#titleText").notify('FAILED: ' + message, {position:"bottom center", autoHideDelay:1500, arrowShow:false});
-		}]);
-		document.getElementById("setAssets").value = "";
 	});
 	
 	//--------------------------------------
@@ -641,7 +581,7 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		
 		//check if over/under spent
 		var overUnder = budget - amount;
-		if(overUnder > 0 || overUnder < 0) {
+		if((overUnder > 0 || overUnder < 0) && amount >= 0) {
 			$("#overUnderPopup").popup("open");
 		} else {
 			notifyTrackSpend(tracked, spendType);
@@ -655,10 +595,47 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		var spendType = $("input[name='ou']:checked").val();
 		notifyTrackSpend(tracked, spendType);
 	});
+	
+	function notifyTrackSpend(tracked, spendType) {
+		notifyListeners("trackSpending", [tracked, spendType, function() {
+			$("#titleText").notify("TRACK SPENDING SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
+		}, function(message) {
+			$("#titleText").notify("FAILURE: " + message, {position:"bottom center", autoHideDelay:1500, arrowShow:false});
+		}]);
+	}
+	
+	setDataListener("trackedEntry", function() {
+		var track = getData("trackedEntry");
+		$("#prevSpending").html("$" + track.amount);
+		$("#lastUpdateSpending").html("Last Update: " + new Date(track.day));
+	});
 
 	//--------------------------------------
 	// 			Options
 	//--------------------------------------
+	setDataListener("options", function() {
+		var value = getData("options");
+		
+		$("#minBudget").html("$" + value.minDailyBudget);
+		
+		if(value.isNotifyMorning == 'On') {
+			$("#budgetTime").attr('disabled', false);
+		} else {
+			$("#budgetTime").attr('disabled', true);
+		}
+		
+		if(value.isNotifyNight == 'On') {
+			$("#trackTime").attr('disabled', false);
+		} else {
+			$("#trackTime").attr('disabled', true);
+		}
+		
+		if(value.isNotifyAssets == 'On') {
+			$("#selectAssetNotice").selectmenu('enable');
+		} else {
+			$("#selectAssetNotice").selectmenu('disable');
+		}
+	});	
 	
 	$("#assetNotice").change(function() {
 		var label = $("#assetNotice").val();
@@ -733,14 +710,8 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		}, function(message) {
 			//failure
 		}]);
-	});
-	
-	
-	//for testing?
-	$("#resetStorage").click(function() {
-		clearStorage();
-		$("#resetNote").html("Storage cleared. Reload/reopen app to see default state.");
-	});
+	});	
+
 
 	//----------------------------------------------//
 

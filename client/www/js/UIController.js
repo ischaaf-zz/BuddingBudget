@@ -10,7 +10,11 @@ var UIController = function(getData, storageManager, registerUICallback) {
 	registerUICallback("updateAssets", function(newVal, success, failure) {
 		if(typeof(newVal) === 'number') {
 			if(!isNaN(newVal)) {
-				storageManager.updateAssets(newVal, false, success, failure);
+				if(newVal >= 0) {
+					storageManager.updateAssets(newVal, false, success, failure);
+				} else {
+					callFunc(failure, ["You cannot set negative assets"]);
+				}
 			} else {
 				callFunc(failure, ['Cannot set assets to NaN']);
 			}
@@ -28,7 +32,11 @@ var UIController = function(getData, storageManager, registerUICallback) {
 		if(trackedEntry instanceof TrackEntry) {
 			if(isValidNumber(trackedEntry.amount)) {
 				if(isValidNumber(trackedEntry.day)) {
-					storageManager.trackSpending(trackedEntry, extraOption, success, failure);
+					if(trackedEntry.amount >= 0) {
+						storageManager.trackSpending(trackedEntry, extraOption, success, failure);
+					} else {
+						callFunc(failure, ["Spending cannot be negative."]);
+					}
 				} else {
 					callFunc(failure, ['Invalid day in tracked entry']);
 				}
@@ -80,7 +88,16 @@ var UIController = function(getData, storageManager, registerUICallback) {
 		// else, call failure with error code
 		if(verifyCategory(category)) {
 			// if(verifyType(category, newVal)) {
-				storageManager.changeEntry(category, name, newVal, success, failure);
+				console.log(newVal.amount);
+			if(!isNaN(newVal.amount)) {
+				if(newVal.amount >= 0) {
+					storageManager.changeEntry(category, name, newVal, success, failure);
+				} else {
+					callFunc(failure, ["Cannot have negative entry"]);
+				}
+			} else {
+				callFunc(failure, ['Cannot set entry to NaN']);
+			}
 			// } else {
 			// 	callFunc(failure, ["Value is invalid type for category " + category]);
 			// }

@@ -1,7 +1,7 @@
 // This is by far the most poorly defined of the classes, because
 // I'm not 100% sure how it interfaces or what it needs to do.
 
-var NetworkManager = function(getData) {
+var NetworkManager = function(getData, dataKeys) {
 
 	var credentials = {};
 	var host = "http://bbapi.ischaaf.com/";
@@ -26,6 +26,10 @@ var NetworkManager = function(getData) {
 		for(var i = 0; i < callbackArr.length; i++) {
 			callbackArr[i].apply(window, args);
 		}
+	}
+
+	function saveData(key, value) {
+		notifyListeners('saveData', [key, value]);
 	}
 	
 	var lastModified = "";

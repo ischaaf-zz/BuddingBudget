@@ -31,7 +31,10 @@ var DataManager = function() {
 		charges: [],
 		income: [],
 		trackedEntry: {}, // Only store today's tracked entry
-		options: {}
+		options: {
+			notifyMorningTime : getTimeDate(9, 0, 0),
+			notifyNightTime : getTimeDate(21, 0, 0)
+		}
 	};
 
 	// events: ready, one per field in data

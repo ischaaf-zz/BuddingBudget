@@ -68,6 +68,9 @@ var NetworkManager = function(getData) {
 			success.apply(window, arguments);
 			localforage.setItem('username', user);
 			localforage.setItem('password', pass);
+			credentials.user = user;
+			credentials.password = pass;
+			updateData();
 		}, failure);
 	};
 
@@ -119,11 +122,11 @@ var NetworkManager = function(getData) {
 	};
 
 	this.setRollover = function(rollover) {
-
+		enqueueSend("PUT", {rollover: rollover}, "data", defaultSuccess, defaultFail);
 	};
 
 	this.setTomorrowRollover = function(tomorrowRollover) {
-
+		enqueueSend("PUT", {tomorrowRollover: tomorrowRollover}, "data", defaultSuccess, defaultFail);
 	};
 
 	var sendQueue = [];
@@ -180,7 +183,11 @@ var NetworkManager = function(getData) {
 					updateData();
 					enqueueSend(method, sendData, page, success, fail);
 				} else if (data.status == 401) {
-					// we need to login
+					if (page != 'login') {
+						if (silentLogin()) {
+							enqueueSend(method, sendData, page, success, fail);
+						}
+					}
 				}
 				fail(data);
 			}).always(function() { 
@@ -190,12 +197,21 @@ var NetworkManager = function(getData) {
 		}
 	}
 
+	function silentLogin() {
+		if (credentials && credentials.user && credentials.password) {
+			enqueueSend("POST", {username: credentials.user, password: credentials.password}, "login", defaultSuccess, defaultFail);
+			return true;
+		}
+		return false;
+	}
+
 	function updateData() {
 		enqueueSend("GET", {}, "user?mode=full", function(data) {
 			console.log("UPDATING DATA to timestamp: " + data.lastModified);
 			updateLastModified(data.lastModified);
 			console.log("updated lastModified");
 			for(var key in data.data) {
+				console.log("Setting local data ('" + key + "', '" + data.data[key] + "')");
 				localforage.setItem(key, data.data[key]);
 			}
 		}, function() { });

@@ -11,7 +11,7 @@ var enableUserCreation = true;
 // required token for adding new users, super simple bit of security to help avoid unwanted users, 
 // anyone with the token can add a user
 var userCreationToken = "pmlWoKIm2XSes7jBHdPtl8UtGgiSnn1PW8xMFPQ1N2X5c1uY9fa3Zu3QYNODkpuy";
-var userAndPassRegex = /^[a-zA-Z0-9]{8,20}$/;
+var userAndPassRegex = /^[a-zA-Z0-9]{5,20}$/;
 var nameRegex = /^[a-zA-Z0-9 ]{2,20}$/;
 
 // initial entry point for all requests
@@ -44,6 +44,17 @@ router.post('/', function(req, res, next) {
         user.password = params.entries["password"].value;
         var date = Date.now();
         user.lastModified = date;
+        user.data.endDate = date;
+        user.data.assets = 0;
+        user.data.rollover = 0;
+        user.data.tomorrowRollover = 0;
+        user.data.options.isNotifyMorning = false;
+        user.data.options.isNotifyNight = false;
+        user.data.options.isNotifyAssets = false;
+        user.data.options.isEnableTracking = false;
+        user.data.options.notifyMorningTime = new Date();
+        user.data.options.notifyNightTime = new Date();
+        user.data.options.notifyAssetsPeriod = 'weekly';
         user.save(function(err) {
             if (err) {
                 res.status(500).send(err);

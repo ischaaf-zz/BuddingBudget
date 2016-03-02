@@ -27,6 +27,9 @@ router.post('/', function(req, res, next) {
             res.status(422).json(invalid);
             return false;
         } else {
+            if (findCharge(user, params.entries["name"].value)) {
+                res.status(403).json({message: "Name already taken"});
+            }
     		user.data.charges.push({
     			name: params.entries["name"].value, 
     			amount: params.entries["amount"].value, 

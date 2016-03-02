@@ -73,7 +73,11 @@ var UIController = function(getData, storageManager, registerUICallback) {
 		// else, call failure with error code
 		if(verifyCategory(category)) {
 			// if(verifyType(category, val)) {
-				storageManager.addEntry(category, val, success, failure);
+				if(val.name.includes('<')) {
+					callFunc(failure, ["Invalid entry name"]);
+				} else {
+					storageManager.addEntry(category, val, success, failure);
+				}
 			// } else {
 			// 	callFunc(failure, ["Value is invalid type for category " + category]);
 			// }

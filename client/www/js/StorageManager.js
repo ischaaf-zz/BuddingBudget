@@ -192,6 +192,8 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 		}, function() {
 			console.log("FAILED TO GET NETWORK DATA");
 		});
+
+		networkManager.registerListener('saveData', saveData);
 	}
 
 	// fetch from Phonegap storage, send each data type to dataManager

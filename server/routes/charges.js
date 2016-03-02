@@ -41,7 +41,7 @@ router.post('/', function(req, res, next) {
 
 router.put('/', function(req, res, next) {
     utils.modifyUser(req, res, function(req, res, user) {
-    	var params = new uitls.Parameters();
+    	var params = new utils.Parameters();
     	params.entries["name"] = utils.validateString(true, req.body.name);
     	params.entries["amount"] = utils.validateNumber(false, req.body.amount);
     	params.entries["period"] = utils.validateString(false, req.body.period);
@@ -53,16 +53,16 @@ router.put('/', function(req, res, next) {
             res.status(422).json(invalid);
             return false;
         } else {
-    		var i = findCharge(user, name);
+    		var i = findCharge(user, params.entries["name"].value);
     		if (i) {
     			if (params.entries["amount"].valid)
-    				user.data.income[i].amount = params.entries["amount"].value;
+    				user.data.charges[i].amount = params.entries["amount"].value;
     			if (params.entries["period"].valid)
-    				user.data.income[i].period = params.entries["period"].value;
+    				user.data.charges[i].period = params.entries["period"].value;
     			if (params.entries["start"].valid)
-    				user.data.income[i].start = params.entries["start"].value;
+    				user.data.charges[i].start = params.entries["start"].value;
     			if (params.entries["isConfirm"].valid)
-    				user.data.income[i].isConfirm = params.entries["isConfirm"].value;
+    				user.data.charges[i].isConfirm = params.entries["isConfirm"].value;
     			return true;
     		} else {
     			res.status(404).json({message: "no charge with that name found"});
@@ -112,7 +112,7 @@ router.delete('/', function(req, res, next) {
 });
 
 function findCharge(user, name) {
-	for (var i in user.data.chatges) {
+	for (var i in user.data.charges) {
 		if (user.data.charges[i].name == name)
 			return i;
 	}

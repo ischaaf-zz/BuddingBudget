@@ -1,7 +1,7 @@
 // This is by far the most poorly defined of the classes, because
 // I'm not 100% sure how it interfaces or what it needs to do.
 
-var NetworkManager = function() {
+var NetworkManager = function(getData, dataKeys) {
 
 	var credentials = {};
 	var host = "http://bbapi.ischaaf.com/";
@@ -109,6 +109,7 @@ var NetworkManager = function() {
 
 	// Change an entry to savings or recurring charges / income
 	this.changeEntry = function(category, name, newVal) {
+		console.log(newVal);
 		enqueueSend("PUT", newVal, category, defaultSuccess, defaultFail);
 	};
 
@@ -130,7 +131,9 @@ var NetworkManager = function() {
 
 	function enqueueSend(method, data, page, success, fail) {
 		if (method != 'GET') {
-			data.lastModified = getLastModified();
+			var lm = getLastModified();
+			data.lastModified = lm;
+			console.log("Injecting lastModified '" + lm + "' into request");
 		}
 		sendQueue.push({
 			method: method, 

@@ -27,6 +27,10 @@ var NetworkManager = function(getData, dataKeys) {
 			callbackArr[i].apply(window, args);
 		}
 	}
+
+	function saveData(key, value) {
+		notifyListeners('saveData', [key, value]);
+	}
 	
 	var lastModified = "";
 	localforage.ready(function() {

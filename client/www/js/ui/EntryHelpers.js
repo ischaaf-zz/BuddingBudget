@@ -87,6 +87,7 @@ function EntryHelpers(notifyListeners) {
 		editField.appendChild(updateButton);
 		entry.appendChild(editField);
 		entry.appendChild(p);
+		entry.appendChild(document.createElement('hr'));
 		$(listId).append(entry);
 
 		return uuid;
@@ -181,6 +182,7 @@ function EntryHelpers(notifyListeners) {
 		editDiv.appendChild(updateButton);
 		entry.appendChild(editDiv);
 		entry.appendChild(p);
+		entry.appendChild(document.createElement('hr'));
 		$(listId).append(entry);
 
 		$(select).change(function() {

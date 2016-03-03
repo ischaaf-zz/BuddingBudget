@@ -24,14 +24,22 @@ var PageTransitions = function() {
 	var activePage;
 
 	this.switchPage = function(pageID, callback) {
-		if(activePage !== pageID) {
-			$("#" + activePage).fadeOut("fast", function() {
-				$("#titleText").text(pages[pageID]);
-				$("#" + pageID).fadeIn("fast");
-				callFunc(callback);
-			});
+
+		var switchToPage = function() {
 			activePage = pageID;
+			$("#titleText").text(pages[pageID]);
+			$("#" + pageID).fadeIn("fast");
+			callFunc(callback);
+		};
+
+		if(activePage) {
+			if(activePage !== pageID) {
+				$("#" + activePage).fadeOut("fast", switchToPage);
+			}
+		} else {
+			switchToPage();
 		}
+
 	};
 
 	// Set the onclick for a pageID's button to fade to
@@ -51,9 +59,9 @@ var PageTransitions = function() {
     		setUpPageSwitch(pageIDs[i]);
     		$("#" + pageIDs[i]).hide();
     	}
-    	$("#page-main").show();
-    	$("#titleText").text(pages["page-main"]);
-    	activePage = "page-main";
+    	// $("#page-main").show();
+    	// $("#titleText").text(pages["page-main"]);
+    	// activePage = "page-main";
     }
 	
 	initialSetup();

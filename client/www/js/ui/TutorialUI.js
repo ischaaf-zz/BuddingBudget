@@ -10,14 +10,25 @@ function TutorialUI(isTutorial, registerCallback, pageTransitions) {
 		});
 	}
 
-	function changePage(pageID, name) {
+	function changePage(pageID, name, callback) {
 		pageTransitions.switchPage(pageID, function() {
 			joyStart(name);
+			callFunc(callback);
+		});
+	}
+
+	function mainPageSetup() {
+		changePage("page-main", false, function() {
+			$("#curtain").hide();
+			$("#main").fadeIn('fast');
 		});
 	}
 	
 	function tutorialSetup() {
-		changePage("page-tutorial");
+		changePage("page-tutorial", false, function() {
+			$("#curtain").hide();
+			$("#main").fadeIn('fast');
+		});
 		$("#page-tutorial").show();
 		$("#menuBar").hide();
 		
@@ -101,6 +112,8 @@ function TutorialUI(isTutorial, registerCallback, pageTransitions) {
 			$("#menuBar").show();
 			isTutorial = false;
 		});
+	} else {
+		mainPageSetup();
 	}
 
 }

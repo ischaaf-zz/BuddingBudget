@@ -124,17 +124,17 @@ var UIController = function(getData, storageManager, registerUICallback) {
 		return category == "savings" || category == "charges" || category == "income" || category == "users";
 	}
 
-	function verifyType(category, value) {
-		if(category == "savings") {
-			return value instanceof SavingsEntry;
-		} else if(category == "charges") {
-			return value instanceof ChargeEntry;
-		} else if(category == "income") {
-			return value instanceof IncomeEntry;
-		} else {
-			return false;
-		}
-	}
+	// function verifyType(category, value) {
+	// 	if(category == "savings") {
+	// 		return value instanceof SavingsEntry;
+	// 	} else if(category == "charges") {
+	// 		return value instanceof ChargeEntry;
+	// 	} else if(category == "income") {
+	// 		return value instanceof IncomeEntry;
+	// 	} else {
+	// 		return false;
+	// 	}
+	// }
 
 	function isValidNumber(val) {
 		return (typeof(val) === 'number' && !isNaN(val));

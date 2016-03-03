@@ -9,7 +9,7 @@ module.exports = function(grunt) {
           specs : 'www/spec/tests/*.js',
           template: require('grunt-template-jasmine-istanbul'),
           templateOptions: {
-            files: 'www/js/*.js',
+            files: ['www/js/*.js', 'www/js/ui/*.js'],
             coverage: 'bin/coverage/coverage.json',
             report: 'bin/coverage',
             // thresholds: {

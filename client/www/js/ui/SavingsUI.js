@@ -1,20 +1,20 @@
 function SavingsUI(getData, entryHelpers) {
 
 	$("#addSavings").click(function() {
-		var catName = document.getElementById("newSavingsName").value;
+		var savingsName = document.getElementById("newSavingsName").value;
 
 		document.getElementById("newSavingsName").value = "";
 
-		if(catName === null || catName === "") {
+		if(savingsName === null || savingsName === "") {
 			return;
 		}
 
-		var uuid = entryHelpers.makeTemplate("savings", catName, 0, updateSavingsEntry, "#savingsList");
+		var uuid = entryHelpers.makeTemplate("savings", savingsName, 0, updateSavingsEntry, "#savingsList");
 
 		//generalize this? SavingsEntry
 		//add element to "savings" array
-		var save = new SavingsEntry(catName, 0, true);
-		entryHelpers.notifyAdd("addEntry", "savings", catName, save, uuid);
+		var save = new SavingsEntry(savingsName, 0, true);
+		entryHelpers.notifyAdd("addEntry", "savings", savingsName, save, uuid);
 		$("#page-savings-tutorial").html("NEXT");
 	});
 
@@ -34,6 +34,12 @@ function SavingsUI(getData, entryHelpers) {
 	}
 
 	$("#newSavingsName").keyup(function(event) {
+		if(event.keyCode == 13) {
+			$("#newSavingsValue").focus();
+		}
+	});
+
+	$("#newSavingsValue").keyup(function(event) {
 		if(event.keyCode == 13) {
 			$("#addSavings").click();
 		}

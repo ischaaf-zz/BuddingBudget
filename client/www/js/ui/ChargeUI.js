@@ -17,8 +17,6 @@ function ChargeUI(getData, entryHelpers) {
 
 		var uuid = entryHelpers.makeRecurringTemplate("charges", chargeName, chargeValue, "monthly", today, updateChargesEntry, "#chargesList");
 		
-		//generalize this? SavingsEntry
-		//add element to "savings" array
 		var save = new ChargeEntry(chargeName, chargeValue, 'monthly', today, true);
 		entryHelpers.notifyAdd("addEntry", "charges", chargeName, save, uuid);
 		$("#page-charges-tutorial").html("NEXT");
@@ -50,6 +48,12 @@ function ChargeUI(getData, entryHelpers) {
 			li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
 		}
 	}
+
+	$("#newChargeName").keyup(function(event) {
+		if(event.keyCode == 13) {
+			$("#newChargeValue").focus();
+		}
+	});
 
 	$("#newChargeValue").keyup(function(event) {
 		if(event.keyCode == 13) {

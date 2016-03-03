@@ -52,6 +52,12 @@ function IncomeUI(getData, entryHelpers) {
 		}
 	}
 
+	$("#newIncomeName").keyup(function(event) {
+		if(event.keyCode == 13) {
+			$("#newIncomeValue").focus();
+		}
+	});
+
 	$("#newIncomeValue").keyup(function(event) {
 		if(event.keyCode == 13) {
 			$("#addIncome").click();

@@ -17,6 +17,7 @@ var NetworkManager = function(getData, dataKeys) {
 	var callbacks = {};
 
 	this.registerListener = function(event, callback) {
+		console.log("Regestering listener for event: " + event);
 		callbacks[event] = callbacks[event] || [];
 		callbacks[event].push(callback);
 	};
@@ -29,7 +30,7 @@ var NetworkManager = function(getData, dataKeys) {
 	}
 
 	function saveData(key, value) {
-		notifyListeners('saveData', [key, value]);
+		notifyListeners('saveData', [key, value, false]);
 	}
 	
 	var lastModified = "";
@@ -216,7 +217,7 @@ var NetworkManager = function(getData, dataKeys) {
 			console.log("updated lastModified");
 			for(var key in data.data) {
 				console.log("Setting local data ('" + key + "', '" + data.data[key] + "')");
-				localforage.setItem(key, data.data[key]);
+				saveData(key, data.data[key]);
 			}
 		}, function() { });
 	}

@@ -147,7 +147,9 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 	// Saves data to the data cache, phonegap localStorage,
 	// and the cloud storage (once we figure that out)
 	function saveData(key, val, skipRecalculation) {
+		console.log("Setting: " + key);
 		if(dataManager.setData(key, val, skipRecalculation)) {
+			console.log("Key set: " + key);
 			if(PERSIST_DATA) {
 				localforage.setItem(key, val);
 			}
@@ -183,6 +185,8 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 	// data, replace what we have.
 	// In the future, this will need to be expanded.
 	if(NETWORK_ENABLED) {
+		console.log("Registering listener nor network");
+		networkManager.registerListener('saveData', saveData);
 		networkManager.fetchInitialData(function(data) {
 			// check against phonegap storage, update phonegap
 			// if newer, and dataManager from that.
@@ -193,7 +197,7 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 			console.log("FAILED TO GET NETWORK DATA");
 		});
 
-		networkManager.registerListener('saveData', saveData);
+		
 	}
 
 	// fetch from Phonegap storage, send each data type to dataManager

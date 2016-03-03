@@ -39,7 +39,7 @@ function LoginUI(login, createUser, switchPage) {
 			createUser(un, pw, name, function() {
 				$("#titleText").notify("CREATE USER SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
 			}, function(response) {
-				var json = JSON.parse(response.responseJSON);
+				var json = response.responseJSON;
 				if(response.status == 422 || response.status == 401) {
 				$("#titleText").notify(json.message, {position:"bottom center", autoHideDelay:1500, arrowShow:false});
 				} else if(response.status == 500) {

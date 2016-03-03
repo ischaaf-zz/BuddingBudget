@@ -17,18 +17,17 @@ function TutorialUI(isTutorial, registerCallback, pageTransitions) {
 		});
 	}
 
+	function removeCurtain() {
+		$("#curtain").hide();
+		$("#main").fadeIn('fast');
+	}
+
 	function mainPageSetup() {
-		changePage("page-main", false, function() {
-			$("#curtain").hide();
-			$("#main").fadeIn('fast');
-		});
+		changePage("page-main", false, removeCurtain);
 	}
 	
 	function tutorialSetup() {
-		changePage("page-tutorial", false, function() {
-			$("#curtain").hide();
-			$("#main").fadeIn('fast');
-		});
+		changePage("page-tutorial", false, removeCurtain);
 		$("#page-tutorial").show();
 		$("#menuBar").hide();
 		

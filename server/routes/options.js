@@ -5,6 +5,8 @@ var UserModel    = require('../app/models/user');
 var session = require('client-sessions');
 var utils = require('../utilities.js');
 
+var onOffRegex = /(On|Off)/;
+
 // initial entry point for all requests
 router.use(function(req, res, next) {
     console.log(req.method + " /options");
@@ -12,16 +14,17 @@ router.use(function(req, res, next) {
     next();
 });
 
+
 router.put('/', function(req, res, next) {
     utils.modifyUser(req, res, function(req, res, user) {
     	var params = new utils.Parameters();
-    	params.entries["isNotifyMorning"] = utils.validateBool(false, req.body.isNotifyMorning);
-    	params.entries["isNotifyNight"] = utils.validateBool(false, req.body.isNotifyNight);
-    	params.entries["isNotifyAssets"] = utils.validateBool(false, req.body.isNotifyAssets);
+    	params.entries["isNotifyMorning"] = utils.validateString(false, req.body.isNotifyMorning, onOffRegex);
+    	params.entries["isNotifyNight"] = utils.validateString(false, req.body.isNotifyNight, onOffRegex);
+    	params.entries["isNotifyAssets"] = utils.validateString(false, req.body.isNotifyAssets, onOffRegex);
     	params.entries["notifyMorningTime"] = utils.validateNumber(false, req.body.notifyMorningTime);
     	params.entries["notifyNightTime"] = utils.validateNumber(false, req.body.notifyNightTime);
     	params.entries["notifyAssetsPeriod"] = utils.validateString(false, req.body.notifyAssetsPeriod);
-        params.entries["isEnableTracking"] = utils.validateBool(false, req.body.isEnableTracking);
+        params.entries["isEnableTracking"] = utils.validateString(false, req.body.isEnableTracking, onOffRegex);
         params.entries["minDailyBudget"] = utils.validateNumber(false, req.body.minDailyBudget);
 
     	if (params.entries["isNotifyMorning"].valid) 

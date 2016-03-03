@@ -4,7 +4,7 @@
 var NetworkManager = function(getData, dataKeys) {
 
 	var credentials = {};
-	var host = "http://bbapi.ischaaf.com/";
+	var host = "http://bbapi.ischaaf.com:8081/";
 
 	// possible callbacks:
 	// loginFailure, loggedIn, networkError, dataConflict, etc
@@ -35,9 +35,9 @@ var NetworkManager = function(getData, dataKeys) {
 	
 	var lastModified = "";
 	localforage.ready(function() {
-		localforage.getItem('lastModified', function(err, val) {
-			lastModified = val;
-		});
+		// localforage.getItem('lastModified', function(err, val) {
+		// 	lastModified = val;
+		// });
 
 		localforage.getItem('username', function(err, val) {
 			if(val) {
@@ -117,7 +117,10 @@ var NetworkManager = function(getData, dataKeys) {
 
 	// Change an entry to savings or recurring charges / income
 	this.changeEntry = function(category, name, newVal) {
-		console.log(newVal);
+		if (newVal.constructor === Array && newVal[0]) {
+			newVal = newVal[0];
+		}
+		console.log(JSON.stringify(newVal));
 		enqueueSend("PUT", newVal, category, defaultSuccess, defaultFail);
 	};
 
@@ -160,21 +163,20 @@ var NetworkManager = function(getData, dataKeys) {
 			sendInProgress = true;
 			var next = sendQueue[0];
 			sendQueue.splice(0, 1);
-			console.log("sending request: " + next.method + " - " + next.page + " with data: " + JSON.stringify(next.data));
 			sendAjax(next.method, next.data, next.page, next.success, next.fail);
 		}
 	}
 
 	function sendAjax(method, sendData, page, success, fail) {
 		if(NETWORK_ENABLED) {
-			
+			console.log("sending request: " + method + " - " + page + " with data: " + JSON.stringify(sendData));
 			$.ajax({
 				method: method,
-				url: 'http://bbapi.ischaaf.com/' + page,
-				data: sendData
+				url: 'http://bbapi.ischaaf.com:8081/' + page,
+				data: sendData,
+				timeout: 6000
 			}).done(function(data) {
 				console.log("SUCCESS - request: " + method + " - " + page + " with data: " + JSON.stringify(data));
-				sendInProgress = false;
 				if (data.lastModified) {
 					console.log("Updating lastModified time to: " + data.lastModified);
 					updateLastModified(data.lastModified);
@@ -220,7 +222,7 @@ var NetworkManager = function(getData, dataKeys) {
 			updateLastModified(data.lastModified);
 			console.log("updated lastModified");
 			for(var key in data.data) {
-				console.log("Setting local data ('" + key + "', '" + data.data[key] + "')");
+				console.log("Setting local data ('" + key + "', '" + JSON.stringify(data.data[key]) + "')");
 				saveData(key, data.data[key]);
 			}
 		}, function() { });

@@ -27,7 +27,7 @@ router.put('/', function(req, res, next) {
             return false;
         }
     	if (params.entries["endDate"].valid)
-    		user.data.endDate = params.entries["endDate"].value;
+    		user.data.endDate = params.entries["endDate"].value.getTime();
         else if (params.entries["endDate"].message != "Parameter was not defined") {
             res.status(422).json({message: "the given endDate value could not be parsed"});
             return false;

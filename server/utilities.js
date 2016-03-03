@@ -105,7 +105,7 @@ function modifyUser(req, res, whatToDo) {
 				res.json({message: "user not found"});
 			} else {
 				var lastModified = validateDate(true, req.body.lastModified);
-				if (!lastModified.valid || lastModified.value.getTime() != user.lastModified.getTime()) {
+				if (!lastModified.valid || lastModified.value.getTime() != user.lastModified) {
 					res.status(409).json({message: "you do not have the most recent update for this user"});
 				} else {
 					var success = whatToDo(req, res, user);

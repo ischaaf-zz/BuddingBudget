@@ -48,10 +48,10 @@ router.post('/', function(req, res, next) {
         user.data.assets = 0;
         user.data.rollover = 0;
         user.data.tomorrowRollover = 0;
-        user.data.options.isNotifyMorning = false;
-        user.data.options.isNotifyNight = false;
-        user.data.options.isNotifyAssets = false;
-        user.data.options.isEnableTracking = false;
+        user.data.options.isNotifyMorning = "Off";
+        user.data.options.isNotifyNight = "Off";
+        user.data.options.isNotifyAssets = "Off";
+        user.data.options.isEnableTracking = "Off";
         user.data.options.notifyMorningTime = new Date().getTime();
         user.data.options.notifyNightTime = new Date().getTime();
         user.data.options.notifyAssetsPeriod = 'weekly';

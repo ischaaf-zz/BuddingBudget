@@ -174,6 +174,7 @@ var NetworkManager = function(getData, dataKeys) {
 				data: sendData
 			}).done(function(data) {
 				console.log("SUCCESS - request: " + method + " - " + page + " with data: " + JSON.stringify(data));
+				sendInProgress = false;
 				if (data.lastModified) {
 					console.log("Updating lastModified time to: " + data.lastModified);
 					updateLastModified(data.lastModified);
@@ -183,6 +184,7 @@ var NetworkManager = function(getData, dataKeys) {
 				success(data);
 			}).fail(function(data) {
 				console.log("FAILURE - request: " + method + " - " + page + " (" + data.status + ") with data: " + JSON.stringify(data));
+				sendInProgress = false;
 				// check for fail conditions
 				if (data.status == 409) {
 					// conflict, we need to get the latest data

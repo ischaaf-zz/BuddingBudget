@@ -78,3 +78,9 @@ function setUpFutureDate() {
 		$("#timeMachineControls").html("Refresh to change date");
 	});
 }
+
+
+$("#resetStorage").click(function() {
+	clearStorage();
+	$("#resetNote").html("Storage cleared. Reload/reopen app to see default state.");
+});

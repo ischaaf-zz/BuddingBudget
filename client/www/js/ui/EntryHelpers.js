@@ -63,7 +63,7 @@ function EntryHelpers(notifyListeners) {
 		$(listId).append(li);
 
 		return uuid;
-	}
+	};
 
 	this.makeRecurringTemplate = function(category, catName, val, frequency, start, updateFn, listId) {
 		var uuid = guid();
@@ -185,7 +185,7 @@ function EntryHelpers(notifyListeners) {
 		});
 
 		return uuid;
-	}
+	};
 
 	this.removeEntry = function(uuid, category, catName) {
 		notifyListeners("removeEntry", [category,
@@ -197,7 +197,7 @@ function EntryHelpers(notifyListeners) {
 				document.getElementById(uuid).getElementsByTagName('p')[0].innerHTML = "FAILED: " + message;
 		}]);
 		document.getElementById(uuid).remove();
-	}
+	};
 
 	//todo: buggy b/c catName and save switches depending on addEntr
 	this.notifyAdd = function(call, category, catName, save, uuid) {
@@ -211,7 +211,7 @@ function EntryHelpers(notifyListeners) {
 				document.getElementById(uuid).remove();
 				$("#titleText").notify("FAILURE: " + message, {position:"bottom center", autoHideDelay:1500, arrowShow:false});
 			}]);
-	}
+	};
 
 	//used for changeEntry
 	this.notifyChange = function(call, category, catName, save, uuid) {
@@ -225,7 +225,7 @@ function EntryHelpers(notifyListeners) {
 		}]);
 
 		document.getElementById(uuid).getElementsByTagName('p')[0].value = "";
-	}
+	};
 
 	//generates random uuid for html elements
 	function guid() {

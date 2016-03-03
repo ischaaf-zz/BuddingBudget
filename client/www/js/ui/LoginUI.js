@@ -4,14 +4,12 @@ function LoginUI(login, createUser, switchPage) {
 		var un = $("#username").val();
 		var pw = $("#password").val();
 
-		login(un, pw, 
-		function() {
-			$("#titleText").notify("LOGIN SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
+		login(un, pw, function() {
+			$("#titleText").notify("Successfully logged in.", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
 			document.getElementById("username").value = "";
 			document.getElementById("password").value = "";
 			pageTransitions.switchPage("page-main");
-	    },
-		function(response) {
+	    }, function(response) {
 			var json = response.responseJSON;
 			console.log(json);
 			if(response.status == 422 || response.status == 401 || response.status == 500) {
@@ -38,11 +36,9 @@ function LoginUI(login, createUser, switchPage) {
 
 		if(pw == pwv) {
 			console.log("passwords verified");
-			createUser(un, pw, name, 
-			function() {
+			createUser(un, pw, name, function() {
 				$("#titleText").notify("CREATE USER SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
-			},
-			function(response) {
+			}, function(response) {
 				var json = JSON.parse(response.responseJSON);
 				if(response.status == 422 || response.status == 401) {
 				$("#titleText").notify(json.message, {position:"bottom center", autoHideDelay:1500, arrowShow:false});

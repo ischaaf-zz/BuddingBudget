@@ -1,6 +1,7 @@
 function TrackedSpendingUI(getData, setDataListener, notifyListeners) {
 
 	var tracked;
+
 	$("#buttonTrack").click(function() {
 		var amount = parseInt($("#setTrack").val());
 		var budget = getData("budget");
@@ -33,21 +34,21 @@ function TrackedSpendingUI(getData, setDataListener, notifyListeners) {
 			$("#titleText").notify("FAILURE: " + message, {position:"bottom center", autoHideDelay:1500, arrowShow:false});
 		}]);
 	}
-	
-	setDataListener("trackedEntry", function() {
-		var track = getData("trackedEntry");
-		$("#prevSpending").html("$" + track.amount);
-		$("#lastUpdateSpending").html("Last Update: " + new Date(track.day));
-	});
 
 	//load track spending
-	var track = getData("trackedEntry");
-	if(typeof track.amount === "undefined" || track.amount === null) {
-		$("#prevSpending").html("$0");
-		$("#lastUpdateSpending").html("Last Update: Never Set");
-	} else {
-		$("#prevSpending").html("$" + track.amount);
-		$("#lastUpdateSpending").html("Last Update: " + new Date(track.day));
+	function fetchTrackedEntry() {
+		var track = getData("trackedEntry");
+		if(typeof track.amount === "undefined" || track.amount === null) {
+			$("#prevSpending").html("$0");
+			$("#lastUpdateSpending").html("Last Update: Never Set");
+		} else {
+			$("#prevSpending").html("$" + track.amount);
+			$("#lastUpdateSpending").html("Last Update: " + new Date(track.day));
+		}
 	}
+	
+	setDataListener("trackedEntry", fetchTrackedEntry);
+
+	fetchTrackedEntry();
 
 }

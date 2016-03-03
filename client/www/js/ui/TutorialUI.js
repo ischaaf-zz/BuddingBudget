@@ -51,7 +51,7 @@ function TutorialUI(isTutorial, registerCallback, pageTransitions) {
 			hideButtons();
 			$("#menuBar").show();
 		});
-	};
+	}
 	
 	function hideButtons() {
 		$("#page-assets-tutorial").hide();
@@ -71,12 +71,16 @@ function TutorialUI(isTutorial, registerCallback, pageTransitions) {
 		$("#page-login-tutorial").show();
 	}
 
+	// If we're in tutorial mode, show the next button once
+	// we've entered an asset value
 	registerCallback('updateAssets', function() {
 		if(isTutorial) {
 			$("#page-assets-tutorial").show();
 		}
 	});
 
+	// If we're in tutorial mode, show the end date button
+	// once we've entered an end date button
 	registerCallback('setEndDate', function() {
 		if(isTutorial) {
 			$("#page-options-tutorial").show();

@@ -1,15 +1,11 @@
 function BudgetUI(getData, setDataListener) {
 
-	setDataListener("budget", function() {
+	function fetchBudget() {
 		$("#budget").html("$" + getData("budget"));
-	});
-	
-	//for testing?
-	$("#resetStorage").click(function() {
-		clearStorage();
-		$("#resetNote").html("Storage cleared. Reload/reopen app to see default state.");
-	});
+	}
 
-	$("#budget").html("$" + getData("budget"));
+	setDataListener("budget", fetchBudget);
+
+	fetchBudget();
 
 }

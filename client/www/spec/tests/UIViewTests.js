@@ -47,20 +47,20 @@ $( document ).ready(function() {
 			}
 		}
 
-		describe('mockTest', function() {
+		// describe('mockTest', function() {
 
-			it('should pass kyle\'s test', function() {
-				mock.getData.and.returnValue(5);
-				fireDataListeners('budget');
-				expect($('#budget').html()).toEqual('$5');
-			});
+		// 	it('should pass kyle\'s test', function() {
+		// 		mock.getData.and.returnValue(5);
+		// 		fireDataListeners('budget');
+		// 		expect($('#budget').html()).toEqual('$5');
+		// 	});
 
-			it("should update on button click", function() {
-				$("buttonAssets").click();
+		// 	it("should update on button click", function() {
+		// 		$("buttonAssets").click();
 				
-			});
+		// 	});
 
-		});
+		// });
 
 	});
 

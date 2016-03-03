@@ -3,7 +3,7 @@ module.exports = function(grunt) {
     jasmine : {
       coverage: {
         // Your project's source files
-        src : ['www/js/utility.js', 'www/js/**/*.js', 'www/js/*.js', 'www/spec/helpers/*.js'],
+        src : ['www/js/**/*.js', 'www/js/utility.js', 'www/js/*.js', 'www/spec/helpers/*.js'],
         options : {
           // Your Jasmine spec files
           specs : 'www/spec/tests/*.js',

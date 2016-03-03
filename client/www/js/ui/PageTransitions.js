@@ -23,14 +23,12 @@ var PageTransitions = function() {
 	// The page currently being displayed
 	var activePage;
 
-	this.switchPage = function(pageID, name) {
+	this.switchPage = function(pageID, callback) {
 		if(activePage !== pageID) {
 			$("#" + activePage).fadeOut("fast", function() {
 				$("#titleText").text(pages[pageID]);
 				$("#" + pageID).fadeIn("fast");
-				if(name !== undefined) {
-					joyStart(name);
-				}
+				callFunc(callback);
 			});
 			activePage = pageID;
 		}

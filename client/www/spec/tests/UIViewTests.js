@@ -55,12 +55,18 @@ $( document ).ready(function() {
 				expect($('#budget').html()).toEqual('$5');
 			});
 
+			it("should update on button click", function() {
+				$("buttonAssets").click();
+				
+			});
+
 		});
 
 	});
 
 	function setUpDOMElements() {
 		addElement("p", "budget");
+		addElement('button', 'buttonAssets');
 	}
 
 	function addElement(type, id) {

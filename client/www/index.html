@@ -16,10 +16,13 @@
 		<link rel="stylesheet" href="vendor/animate.css" />
 		<link rel="stylesheet" href="nativeDroid2-master/css/nativedroid2.css">
 		<link rel="stylesheet" href="css/style.css">
-		<link rel="stylesheet" href="joyride/joyride-2.1.css">
+		<link rel="stylesheet" href="css/joyride-2.1.css">
 	</head>
 	<body>
-		<div data-role="page">
+		<div id='curtain'>
+			<!-- <h1 id="curtainText">Loading...</h1> -->
+		</div>
+		<div id='main' style="display: none;" none data-role="page">
 			<!-- panel left -->
 			<div data-role="panel" id="leftpanel" data-display="overlay" data-position-fixed="true" >
 				<div class='nd2-sidepanel-profile wow fadeInDown'>
@@ -413,16 +416,28 @@
 		<script src="vendor/wow.min.js"></script>
 		<script src="nativeDroid2-master/js/nativedroid2.js"></script>
 		<script src="nativeDroid2-master/nd2settings.js"></script>
-		<script src="joyride/jquery.joyride-2.1.js"></script>
-		<script src="Notify/notify.min.js"></script>
+		<script src="js/lib/jquery.joyride-2.1.js"></script>
+		<script src="js/lib/notify.min.js"></script>
 		<!-- ours -->
 		<script type="text/javascript" src="js/utility.js"></script>
+
 		<script type="text/javascript" src="js/ui/PageTransitions.js"></script>
+		<script type="text/javascript" src="js/ui/EntryHelpers.js"></script>
+		<script type="text/javascript" src="js/ui/TutorialUI.js"></script>
+		<script type="text/javascript" src="js/ui/BudgetUI.js"></script>
+		<script type="text/javascript" src="js/ui/LoginUI.js"></script>
+		<script type="text/javascript" src="js/ui/AssetsUI.js"></script>
+		<script type="text/javascript" src="js/ui/SavingsUI.js"></script>
+		<script type="text/javascript" src="js/ui/ChargeUI.js"></script>
+		<script type="text/javascript" src="js/ui/IncomeUI.js"></script>
+		<script type="text/javascript" src="js/ui/TrackedSpendingUI.js"></script>
+		<script type="text/javascript" src="js/ui/OptionsUI.js"></script>
+		<script type="text/javascript" src="js/ui/UIManager.js"></script>
+
 		<script type="text/javascript" src="js/Calculator.js"></script>
 		<script type="text/javascript" src="js/NetworkManager.js"></script>
 		<script type="text/javascript" src="js/DataManager.js"></script>
 		<script type="text/javascript" src="js/NotificationManager.js"></script>
-		<script type="text/javascript" src="js/UIView.js"></script>
 		<script type="text/javascript" src="js/UIController.js"></script>
 		<script type="text/javascript" src="js/RecurringManager.js"></script>
 		<script type="text/javascript" src="js/DateManager.js"></script>

@@ -73,7 +73,11 @@ var UIController = function(getData, storageManager, registerUICallback) {
 		// else, call failure with error code
 		if(verifyCategory(category)) {
 			// if(verifyType(category, val)) {
-				storageManager.addEntry(category, val, success, failure);
+				if(!/^[a-zA-Z0-9]+$/.test(val.name)) {
+					callFunc(failure, ["Invalid entry name"]);
+				} else {
+					storageManager.addEntry(category, val, success, failure);
+				}
 			// } else {
 			// 	callFunc(failure, ["Value is invalid type for category " + category]);
 			// }
@@ -88,7 +92,6 @@ var UIController = function(getData, storageManager, registerUICallback) {
 		// else, call failure with error code
 		if(verifyCategory(category)) {
 			// if(verifyType(category, newVal)) {
-				console.log(newVal.amount);
 			if(!isNaN(newVal.amount)) {
 				if(newVal.amount >= 0) {
 					storageManager.changeEntry(category, name, newVal, success, failure);
@@ -121,17 +124,17 @@ var UIController = function(getData, storageManager, registerUICallback) {
 		return category == "savings" || category == "charges" || category == "income" || category == "users";
 	}
 
-	function verifyType(category, value) {
-		if(category == "savings") {
-			return value instanceof SavingsEntry;
-		} else if(category == "charges") {
-			return value instanceof ChargeEntry;
-		} else if(category == "income") {
-			return value instanceof IncomeEntry;
-		} else {
-			return false;
-		}
-	}
+	// function verifyType(category, value) {
+	// 	if(category == "savings") {
+	// 		return value instanceof SavingsEntry;
+	// 	} else if(category == "charges") {
+	// 		return value instanceof ChargeEntry;
+	// 	} else if(category == "income") {
+	// 		return value instanceof IncomeEntry;
+	// 	} else {
+	// 		return false;
+	// 	}
+	// }
 
 	function isValidNumber(val) {
 		return (typeof(val) === 'number' && !isNaN(val));

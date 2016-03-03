@@ -85,9 +85,9 @@ describe("UIController", function() {
         describe("should succeed with valid category", function() {
 
             function commonTest(category) {
-                callbacks.addEntry(category, "foo", success, failure);
+                callbacks.addEntry(category, {name: "foo", amount: 0}, success, failure);
                 expect(failure).not.toHaveBeenCalled();
-                expect(mockSM.addEntry).toHaveBeenCalledWith(category, "foo", jasmine.any(Function), jasmine.any(Function));
+                expect(mockSM.addEntry).toHaveBeenCalledWith(category, {name: "foo", amount: 0}, jasmine.any(Function), jasmine.any(Function));
             }
 
             it("such as savings", function() {
@@ -117,9 +117,9 @@ describe("UIController", function() {
         describe("should succeed with valid category", function() {
 
             function commonTest(category) {
-                callbacks.changeEntry(category, "foo", "bar", success, failure);
+                callbacks.changeEntry(category, "foo", {name: "foo", amount: 0}, success, failure);
                 expect(failure).not.toHaveBeenCalled();
-                expect(mockSM.changeEntry).toHaveBeenCalledWith(category, "foo", "bar", jasmine.any(Function), jasmine.any(Function));
+                expect(mockSM.changeEntry).toHaveBeenCalledWith(category, "foo", {name: "foo", amount: 0}, jasmine.any(Function), jasmine.any(Function));
             }
 
             it("such as savings", function() {

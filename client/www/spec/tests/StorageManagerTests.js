@@ -21,6 +21,7 @@ describe("StorageManager", function() {
             }
         };
         mockNetwork = {
+            registerListener : jasmine.createSpy('registerListener'),
             fetchInitialData: jasmine.createSpy('fetchInitialData'),
             updateAssets : jasmine.createSpy('updateAssets'),
             setEndDate : jasmine.createSpy('setEndDate'),
@@ -292,15 +293,15 @@ describe("StorageManager", function() {
                     succeedNotFail();
 
                     it("should set changed data", function() {
-                        expect(mockData.setData).toHaveBeenCalledWith(category, [{name: "nameVal2"}], undefined);
+                        expect(mockData.setData).toHaveBeenCalledWith(category, [{name: "nameVal2", nextTime: undefined}], undefined);
                     });
 
                     it("should update localforage", function() {
-                        expect(localforage.setItem).toHaveBeenCalledWith(category, [{name: "nameVal2"}]);
+                        expect(localforage.setItem).toHaveBeenCalledWith(category, [{name: "nameVal2", nextTime: undefined}]);
                     });
 
                     it("should update NetworkManager", function() {
-                        expect(mockNetwork.changeEntry).toHaveBeenCalledWith(category, "nameVal1", {name: "nameVal2"});
+                        expect(mockNetwork.changeEntry).toHaveBeenCalledWith(category, "nameVal1", {name: "nameVal2", nextTime: undefined});
                     })
 
                 });

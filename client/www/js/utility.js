@@ -165,13 +165,14 @@ function findNextTime(entry, startTime) {
 		if(nextTime < lastTime || isSameDay(nextTime, lastTime)) {
 			nextTime.setDate(nextTime.getDate() + 7);
 		}
-	} else if(period == "biweekly") {
-		diff = (trimToDay(nextTime.getTime()) - trimToDay(start)) / MILLISECONDS_PER_DAY;
-		var offset = diff % 14;
-		nextTime.setDate(nextTime.getDate() + 14 - offset);
-	} else if(period == "twiceMonthly") {
-		console.log("twicemonthly ont supported yet");
 	}
+	// else if(period == "biweekly") {
+	// 	diff = (trimToDay(nextTime.getTime()) - trimToDay(start)) / MILLISECONDS_PER_DAY;
+	// 	var offset = diff % 14;
+	// 	nextTime.setDate(nextTime.getDate() + 14 - offset);
+	// } else if(period == "twiceMonthly") {
+	// 	console.log("twicemonthly ont supported yet");
+	// }
 	return nextTime.getTime();
 }
 

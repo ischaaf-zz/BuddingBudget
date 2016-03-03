@@ -23,17 +23,23 @@ var PageTransitions = function() {
 	// The page currently being displayed
 	var activePage;
 
-	this.switchPage = function(pageID, name) {
-		if(activePage !== pageID) {
-			$("#" + activePage).fadeOut("fast", function() {
-				$("#titleText").text(pages[pageID]);
-				$("#" + pageID).fadeIn("fast");
-				if(name !== undefined) {
-					joyStart(name);
-				}
-			});
+	this.switchPage = function(pageID, callback) {
+
+		var switchToPage = function() {
 			activePage = pageID;
+			$("#titleText").text(pages[pageID]);
+			$("#" + pageID).fadeIn("fast");
+			callFunc(callback);
+		};
+
+		if(activePage) {
+			if(activePage !== pageID) {
+				$("#" + activePage).fadeOut("fast", switchToPage);
+			}
+		} else {
+			switchToPage();
 		}
+
 	};
 
 	// Set the onclick for a pageID's button to fade to
@@ -53,79 +59,11 @@ var PageTransitions = function() {
     		setUpPageSwitch(pageIDs[i]);
     		$("#" + pageIDs[i]).hide();
     	}
-    	$("#page-main").show();
-    	$("#titleText").text(pages["page-main"]);
-    	activePage = "page-main";
-		hideButtons();
+    	// $("#page-main").show();
+    	// $("#titleText").text(pages["page-main"]);
+    	// activePage = "page-main";
     }
 	
 	initialSetup();
-	
-	//--tutorial page transitions--
-	
-	function joyStart(name) {		
-		$(name).joyride({
-			autoStart : true,
-			modal: true,
-			postRideCallback: function() {
-				$(this).joyride('destroy');
-			}
-		});
-	}
-	
-	this.tutorialSetup = function() {
-		self.switchPage("page-tutorial");
-		$("#page-tutorial").show();
-		$("#menuBar").hide();
-		
-		$("#yesTutorial").click(function() {
-			self.switchPage("page-login", "#joyRideLogin");
-			showButtons();
-		});
-		
-		$("#page-login-tutorial").click(function() {
-			self.switchPage("page-assets", "#joyRideAssets");
-		});
-		
-		$("#page-assets-tutorial").click(function() {
-			self.switchPage("page-savings", "#joyRideSavings");
-		});
-		
-		$("#page-savings-tutorial").click(function() {
-			self.switchPage("page-income", "#joyRideIncome");
-		});
-		
-		$("#page-income-tutorial").click(function() {
-			self.switchPage("page-charges", "#joyRideCharges");
-		});
-		
-		$("#page-charges-tutorial").click(function() {
-			self.switchPage("page-options", "#joyRideOptions");
-		});
-		
-		$("#page-options-tutorial").click(function() {
-			self.switchPage("page-main");
-			hideButtons();
-			$("#menuBar").show();
-		});
-	};
-	
-	function hideButtons() {
-		$("#page-assets-tutorial").hide();
-		$("#page-savings-tutorial").hide();
-		$("#page-income-tutorial").hide();
-		$("#page-charges-tutorial").hide();
-		$("#page-options-tutorial").hide();
-		$("#page-login-tutorial").hide();
-	}
-	
-	function showButtons() {
-		//$("#page-assets-tutorial").show();
-		$("#page-savings-tutorial").show();
-		$("#page-income-tutorial").show();
-		$("#page-charges-tutorial").show();
-		//$("#page-options-tutorial").show();
-		$("#page-login-tutorial").show();
-	}
 	
 };

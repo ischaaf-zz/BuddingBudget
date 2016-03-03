@@ -30,10 +30,11 @@ var NotificationManager = function(getData, setDataListener) {
 			notificationTime = copyTimeOfDay(time, new Date(options.notifyMorningTime));
 			if(notificationTime < time) {
 				var tomorrowNotificationTime = new Date(notificationTime);
-				tomorrowNotificationTime.setDate(tomorrowNotificationTime.getDate());
+				tomorrowNotificationTime.setDate(tomorrowNotificationTime.getDate() + 1);
 				setNotification(4, "Budget", "Your budget is $" + tomorrowBudget, tomorrowNotificationTime);
+			} else {
+				setNotification(1, "Budget", "Your budget is $" + budget, notificationTime);
 			}
-			setNotification(1, "Budget", "Your budget is $" + budget, notificationTime);
 		}
 
 		// set night at time if isNotifyNight

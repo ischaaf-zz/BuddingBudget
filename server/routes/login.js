@@ -14,6 +14,8 @@ router.use(function(req, res, next) {
 
 router.post('/', function(req, res, next) {
     // check if user is already logged in, if so do nothing
+    if (req.body.username && typeof(req.body.username) == 'String')
+        req.body.username = req.body.username.toLowerCase();
     if (req.session.user == req.body.username) {
         res.json({message: "Already logged in", user: session.user});
         return;

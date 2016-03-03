@@ -30,7 +30,7 @@ router.post('/', function(req, res, next) {
 
     // check parameters
     var params = new utils.Parameters();
-    params.entries["username"] = utils.validateString(true, req.body.username, userAndPassRegex);
+    params.entries["username"] = utils.validateString(true, req.body.username, userAndPassRegex, true);
     params.entries["name"]     = utils.validateString(true, req.body.name, nameRegex);
     params.entries["password"] = utils.validateString(true, req.body.password, userAndPassRegex);
 
@@ -52,8 +52,8 @@ router.post('/', function(req, res, next) {
         user.data.options.isNotifyNight = false;
         user.data.options.isNotifyAssets = false;
         user.data.options.isEnableTracking = false;
-        user.data.options.notifyMorningTime = new Date();
-        user.data.options.notifyNightTime = new Date();
+        user.data.options.notifyMorningTime = new Date().getTime();
+        user.data.options.notifyNightTime = new Date().getTime();
         user.data.options.notifyAssetsPeriod = 'weekly';
         user.save(function(err) {
             if (err) {
@@ -68,7 +68,7 @@ router.post('/', function(req, res, next) {
 router.put('/', function(req, res, next) {
     utils.modifyUser(req, res, function(req, res, user) {
         var params = new utils.Parameters();
-        params.entries["username"]    = utils.validateString(true, req.body.username, userAndPassRegex);
+        params.entries["username"]    = utils.validateString(true, req.body.username, userAndPassRegex, true);
         params.entries["name"]        = utils.validateString(false, req.body.name, nameRegex);
         params.entries["password"]    = utils.validateString(true, req.body.password, userAndPassRegex);
         params.entries["newPassword"] = utils.validateString(false, req.body.password, userAndPassRegex);

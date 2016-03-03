@@ -154,7 +154,9 @@ var NetworkManager = function(getData, dataKeys) {
 	}
 
 	function checkSend() {
+		var log = 'checking send queue - ';
 		if (!sendInProgress && sendQueue[0]) {
+			console.log("Locking Ajax send queue");
 			sendInProgress = true;
 			var next = sendQueue[0];
 			sendQueue.splice(0, 1);

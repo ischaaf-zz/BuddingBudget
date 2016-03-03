@@ -1,7 +1,7 @@
 var UserModel = require('./app/models/user');
 var session   = require('client-sessions');
 
-function validateString(required, value, regex) {
+function validateString(required, value, regex, toLower) {
 	var result = new ValidationResult(required, value, true, "", value, false);
 	if (!value) {
 		result.valid = false;
@@ -11,6 +11,9 @@ function validateString(required, value, regex) {
 		result.valid = false;
 		result.message = "Parameter failed to pass regex test";
 		this.error = true;
+	}
+	if (toLower) {
+		result.value = value.toLowerCase();
 	}
 	return result;
 }

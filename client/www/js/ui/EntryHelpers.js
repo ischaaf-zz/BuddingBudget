@@ -6,6 +6,30 @@ function EntryHelpers(notifyListeners) {
 
 	var self = this;
 	
+	//hide entry editing on menu click
+	$("#menuBar").click(function() {
+		var listSave = $("#savingsList").find('li');
+		listSave.each(function(index) {
+			var currentEntry = listSave[index];
+			var id = currentEntry.id;
+			$("#" + id).children('div')[0].style.display = "none";
+		});
+		
+		var listCharges = $("#chargesList").find('li');
+		listCharges.each(function(index) {
+			var currentEntry = listCharges[index];
+			var id = currentEntry.id;
+			$("#" + id).children('div')[0].style.display = "none";
+		});
+		
+		var listIncome = $("#incomeList").find('li');
+		listIncome.each(function(index) {
+			var currentEntry = listIncome[index];
+			var id = currentEntry.id;
+			$("#" + id).children('div')[0].style.display = "none";
+		});
+	});
+	
 	//make new element
 	this.makeTemplate = function(category, catName, val, updateFn, listId) {
 		var uuid = guid();
@@ -99,7 +123,6 @@ function EntryHelpers(notifyListeners) {
 		var p = document.createElement('p');
 
 		var date;
-		console.log(start);
 		if(frequency == 'monthly') {
 			date = document.createElement('input');
 			date.classList.add("form-control");
@@ -156,7 +179,6 @@ function EntryHelpers(notifyListeners) {
 			var val = li.getElementsByTagName('input')[0].value;
 			var select = li.getElementsByTagName('select')[0];
 			var frequency = select.options[select.selectedIndex].value;
-			console.log(frequency);
 			if(frequency == 'monthly') {
 				li.getElementsByClassName('form-control')[0].remove();
 				

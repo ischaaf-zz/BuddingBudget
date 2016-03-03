@@ -80,7 +80,7 @@ function EntryHelpers(notifyListeners) {
 
 		var updateButton = document.createElement('button');
 		updateButton.classList.add("ui-btn", "ui-btn-inline");
-		updateButton.innerHTML = "Update";
+		updateButton.innerHTML = "Save";
 		updateButton.onclick = (function() {
 			$("#" + uuid).children('div')[0].style.display = "none";
 			$("#" + uuid).children('button')[1].style.display = "block";
@@ -163,7 +163,7 @@ function EntryHelpers(notifyListeners) {
 
 		var updateButton = document.createElement('button');
 		updateButton.classList.add("ui-btn", "ui-btn-inline");
-		updateButton.innerHTML = "Update";
+		updateButton.innerHTML = "Save";
 		updateButton.onclick = (function() {
 			$("#" + uuid).children('div')[0].style.display = "none";
 			updateFn(uuid, catName);

@@ -906,6 +906,11 @@ html .ui-btn.ui-checkbox-on.ui-checkbox-on:after {
 	cursor: pointer;
 }
 
+input {
+	display: block;
+	margin: 2px;
+}
+
 .ui-input-text input, .ui-input-search input,
 textarea.ui-input-text.ui-textinput-autogrow {
 	font-size: 14px;

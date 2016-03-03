@@ -70,8 +70,8 @@ function EntryHelpers(notifyListeners) {
 		var input = document.createElement('input');
 		input.class = "updateVal";
 		input.type="number";
-		input.value = val
-		input.size = 6
+		input.value = val;
+		input.size = 6;
 		var p = document.createElement('p');
 
     	var date = document.createElement('input');

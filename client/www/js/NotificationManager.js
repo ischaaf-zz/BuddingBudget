@@ -47,11 +47,18 @@ var NotificationManager = function(getData, setDataListener) {
 		// set assets at time and date if isNotifyAssets
 		if(options.isNotifyAssets === 'On') {
 			time = new Date();
-			time.setDate(1);
-			if(time < (new Date())) {
-				time.setMonth(time.getMonth() + 1);
+			if(options.notifyAssetsPeriod === 'Monthly') {
+				time.setDate(1);
+				if(time < (new Date())) {
+					time.setMonth(time.getMonth() + 1);
+				}
+			} else if(options.notifyAssetsPeriod === 'Weekly') {
+				time.setDay(1);
+				if(time < (new Date())) {
+					time.setDate(time.getDate() + 7);
+				}
 			}
-			time.setHour(9);
+			time.setHour(11);
 			time.setMinutes(0);
 			setNotification(3, "Check Assets", "Remember to check your assets!", time);
 		}

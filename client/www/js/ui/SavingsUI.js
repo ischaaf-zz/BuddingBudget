@@ -30,7 +30,6 @@ function SavingsUI(getData, entryHelpers) {
 		
 		if(val >= 0) {
 			li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
-			li.getElementsByTagName('input')[0].value = "";		
 		}
 	}
 

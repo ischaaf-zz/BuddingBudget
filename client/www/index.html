@@ -146,7 +146,8 @@
 					<h1>Savings name:</h1>
 				</div>
 				<div data-role='content' data-theme='b'>
-					<input id="newSavingsName" data-controller="input-value" autofocus="autofocus">
+					<input id="newSavingsName" data-controller="input-value" autofocus="autofocus" placeholder="Name">
+					<input id="newSavingsValue" data-controller="input-value"  type="number" min="0" placeholder="Value">
 					<div class='showastabs center nobg'>
 						<a id="addSavings" href='#' data-rel='back' data-icon='ok' data-iconpos='left' data-role='button' data-inline='true'>Okay</a>
 						<a href='#' data-rel='back' data-icon='delete' data-iconpos='left' data-role='button' data-inline='true'>Cancel</a>
@@ -177,7 +178,8 @@
 					<h1>Category name:</h1>
 				</div>
 				<div data-role='content' data-theme='b'>
-					<input id="newChargeName" data-controller="input-value" autofocus="autofocus">
+					<input id="newChargeName" data-controller="input-value" autofocus="autofocus" placeholder="Name">
+					<input id="newChargeValue" data-controller="input-value"  type="number" min="0" placeholder="Value">
 					<div class='showastabs center nobg'>
 						<a id="addCharge" href='#' data-rel='back' data-icon='ok' data-iconpos='left' data-role='button' data-inline='true'>Okay</a>
 						<a href='#' data-rel='back' data-icon='delete' data-iconpos='left' data-role='button' data-inline='true'>Cancel</a>
@@ -185,7 +187,6 @@
 				</div>
 			</div>
 			<!-- popup end -->
-
 
 			<!-- ========================================================
 				INCOME PAGE
@@ -209,10 +210,11 @@
 			<!-- popup -->
 			<div style="overflow:hidden" data-role='popup' id='incomePopupDialog' data-theme='b'>
 				<div data-role='header' data-theme='b'>
-					<h1>Category name:</h1>
+					<h1>New Category:</h1>
 				</div>
 				<div data-role='content' data-theme='b'>
-					<input id="newIncomeName" data-controller="input-value" autofocus="autofocus">
+					<input id="newIncomeName" data-controller="input-value" autofocus="autofocus" placeholder="Name">
+					<input id="newIncomeValue" data-controller="input-value"  type="number" min="0" placeholder="Value">
 					<div class='showastabs center nobg'>
 						<a id="addIncome" href='#' data-rel='back' data-icon='ok' data-iconpos='left' data-role='button' data-inline='true'>Okay</a>
 						<a href='#' data-rel='back' data-icon='delete' data-iconpos='left' data-role='button' data-inline='true'>Cancel</a>

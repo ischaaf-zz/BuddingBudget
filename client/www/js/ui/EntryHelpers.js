@@ -33,8 +33,8 @@ function EntryHelpers(notifyListeners) {
 	//make new element
 	this.makeTemplate = function(category, catName, val, updateFn, listId) {
 		var uuid = guid();
-		var li = document.createElement('li');
-		li.id = uuid;
+		var entry = document.createElement('li');
+		entry.id = uuid;
 
 		var h3 = document.createElement('h3');
 		h3.innerHTML = catName;
@@ -51,48 +51,51 @@ function EntryHelpers(notifyListeners) {
 		var editButton = document.createElement("button");
 		editButton.classList.add("ui-btn", "ui-btn-inline");
 		editButton.innerHTML = "edit";
+		editButton.style.float = "right";
 		editButton.onclick = (function() {
 			$("#" + uuid).children('div')[0].style.display = "block";
+			$("#" + uuid).children('button')[1].style.display = "none";
 		});
 
-		li.appendChild(deleteButton);
-		li.appendChild(h3);
-		li.appendChild(h32);
-		li.appendChild(editButton);
-		// li.appendChild(editDiv);
+		entry.appendChild(deleteButton);
+		entry.appendChild(editButton);
+		entry.appendChild(h3);
+		entry.appendChild(h32);
 
 		var input = document.createElement('input');
 		input.class = "updateVal";
 		input.type="number";
+		input.value = val
 		var p = document.createElement('p');
 
     	var date = document.createElement('input');
     	date.classList.add("form-control");
     	date.type = "date";
 
-		var button = document.createElement('button');
-		button.classList.add("ui-btn", "ui-btn-inline");
-		button.innerHTML = "Update";
-		button.onclick = (function() {
+		var updateButton = document.createElement('button');
+		updateButton.classList.add("ui-btn", "ui-btn-inline");
+		updateButton.innerHTML = "Update";
+		updateButton.onclick = (function() {
 			$("#" + uuid).children('div')[0].style.display = "none";
+			$("#" + uuid).children('button')[1].style.display = "block";
 			updateFn(uuid, catName);
 		}); 
 
 		var editField = document.createElement('div');
 		editField.style.display = "none";
 		editField.appendChild(input);
-		editField.appendChild(button);
-		li.appendChild(editField);
-		li.appendChild(p);
-		$(listId).append(li);
+		editField.appendChild(updateButton);
+		entry.appendChild(editField);
+		entry.appendChild(p);
+		$(listId).append(entry);
 
 		return uuid;
 	};
 
 	this.makeRecurringTemplate = function(category, catName, val, frequency, start, updateFn, listId) {
 		var uuid = guid();
-		var li = document.createElement('li');
-		li.id = uuid;
+		var entry = document.createElement('li');
+		entry.id = uuid;
 
 		var h3 = document.createElement('h3');
 		h3.innerHTML = catName;
@@ -105,21 +108,26 @@ function EntryHelpers(notifyListeners) {
 		deleteButton.onclick = (function() {
 			self.removeEntry(uuid, category, catName);
 		});
+
 		var editButton = document.createElement("button");
 		editButton.classList.add("ui-btn", "ui-btn-inline");
 		editButton.innerHTML = "edit";
+		editButton.style.float = "right";
 		editButton.onclick = (function() {
 			$("#" + uuid).children('div')[0].style.display = "block";
+			console.log($("#" + uuid).children('button')[0]);
+			$("#" + uuid).children('button')[1].style.display = "none";
 		});
 
-		li.appendChild(deleteButton);
-		li.appendChild(h3);
-		li.appendChild(h32);
-		li.appendChild(editButton);
+		entry.appendChild(deleteButton);
+		entry.appendChild(editButton);
+		entry.appendChild(h3);
+		entry.appendChild(h32);
 
 		var input = document.createElement('input');
 		input.class = "updateVal";
 		input.type="number";
+		input.value = val;
 		var p = document.createElement('p');
 
 		var date;
@@ -147,12 +155,13 @@ function EntryHelpers(notifyListeners) {
 			}
 		}
 
-		var button = document.createElement('button');
-		button.classList.add("ui-btn", "ui-btn-inline");
-		button.innerHTML = "Update";
-		button.onclick = (function() {
+		var updateButton = document.createElement('button');
+		updateButton.classList.add("ui-btn", "ui-btn-inline");
+		updateButton.innerHTML = "Update";
+		updateButton.onclick = (function() {
 			$("#" + uuid).children('div')[0].style.display = "none";
 			updateFn(uuid, catName);
+			$("#" + uuid).children('button')[1].style.display = "inline";
 		}); 
 
 		var select = document.createElement('select');
@@ -169,27 +178,27 @@ function EntryHelpers(notifyListeners) {
 		editDiv.appendChild(input);
 		editDiv.appendChild(select);
 		editDiv.appendChild(date);
-		editDiv.appendChild(button);
-		li.appendChild(editDiv);
-		li.appendChild(p);
-		$(listId).append(li);
+		editDiv.appendChild(updateButton);
+		entry.appendChild(editDiv);
+		entry.appendChild(p);
+		$(listId).append(entry);
 
 		$(select).change(function() {
-			var li = document.getElementById(uuid);
-			var val = li.getElementsByTagName('input')[0].value;
-			var select = li.getElementsByTagName('select')[0];
+			var entry = document.getElementById(uuid);
+			var val = entry.getElementsByTagName('input')[0].value;
+			var select = entry.getElementsByTagName('select')[0];
 			var frequency = select.options[select.selectedIndex].value;
 			if(frequency == 'monthly') {
-				li.getElementsByClassName('form-control')[0].remove();
+				entry.getElementsByClassName('form-control')[0].remove();
 				
 				var date = document.createElement('input');
 				date.classList.add("form-control");
 				date.type = "date";
 				
-				var divParent = li.getElementsByTagName('div')[0];
+				var divParent = entry.getElementsByTagName('div')[0];
 				divParent.insertBefore(date, divParent.children[2]);
 			} else if(frequency == 'weekly') {
-				li.getElementsByClassName('form-control')[0].remove();
+				entry.getElementsByClassName('form-control')[0].remove();
 				
 				var week = document.createElement('select');
 				week.classList.add("form-control");
@@ -201,7 +210,7 @@ function EntryHelpers(notifyListeners) {
 					week.appendChild(opt);
 				});
 				
-				var divParentA = li.getElementsByTagName('div')[0];
+				var divParentA = entry.getElementsByTagName('div')[0];
 				divParentA.insertBefore(week, divParentA.children[2]);
 			}
 		});

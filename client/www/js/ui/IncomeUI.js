@@ -1,18 +1,26 @@
 function IncomeUI(getData, entryHelpers) {
 
 	$("#addIncome").click(function() {
-		var catName = document.getElementById("newIncomeName").value;
+		var incomeName = document.getElementById("newIncomeName").value;
 		document.getElementById("newIncomeName").value = "";
-		if(catName === null || catName === "") {
+		if(incomeName === null || incomeName === "") {
 			return;
 		}
 
-		var uuid = entryHelpers.makeRecurringTemplate("income", catName, 0, "monthly", undefined, updateIncomeEntry, "#incomeList");
+		var incomeValue = document.getElementById("newIncomeValue").value;
+		document.getElementById("newIncomeValue").value = "";
+		if(incomeValue === null || incomeValue === "") {
+			return;
+		}
+
+		var today = new Date();
+
+		var uuid = entryHelpers.makeRecurringTemplate("income", incomeName, incomeValue, "monthly", today, updateIncomeEntry, "#incomeList");
 
 		//generalize this? SavingsEntry
 		//add element to "savings" array
-		var save = new IncomeEntry(catName, 0, "monthly", 1, 5, true);
-		entryHelpers.notifyAdd("addEntry", "income", catName, save, uuid);
+		var save = new IncomeEntry(incomeName, incomeValue, "monthly", today, 5, true);
+		entryHelpers.notifyAdd("addEntry", "income", incomeName, save, uuid);
 		$("#page-income-tutorial").html("NEXT");
 	});
 	
@@ -44,7 +52,7 @@ function IncomeUI(getData, entryHelpers) {
 		}
 	}
 
-	$("#newIncomeName").keyup(function(event) {
+	$("#newIncomeValue").keyup(function(event) {
 		if(event.keyCode == 13) {
 			$("#addIncome").click();
 		}

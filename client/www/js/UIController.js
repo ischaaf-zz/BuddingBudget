@@ -92,7 +92,6 @@ var UIController = function(getData, storageManager, registerUICallback) {
 		// else, call failure with error code
 		if(verifyCategory(category)) {
 			// if(verifyType(category, newVal)) {
-				console.log(newVal.amount);
 			if(!isNaN(newVal.amount)) {
 				if(newVal.amount >= 0) {
 					storageManager.changeEntry(category, name, newVal, success, failure);

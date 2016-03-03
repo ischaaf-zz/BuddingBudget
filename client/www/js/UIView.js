@@ -67,14 +67,13 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		//load recurring charges
 		arr = getData("charges");
 		arr.forEach(function(ctx) {
-			makeRecurringTemplate("charges", ctx.name, ctx.amount, ctx.period, updateChargesEntry, "#chargesList");
+			makeRecurringTemplate("charges", ctx.name, ctx.amount, ctx.period, ctx.start, updateChargesEntry, "#chargesList");
 		});
 		
 		//load recurring income
 		arr = getData("income");
 		arr.forEach(function(ctx) {
-			makeRecurringTemplate("income", ctx.name, ctx.amount, ctx.period,
-				updateIncomeEntry, "#incomeList");
+			makeRecurringTemplate("income", ctx.name, ctx.amount, ctx.period, ctx.start, updateIncomeEntry, "#incomeList");
 		});
 		
 		//load track spending
@@ -287,10 +286,6 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		input.class = "updateVal";
 		input.type="number";
 		var p = document.createElement('p');
-		$("#" + uuid + " > p").on("webkitAnimationEnd", function() {
-			this.className = "";
-			this.textContent = "";
-    	});
 
     	var date = document.createElement('input');
     	date.classList.add("form-control");
@@ -315,7 +310,7 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		return uuid;
 	}
 
-	function makeRecurringTemplate(category, catName, val, frequency, updateFn, listId) {
+	function makeRecurringTemplate(category, catName, val, frequency, start, updateFn, listId) {
 		var uuid = guid();
 		var li = document.createElement('li');
 		li.id = uuid;
@@ -347,14 +342,32 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		input.class = "updateVal";
 		input.type="number";
 		var p = document.createElement('p');
-		$("#" + uuid + " > p").on("webkitAnimationEnd", function() {
-			this.className = "";
-			this.textContent = "";
-    	});
-
-    	var date = document.createElement('input');
-    	date.classList.add("form-control");
-    	date.type = "date";
+		
+		var date;
+		console.log(start);
+		if(frequency == 'monthly') {
+			date = document.createElement('input');
+			date.classList.add("form-control");
+			date.type = "date";
+			if(start != 1) {
+				var newDate = new Date(start);
+				date.value = dateToDateInput(newDate);
+			}
+		} else if(frequency == 'weekly') {
+			date = document.createElement('select');
+			date.classList.add("form-control");
+			var dayValue = 0;
+			["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].forEach(function(f) {
+				var opt = document.createElement('option');
+				opt.value = dayValue++;
+				opt.innerHTML = f;
+				date.appendChild(opt);
+			});
+			if(start != 1) {
+				var newDateA = new Date(start);
+				date.value = newDateA.getDay();
+			}
+		}
 
 		var button = document.createElement('button');
 		button.classList.add("ui-btn", "ui-btn-inline");
@@ -382,6 +395,39 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		li.appendChild(editDiv);
 		li.appendChild(p);
 		$(listId).append(li);
+		
+		$(select).change(function() {
+			var li = document.getElementById(uuid);
+			var val = li.getElementsByTagName('input')[0].value;
+			var select = li.getElementsByTagName('select')[0];
+			var frequency = select.options[select.selectedIndex].value;
+			console.log(frequency);
+			if(frequency == 'monthly') {
+				li.getElementsByClassName('form-control')[0].remove();
+				
+				var date = document.createElement('input');
+				date.classList.add("form-control");
+				date.type = "date";
+				
+				var divParent = li.getElementsByTagName('div')[0];
+				divParent.insertBefore(date, divParent.children[2]);
+			} else if(frequency == 'weekly') {
+				li.getElementsByClassName('form-control')[0].remove();
+				
+				var week = document.createElement('select');
+				week.classList.add("form-control");
+				var dayValue = 0;
+				["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].forEach(function(f) {
+					var opt = document.createElement('option');
+					opt.value = dayValue++;
+					opt.innerHTML = f;
+					week.appendChild(opt);
+				});
+				
+				var divParentA = li.getElementsByTagName('div')[0];
+				divParentA.insertBefore(week, divParentA.children[2]);
+			}
+		});
 
 		return uuid;
 	}
@@ -481,7 +527,7 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 			return;
 		}
 
-		var uuid = makeRecurringTemplate("charges", catName, 0, "monthly", updateChargesEntry, "#chargesList");
+		var uuid = makeRecurringTemplate("charges", catName, 0, "monthly", undefined, updateChargesEntry, "#chargesList");
 		
 		//generalize this? SavingsEntry
 		//add element to "savings" array
@@ -497,13 +543,20 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		var val = li.getElementsByTagName('input')[0].value;
 		var select = li.getElementsByTagName('select')[0];
 		var frequency = select.options[select.selectedIndex].value;
-		var startDate = li.getElementsByTagName('input')[1].value;
-
+		var startDate = li.getElementsByClassName('form-control')[0].value;
+		
 		if(val === "") {
 			val = li.getElementsByTagName('h2')[0].innerHTML.split("$")[1];
 		}
-		console.log(val);
-		var save = new ChargeEntry(catName, val, frequency, dateInputToDate(startDate).getTime(), false);
+		
+		var save;
+		if(frequency == 'monthly') {
+			console.log(dateInputToDate(startDate));
+			save = new ChargeEntry(catName, val, frequency, dateInputToDate(startDate).getTime(), false);
+		} else if(frequency == 'weekly') {
+			var newStartDate = new Date(1970, 0, 4 + parseInt(startDate));
+			save = new ChargeEntry(catName, val, frequency, newStartDate, false);
+		}
 
 		notifyChange("changeEntry", "charges", catName, save, uuid);
 		
@@ -529,7 +582,7 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 			return;
 		}
 
-		var uuid = makeRecurringTemplate("income", catName, 0, "monthly", updateIncomeEntry, "#incomeList");
+		var uuid = makeRecurringTemplate("income", catName, 0, "monthly", undefined, updateIncomeEntry, "#incomeList");
 
 		//generalize this? SavingsEntry
 		//add element to "savings" array
@@ -545,14 +598,21 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		var val = li.getElementsByTagName('input')[0].value;
 		var select = li.getElementsByTagName('select')[0];
 		var frequency = select.options[select.selectedIndex].value;
-		var startDate = li.getElementsByTagName('input')[1].value;
+		var startDate = li.getElementsByClassName('form-control')[0].value;
 
 		if(val === "") {
 			val = li.getElementsByTagName('h2')[0].innerHTML.split("$")[1];
 		
 		}
 		
-		var save = new IncomeEntry(catName, val, frequency, dateInputToDate(startDate).getTime(), 0, true);
+		var save;
+		if(frequency == 'monthly') {
+			save = new IncomeEntry(catName, val, frequency, dateInputToDate(startDate).getTime(), 0, true);
+		} else if(frequency == 'weekly') {
+			var newStartDate = new Date(1970, 0, 4 + parseInt(startDate));
+			save = new IncomeEntry(catName, val, frequency, newStartDate, 0, true);
+		}
+		
 		notifyChange("changeEntry", "income", catName, save, uuid);
 		
 		if(val >= 0) {

@@ -7,12 +7,14 @@ function EntryHelpers(notifyListeners) {
 	var self = this;
 	
 	//hide entry editing on menu click
-	$("#menuBar").click(function() {
+	$("#leftpanel div ul li a").click(function() {
+		console.log("hey");
 		var listSave = $("#savingsList").find('li');
 		listSave.each(function(index) {
 			var currentEntry = listSave[index];
 			var id = currentEntry.id;
 			$("#" + id).children('div')[0].style.display = "none";
+			$("#" + id).children('button')[1].style.display = "block";
 		});
 		
 		var listCharges = $("#chargesList").find('li');
@@ -20,6 +22,7 @@ function EntryHelpers(notifyListeners) {
 			var currentEntry = listCharges[index];
 			var id = currentEntry.id;
 			$("#" + id).children('div')[0].style.display = "none";
+			$("#" + id).children('button')[1].style.display = "block";
 		});
 		
 		var listIncome = $("#incomeList").find('li');
@@ -27,6 +30,7 @@ function EntryHelpers(notifyListeners) {
 			var currentEntry = listIncome[index];
 			var id = currentEntry.id;
 			$("#" + id).children('div')[0].style.display = "none";
+			$("#" + id).children('button')[1].style.display = "block";
 		});
 	});
 	
@@ -52,6 +56,7 @@ function EntryHelpers(notifyListeners) {
 		editButton.classList.add("ui-btn", "ui-btn-inline");
 		editButton.innerHTML = "edit";
 		editButton.style.float = "right";
+		editButton.style.display = "block";
 		editButton.onclick = (function() {
 			$("#" + uuid).children('div')[0].style.display = "block";
 			$("#" + uuid).children('button')[1].style.display = "none";
@@ -66,6 +71,7 @@ function EntryHelpers(notifyListeners) {
 		input.class = "updateVal";
 		input.type="number";
 		input.value = val
+		input.size = 6
 		var p = document.createElement('p');
 
     	var date = document.createElement('input');
@@ -116,7 +122,6 @@ function EntryHelpers(notifyListeners) {
 		editButton.style.float = "right";
 		editButton.onclick = (function() {
 			$("#" + uuid).children('div')[0].style.display = "block";
-			console.log($("#" + uuid).children('button')[0]);
 			$("#" + uuid).children('button')[1].style.display = "none";
 		});
 

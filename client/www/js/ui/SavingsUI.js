@@ -2,18 +2,22 @@ function SavingsUI(getData, entryHelpers) {
 
 	$("#addSavings").click(function() {
 		var savingsName = document.getElementById("newSavingsName").value;
-
 		document.getElementById("newSavingsName").value = "";
-
 		if(savingsName === null || savingsName === "") {
 			return;
 		}
 
-		var uuid = entryHelpers.makeTemplate("savings", savingsName, 0, updateSavingsEntry, "#savingsList");
+		var savingsValue = document.getElementById("newSavingsValue").value;
+		document.getElementById("newSavingsValue").value = "";
+		if(savingsValue === null || savingsValue === "") {
+			return;
+		}
+
+		var uuid = entryHelpers.makeTemplate("savings", savingsName, savingsValue, updateSavingsEntry, "#savingsList");
 
 		//generalize this? SavingsEntry
 		//add element to "savings" array
-		var save = new SavingsEntry(savingsName, 0, true);
+		var save = new SavingsEntry(savingsName, savingsValue, true);
 		entryHelpers.notifyAdd("addEntry", "savings", savingsName, save, uuid);
 		$("#page-savings-tutorial").html("NEXT");
 	});

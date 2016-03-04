@@ -15,8 +15,6 @@ function SavingsUI(getData, entryHelpers) {
 
 		var uuid = entryHelpers.makeTemplate("savings", savingsName, savingsValue, updateSavingsEntry, "#savingsList");
 
-		//generalize this? SavingsEntry
-		//add element to "savings" array
 		var save = new SavingsEntry(savingsName, savingsValue, true);
 		entryHelpers.notifyAdd("addEntry", "savings", savingsName, save, uuid);
 		$("#page-savings-tutorial").html("NEXT");

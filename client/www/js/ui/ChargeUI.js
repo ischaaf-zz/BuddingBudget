@@ -30,7 +30,7 @@ function ChargeUI(getData, entryHelpers) {
 		var startDate = li.getElementsByClassName('form-control')[0].value;
 
 		if(val === "") {
-			val = li.getElementsByTagName('h2')[0].innerHTML.split("$")[1];
+			val = 0;
 		}
 
 		var save;

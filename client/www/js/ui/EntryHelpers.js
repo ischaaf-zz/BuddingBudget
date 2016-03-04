@@ -6,7 +6,7 @@ function EntryHelpers(notifyListeners) {
 
 	var self = this;
 	
-	//hide entry editing on menu click
+	//hide entry editing on page switch
 	$("#leftpanel div ul li a").click(function() {
 		var listSave = $("#savingsList").find('li');
 		listSave.each(function(index) {
@@ -30,16 +30,19 @@ function EntryHelpers(notifyListeners) {
 		});
 	});
 	
-	//make new element
+	//make new nonrecurring element
 	this.makeTemplate = function(category, catName, val, updateFn, listId) {
 		var uuid = guid();
 		var entry = document.createElement('li');
 		entry.id = uuid;
 
-		var h3 = document.createElement('h3');
-		h3.innerHTML = catName;
-		var h32 = document.createElement('h2');
-		h32.innerHTML = "$" + val;
+		//Category name
+		var category = document.createElement('h3');
+		category.innerHTML = catName;
+		//Category amount
+		var amount = document.createElement('h2');
+		amount.innerHTML = "$" + val;
+
 		var deleteButton = document.createElement('button');
 		deleteButton.classList.add("ui-btn", "ui-btn-inline");
 		deleteButton.innerHTML = "x";
@@ -54,56 +57,63 @@ function EntryHelpers(notifyListeners) {
 		editButton.style.float = "right";
 		editButton.style.display = "block";
 		editButton.onclick = (function() {
+			//show edit form
 			$("#" + uuid).children('div')[0].style.display = "block";
+			//hide edit button
 			$("#" + uuid).children('button')[1].style.display = "none";
 		});
 
 		entry.appendChild(deleteButton);
 		entry.appendChild(editButton);
-		entry.appendChild(h3);
-		entry.appendChild(h32);
+		entry.appendChild(category);
+		entry.appendChild(amount);
 
-		var input = document.createElement('input');
-		input.class = "updateVal";
-		input.type="number";
-		input.value = val;
-		input.size = 6;
-		var p = document.createElement('p');
-
-    	var date = document.createElement('input');
-    	date.classList.add("form-control");
-    	date.type = "date";
+		//Input for new value when editing entry
+		var newVal = document.createElement('input');
+		newVal.class = "updateVal";
+		newVal.type="number";
+		newVal.value = val;
+		newVal.size = 6;
+		var success = document.createElement('p');
 
 		var updateButton = document.createElement('button');
 		updateButton.classList.add("ui-btn", "ui-btn-inline");
 		updateButton.innerHTML = "Save";
 		updateButton.onclick = (function() {
+			//hide update button
 			$("#" + uuid).children('div')[0].style.display = "none";
+			//show edit button
 			$("#" + uuid).children('button')[1].style.display = "block";
 			updateFn(uuid, catName);
 		}); 
 
-		var editField = document.createElement('div');
-		editField.style.display = "none";
-		editField.appendChild(input);
-		editField.appendChild(updateButton);
-		entry.appendChild(editField);
-		entry.appendChild(p);
+		//
+		var editDiv = document.createElement('div');
+		editDiv.style.display = "none";
+		editDiv.appendChild(newVal);
+		editDiv.appendChild(updateButton);
+
+		entry.appendChild(editDiv);
+		entry.appendChild(success);
 		entry.appendChild(document.createElement('hr'));
 		$(listId).append(entry);
 
 		return uuid;
 	};
 
+	//creates recurringentry 
 	this.makeRecurringTemplate = function(category, catName, val, frequency, start, updateFn, listId) {
 		var uuid = guid();
 		var entry = document.createElement('li');
 		entry.id = uuid;
 
-		var h3 = document.createElement('h3');
-		h3.innerHTML = catName;
-		var h32 = document.createElement('h2');
-		h32.innerHTML = "$" + val;
+		//category name
+		var category = document.createElement('h3');
+		category.innerHTML = catName;
+
+		//category value
+		var value = document.createElement('h2');
+		value.innerHTML = "$" + val;
 		var deleteButton = document.createElement('button');
 		deleteButton.classList.add("ui-btn", "ui-btn-inline");
 		deleteButton.innerHTML = "x";
@@ -117,14 +127,16 @@ function EntryHelpers(notifyListeners) {
 		editButton.innerHTML = "edit";
 		editButton.style.float = "right";
 		editButton.onclick = (function() {
+			//show edit form
 			$("#" + uuid).children('div')[0].style.display = "block";
+			//hide edit button
 			$("#" + uuid).children('button')[1].style.display = "none";
 		});
 
 		entry.appendChild(deleteButton);
 		entry.appendChild(editButton);
-		entry.appendChild(h3);
-		entry.appendChild(h32);
+		entry.appendChild(category);
+		entry.appendChild(value);
 
 		var input = document.createElement('input');
 		input.class = "updateVal";
@@ -132,6 +144,7 @@ function EntryHelpers(notifyListeners) {
 		input.value = val;
 		var p = document.createElement('p');
 
+		//sets input based on given frequency selection
 		var date;
 		if(frequency == 'monthly') {
 			date = document.createElement('input');
@@ -174,24 +187,15 @@ function EntryHelpers(notifyListeners) {
 			select.appendChild(opt);
 		});
 		select.value = frequency;
-		
-		var editDiv = document.createElement('div');
-		editDiv.style.display = "none";
-		editDiv.appendChild(input);
-		editDiv.appendChild(select);
-		editDiv.appendChild(date);
-		editDiv.appendChild(updateButton);
-		entry.appendChild(editDiv);
-		entry.appendChild(p);
-		entry.appendChild(document.createElement('hr'));
-		$(listId).append(entry);
 
+		//set's function when frequency is changed
 		$(select).change(function() {
 			var entry = document.getElementById(uuid);
 			var val = entry.getElementsByTagName('input')[0].value;
 			var select = entry.getElementsByTagName('select')[0];
 			var frequency = select.options[select.selectedIndex].value;
 			if(frequency == 'monthly') {
+				//shows date calender
 				entry.getElementsByClassName('form-control')[0].remove();
 				
 				var date = document.createElement('input');
@@ -201,6 +205,7 @@ function EntryHelpers(notifyListeners) {
 				var divParent = entry.getElementsByTagName('div')[0];
 				divParent.insertBefore(date, divParent.children[2]);
 			} else if(frequency == 'weekly') {
+				//shows selection for day of week
 				entry.getElementsByClassName('form-control')[0].remove();
 				
 				var week = document.createElement('select');
@@ -218,9 +223,22 @@ function EntryHelpers(notifyListeners) {
 			}
 		});
 
+		
+		var editDiv = document.createElement('div');
+		editDiv.style.display = "none";
+		editDiv.appendChild(input);
+		editDiv.appendChild(select);
+		editDiv.appendChild(date);
+		editDiv.appendChild(updateButton);
+		entry.appendChild(editDiv);
+		entry.appendChild(p);
+		entry.appendChild(document.createElement('hr'));
+		$(listId).append(entry);
+
 		return uuid;
 	};
 
+	//Removes entries
 	this.removeEntry = function(uuid, category, catName) {
 		notifyListeners("removeEntry", [category,
 			catName,
@@ -233,11 +251,32 @@ function EntryHelpers(notifyListeners) {
 		document.getElementById(uuid).remove();
 	};
 
-	//todo: buggy b/c catName and save switches depending on addEntr
+	this.addEntry = function() {
+		var incomeName = document.getElementById("newIncomeName").value;
+		document.getElementById("newIncomeName").value = "";
+		if(incomeName === null || incomeName === "") {
+			return;
+		}
+
+		var incomeValue = document.getElementById("newIncomeValue").value;
+		document.getElementById("newIncomeValue").value = "";
+		if(incomeValue === null || incomeValue === "") {
+			return;
+		}
+
+		var today = new Date();
+
+		var uuid = entryHelpers.makeRecurringTemplate("income", incomeName, incomeValue, "monthly", today, updateIncomeEntry, "#incomeList");
+
+		var save = new IncomeEntry(incomeName, incomeValue, "monthly", today, 5, true);
+		entryHelpers.notifyAdd("addEntry", "income", incomeName, save, uuid);
+		$("#page-income-tutorial").html("NEXT");
+	}
+
+	//general notific ation for adding an entry
 	this.notifyAdd = function(call, category, catName, save, uuid) {
 		notifyListeners(call, [category,
 			save,
-			//catName,
 			function() {
 			$("#titleText").notify("ADD " + category.toUpperCase() + " SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
 			document.getElementById(uuid).getElementsByTagName('p')[0].value = "";
@@ -247,7 +286,7 @@ function EntryHelpers(notifyListeners) {
 			}]);
 	};
 
-	//used for changeEntry
+	//general notific ation for changing/updating an entry
 	this.notifyChange = function(call, category, catName, save, uuid) {
 		notifyListeners(call, [category,
 			catName,

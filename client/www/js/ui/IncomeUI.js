@@ -13,14 +13,11 @@ function IncomeUI(getData, entryHelpers) {
 			return;
 		}
 
-		var tomorrow = new Date();
-		tomorrow.setDate(tomorrow.getDate() + 1);
+		var today = new Date();
 
-		var uuid = entryHelpers.makeRecurringTemplate("income", incomeName, incomeValue, "monthly", tomorrow, updateIncomeEntry, "#incomeList");
+		var uuid = entryHelpers.makeRecurringTemplate("income", incomeName, incomeValue, "monthly", today, updateIncomeEntry, "#incomeList");
 
-		//generalize this? SavingsEntry
-		//add element to "savings" array
-		var save = new IncomeEntry(incomeName, incomeValue, "monthly", tomorrow, 5, true);
+		var save = new IncomeEntry(incomeName, incomeValue, "monthly", today, 5, true);
 		entryHelpers.notifyAdd("addEntry", "income", incomeName, save, uuid);
 		$("#page-income-tutorial").html("NEXT");
 	});
@@ -33,8 +30,7 @@ function IncomeUI(getData, entryHelpers) {
 		var startDate = li.getElementsByClassName('form-control')[0].value;
 
 		if(val === "") {
-			val = li.getElementsByTagName('h2')[0].innerHTML.split("$")[1];
-		
+			val = 0;		
 		}
 		
 		var save;

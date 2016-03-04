@@ -71,6 +71,8 @@ var NetworkManager = function(getData, dataKeys, readyCallback) {
 		localforage.getItem('username', setUsername);
 		localforage.getItem('password', setPassword);
 
+		// Call ready callback regardless if we don't fetch credentials within
+		// five seconds. Better than the app just never starting.
 		safetyTimeout = setTimeout(function() {
 			readyCallback();
 			console.log("FETCHING USER AND PASSWORD FAILED");

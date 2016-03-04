@@ -3,6 +3,7 @@
 
 var NetworkManager = function(getData, dataKeys, readyCallback) {
 
+	var self = this;
 	var credentials = {};
 	var host = "http://bbapi.ischaaf.com:8081/";
 
@@ -99,6 +100,8 @@ var NetworkManager = function(getData, dataKeys, readyCallback) {
 	this.addUser = function(user, pass, name, success, failure) {
 		console.log("Creating user");
 		enqueueSend("POST", {username: user, password: pass, name: name, token: "pmlWoKIm2XSes7jBHdPtl8UtGgiSnn1PW8xMFPQ1N2X5c1uY9fa3Zu3QYNODkpuy"}, "user", success, failure);
+		self.login(user, pass, defaultSuccess, defaultFail);
+		self.storeUser();
 	};
 
 
@@ -114,6 +117,27 @@ var NetworkManager = function(getData, dataKeys, readyCallback) {
 			updateData();
 			success.apply(window, arguments);
 		}, failure);
+	};
+
+	this.storeUser = function() {
+		var data = getData('all');
+		self.updateAssets(data.assets);
+		self.setEndDate(data.endDate);
+		self.trackSpending(data.trackedEntry);
+		for (var i = 0; i < data.savings.length; i++) {
+			self.addEntry('savings', data.savings[i]);	
+		}
+		for (var i = 0; i < data.charges.length; i++) {
+			self.addEntry('charges', data.charges[i]);	
+		}
+		for (var i = 0; i < data.income.length; i++) {
+			self.addEntry('income', data.income[i]);	
+		}
+		self.setRollover(data.rollover);
+		self.setTomorrowRollover(data.tomorrowRollover);
+		for (var key in data.options) {
+			self.setOptions(key, data.options[key]);
+		}
 	};
 
 	this.logout = function() {
@@ -189,7 +213,7 @@ var NetworkManager = function(getData, dataKeys, readyCallback) {
 	var sendInProgress = false;
 
 	function enqueueSend(method, data, page, success, fail) {
-		if (page != 'login') {
+		if (page != 'login' && !(page == 'user' && method == 'POST')) {
 			if (!credentials || !credentials.user || !credentials.password) {
 				console.log("No credentials available - request not sending");
 				console.log(credentials);

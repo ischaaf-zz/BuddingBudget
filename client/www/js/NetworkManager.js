@@ -124,13 +124,14 @@ var NetworkManager = function(getData, dataKeys, readyCallback) {
 		self.updateAssets(data.assets);
 		self.setEndDate(data.endDate);
 		self.trackSpending(data.trackedEntry);
-		for (var i = 0; i < data.savings.length; i++) {
+		var i;
+		for (i = 0; i < data.savings.length; i++) {
 			self.addEntry('savings', data.savings[i]);	
 		}
-		for (var i = 0; i < data.charges.length; i++) {
+		for (i = 0; i < data.charges.length; i++) {
 			self.addEntry('charges', data.charges[i]);	
 		}
-		for (var i = 0; i < data.income.length; i++) {
+		for (i = 0; i < data.income.length; i++) {
 			self.addEntry('income', data.income[i]);	
 		}
 		self.setRollover(data.rollover);

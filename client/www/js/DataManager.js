@@ -82,6 +82,9 @@ var DataManager = function() {
 
 	// Gets the data of the given category
 	this.getData = function(category) {
+		if(category === 'all') {
+			return data;
+		}
 		return deepCopy(data[category]);
 	};
 

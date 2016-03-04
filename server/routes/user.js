@@ -55,33 +55,40 @@ router.post('/', function(req, res, next) {
         user.data.assets = Number(data.assets);
         user.data.rollover = Number(data.rollover);
         user.data.tomorrowRollover = Number(data.tomorrowRollover);
-        data.options.notifyMorningTime =utils.validateDate(false, data.options.notifyMorningTime).value.getTime();
+        data.options.notifyMorningTime = utils.validateDate(false, data.options.notifyMorningTime).value.getTime();
         data.options.notifyNightTime = utils.validateDate(false, data.options.notifyNightTime).value.getTime();
         user.data.options = data.options;
 
-        for (var i = 0; i < data.income.length; i++) {
-            data.income[i].amount = Number(data.income[i].amount);
-            data.income[i].start = utils.validateDate(false, data.income[i].start).value.getTime();
+        if (data.income) {
+            for (var i = 0; i < data.income.length; i++) {
+                data.income[i].amount = Number(data.income[i].amount);
+                data.income[i].start = utils.validateDate(false, data.income[i].start).value.getTime();
+            }
+            user.data.income = data.income;
         }
-        user.data.income = data.income;
 
-        for (var i = 0; i < data.charges.length; i++) {
-            data.charges[i].amount = Number(data.charges[i].amount);
-            data.charges[i].start = utils.validateDate(false, data.charges[i].start).value.getTime();
+        if (data.charges) {
+            for (var i = 0; i < data.charges.length; i++) {
+                data.charges[i].amount = Number(data.charges[i].amount);
+                data.charges[i].start = utils.validateDate(false, data.charges[i].start).value.getTime();
+            }
+            user.data.charges = data.charges;
         }
-        user.data.charges = data.charges;
 
-        for (var i = 0; i < data.savings.length; i++) {
-            data.savings[i].amount = Number(data.savings[i].amount);
+        if (data.savings) {
+            for (var i = 0; i < data.savings.length; i++) {
+                data.savings[i].amount = Number(data.savings[i].amount);
+            }
+            user.data.savings = data.savings;
         }
-        user.data.savings = data.savings;
 
         if (data.trackedEntry) {
             data.trackedEntry.budget = Number(data.trackedEntry.budget);
             data.trackedEntry.amount = Number(data.trackedEntry.amount);
             data.trackedEntry.day = utils.validateDate(false, data.trackedEntry.day).value.getTime();
+            user.data.entries = [data.trackedEntry];
         }
-        user.data.entries = [data.trackedEntry];
+        
         console.log(user);
         user.save(function(err) {
             if (err) {

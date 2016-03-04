@@ -17,7 +17,7 @@ router.post('/', function(req, res, next) {
     if (typeof(req.body.username) == 'string')
         req.body.username = req.body.username.toLowerCase();
     if (req.session.user == req.body.username) {
-        res.json({message: "Already logged in", user: session.user});
+        res.json({message: "Already logged in", user: session.user, name: session.name});
         return;
     } else {
         req.session.user = undefined;
@@ -41,7 +41,8 @@ router.post('/', function(req, res, next) {
             return;
         }
         req.session.user = user.username;
-        res.json({message: "logged in", name: user.name});
+        req.session.name = user.name;
+        res.json({message: "logged in", user: user.username, name: user.name});
     });
 });
 

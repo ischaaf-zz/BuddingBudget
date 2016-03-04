@@ -46,7 +46,7 @@ var NetworkManager = function(getData, dataKeys, readyCallback) {
 		// otherwise, increment fetch counter
 		var callReady = function() {
 			fetchCounter++;
-			if(fetchCounter >= 3) {
+			if(fetchCounter >= 4) {
 				clearTimeout(safetyTimeout);
 				readyCallback();
 			}
@@ -67,9 +67,15 @@ var NetworkManager = function(getData, dataKeys, readyCallback) {
 			callReady();
 		};
 
+		var setName = function(err, val) {
+			credentials.name = val;
+			callReady();
+		};
+
 		localforage.getItem('lastModified', setLastModified);
 		localforage.getItem('username', setUsername);
 		localforage.getItem('password', setPassword);
+		localforage.getItem('name', setName);
 
 		// Call ready callback regardless if we don't fetch credentials within
 		// five seconds. Better than the app just never starting.
@@ -118,7 +124,7 @@ var NetworkManager = function(getData, dataKeys, readyCallback) {
 	};
 
 	this.getLoggedInUser = function() {
-
+		return {username: credentials.user, name: credentials.name};
 	};
 
 	this.fetchInitialData = function(success, failure) {

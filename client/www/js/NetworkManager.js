@@ -49,6 +49,9 @@ var NetworkManager = function(getData, dataKeys, readyCallback) {
 			if(val) {
 				credentials.password = val;
 			}
+
+			readyCallback();
+			
 		});
 	});
 

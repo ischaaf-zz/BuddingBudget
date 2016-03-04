@@ -251,7 +251,7 @@ function EntryHelpers(notifyListeners) {
 		document.getElementById(uuid).remove();
 	};
 
-	this.addEntry = function(name, value, category, frequency, updateFn) {
+	this.addEntry = function(name, value, category, frequency, save, date, updateFn) {
 		if(name === null || name === "") {
 			return;
 		}
@@ -260,11 +260,8 @@ function EntryHelpers(notifyListeners) {
 			return;
 		}
 
-		var today = new Date();
+		var uuid = this.makeRecurringTemplate(category, name, value, frequency, date, updateFn, "#" + category + "List");
 
-		var uuid = this.makeRecurringTemplate(category, name, value, frequency, today, updateFn, "#" + category + "List");
-
-		var save = new IncomeEntry(name, value, frequency, today, 5, true);
 		this.notifyAdd("addEntry", category, name, save, uuid);
 		$("#page-" + category + "-tutorial").html("NEXT");
 	};

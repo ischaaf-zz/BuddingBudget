@@ -6,7 +6,10 @@ function IncomeUI(getData, entryHelpers) {
 		var incomeValue = document.getElementById("newIncomeValue").value;
 		document.getElementById("newIncomeValue").value = "";
 
-		entryHelpers.addEntry(incomeName, incomeValue, "income", "monthly", updateIncomeEntry);
+		var today = new Date();
+		var save = new IncomeEntry(incomeName, incomeValue, "monthly", today, 5, true);
+		
+		entryHelpers.addEntry(incomeName, incomeValue, "income", "monthly", save, today,updateIncomeEntry);
 	});
 	
 	function updateIncomeEntry(uuid, catName) {

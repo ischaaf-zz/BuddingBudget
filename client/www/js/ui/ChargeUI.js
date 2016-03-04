@@ -3,11 +3,13 @@ function ChargeUI(getData, entryHelpers) {
 	$("#addCharge").click(function() {
 		var chargeName = document.getElementById("newChargeName").value;
 		document.getElementById("newChargeName").value = "";
-		
 		var chargeValue = document.getElementById("newChargeValue").value;
 		document.getElementById("newChargeValue").value = "";
 
-		entryHelpers.addEntry(chargeName, chargeValue, "charges", "monthly", updateChargesEntry);
+		var today = new Date();
+		var save = new ChargeEntry(chargeName, chargeValue, 'monthly', today, true);
+		
+		entryHelpers.addEntry(chargeName, chargeValue, "charges", "monthly", save, today, updateChargesEntry);
 	});
 
 	function updateChargesEntry(uuid, catName) {

@@ -1,4 +1,14 @@
-function LoginUI(login, createUser, switchPage) {
+function LoginUI(login, createUser, logout, getLoggedInUser, switchPage) {
+	$("#logout").hide();
+	$("#user").hide();
+
+	$("#logout").click(function() {
+		logout();
+		$("#user").innertHTML = "Not logged in";
+		$("#page-login-button").show();
+		$("#logout").hide();
+		$("#user").hide();
+	});
 
 	$("#login").click(function() {
 		var un = $("#username").val();
@@ -6,9 +16,14 @@ function LoginUI(login, createUser, switchPage) {
 
 		login(un, pw, function() {
 			$("#titleText").notify("Successfully logged in.", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
-			$("#loginName").val("Logged in as: " + un);
 			document.getElementById("username").value = "";
 			document.getElementById("password").value = "";
+
+			$("#page-login-button").hide();
+			$("#logout").show();
+			var u = getLoggedInUser();
+			$("#user").html(u["name"]);
+			$("#user").show();
 			switchPage("page-main");
 	    }, function(response) {
 			var json = response.responseJSON;
@@ -42,6 +57,12 @@ function LoginUI(login, createUser, switchPage) {
 			createUser(un, pw, name, 
 			function() {
 				$("#titleText").notify("CREATE USER SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
+				$("#page-login-button").hide();
+				$("#logout").show();
+				var u = getLoggedInUser();
+				$("#user").html(u["name"]);
+				$("#user").show();
+				switchPage("page-main");
 			}, function(response) {
 				console.log(response);
 				var json = response.responseJSON;

@@ -31,5 +31,4 @@ function AssetsUI(getData, setDataListener, notifyListeners) {
 	setDataListener("assets", fetchAssets);
 
 	fetchAssets();
-
 }

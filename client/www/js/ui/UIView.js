@@ -35,8 +35,7 @@ var UIView = function(getData, setDataListener, networkManager) {
 		new IncomeUI(getData, entryHelpers);
 		new OptionsUI(getData, setDataListener, notifyListeners);
 		new TutorialUI(isNew, self.registerCallback, pageTransitions);
-		new LoginUI(networkManager.login, networkManager.createUser, pageTransitions.switchPage);
-		new LogoutUI(networkManager.logout, networkManager.getLoggedInUser);
+		new LoginUI(networkManager.login, networkManager.createUser, networkManager.logout, networkManager.getLoggedInUser, pageTransitions.switchPage);
 	});
 	
 };

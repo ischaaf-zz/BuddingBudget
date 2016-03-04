@@ -13,13 +13,14 @@ function IncomeUI(getData, entryHelpers) {
 			return;
 		}
 
-		var today = new Date();
+		var tomorrow = new Date();
+		tomorrow.setDate(tomorrow.getDate() + 1);
 
-		var uuid = entryHelpers.makeRecurringTemplate("income", incomeName, incomeValue, "monthly", today, updateIncomeEntry, "#incomeList");
+		var uuid = entryHelpers.makeRecurringTemplate("income", incomeName, incomeValue, "monthly", tomorrow, updateIncomeEntry, "#incomeList");
 
 		//generalize this? SavingsEntry
 		//add element to "savings" array
-		var save = new IncomeEntry(incomeName, incomeValue, "monthly", today, 5, true);
+		var save = new IncomeEntry(incomeName, incomeValue, "monthly", tomorrow, 5, true);
 		entryHelpers.notifyAdd("addEntry", "income", incomeName, save, uuid);
 		$("#page-income-tutorial").html("NEXT");
 	});
@@ -48,7 +49,6 @@ function IncomeUI(getData, entryHelpers) {
 		
 		if(val >= 0) {
 			li.getElementsByTagName('h2')[0].innerHTML = "$" +  val;
-			li.getElementsByTagName('input')[0].value = "";
 		}
 	}
 

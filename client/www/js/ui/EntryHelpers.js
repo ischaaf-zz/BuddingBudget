@@ -108,8 +108,8 @@ function EntryHelpers(notifyListeners) {
 		entry.id = uuid;
 
 		//category name
-		var category = document.createElement('h3');
-		category.innerHTML = catName;
+		var categoryTag = document.createElement('h3');
+		categoryTag.innerHTML = catName;
 
 		//category value
 		var value = document.createElement('h2');
@@ -135,7 +135,7 @@ function EntryHelpers(notifyListeners) {
 
 		entry.appendChild(deleteButton);
 		entry.appendChild(editButton);
-		entry.appendChild(category);
+		entry.appendChild(categoryTag);
 		entry.appendChild(value);
 
 		var input = document.createElement('input');
@@ -267,7 +267,7 @@ function EntryHelpers(notifyListeners) {
 		var save = new IncomeEntry(name, value, frequency, today, 5, true);
 		this.notifyAdd("addEntry", category, name, save, uuid);
 		$("#page-" + category + "-tutorial").html("NEXT");
-	}
+	};
 
 	//general notific ation for adding an entry
 	this.notifyAdd = function(call, category, catName, save, uuid) {

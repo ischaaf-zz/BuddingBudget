@@ -35,24 +35,49 @@ var NetworkManager = function(getData, dataKeys, readyCallback) {
 	
 	var lastModified = "";
 	localforage.ready(function() {
-		// localforage.getItem('lastModified', function(err, val) {
-		// 	lastModified = val;
-		// });
 
-		localforage.getItem('username', function(err, val) {
-			if(val) {
-				credentials.user = val;
+		// how many localforage fetches have gone through
+		var fetchCounter = 0;
+
+		// Safety timeout to initialize if localforage fails
+		var safetyTimeout;
+
+		// Call ready callback if we've fetched all three values
+		// otherwise, increment fetch counter
+		var callReady = function() {
+			fetchCounter++;
+			if(fetchCounter >= 3) {
+				clearTimeout(safetyTimeout);
+				readyCallback();
 			}
-		});
+		};
 
-		localforage.getItem('password', function(err, val) {
-			if(val) {
-				credentials.password = val;
-			}
+		var setLastModified = function(err, val) {
+			lastModified = val;
+			callReady();
+		};
 
+		var setUsername = function(err, val) {
+			credentials.user = val;
+			callReady();
+		};
+
+		var setPassword = function(err, val) {
+			credentials.password = val;
+			callReady();
+		};
+
+		localforage.getItem('lastModified', setLastModified);
+		localforage.getItem('username', setUsername);
+		localforage.getItem('password', setPassword);
+
+		// Call ready callback regardless if we don't fetch credentials within
+		// five seconds. Better than the app just never starting.
+		safetyTimeout = setTimeout(function() {
 			readyCallback();
-			
-		});
+			console.log("FETCHING USER AND PASSWORD FAILED");
+		}, 5000);
+
 	});
 
 	function updateLastModified(newDate){
@@ -73,12 +98,13 @@ var NetworkManager = function(getData, dataKeys, readyCallback) {
 
 	this.login = function(user, pass, success, failure) {
 		enqueueSend("POST", {username: user, password: pass}, "login", function() {
-			success.apply(window, arguments);
 			localforage.setItem('username', user);
 			localforage.setItem('password', pass);
+			console.log("setting credentials to: (" + user + ", " + pass + ")");
 			credentials.user = user;
 			credentials.password = pass;
 			updateData();
+			success.apply(window, arguments);
 		}, failure);
 	};
 
@@ -144,7 +170,14 @@ var NetworkManager = function(getData, dataKeys, readyCallback) {
 	var sendInProgress = false;
 
 	function enqueueSend(method, data, page, success, fail) {
-		if (method != 'GET') {
+		if (page != 'login') {
+			if (!credentials || !credentials.user || !credentials.password) {
+				console.log("No credentials available - request not sending");
+				console.log(credentials);
+				return;
+			}
+		}
+		if (method != 'GET' && page != 'login') {
 			var lm = getLastModified();
 			data.lastModified = lm;
 			console.log("Injecting lastModified '" + lm + "' into request");
@@ -161,7 +194,7 @@ var NetworkManager = function(getData, dataKeys, readyCallback) {
 
 	function checkSend() {
 		var log = 'checking send queue - ';
-		if (!sendInProgress && sendQueue[0]) {
+		if (!sendInProgress && sendQueue[0] && NETWORK_ENABLED) {
 			console.log("Locking Ajax send queue");
 			sendInProgress = true;
 			var next = sendQueue[0];
@@ -180,6 +213,7 @@ var NetworkManager = function(getData, dataKeys, readyCallback) {
 				timeout: 6000
 			}).done(function(data) {
 				console.log("SUCCESS - request: " + method + " - " + page + " with data: " + JSON.stringify(data));
+				sendInProgress = false;
 				if (data.lastModified) {
 					console.log("Updating lastModified time to: " + data.lastModified);
 					updateLastModified(data.lastModified);

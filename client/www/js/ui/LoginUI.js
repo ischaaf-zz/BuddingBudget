@@ -6,9 +6,10 @@ function LoginUI(login, createUser, switchPage) {
 
 		login(un, pw, function() {
 			$("#titleText").notify("Successfully logged in.", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
+			$("#loginName").val("Logged in as: " + un);
 			document.getElementById("username").value = "";
 			document.getElementById("password").value = "";
-			pageTransitions.switchPage("page-main");
+			switchPage("page-main");
 	    }, function(response) {
 			var json = response.responseJSON;
 			if(response.status == 422 || response.status == 401 || response.status == 500) {

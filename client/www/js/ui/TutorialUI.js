@@ -57,9 +57,14 @@ function TutorialUI(isTutorial, registerCallback, pageTransitions) {
 		});
 		
 		$("#page-options-tutorial").click(function() {
+			changePage("page-tracking", "#joyRideTracking");
+		});
+		
+		$("#page-tracking-tutorial").click(function() {
 			changePage("page-main");
 			hideButtons();
 			$("#menuBar").show();
+			isTutorial = false;
 		});
 	}
 	
@@ -70,6 +75,7 @@ function TutorialUI(isTutorial, registerCallback, pageTransitions) {
 		$("#page-charges-tutorial").hide();
 		$("#page-options-tutorial").hide();
 		$("#page-login-tutorial").hide();
+		$("#page-tracking-tutorial").hide();
 	}
 	
 	function showButtons() {
@@ -79,6 +85,7 @@ function TutorialUI(isTutorial, registerCallback, pageTransitions) {
 		$("#page-charges-tutorial").show();
 		//$("#page-options-tutorial").show();
 		$("#page-login-tutorial").show();
+		$("#page-tracking-tutorial").show();
 	}
 
 	// If we're in tutorial mode, show the next button once
@@ -94,7 +101,7 @@ function TutorialUI(isTutorial, registerCallback, pageTransitions) {
 	registerCallback('endDateChangedSuccess', function() {
 		if(isTutorial) {
 			$("#page-options-tutorial").show();
-			isTutorial = false;
+			//isTutorial = false;
 		}
 	});
 

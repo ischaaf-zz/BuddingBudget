@@ -37,7 +37,7 @@ function init() {
 	});
 
 	// Gives uiView access to get data, and to listen for when it changes
-	var uiView = new UIView(dataManager.getData, dataManager.registerListener, networkManager.login, networkManager.addUser, networkManager.registerListener);
+	var uiView = new UIView(dataManager.getData, dataManager.registerListener, networkManager);
 
 	// Gives storageManager access to get, set, and listen to data, as well as the networkManager,
 	// and registers a ready callback for it

@@ -3,23 +3,10 @@ function IncomeUI(getData, entryHelpers) {
 	$("#addIncome").click(function() {
 		var incomeName = document.getElementById("newIncomeName").value;
 		document.getElementById("newIncomeName").value = "";
-		if(incomeName === null || incomeName === "") {
-			return;
-		}
-
 		var incomeValue = document.getElementById("newIncomeValue").value;
 		document.getElementById("newIncomeValue").value = "";
-		if(incomeValue === null || incomeValue === "") {
-			return;
-		}
 
-		var today = new Date();
-
-		var uuid = entryHelpers.makeRecurringTemplate("income", incomeName, incomeValue, "monthly", today, updateIncomeEntry, "#incomeList");
-
-		var save = new IncomeEntry(incomeName, incomeValue, "monthly", today, 5, true);
-		entryHelpers.notifyAdd("addEntry", "income", incomeName, save, uuid);
-		$("#page-income-tutorial").html("NEXT");
+		entryHelpers.addEntry(incomeName, incomeValue, "income", "monthly", updateIncomeEntry);
 	});
 	
 	function updateIncomeEntry(uuid, catName) {

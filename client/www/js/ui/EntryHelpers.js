@@ -37,8 +37,8 @@ function EntryHelpers(notifyListeners) {
 		entry.id = uuid;
 
 		//Category name
-		var category = document.createElement('h3');
-		category.innerHTML = catName;
+		var categoryDisplay = document.createElement('h3');
+		categoryDisplay.innerHTML = catName;
 		//Category amount
 		var amount = document.createElement('h2');
 		amount.innerHTML = "$" + val;
@@ -65,7 +65,7 @@ function EntryHelpers(notifyListeners) {
 
 		entry.appendChild(deleteButton);
 		entry.appendChild(editButton);
-		entry.appendChild(category);
+		entry.appendChild(categoryDisplay);
 		entry.appendChild(amount);
 
 		//Input for new value when editing entry
@@ -251,26 +251,22 @@ function EntryHelpers(notifyListeners) {
 		document.getElementById(uuid).remove();
 	};
 
-	this.addEntry = function() {
-		var incomeName = document.getElementById("newIncomeName").value;
-		document.getElementById("newIncomeName").value = "";
-		if(incomeName === null || incomeName === "") {
+	this.addEntry = function(name, value, category, frequency, updateFn) {
+		if(name === null || name === "") {
 			return;
 		}
 
-		var incomeValue = document.getElementById("newIncomeValue").value;
-		document.getElementById("newIncomeValue").value = "";
-		if(incomeValue === null || incomeValue === "") {
+		if(value === null || value === "") {
 			return;
 		}
 
 		var today = new Date();
 
-		var uuid = entryHelpers.makeRecurringTemplate("income", incomeName, incomeValue, "monthly", today, updateIncomeEntry, "#incomeList");
+		var uuid = this.makeRecurringTemplate(category, name, value, frequency, today, updateFn, "#" + category + "List");
 
-		var save = new IncomeEntry(incomeName, incomeValue, "monthly", today, 5, true);
-		entryHelpers.notifyAdd("addEntry", "income", incomeName, save, uuid);
-		$("#page-income-tutorial").html("NEXT");
+		var save = new IncomeEntry(name, value, frequency, today, 5, true);
+		this.notifyAdd("addEntry", category, name, save, uuid);
+		$("#page-" + category + "-tutorial").html("NEXT");
 	}
 
 	//general notific ation for adding an entry

@@ -35,24 +35,47 @@ var NetworkManager = function(getData, dataKeys, readyCallback) {
 	
 	var lastModified = "";
 	localforage.ready(function() {
-		localforage.getItem('lastModified', function(err, val) {
+
+		// how many localforage fetches have gone through
+		var fetchCounter = 0;
+
+		// Safety timeout to initialize if localforage fails
+		var safetyTimeout;
+
+		// Call ready callback if we've fetched all three values
+		// otherwise, increment fetch counter
+		var callReady = function() {
+			fetchCounter++;
+			if(fetchCounter >= 3) {
+				clearTimeout(safetyTimeout);
+				readyCallback();
+			}
+		}
+
+		var setLastModified = function(err, val) {
 			lastModified = val;
-		});
+			callReady();
+		};
 
-		localforage.getItem('username', function(err, val) {
-			if(val) {
-				credentials.user = val;
-			}
-		});
+		var setUsername = function(err, val) {
+			credentials.user = val;
+			callReady();
+		};
 
-		localforage.getItem('password', function(err, val) {
-			if(val) {
-				credentials.password = val;
-			}
+		var setPassword = function(err, val) {
+			credentials.password = val;
+			callReady();
+		};
 
+		localforage.getItem('lastModified', setLastModified);
+		localforage.getItem('username', setUsername);
+		localforage.getItem('password', setPassword);
+
+		safetyTimeout = setTimeout(function() {
 			readyCallback();
-			
-		});
+			console.log("FETCHING USER AND PASSWORD FAILED");
+		}, 5000);
+
 	});
 
 	function updateLastModified(newDate){

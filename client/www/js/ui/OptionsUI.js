@@ -1,4 +1,4 @@
-function OptionsUI(getData, setDataListener, notifyListeners, isTutorial) {
+function OptionsUI(getData, setDataListener, notifyListeners) {
 
 	function init() {
 		var value = getData("options");
@@ -121,10 +121,7 @@ function OptionsUI(getData, setDataListener, notifyListeners, isTutorial) {
 	$("#endDate").change(function() {
 		notifyListeners("setEndDate", [dateInputToDate($(this).val()).getTime(), function() {
 			//console.log("SUCCESS: " + $("#endDate").val());
-			if(isTutorial) {
-				$("#page-options-tutorial").show();
-				isTutorial = false;
-			}
+			notifyListeners("endDateChangedSuccess");
 		}, function(message) {
 			$("#endDate").notify("FAILURE: " + message);
 		}]);

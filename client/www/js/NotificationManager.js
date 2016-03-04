@@ -13,7 +13,8 @@ var NotificationManager = function(getData, setDataListener) {
 			try {
 				cordova.plugins.notification.local.cancelAll(setAllNotifications);
 			} catch (e) {
-				console.log("Attempted to set notifications: Budget = " + budget);
+				// console.log("Attempted to set notifications: Budget = " + budget);
+				setAllNotifications();
 			}
 		}
 	});
@@ -22,16 +23,16 @@ var NotificationManager = function(getData, setDataListener) {
 		var options = getData('options');
 		var budget = getData('budget');
 		var tomorrowBudget = getData('tomorrowBudget');
-		var time;
+		var now = new Date();
+		var notificationTime;
 
 		// set morning at time if isNotifyMorning
 		if(options.isNotifyMorning === 'On') {
-			time = new Date();
-			notificationTime = copyTimeOfDay(time, new Date(options.notifyMorningTime));
-			if(notificationTime < time) {
-				var tomorrowNotificationTime = new Date(notificationTime);
-				tomorrowNotificationTime.setDate(tomorrowNotificationTime.getDate() + 1);
-				setNotification(4, "Budget", "Your budget is $" + tomorrowBudget, tomorrowNotificationTime);
+			notificationTime = new Date();
+			notificationTime = copyTimeOfDay(notificationTime, new Date(options.notifyMorningTime));
+			if(notificationTime < now) {
+				notificationTime.setDate(notificationTime.getDate() + 1);
+				setNotification(1, "Budget", "Your budget is $" + tomorrowBudget, notificationTime);
 			} else {
 				setNotification(1, "Budget", "Your budget is $" + budget, notificationTime);
 			}
@@ -39,28 +40,36 @@ var NotificationManager = function(getData, setDataListener) {
 
 		// set night at time if isNotifyNight
 		if(options.isNotifyNight === 'On') {
-			time = new Date();
-			time = copyTimeOfDay(time, new Date(options.notifyNightTime));
-			setNotification(2, "Track Spending", "Tap here to track your spending", time);
+			notificationTime = new Date();
+			notificationTime = copyTimeOfDay(notificationTime, new Date(options.notifyNightTime));
+			if(notificationTime < now) {
+				notificationTime.setDate(notificationTime.getDate() + 1);
+				setNotification(2, "Track Spending", "Tap here to track your spending", notificationTime);
+			} else {
+				setNotification(2, "Track Spending", "Tap here to track your spending", notificationTime);
+			}
 		}
 
 		// set assets at time and date if isNotifyAssets
 		if(options.isNotifyAssets === 'On') {
-			time = new Date();
+			notificationTime = new Date();
 			if(options.notifyAssetsPeriod === 'Monthly') {
-				time.setDate(1);
-				if(time < (new Date())) {
-					time.setMonth(time.getMonth() + 1);
+				notificationTime.setDate(1);
+				notificationTime.setHours(11);
+				notificationTime.setMinutes(0);
+				if(notificationTime < now) {
+					notificationTime.setMonth(notificationTime.getMonth() + 1);
 				}
-			} else if(options.notifyAssetsPeriod === 'Weekly') {
-				time.setDay(1);
-				if(time < (new Date())) {
-					time.setDate(time.getDate() + 7);
+			} else {
+				var currentDay = notificationTime.getDay();
+				notificationTime.setDate(notificationTime.getDate() + (7 - currentDay) % 7);
+				notificationTime.setHours(11);
+				notificationTime.setMinutes(0);
+				if(notificationTime < now) {
+					notificationTime.setDate(notificationTime.getDate() + 7);
 				}
 			}
-			time.setHour(11);
-			time.setMinutes(0);
-			setNotification(3, "Check Assets", "Remember to check your assets!", time);
+			setNotification(3, "Check Assets", "Remember to check your assets!", notificationTime);
 		}
 	}
 
@@ -75,12 +84,16 @@ var NotificationManager = function(getData, setDataListener) {
 
 	// Wrapper around cordova's notification setting api
 	function setNotification(id, title, text, time) {
-		cordova.plugins.notification.local.schedule({
-		    id: id,
-            title: title,
-            text: text,
-            at: time,
-		});
+		try {
+			cordova.plugins.notification.local.schedule({
+			    id: id,
+	            title: title,
+	            text: text,
+	            at: time,
+			});
+		} catch (e) {
+			console.log("Setting Notification for time " + time);
+		}
 	}
 
 };

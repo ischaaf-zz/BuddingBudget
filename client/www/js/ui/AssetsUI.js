@@ -1,13 +1,11 @@
-function AssetsUI(getData, setDataListener, notifyListeners, isTutorial) {
+function AssetsUI(getData, setDataListener, notifyListeners) {
 	
 	function updateAssets(value) {
 		notifyListeners("updateAssets", [value, function() {
 		   $("#titleText").notify("Successfully changed assets.", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
-		   //this is here and not in TutorialUI because it should only show on a successful callback, which is checked here
-		   if(isTutorial) {
-			   $("#page-assets-tutorial").show();
-			   isTutorial = false;
-		   }
+		   // Replaced other fix with this hacky workaround - The former solution had no way of knowing
+		   // whether the tutorial had been skipped or not, and showed the next button even if it had been.
+		   notifyListeners('assetsUpdatedSuccess');
 		}, function(message) {
 			$("#titleText").notify('FAILURE: ' + message, {position:"bottom center", autoHideDelay:1500, arrowShow:false});
 		}]);

@@ -81,30 +81,22 @@ function TutorialUI(isTutorial, registerCallback, pageTransitions) {
 		$("#page-login-tutorial").show();
 	}
 
-	/*
 	// If we're in tutorial mode, show the next button once
-	// we've entered a VALID asset value
-	registerCallback('updateAssets', function() {
+	// we've entered a valid asset value
+	registerCallback('assetsUpdatedSuccess', function() {
 		if(isTutorial) {
-			var val = $("#setAssets").val();
-			if(val >= 1) {
-				$("#page-assets-tutorial").show();
-			};
+			$("#page-assets-tutorial").show();
 		}
 	});
 
 	// If we're in tutorial mode, show the end date button
 	// once we've entered an end date button
-	registerCallback('setEndDate', function() {
+	registerCallback('endDateChangedSuccess', function() {
 		if(isTutorial) {
-			//buggy
-			var endD = new Date($("#endDate").val()).getTime()
-			var currentD = new Date().getTime();
 			$("#page-options-tutorial").show();
 			isTutorial = false;
 		}
 	});
-	*/
 
 	$("#joyPop").hide();
 	hideButtons();

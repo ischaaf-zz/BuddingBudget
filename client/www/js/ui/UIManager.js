@@ -28,12 +28,12 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		var entryHelpers = new EntryHelpers(notifyListeners);
 
 		new BudgetUI(getData, setDataListener);
-		new AssetsUI(getData, setDataListener, notifyListeners, isNew);
+		new AssetsUI(getData, setDataListener, notifyListeners);
 		new TrackedSpendingUI(getData, setDataListener, notifyListeners);
 		new SavingsUI(getData, entryHelpers);
 		new ChargeUI(getData, entryHelpers);
-		new IncomeUI(getData, entryHelpers, isNew);
-		new OptionsUI(getData, setDataListener, notifyListeners, isNew);
+		new IncomeUI(getData, entryHelpers);
+		new OptionsUI(getData, setDataListener, notifyListeners);
 		new TutorialUI(isNew, self.registerCallback, pageTransitions);
 		new LoginUI(login, createUser, pageTransitions.switchPage);
 			

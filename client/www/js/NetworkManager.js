@@ -50,7 +50,7 @@ var NetworkManager = function(getData, dataKeys, readyCallback) {
 				clearTimeout(safetyTimeout);
 				readyCallback();
 			}
-		}
+		};
 
 		var setLastModified = function(err, val) {
 			lastModified = val;

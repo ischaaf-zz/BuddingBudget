@@ -6,6 +6,7 @@ function AssetsUI(getData, setDataListener, notifyListeners, isTutorial) {
 		   //this is here and not in TutorialUI because it should only show on a successful callback, which is checked here
 		   if(isTutorial) {
 			   $("#page-assets-tutorial").show();
+			   isTutorial = false;
 		   }
 		}, function(message) {
 			$("#titleText").notify('FAILURE: ' + message, {position:"bottom center", autoHideDelay:1500, arrowShow:false});

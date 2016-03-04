@@ -43,7 +43,7 @@ function TrackedSpendingUI(getData, setDataListener, notifyListeners) {
 			$("#lastUpdateSpending").html("Last Update: Never Set");
 		} else {
 			$("#prevSpending").html("$" + track.amount);
-			$("#lastUpdateSpending").html("Last Update: " + new Date(track.day));
+			$("#lastUpdateSpending").html("Last Update: " + new Date(track.day).toDateString());
 		}
 	}
 	

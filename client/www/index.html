@@ -29,7 +29,8 @@
 					<div class="row">
 						<div class='col-xs-8'>
 							<div class='box profile-text'>
-								<!--<strong>Your Name</strong>-->
+								<strong>Your Name</strong>
+								<button>Logout</button>
 							</div>
 						</div>
 					</div>
@@ -62,8 +63,8 @@
 				<div role="main" class="ui-content wow fadeIn" data-inset="false" data-wow-delay="0.2s">
 					<!--HEADER ABOVE, can copy paste-->
 					<h3 id="loginTitle">Please log in</h3>
-					<input id="username" type='text'>
-					<input id="password" type='password'>
+					<input id="username" type='text' placeholder="Username">
+					<input id="password" type='password' placeholder="Password">
 					<button id="login">Login</button>
 					<a id='userPopup' href='#userPopupDialog'   data-rel='popup' data-position-to='window' data-role='button' data-icon='external-link' data-transition='pop' data-inline='true' class="ui-btn ui-btn-raised clr-primary">New User</a>
 					
@@ -78,9 +79,9 @@
 					<h1>Create new user:</h1>
 				</div>
 				<div data-role='content' data-theme='b'>
-					<p>Name: </p><input id="newName" data-controller="input-value" autofocus="autofocus">
-					<p>Username: </p><input id="newUsername" data-controller="input-value">
-					<p>Password: </p><input id="newPassword" type='password' data-controller="input-value">
+					<p>Name: </p><input id="newName" data-controller="input-value" autofocus="autofocus" placeholder="2-20 chars">
+					<p>Username: </p><input id="newUsername" data-controller="input-value" placeholder="5-20 chars, no spaces">
+					<p>Password: </p><input id="newPassword" type='password' data-controller="input-value" placeholder="5-20 chars, no spaces">
 					<p>Verify password: </p><input id="newPasswordVerify" type='password' data-controller="input-value" >
 					<div class='showastabs center nobg'>
 						<a id="addUser" href='#' data-rel='back' data-icon='ok' data-iconpos='left' data-role='button' data-inline='true'>Okay</a>

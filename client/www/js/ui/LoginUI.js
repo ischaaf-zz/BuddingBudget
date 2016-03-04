@@ -11,7 +11,6 @@ function LoginUI(login, createUser, switchPage) {
 			pageTransitions.switchPage("page-main");
 	    }, function(response) {
 			var json = response.responseJSON;
-			console.log(json);
 			if(response.status == 422 || response.status == 401 || response.status == 500) {
 				$("#titleText").notify(json.message, {position:"bottom center", autoHideDelay:1500, arrowShow:false});
 			} else {
@@ -30,22 +29,30 @@ function LoginUI(login, createUser, switchPage) {
 
 	$("#addUser").click(function() {
 		var name = $("#newName").val();
+		$("#newName").value = "";
 		var un = $("#newUsername").val();
+		$("#newUsername").value = "";
 		var pw = $("#newPassword").val();
+		$("#newPassword").value = "";
 		var pwv = $("#newPasswordVerify").val();
+		$("#newPasswordVerify").value = "";
 
 		if(pw == pwv) {
-			console.log("passwords verified");
-			createUser(un, pw, name, function() {
+			createUser(un, pw, name, 
+			function() {
 				$("#titleText").notify("CREATE USER SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
 			}, function(response) {
+				console.log(response);
 				var json = response.responseJSON;
-				if(response.status == 422 || response.status == 401) {
-				$("#titleText").notify(json.message, {position:"bottom center", autoHideDelay:1500, arrowShow:false});
-				} else if(response.status == 500) {
-					$("#titleText").notify("Username is taken", {position:"bottom center", autoHideDelay:1500, arrowShow:false});
-				} else {
-					$("#titleText").notify("ERROR", {position:"bottom center", autoHideDelay:1500, arrowShow:false});
+				for(var property in json) {
+					if(response.status == 422 || response.status == 401) {
+					$("#titleText").notify("Invalid " + property, {position:"bottom center", autoHideDelay:1500, arrowShow:false});
+					} else if(response.status == 500) {
+						$("#titleText").notify("Username taken", {position:"bottom center", autoHideDelay:1500, arrowShow:false});
+					} else {
+						$("#titleText").notify("ERROR", {position:"bottom center", autoHideDelay:1500, arrowShow:false});
+					}
+					break;
 				}
 			}); 
 		}

@@ -150,12 +150,14 @@ function EntryHelpers(notifyListeners) {
 			date = document.createElement('input');
 			date.classList.add("form-control");
 			date.type = "date";
+			date.style.display = "block";
 			if(start != 1) {
 				var newDate = new Date(start);
 				date.value = dateToDateInput(newDate);
 			}
 		} else if(frequency == 'weekly') {
 			date = document.createElement('select');
+			date.style.display = "block";
 			date.classList.add("form-control");
 			var dayValue = 0;
 			["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].forEach(function(f) {

@@ -24,7 +24,6 @@ function LoginUI(login, createUser, logout, getLoggedInUser, switchPage) {
 			var u = getLoggedInUser();
 			$("#user").html(u["name"]);
 			$("#user").show();
-			switchPage("page-main");
 	    }, function(response) {
 			var json = response.responseJSON;
 			if(response.status == 422 || response.status == 401 || response.status == 500) {
@@ -45,13 +44,13 @@ function LoginUI(login, createUser, logout, getLoggedInUser, switchPage) {
 
 	$("#addUser").click(function() {
 		var name = $("#newName").val();
-		$("#newName").value = "";
+		$("#newName").html();
 		var un = $("#newUsername").val();
-		$("#newUsername").value = "";
+		$("#newUsername").html();
 		var pw = $("#newPassword").val();
-		$("#newPassword").value = "";
+		$("#newPassword").html();
 		var pwv = $("#newPasswordVerify").val();
-		$("#newPasswordVerify").value = "";
+		$("#newPasswordVerify").html();
 
 		if(pw == pwv) {
 			createUser(un, pw, name, 
@@ -62,7 +61,6 @@ function LoginUI(login, createUser, logout, getLoggedInUser, switchPage) {
 				var u = getLoggedInUser();
 				$("#user").html(u["name"]);
 				$("#user").show();
-				switchPage("page-main");
 			}, function(response) {
 				console.log(response);
 				var json = response.responseJSON;

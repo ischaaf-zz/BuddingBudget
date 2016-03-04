@@ -1,7 +1,7 @@
 // THIS FILE SHOULD BE THE ONLY PLACE THE DOM IS MANIPULATED
 // Handles sending new data and commands out from the DOM, and
 // putting new updated data into the DOM
-var UIView = function(getData, setDataListener, login, createUser, setNetworkListener) {
+var UIView = function(getData, setDataListener, networkManager) {
 	// events: updateAssets, trackSpending, setOption, 
 	//		   addEntry, changeEntry, removeEntry
 	var self = this;
@@ -19,7 +19,7 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 			callbackArr[i].apply(window, args);
 		}
 	}
-	
+
 	//initially loaded elements
 	setDataListener('ready', function(isNew) {
 
@@ -35,7 +35,7 @@ var UIView = function(getData, setDataListener, login, createUser, setNetworkLis
 		new IncomeUI(getData, entryHelpers);
 		new OptionsUI(getData, setDataListener, notifyListeners);
 		new TutorialUI(isNew, self.registerCallback, pageTransitions);
-		new LoginUI(login, createUser, pageTransitions.switchPage);
+		new LoginUI(networkManager.login, networkManager.createUser, pageTransitions.switchPage);
 			
 	});
 	

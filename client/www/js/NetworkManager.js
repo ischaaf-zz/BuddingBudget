@@ -1,7 +1,7 @@
 // This is by far the most poorly defined of the classes, because
 // I'm not 100% sure how it interfaces or what it needs to do.
 
-var NetworkManager = function(getData, dataKeys) {
+var NetworkManager = function(getData, dataKeys, readyCallback) {
 
 	var credentials = {};
 	var host = "http://bbapi.ischaaf.com:8081/";
@@ -49,6 +49,9 @@ var NetworkManager = function(getData, dataKeys) {
 			if(val) {
 				credentials.password = val;
 			}
+
+			readyCallback();
+			
 		});
 	});
 

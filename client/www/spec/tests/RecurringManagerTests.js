@@ -19,10 +19,8 @@ describe("RecurringManager", function() {
 	describe("when managing charges", function() {
 
 		beforeEach(function() {
-			var date = new Date();
-			date.setDate(10);
-			date.setMonth(date.getMonth() - 1);
-			var charge = new ChargeEntry("testName", 10, "monthly", (new Date()), true);
+			var charge = new ChargeEntry("testName", 10, "monthly", (new Date()).getTime(), true);
+			charge.nextTime = (new Date()).getTime();
 			recurringManager.setCharges([charge]);
 		});
 
@@ -39,10 +37,8 @@ describe("RecurringManager", function() {
 	describe("when managing income", function() {
 
 		beforeEach(function() {
-			var date = new Date();
-			date.setDate(10);
-			date.setMonth(date.getMonth() - 1);
-			var income = new IncomeEntry("testName", 10, "monthly", (new Date()), 0, true);
+			var income = new IncomeEntry("testName", 10, "monthly", (new Date()).getTime(), 0, true);
+			income.nextTime = (new Date()).getTime();
 			recurringManager.setIncome([income]);
 		});
 

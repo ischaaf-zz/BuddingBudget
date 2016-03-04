@@ -146,7 +146,7 @@ function findNextTime(entry, startTime) {
 			lastTime = new Date(entry.nextTime);
 		} else {
 			lastTime = new Date();
-			lastTime.setDate(lastTime.getDate() - 1);
+			//lastTime.setDate(lastTime.getDate() - 1);
 		}
 	} else {
 		lastTime = startTime;

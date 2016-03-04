@@ -18,7 +18,7 @@ describe("System Tests", function() {
 
 		// Initializes the network manager. In the future, may give it some access to the UI to listen for
 		// logins, but for now, it doesn't have access to any other objects.
-		networkManager = new NetworkManager();
+		networkManager = new NetworkManager(dataManager.getData, [], function() {});
 
 		// Gives uiView access to get data, and to listen for when it changes
 		uiView = {

@@ -41,7 +41,7 @@ router.post('/', function(req, res, next) {
             return;
         }
         req.session.user = user.username;
-        res.json({message: "logged in"});
+        res.json({message: "logged in", name: user.name});
     });
 });
 

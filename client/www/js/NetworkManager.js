@@ -72,15 +72,28 @@ var NetworkManager = function(getData, dataKeys, readyCallback) {
 
 
 	this.login = function(user, pass, success, failure) {
-		enqueueSend("POST", {username: user, password: pass}, "login", function() {
+		enqueueSend("POST", {username: user, password: pass}, "login", function(res) {
 			localforage.setItem('username', user);
 			localforage.setItem('password', pass);
+			localforage.setItem('name', res.name);
 			console.log("setting credentials to: (" + user + ", " + pass + ")");
 			credentials.user = user;
 			credentials.password = pass;
+			credentials.name = res.name;
 			updateData();
 			success.apply(window, arguments);
 		}, failure);
+	};
+
+	this.logout = function() {
+		credentials.user = undefined;
+		credentials.password = undefined;
+		localforage.removeItem('username');
+		localforage.removeItem('password');
+	};
+
+	this.getLoggedInUser = function() {
+
 	};
 
 	this.fetchInitialData = function(success, failure) {

@@ -8,29 +8,25 @@ function EntryHelpers(notifyListeners) {
 	
 	//hide entry editing on menu click
 	$("#leftpanel div ul li a").click(function() {
-		console.log("hey");
 		var listSave = $("#savingsList").find('li');
 		listSave.each(function(index) {
 			var currentEntry = listSave[index];
-			var id = currentEntry.id;
-			$("#" + id).children('div')[0].style.display = "none";
-			$("#" + id).children('button')[1].style.display = "block";
+			$(currentEntry).children('div')[0].style.display = "none";
+			$(currentEntry).children('button')[1].style.display = "block";
 		});
 		
 		var listCharges = $("#chargesList").find('li');
 		listCharges.each(function(index) {
 			var currentEntry = listCharges[index];
-			var id = currentEntry.id;
-			$("#" + id).children('div')[0].style.display = "none";
-			$("#" + id).children('button')[1].style.display = "block";
+			$(currentEntry).children('div')[0].style.display = "none";
+			$(currentEntry).children('button')[1].style.display = "block";
 		});
 		
 		var listIncome = $("#incomeList").find('li');
 		listIncome.each(function(index) {
 			var currentEntry = listIncome[index];
-			var id = currentEntry.id;
-			$("#" + id).children('div')[0].style.display = "none";
-			$("#" + id).children('button')[1].style.display = "block";
+			$(currentEntry).children('div')[0].style.display = "none";
+			$(currentEntry).children('button')[1].style.display = "block";
 		});
 	});
 	

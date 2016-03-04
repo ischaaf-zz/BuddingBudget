@@ -22,7 +22,7 @@ function LoginUI(login, createUser, logout, getLoggedInUser, switchPage) {
 			$("#page-login-button").hide();
 			$("#logout").show();
 			var u = getLoggedInUser();
-			$("#user").html(u["name"]);
+			$("#user").html(u.name);
 			$("#user").show();
 	    }, function(response) {
 			var json = response.responseJSON;
@@ -59,7 +59,7 @@ function LoginUI(login, createUser, logout, getLoggedInUser, switchPage) {
 				$("#page-login-button").hide();
 				$("#logout").show();
 				var u = getLoggedInUser();
-				$("#user").html(u["name"]);
+				$("#user").html(u.name);
 				$("#user").show();
 			}, function(response) {
 				console.log(response);

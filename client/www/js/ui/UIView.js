@@ -37,5 +37,12 @@ var UIView = function(getData, setDataListener, networkManager) {
 		new TutorialUI(isNew, self.registerCallback, pageTransitions);
 		new LoginUI(networkManager.login, networkManager.addUser, networkManager.logout, networkManager.getLoggedInUser, pageTransitions.switchPage);
 	});
+
+	// Open side menu on swipe from left edge
+	$(window).on("swiperight", function(info) {
+		if(info.swipestart.coords[0] < 50) {
+			$("#menuBar").click();
+		}
+	});
 	
 };

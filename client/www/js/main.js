@@ -18,6 +18,8 @@ if(DEBUG_MODE) {
 }
 
 function init() {
+	var isReadyMiddle = false;
+
 	// Initialize our data representation
 	var dataManager = new DataManager();
 
@@ -26,7 +28,13 @@ function init() {
 
 	// Initializes the network manager. In the future, may give it some access to the UI to listen for
 	// logins, but for now, it doesn't have access to any other objects.
-	var networkManager = new NetworkManager(dataManager.getData, dataManager.getKeySet());
+	var networkManager = new NetworkManager(dataManager.getData, dataManager.getKeySet(), function() {
+		if(isReadyMiddle) {
+			dataManager.start();
+		} else {
+			isReadyMiddle = true;
+		}
+	});
 
 	// Gives uiView access to get data, and to listen for when it changes
 	var uiView = new UIView(dataManager.getData, dataManager.registerListener, networkManager.login, networkManager.addUser, networkManager.registerListener);
@@ -37,7 +45,11 @@ function init() {
 		// Everything in here will be called when StorageManager has
 		// finished filling DataManager with initial data from phonegap
 		// storage.
-		dataManager.start();
+		if(isReadyMiddle) {
+			dataManager.start();
+		} else {
+			isReadyMiddle = true;
+		}
 	});
 
 	// Gives uiController access to get, set, and listen to data, and to listen for events in the view

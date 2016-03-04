@@ -1,7 +1,7 @@
 // This is by far the most poorly defined of the classes, because
 // I'm not 100% sure how it interfaces or what it needs to do.
 
-var NetworkManager = function(getData, dataKeys) {
+var NetworkManager = function(getData, dataKeys, readyCallback) {
 
 	var credentials = {};
 	var host = "http://bbapi.ischaaf.com:8081/";
@@ -35,9 +35,9 @@ var NetworkManager = function(getData, dataKeys) {
 	
 	var lastModified = "";
 	localforage.ready(function() {
-		// localforage.getItem('lastModified', function(err, val) {
-		// 	lastModified = val;
-		// });
+		localforage.getItem('lastModified', function(err, val) {
+			lastModified = val;
+		});
 
 		localforage.getItem('username', function(err, val) {
 			if(val) {
@@ -49,6 +49,9 @@ var NetworkManager = function(getData, dataKeys) {
 			if(val) {
 				credentials.password = val;
 			}
+
+			readyCallback();
+			
 		});
 	});
 
@@ -70,12 +73,13 @@ var NetworkManager = function(getData, dataKeys) {
 
 	this.login = function(user, pass, success, failure) {
 		enqueueSend("POST", {username: user, password: pass}, "login", function() {
-			success.apply(window, arguments);
 			localforage.setItem('username', user);
 			localforage.setItem('password', pass);
+			console.log("setting credentials to: (" + user + ", " + pass + ")");
 			credentials.user = user;
 			credentials.password = pass;
 			updateData();
+			success.apply(window, arguments);
 		}, failure);
 	};
 
@@ -141,7 +145,14 @@ var NetworkManager = function(getData, dataKeys) {
 	var sendInProgress = false;
 
 	function enqueueSend(method, data, page, success, fail) {
-		if (method != 'GET') {
+		if (page != 'login') {
+			if (!credentials || !credentials.user || !credentials.password) {
+				console.log("No credentials available - request not sending");
+				console.log(credentials);
+				return;
+			}
+		}
+		if (method != 'GET' && page != 'login') {
 			var lm = getLastModified();
 			data.lastModified = lm;
 			console.log("Injecting lastModified '" + lm + "' into request");
@@ -158,7 +169,7 @@ var NetworkManager = function(getData, dataKeys) {
 
 	function checkSend() {
 		var log = 'checking send queue - ';
-		if (!sendInProgress && sendQueue[0]) {
+		if (!sendInProgress && sendQueue[0] && NETWORK_ENABLED) {
 			console.log("Locking Ajax send queue");
 			sendInProgress = true;
 			var next = sendQueue[0];
@@ -177,6 +188,7 @@ var NetworkManager = function(getData, dataKeys) {
 				timeout: 6000
 			}).done(function(data) {
 				console.log("SUCCESS - request: " + method + " - " + page + " with data: " + JSON.stringify(data));
+				sendInProgress = false;
 				if (data.lastModified) {
 					console.log("Updating lastModified time to: " + data.lastModified);
 					updateLastModified(data.lastModified);

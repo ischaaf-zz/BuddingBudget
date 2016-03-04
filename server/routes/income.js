@@ -35,7 +35,7 @@ router.post('/', function(req, res, next) {
     			name: params.entries["name"].value, 
     			amount: params.entries["amount"].value, 
     			period: params.entries["period"].value, 
-    			start: params.entries["start"].value, 
+    			start: params.entries["start"].value.getTime(), 
     			holdout: params.entries["holdout"].value, 
     			isConfirm: params.entries["isConfirm"].value
     		});
@@ -66,7 +66,7 @@ router.put('/', function(req, res, next) {
     			if (params.entries["period"].valid)
     				user.data.income[i].period = params.entries["period"].value;
     			if (params.entries["start"].valid)
-    				user.data.income[i].start = params.entries["start"].value;
+    				user.data.income[i].start = params.entries["start"].value.getTime();
     			if (params.entries["holdout"].valid)
     				user.data.income[i].holdout = params.entries["holdout"].value;
     			if (params.entries["isConfirm"].valid)

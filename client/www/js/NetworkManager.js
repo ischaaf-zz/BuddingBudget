@@ -99,9 +99,9 @@ var NetworkManager = function(getData, dataKeys, readyCallback) {
 
 	this.addUser = function(user, pass, name, success, failure) {
 		console.log("Creating user");
-		enqueueSend("POST", {username: user, password: pass, name: name, token: "pmlWoKIm2XSes7jBHdPtl8UtGgiSnn1PW8xMFPQ1N2X5c1uY9fa3Zu3QYNODkpuy"}, "user", success, failure);
-		self.login(user, pass, defaultSuccess, defaultFail);
-		self.storeUser();
+		enqueueSend("POST", {username: user, password: pass, name: name, token: "pmlWoKIm2XSes7jBHdPtl8UtGgiSnn1PW8xMFPQ1N2X5c1uY9fa3Zu3QYNODkpuy", data: getData('all')}, "user", success, failure);
+		// self.login(user, pass, defaultSuccess, defaultFail);
+		// self.storeUser();
 	};
 
 

@@ -26,7 +26,7 @@ router.post('/', function(req, res, next) {
 	        user.data.entries.push({
 	        	budget: params.entries["budget"].value, 
 	        	amount: params.entries["amount"].value, 
-	        	day: params.entries["day"].value
+	        	day: params.entries["day"].value.getTime()
 	        });
 	        return true;
     	}

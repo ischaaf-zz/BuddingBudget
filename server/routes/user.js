@@ -33,7 +33,14 @@ router.post('/', function(req, res, next) {
     params.entries["username"] = utils.validateString(true, req.body.username, userAndPassRegex, true);
     params.entries["name"]     = utils.validateString(true, req.body.name, nameRegex);
     params.entries["password"] = utils.validateString(true, req.body.password, userAndPassRegex);
-
+    var data;
+    if (req.body.data) {
+        console.log("Setting Initial User Data");
+        data = req.body.data;
+    } else {
+        console.log("No Initial Data Provided");
+        data = {};
+    }
     if (!params.hasRequired()) {
         var invalid = params.getInvalid();
         res.status(422).json(invalid);
@@ -44,22 +51,43 @@ router.post('/', function(req, res, next) {
         user.password = params.entries["password"].value;
         var date = Date.now();
         user.lastModified = date;
-        user.data.endDate = date;
-        user.data.assets = 0;
-        user.data.rollover = 0;
-        user.data.tomorrowRollover = 0;
-        user.data.options.isNotifyMorning = "Off";
-        user.data.options.isNotifyNight = "Off";
-        user.data.options.isNotifyAssets = "Off";
-        user.data.options.isEnableTracking = "Off";
-        user.data.options.notifyMorningTime = new Date().getTime();
-        user.data.options.notifyNightTime = new Date().getTime();
-        user.data.options.notifyAssetsPeriod = 'weekly';
+        user.data.endDate = utils.validateDate(false, data.endDate).value.getTime();
+        user.data.assets = Number(data.assets);
+        user.data.rollover = Number(data.rollover);
+        user.data.tomorrowRollover = Number(data.tomorrowRollover);
+        data.options.notifyMorningTime =utils.validateDate(false, data.options.notifyMorningTime).value.getTime();
+        data.options.notifyNightTime = utils.validateDate(false, data.options.notifyNightTime).value.getTime();
+        user.data.options = data.options;
+
+        for (var i = 0; i < data.income.length; i++) {
+            data.income[i].amount = Number(data.income[i].amount);
+            data.income[i].start = utils.validateDate(false, data.income[i].start).value.getTime();
+        }
+        user.data.income = data.income;
+
+        for (var i = 0; i < data.charges.length; i++) {
+            data.charges[i].amount = Number(data.charges[i].amount);
+            data.charges[i].start = utils.validateDate(false, data.charges[i].start).value.getTime();
+        }
+        user.data.charges = data.charges;
+
+        for (var i = 0; i < data.savings.length; i++) {
+            data.savings[i].amount = Number(data.savings[i].amount);
+        }
+        user.data.savings = data.savings;
+
+        if (data.trackedEntry) {
+            data.trackedEntry.budget = Number(data.trackedEntry.budget);
+            data.trackedEntry.amount = Number(data.trackedEntry.amount);
+            data.trackedEntry.day = utils.validateDate(false, data.trackedEntry.day).value.getTime();
+        }
+        user.data.entries = [data.trackedEntry];
+        console.log(user);
         user.save(function(err) {
             if (err) {
                 res.status(500).send(err);
             }
-            res.json({message: "Success", modified: date});
+            res.json({message: "Success", lastModified: date});
         });
     }
 });

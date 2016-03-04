@@ -14,7 +14,7 @@ var IncomeEntry = new Schema({
   name: String,
   amount: Number,
   period: String,
-  start: Date,
+  start: Number,
   holdout: Number,
   isConfirm: Boolean
 });
@@ -23,14 +23,14 @@ var ChargeEntry = new Schema({
   name: String, 
   amount: Number,
   period: String,
-  start: Date,
+  start: Number,
   isConfirm: Boolean
 });
 
 var TrackEntry = new Schema({
   budget: Number,
   amount: Number,
-  day: Date
+  day: Number
 });
 
 // var OptionsEntry = new Schema ({

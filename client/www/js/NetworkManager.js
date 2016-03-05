@@ -144,8 +144,10 @@ var NetworkManager = function(getData, dataKeys, readyCallback) {
 	this.logout = function() {
 		credentials.user = undefined;
 		credentials.password = undefined;
+		credentials.name = undefined;
 		localforage.removeItem('username');
 		localforage.removeItem('password');
+		localforage.removeItem('name');
 	};
 
 	this.getLoggedInUser = function() {

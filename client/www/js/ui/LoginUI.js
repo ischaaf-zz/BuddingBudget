@@ -75,6 +75,8 @@ function LoginUI(login, createUser, logout, getLoggedInUser, switchPage) {
 					break;
 				}
 			}); 
+		} else {
+			$("#titleText").notify("Passwords do not match.", {position:"bottom center", autoHideDelay:1500, arrowShow:false});
 		}
 
 		$("#page-login-tutorial").html("NEXT");

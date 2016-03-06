@@ -66,8 +66,8 @@ var debugClickTimeout;
 $("#debugToggle").click(function() {
 	clearTimeout(debugClickTimeout);
 	debugClickCount++;
-	if(debugClickCount > 8) {
-		if (confirm('Tap ok and restart app to enable debug mode!')) {
+	if(debugClickCount > 7) {
+		if (confirm('Tap ok and restart app to enable debug mode, or cancel to return to normal mode.')) {
 		    localforage.setItem('debugEnable', true);
 		} else {
 		    debugClickCount = 0;

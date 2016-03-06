@@ -52,7 +52,7 @@ function EntryHelpers(notifyListeners) {
 		});
 
 		var editButton = document.createElement("button");
-		editButton.classList.add("ui-btn", "ui-btn-inline");
+		editButton.classList.add("ui-btn-inline", "ui-btn-raised", "clr-primary", "ui-btn");
 		editButton.innerHTML = "edit";
 		editButton.style.float = "right";
 		editButton.style.display = "block";
@@ -77,7 +77,7 @@ function EntryHelpers(notifyListeners) {
 		var success = document.createElement('p');
 
 		var updateButton = document.createElement('button');
-		updateButton.classList.add("ui-btn", "ui-btn-inline");
+		updateButton.classList.add("ui-btn-raised", "ui-btn-inline", "clr-primary", "ui-btn");
 		updateButton.innerHTML = "Save";
 		updateButton.onclick = (function() {
 			//hide update button
@@ -123,7 +123,7 @@ function EntryHelpers(notifyListeners) {
 		});
 
 		var editButton = document.createElement("button");
-		editButton.classList.add("ui-btn", "ui-btn-inline");
+		editButton.classList.add("ui-btn-raised", "ui-btn-inline", "clr-primary", "ui-btn");
 		editButton.innerHTML = "edit";
 		editButton.style.float = "right";
 		editButton.onclick = (function() {
@@ -173,7 +173,7 @@ function EntryHelpers(notifyListeners) {
 		}
 
 		var updateButton = document.createElement('button');
-		updateButton.classList.add("ui-btn", "ui-btn-inline");
+		updateButton.classList.add("ui-btn-raised", "ui-btn-inline", "clr-primary", "ui-btn");
 		updateButton.innerHTML = "Save";
 		updateButton.onclick = (function() {
 			$("#" + uuid).children('div')[0].style.display = "none";

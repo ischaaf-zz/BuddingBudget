@@ -1,20 +1,41 @@
 // Initializes and connects all of the objects in the application
 
 // If we're in debug mode, set up our time travel controls and then init
-if(DEBUG_MODE) {
-	localforage.ready(function() {
-		localforage.getItem('daysInFuture', function(err, val) {
-			if(val) {
-				timeTravel(val);
-			}
-			setUpFutureDate();
+// if(DEBUG_MODE) {
+// 	localforage.ready(function() {
+// 		localforage.getItem('daysInFuture', function(err, val) {
+// 			if(val) {
+// 				timeTravel(val);
+// 			}
+// 			setUpFutureDate();
+// 			init();
+// 		});
+// 	});
+// // Otherwise, hide the controls and init
+// } else {
+// 	$("#debug-panel").hide();
+// 	init();
+// }
+
+localforage.ready(function() {
+	localforage.getItem('debugEnable', function(err, val) {
+		if(val) {
+			initDebug();
+		} else {
+			$("#debug-panel").hide();
 			init();
-		});
+		}
 	});
-// Otherwise, hide the controls and init
-} else {
-	$("#debug-panel").hide();
-	init();
+});
+
+function initDebug() {
+	localforage.getItem('daysInFuture', function(err, val) {
+		if(val) {
+			timeTravel(val);
+		}
+		setUpFutureDate();
+		init();
+	});
 }
 
 function init() {

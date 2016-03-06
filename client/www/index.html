@@ -53,6 +53,7 @@
 			<div data-role="header" data-position="fixed" data-tap-toggle="false"class="wow fadeIn">
 				<a href="#leftpanel" id="menuBar" class="ui-btn ui-btn-left wow fadeIn" data-wow-delay='0.8s'><i class="zmdi zmdi-menu"></i></a>
 				<h1 id="titleText" class="wow fadeIn" data-wow-delay='0.4s'></h1>
+				<div id='debugToggle'></div>
 			</div>
 
 
@@ -100,6 +101,7 @@
 					<h3>Your Budget for Today</h3>
 					<h1 id="budget">$0</h1>
 					<div id="debug-panel">
+						<button id="exitDebug" class="ui-btn i-btn-right"><i class="zmdi zmdi-refresh-alt zmd-2x"></i>Exit Debug Mode</button>
 						<button id="resetStorage" class="ui-btn i-btn-right"><i class="zmdi zmdi-refresh-alt zmd-2x"></i>Reset</button>
 						<p id="resetNote"></p>
 						<input id="futureDate" type="date">

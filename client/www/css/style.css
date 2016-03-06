@@ -47,3 +47,11 @@ p.small {
 	color : purple;
 	text-align : center;
 }
+
+#debugToggle {
+	position : absolute;
+	right : 0px;
+	top : 0px;
+	width : 70px;
+	height : 70px;
+}

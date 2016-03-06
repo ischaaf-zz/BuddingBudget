@@ -59,3 +59,27 @@ $("#resetStorage").click(function() {
 	clearStorage();
 	$("#resetNote").html("Storage cleared. Reload/reopen app to see default state.");
 });
+
+var debugClickCount = 0;
+var debugClickTimeout;
+
+$("#debugToggle").click(function() {
+	clearTimeout(debugClickTimeout);
+	debugClickCount++;
+	if(debugClickCount > 8) {
+		if (confirm('Tap ok and restart app to enable debug mode!')) {
+		    localforage.setItem('debugEnable', true);
+		} else {
+		    debugClickCount = 0;
+		}
+	} else {
+		debugClickTimeout = setTimeout(function() {
+			debugClickCount = 0;
+		}, 2000);
+	}
+});
+
+$("#exitDebug").click(function() {
+	localforage.removeItem('debugEnable');
+	$("#resetNote").html("Debug disabled. Reload/reopen app to return to normal.");
+})

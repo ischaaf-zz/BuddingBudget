@@ -8,6 +8,9 @@ function LoginUI(login, createUser, logout, getLoggedInUser, switchPage) {
 		$("#page-login-button").show();
 		$("#logout").hide();
 		$("#user").hide();
+		switchPage("page-login");
+		$("#menuBar").click();
+		$("#titleText").notify("Successfully logged out.", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
 	});
 
 	$("#login").click(function() {
@@ -33,6 +36,7 @@ function LoginUI(login, createUser, logout, getLoggedInUser, switchPage) {
 			}
 		});
 
+		switchPage("page-main");
 		$("#page-login-tutorial").html("NEXT");
 	});
 
@@ -44,18 +48,42 @@ function LoginUI(login, createUser, logout, getLoggedInUser, switchPage) {
 
 	$("#addUser").click(function() {
 		var name = $("#newName").val();
-		$("#newName").html();
+		if(name.length < 2) {
+			$("#titleText").notify("Invalid name (too short)", {position:"bottom center", autoHideDelay:1500, arrowShow:false});
+			return;
+		} else if(name.length > 20) {
+			$("#titleText").notify("Invalid name (too long)", {position:"bottom center", autoHideDelay:1500, arrowShow:false});
+			return;
+		}
+
 		var un = $("#newUsername").val();
-		$("#newUsername").html();
+		if(un.length < 5) {
+			$("#titleText").notify("Invalid username (too short)", {position:"bottom center", autoHideDelay:1500, arrowShow:false});
+			return;
+		} else if(un.length > 20) {
+			$("#titleText").notify("Invalid username (too long)", {position:"bottom center", autoHideDelay:1500, arrowShow:false});
+			return;
+		}
+
 		var pw = $("#newPassword").val();
-		$("#newPassword").html();
+		if(pw.length < 5) {
+			$("#titleText").notify("Invalid password (too short)", {position:"bottom center", autoHideDelay:1500, arrowShow:false});
+			return;
+		} else if(pw.length > 20) {
+			$("#titleText").notify("Invalid password (too long)", {position:"bottom center", autoHideDelay:1500, arrowShow:false});
+			return;
+		}
+
 		var pwv = $("#newPasswordVerify").val();
-		$("#newPasswordVerify").html();
 
 		if(pw == pwv) {
 			createUser(un, pw, name, 
 			function() {
 				$("#titleText").notify("CREATE USER SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
+				$("#newName").val("");
+				$("#newUsername").val("");
+				$("#newPassword").val("");
+				$("#newPasswordVerify").val("");
 				$("#page-login-button").hide();
 				$("#logout").show();
 				var u = getLoggedInUser();
@@ -66,7 +94,7 @@ function LoginUI(login, createUser, logout, getLoggedInUser, switchPage) {
 				var json = response.responseJSON;
 				for(var property in json) {
 					if(response.status == 422 || response.status == 401) {
-					$("#titleText").notify("Invalid " + property, {position:"bottom center", autoHideDelay:1500, arrowShow:false});
+						$("#titleText").notify("Invalid " + property, {position:"bottom center", autoHideDelay:1500, arrowShow:false});
 					} else if(response.status == 500) {
 						$("#titleText").notify("Username taken", {position:"bottom center", autoHideDelay:1500, arrowShow:false});
 					} else {
@@ -80,6 +108,43 @@ function LoginUI(login, createUser, logout, getLoggedInUser, switchPage) {
 		}
 
 		$("#page-login-tutorial").html("NEXT");
+	});
+
+	$("#username").keyup(function(event) {
+		if(event.keyCode == 13) {
+			$("#password").focus();
+		}
+	});
+
+	$("#password").keyup(function(event) {
+		if(event.keyCode == 13) {
+			$("#login").click();
+		}
+	});
+
+
+	$("#newName").keyup(function(event) {
+		if(event.keyCode == 13) {
+			$("#newUsername").focus();
+		}
+	});
+
+	$("#newUsername").keyup(function(event) {
+		if(event.keyCode == 13) {
+			$("#newPassword").focus();
+		}
+	});
+
+	$("#newPassword").keyup(function(event) {
+		if(event.keyCode == 13) {
+			$("#newPasswordVerify").focus();
+		}
+	});
+
+	$("#newPasswordVerify").keyup(function(event) {
+		if(event.keyCode == 13) {
+			$("#addUser").click();
+		}
 	});
 
 }

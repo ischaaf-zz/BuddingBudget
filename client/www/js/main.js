@@ -2,6 +2,7 @@
 localforage.ready(function() {
 	localforage.getItem('debugEnable', function(err, val) {
 		if(val || DEBUG_MODE) {
+			DEBUG_MODE = true;
 			initDebug();
 		} else {
 			$("#debug-panel").hide();

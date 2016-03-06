@@ -82,4 +82,4 @@ $("#debugToggle").click(function() {
 $("#exitDebug").click(function() {
 	localforage.removeItem('debugEnable');
 	$("#resetNote").html("Debug disabled. Reload/reopen app to return to normal.");
-})
+});

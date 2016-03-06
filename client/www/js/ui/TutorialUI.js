@@ -1,5 +1,11 @@
 function TutorialUI(isTutorial, registerCallback, pageTransitions) {
 
+	this.tutorialChangePage = function(pageID, callback) {
+		if(!isTutorial) {
+			pageTransitions.switchPage(pageID, callback);
+		}
+	};
+
 	function joyStart(name) {		
 		$(name).joyride({
 			autoStart : true,

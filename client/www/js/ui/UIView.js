@@ -27,6 +27,8 @@ var UIView = function(getData, setDataListener, networkManager) {
 
 		var entryHelpers = new EntryHelpers(notifyListeners);
 
+		var tutorialUI = new TutorialUI(isNew, self.registerCallback, pageTransitions);
+
 		new BudgetUI(getData, setDataListener);
 		new AssetsUI(getData, setDataListener, notifyListeners);
 		new TrackedSpendingUI(getData, setDataListener, notifyListeners);
@@ -34,8 +36,7 @@ var UIView = function(getData, setDataListener, networkManager) {
 		new ChargeUI(getData, entryHelpers);
 		new IncomeUI(getData, entryHelpers);
 		new OptionsUI(getData, setDataListener, notifyListeners);
-		new TutorialUI(isNew, self.registerCallback, pageTransitions);
-		new LoginUI(networkManager.login, networkManager.addUser, networkManager.logout, networkManager.getLoggedInUser, pageTransitions.switchPage);
+		new LoginUI(networkManager.login, networkManager.addUser, networkManager.logout, networkManager.getLoggedInUser, tutorialUI.tutorialChangePage);
 	});
 
 	// Open side menu on swipe from left edge

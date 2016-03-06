@@ -27,6 +27,9 @@ function LoginUI(login, createUser, logout, getLoggedInUser, switchPage) {
 			var u = getLoggedInUser();
 			$("#user").html(u.name);
 			$("#user").show();
+
+			switchPage("page-main");
+			$("#page-login-tutorial").html("NEXT");
 	    }, function(response) {
 			var json = response.responseJSON;
 			if(response.status == 422 || response.status == 401 || response.status == 500) {
@@ -36,8 +39,6 @@ function LoginUI(login, createUser, logout, getLoggedInUser, switchPage) {
 			}
 		});
 
-		switchPage("page-main");
-		$("#page-login-tutorial").html("NEXT");
 	});
 
 	$("#password").keyup(function(event) {

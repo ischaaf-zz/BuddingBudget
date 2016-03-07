@@ -1,6 +1,18 @@
 function LoginUI(login, createUser, logout, getLoggedInUser, switchPage) {
-	$("#logout").hide();
-	$("#user").hide();
+	
+	var loggedUser = getLoggedInUser();
+	if(loggedUser["username"] != undefined) {
+		//already logged in
+		$("#titleText").notify("Logged in as " + loggedUser["username"], {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
+		$("#logout").show();
+		$("#user").html(loggedUser["name"]);
+		$("#user").show();	
+		$("#page-login-button").hide();	
+	} else {
+		$("#logout").hide();
+		$("#user").hide();	
+		$("#page-login-button").show();	
+	}
 
 	$("#logout").click(function() {
 		logout();

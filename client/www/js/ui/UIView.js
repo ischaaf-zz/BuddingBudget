@@ -41,7 +41,7 @@ var UIView = function(getData, setDataListener, networkManager) {
 
 	// Open side menu on swipe from left edge
 	$(window).on("swiperight", function(info) {
-		if(info.swipestart.coords[0] < 50) {
+		if(info.swipestart.coords[0] < 50 && $("#menuBar").is(':visible')) {
 			$("#menuBar").click();
 		}
 	});

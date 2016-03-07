@@ -1,8 +1,10 @@
 /*Main Budget Styles*/
 #budget {
-	font-size:700%;
+	font-size: auto;
 	color: purple;
 	text-align: center;
+	margin: 0;
+	overflow: auto;
 }
 
 #titleText {

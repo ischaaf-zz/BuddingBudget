@@ -28,6 +28,12 @@ function AssetsUI(getData, setDataListener, notifyListeners) {
 		document.getElementById("setAssets").value = "";
 	});
 	
+	$("#setAssets").keyup(function(event) {
+		if(event.keyCode == 13) {
+			$("#buttonAssets").click();
+		}
+	});
+
 	setDataListener("assets", fetchAssets);
 
 	fetchAssets();

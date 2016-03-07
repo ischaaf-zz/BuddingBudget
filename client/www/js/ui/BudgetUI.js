@@ -10,9 +10,6 @@ function BudgetUI(getData, setDataListener) {
 		$("#budget").css('font-size', size);
 	}
 
-// #budget {
-// 	font-size: 1000%;
-
 	setDataListener("budget", fetchBudget);
 
 	fetchBudget();

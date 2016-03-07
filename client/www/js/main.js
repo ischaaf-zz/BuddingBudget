@@ -6,6 +6,7 @@ localforage.ready(function() {
 			initDebug();
 		} else {
 			$("#debug-panel").hide();
+			setUpDebugToggle();
 			init();
 		}
 	});

@@ -62,24 +62,37 @@ $("#resetStorage").click(function() {
 
 var debugClickCount = 0;
 var debugClickTimeout;
+var debugButtonTimeout;
 
-$("#debugToggle").click(function() {
-	clearTimeout(debugClickTimeout);
-	debugClickCount++;
-	if(debugClickCount > 7) {
-		if (confirm('Tap ok and restart app to enable debug mode, or cancel to return to normal mode.')) {
-		    localforage.setItem('debugEnable', true);
-		} else {
-		    debugClickCount = 0;
-		}
-	} else {
-		debugClickTimeout = setTimeout(function() {
+function setUpDebugToggle() {
+	$("#debugToggle").click(function() {
+		clearTimeout(debugClickTimeout);
+		debugClickCount++;
+		if(debugClickCount > 7) {
+			$("#debugButton").show();
+			clearTimeout(debugButtonTimeout);
+			debugButtonTimeout = setTimeout(function() {
+				$("#debugButton").hide();
+			}, 5000);
 			debugClickCount = 0;
-		}, 2000);
-	}
-});
+		} else {
+			debugClickTimeout = setTimeout(function() {
+				debugClickCount = 0;
+			}, 2000);
+		}
+	});
+
+	$("#debugButton").click(function() {
+		$("#debugButton").hide();
+		localforage.setItem('debugEnable', true);
+	    DEBUG_MODE = true;
+	    setUpFutureDate();
+	    $("#debug-panel").show();
+	});
+}
 
 $("#exitDebug").click(function() {
 	localforage.removeItem('debugEnable');
+	localforage.removeItem('daysInFuture');
 	$("#resetNote").html("Debug disabled. Reload/reopen app to return to normal.");
 });

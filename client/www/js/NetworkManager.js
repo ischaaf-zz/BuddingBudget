@@ -54,21 +54,25 @@ var NetworkManager = function(getData, dataKeys, readyCallback) {
 		};
 
 		var setLastModified = function(err, val) {
+			console.log("lastModified fetched. Value = '" + val + "'");
 			lastModified = val;
 			callReady();
 		};
 
 		var setUsername = function(err, val) {
+			console.log("credentials.username fetched. Value = '" + val + "'");
 			credentials.user = val;
 			callReady();
 		};
 
 		var setPassword = function(err, val) {
+			console.log("credentials.password fetched. Value = '" + val + "'");
 			credentials.password = val;
 			callReady();
 		};
 
 		var setName = function(err, val) {
+			console.log("credentials.name fetched. Value = '" + val + "'");
 			credentials.name = val;
 			callReady();
 		};
@@ -89,6 +93,7 @@ var NetworkManager = function(getData, dataKeys, readyCallback) {
 
 	function updateLastModified(newDate){
 		lastModified = newDate;
+		console.log("lastModified set. Value = '" + newDate + "'");
 		localforage.setItem('lastModified', newDate);
 	}
 
@@ -110,7 +115,10 @@ var NetworkManager = function(getData, dataKeys, readyCallback) {
 			localforage.setItem('username', user);
 			localforage.setItem('password', pass);
 			localforage.setItem('name', res.name);
-			console.log("setting credentials to: (" + user + ", " + pass + ")");
+			console.log(res);
+			console.log("credentials.username set. Value = '" + user + "'");
+			console.log("credentials.password set. Value = '" + pass + "'");
+			console.log("credentials.name set. Value = '" + res.name + "'");
 			credentials.user = user;
 			credentials.password = pass;
 			credentials.name = res.name;
@@ -151,6 +159,7 @@ var NetworkManager = function(getData, dataKeys, readyCallback) {
 	};
 
 	this.getLoggedInUser = function() {
+		console.log("call to getLoggedInUser");
 		return {username: credentials.user, name: credentials.name};
 	};
 

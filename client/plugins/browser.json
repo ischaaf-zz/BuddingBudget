@@ -18,6 +18,9 @@
         },
         "de.appplant.cordova.plugin.local-notification": {
             "PACKAGE_NAME": "com.phonegap.buddingbudget"
+        },
+        "cordova-plugin-statusbar": {
+            "PACKAGE_NAME": "com.phonegap.buddingbudget"
         }
     },
     "dependent_plugins": {}

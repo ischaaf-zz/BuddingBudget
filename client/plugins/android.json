@@ -8,16 +8,16 @@
     },
     "installed_plugins": {
         "cordova-plugin-app-event": {
-            "PACKAGE_NAME": "com.phonegap.helloworld"
+            "PACKAGE_NAME": "com.phonegap.buddingbudget"
         },
         "cordova-plugin-device": {
-            "PACKAGE_NAME": "com.phonegap.helloworld"
+            "PACKAGE_NAME": "com.phonegap.buddingbudget"
         },
         "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "com.phonegap.helloworld"
+            "PACKAGE_NAME": "com.phonegap.buddingbudget"
         },
         "de.appplant.cordova.plugin.local-notification": {
-            "PACKAGE_NAME": "com.phonegap.helloworld"
+            "PACKAGE_NAME": "com.phonegap.buddingbudget"
         }
     },
     "dependent_plugins": {}

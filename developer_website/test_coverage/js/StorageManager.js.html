@@ -20,24 +20,24 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">85.96% </span>
+        <span class="strong">86.07% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>98/114</span>
+        <span class='fraction'>105/122</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">66.67% </span>
+        <span class="strong">66.18% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>44/66</span>
+        <span class='fraction'>45/68</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">71.43% </span>
+        <span class="strong">68.18% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>15/21</span>
+        <span class='fraction'>15/22</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">85.96% </span>
+        <span class="strong">86.07% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>98/114</span>
+        <span class='fraction'>105/122</span>
       </div>
     </div>
   </div>
@@ -282,7 +282,21 @@
 237
 238
 239
-240</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -405,6 +419,9 @@
 <span class="cline-any cline-yes">15×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15×</span>
 <span class="cline-any cline-yes">15×</span>
 <span class="cline-any cline-yes">15×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -430,6 +447,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">93×</span>
+<span class="cline-any cline-yes">93×</span>
 <span class="cline-any cline-yes">93×</span>
 <span class="cline-any cline-yes">93×</span>
 <span class="cline-any cline-yes">93×</span>
@@ -458,17 +477,26 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">117×</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">117×</span>
+<span class="cline-any cline-yes">117×</span>
+<span class="cline-any cline-yes">117×</span>
+<span class="cline-any cline-yes">117×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -533,7 +561,7 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 	// Creates a new recurringManager and gives it the hooks it needs to
 	// update data.
 	var recurringManager = new RecurringManager(<span class="fstat-no" title="function not covered" >function(val) {</span>
-<span class="cstat-no" title="statement not covered" >		if(saveData("assets", dataManager.getData('assets') + val, true)) {</span>
+<span class="cstat-no" title="statement not covered" >		if(saveData("assets", dataManager.getData('assets') + val, false)) {</span>
 <span class="cstat-no" title="statement not covered" >			networkManager.updateAssets(dataManager.getData('assets') + val);</span>
 		}
 	}, <span class="fstat-no" title="function not covered" >function(val, entry) {</span>
@@ -643,6 +671,9 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 		if(index === -1) {
 			callFunc(failure, ["entry with name " + name + " does not exist"]);
 		} else {
+			<span class="missing-if-branch" title="if path not taken" >I</span>if(isToday(new Date(newVal.nextTime))) {
+<span class="cstat-no" title="statement not covered" >				newVal.nextTime = findNextTime(newVal);</span>
+			}
 			data[index] = newVal;
 			<span class="missing-if-branch" title="else path not taken" >E</span>if(saveData(category, data)) {
 				networkManager.changeEntry(category, name, newVal);
@@ -669,7 +700,9 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 	// Saves data to the data cache, phonegap localStorage,
 	// and the cloud storage (once we figure that out)
 	function saveData(key, val, skipRecalculation) {
+		console.log("Setting: " + key);
 		<span class="missing-if-branch" title="else path not taken" >E</span>if(dataManager.setData(key, val, skipRecalculation)) {
+			console.log("Key set: " + key);
 			<span class="missing-if-branch" title="else path not taken" >E</span>if(PERSIST_DATA) {
 				localforage.setItem(key, val);
 			}
@@ -696,11 +729,18 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 		recurringManager.newDay();
 	});
 &nbsp;
+	// If the budget changes, update tomorrowRollover in our local storage
+	dataManager.registerListener('budget', <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >		saveData('tomorrowRollover', dataManager.getData('tomorrowRollover'), true);</span>
+	});
+&nbsp;
 	// Fetch from network storage. If the fetch succeeds and there is new
 	// data, replace what we have.
 	// In the future, this will need to be expanded.
-	<span class="missing-if-branch" title="if path not taken" >I</span>if(NETWORK_ENABLED) {
-<span class="cstat-no" title="statement not covered" >		networkManager.fetchInitialData(<span class="fstat-no" title="function not covered" >function(data) {</span></span>
+	<span class="missing-if-branch" title="else path not taken" >E</span>if(NETWORK_ENABLED) {
+		console.log("Registering listener nor network");
+		networkManager.registerListener('saveData', saveData);
+		networkManager.fetchInitialData(<span class="fstat-no" title="function not covered" >function(data) {</span>
 			// check against phonegap storage, update phonegap
 			// if newer, and dataManager from that.
 <span class="cstat-no" title="statement not covered" >			for(var key in data) {</span>
@@ -709,6 +749,8 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 		}, <span class="fstat-no" title="function not covered" >function() {</span>
 <span class="cstat-no" title="statement not covered" >			console.log("FAILED TO GET NETWORK DATA");</span>
 		});
+&nbsp;
+		
 	}
 &nbsp;
 	// fetch from Phonegap storage, send each data type to dataManager
@@ -766,7 +808,7 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Feb 26 2016 02:26:27 GMT-0800 (PST)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Mar 08 2016 12:51:36 GMT-0800 (PST)
 </div>
 </div>
 <script src="../prettify.js"></script>

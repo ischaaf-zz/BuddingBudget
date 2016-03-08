@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for js/ui/TrackedSpendingUI.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">js/ui/</a> TrackedSpendingUI.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">10.34% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>3/29</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/9</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/7</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">10.34% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>3/29</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="fstat-no" title="function not covered" >function TrackedSpendingUI(getData, setDataListener, notifyListeners) {</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	var tracked;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	$("#buttonTrack").click(<span class="fstat-no" title="function not covered" >function() {</span></span>
+<span class="cstat-no" title="statement not covered" >		var amount = parseInt($("#setTrack").val());</span>
+<span class="cstat-no" title="statement not covered" >		var budget = getData("budget");</span>
+<span class="cstat-no" title="statement not covered" >		var day = (new Date()).getTime();</span>
+<span class="cstat-no" title="statement not covered" >		tracked = new TrackEntry(amount, budget, day);</span>
+		
+<span class="cstat-no" title="statement not covered" >		var spendType = "distribute";</span>
+		
+		//check if over/under spent
+<span class="cstat-no" title="statement not covered" >		var overUnder = budget - amount;</span>
+<span class="cstat-no" title="statement not covered" >		if((overUnder &gt; 0 || overUnder &lt; 0) &amp;&amp; amount &gt;= 0) {</span>
+<span class="cstat-no" title="statement not covered" >			$("#overUnderPopup").popup("open");</span>
+		} else {
+<span class="cstat-no" title="statement not covered" >			notifyTrackSpend(tracked, spendType);</span>
+		}
+		
+<span class="cstat-no" title="statement not covered" >		document.getElementById("setTrack").value = "";</span>
+	});
+	
+	//get selected radio button
+<span class="cstat-no" title="statement not covered" >	$("#submitOverUnder").click(<span class="fstat-no" title="function not covered" >function() {</span></span>
+<span class="cstat-no" title="statement not covered" >		var spendType = $("input[name='ou']:checked").val();</span>
+<span class="cstat-no" title="statement not covered" >		notifyTrackSpend(tracked, spendType);</span>
+	});
+	
+<span class="fstat-no" title="function not covered" >	function notifyTrackSpend(tracked, spendType) {</span>
+<span class="cstat-no" title="statement not covered" >		notifyListeners("trackSpending", [tracked, spendType, <span class="fstat-no" title="function not covered" >function() {</span></span>
+<span class="cstat-no" title="statement not covered" >			$("#titleText").notify("TRACK SPENDING SUCCESS", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});</span>
+		}, <span class="fstat-no" title="function not covered" >function(message) {</span>
+<span class="cstat-no" title="statement not covered" >			$("#titleText").notify("FAILURE: " + message, {position:"bottom center", autoHideDelay:1500, arrowShow:false});</span>
+		}]);
+	}
+&nbsp;
+	//load track spending
+<span class="fstat-no" title="function not covered" >	function fetchTrackedEntry() {</span>
+<span class="cstat-no" title="statement not covered" >		var track = getData("trackedEntry");</span>
+<span class="cstat-no" title="statement not covered" >		if(typeof track.amount === "undefined" || track.amount === null) {</span>
+<span class="cstat-no" title="statement not covered" >			$("#prevSpending").html("$0");</span>
+<span class="cstat-no" title="statement not covered" >			$("#lastUpdateSpending").html("Last Update: Never Set");</span>
+		} else {
+<span class="cstat-no" title="statement not covered" >			$("#prevSpending").html("$" + track.amount);</span>
+<span class="cstat-no" title="statement not covered" >			$("#lastUpdateSpending").html("Last Update: " + new Date(track.day).toDateString());</span>
+		}
+	}
+	
+<span class="cstat-no" title="statement not covered" >	setDataListener("trackedEntry", fetchTrackedEntry);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	fetchTrackedEntry();</span>
+&nbsp;
+}</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Mar 08 2016 12:51:36 GMT-0800 (PST)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

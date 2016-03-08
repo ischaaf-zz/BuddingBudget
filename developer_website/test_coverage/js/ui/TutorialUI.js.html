@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for js/ui/TutorialUI.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">js/ui/</a> TutorialUI.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">11.59% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>8/69</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/8</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/22</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">11.59% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>8/69</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="fstat-no" title="function not covered" >function TutorialUI(isTutorial, registerCallback, pageTransitions) {</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	this.tutorialChangePage = <span class="fstat-no" title="function not covered" >function(pageID, callback) {</span></span>
+<span class="cstat-no" title="statement not covered" >		if(!isTutorial) {</span>
+<span class="cstat-no" title="statement not covered" >			pageTransitions.switchPage(pageID, callback);</span>
+		}
+	};
+&nbsp;
+<span class="fstat-no" title="function not covered" >	function joyStart(name) {		</span>
+<span class="cstat-no" title="statement not covered" >		$(name).joyride({</span>
+			autoStart : true,
+			modal: true,
+			postRideCallback: <span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >				$(this).joyride('destroy');</span>
+			}
+		});
+	}
+&nbsp;
+<span class="fstat-no" title="function not covered" >	function changePage(pageID, name, callback) {</span>
+<span class="cstat-no" title="statement not covered" >		pageTransitions.switchPage(pageID, <span class="fstat-no" title="function not covered" >function() {</span></span>
+<span class="cstat-no" title="statement not covered" >			joyStart(name);</span>
+<span class="cstat-no" title="statement not covered" >			callFunc(callback);</span>
+		});
+	}
+&nbsp;
+<span class="fstat-no" title="function not covered" >	function removeCurtain() {</span>
+<span class="cstat-no" title="statement not covered" >		$("#curtain").hide();</span>
+<span class="cstat-no" title="statement not covered" >		$("#main").fadeIn('fast');</span>
+	}
+&nbsp;
+<span class="fstat-no" title="function not covered" >	function mainPageSetup() {</span>
+<span class="cstat-no" title="statement not covered" >		changePage("page-main", false, removeCurtain);</span>
+	}
+	
+<span class="fstat-no" title="function not covered" >	function tutorialSetup() {</span>
+<span class="cstat-no" title="statement not covered" >		changePage("page-tutorial", false, removeCurtain);</span>
+<span class="cstat-no" title="statement not covered" >		$("#page-tutorial").show();</span>
+<span class="cstat-no" title="statement not covered" >		$("#menuBar").hide();</span>
+		
+<span class="cstat-no" title="statement not covered" >		$("#yesTutorial").click(<span class="fstat-no" title="function not covered" >function() {</span></span>
+<span class="cstat-no" title="statement not covered" >			changePage("page-login", "#joyRideLogin");</span>
+<span class="cstat-no" title="statement not covered" >			showButtons();</span>
+		});
+		
+<span class="cstat-no" title="statement not covered" >		$("#page-login-tutorial").click(<span class="fstat-no" title="function not covered" >function() {</span></span>
+<span class="cstat-no" title="statement not covered" >			changePage("page-assets", "#joyRideAssets");</span>
+		});
+		
+<span class="cstat-no" title="statement not covered" >		$("#page-assets-tutorial").click(<span class="fstat-no" title="function not covered" >function() {</span></span>
+<span class="cstat-no" title="statement not covered" >			changePage("page-savings", "#joyRideSavings");</span>
+		});
+		
+<span class="cstat-no" title="statement not covered" >		$("#page-savings-tutorial").click(<span class="fstat-no" title="function not covered" >function() {</span></span>
+<span class="cstat-no" title="statement not covered" >			changePage("page-income", "#joyRideIncome");</span>
+		});
+		
+<span class="cstat-no" title="statement not covered" >		$("#page-income-tutorial").click(<span class="fstat-no" title="function not covered" >function() {</span></span>
+<span class="cstat-no" title="statement not covered" >			changePage("page-charges", "#joyRideCharges");</span>
+		});
+		
+<span class="cstat-no" title="statement not covered" >		$("#page-charges-tutorial").click(<span class="fstat-no" title="function not covered" >function() {</span></span>
+<span class="cstat-no" title="statement not covered" >			changePage("page-options", "#joyRideOptions");</span>
+		});
+		
+<span class="cstat-no" title="statement not covered" >		$("#page-options-tutorial").click(<span class="fstat-no" title="function not covered" >function() {</span></span>
+<span class="cstat-no" title="statement not covered" >			changePage("page-tracking", "#joyRideTracking");</span>
+		});
+		
+<span class="cstat-no" title="statement not covered" >		$("#page-tracking-tutorial").click(<span class="fstat-no" title="function not covered" >function() {</span></span>
+<span class="cstat-no" title="statement not covered" >			changePage("page-main");</span>
+<span class="cstat-no" title="statement not covered" >			hideButtons();</span>
+<span class="cstat-no" title="statement not covered" >			$("#menuBar").show();</span>
+<span class="cstat-no" title="statement not covered" >			isTutorial = false;</span>
+		});
+	}
+	
+<span class="fstat-no" title="function not covered" >	function hideButtons() {</span>
+<span class="cstat-no" title="statement not covered" >		$("#page-assets-tutorial").hide();</span>
+<span class="cstat-no" title="statement not covered" >		$("#page-savings-tutorial").hide();</span>
+<span class="cstat-no" title="statement not covered" >		$("#page-income-tutorial").hide();</span>
+<span class="cstat-no" title="statement not covered" >		$("#page-charges-tutorial").hide();</span>
+<span class="cstat-no" title="statement not covered" >		$("#page-options-tutorial").hide();</span>
+<span class="cstat-no" title="statement not covered" >		$("#page-login-tutorial").hide();</span>
+<span class="cstat-no" title="statement not covered" >		$("#page-tracking-tutorial").hide();</span>
+	}
+	
+<span class="fstat-no" title="function not covered" >	function showButtons() {</span>
+		//$("#page-assets-tutorial").show();
+<span class="cstat-no" title="statement not covered" >		$("#page-savings-tutorial").show();</span>
+<span class="cstat-no" title="statement not covered" >		$("#page-income-tutorial").show();</span>
+<span class="cstat-no" title="statement not covered" >		$("#page-charges-tutorial").show();</span>
+		//$("#page-options-tutorial").show();
+<span class="cstat-no" title="statement not covered" >		$("#page-login-tutorial").show();</span>
+<span class="cstat-no" title="statement not covered" >		$("#page-tracking-tutorial").show();</span>
+	}
+&nbsp;
+	// If we're in tutorial mode, show the next button once
+	// we've entered a valid asset value
+<span class="cstat-no" title="statement not covered" >	registerCallback('assetsUpdatedSuccess', <span class="fstat-no" title="function not covered" >function() {</span></span>
+<span class="cstat-no" title="statement not covered" >		if(isTutorial) {</span>
+<span class="cstat-no" title="statement not covered" >			$("#page-assets-tutorial").show();</span>
+		}
+	});
+&nbsp;
+	// If we're in tutorial mode, show the end date button
+	// once we've entered an end date button
+<span class="cstat-no" title="statement not covered" >	registerCallback('endDateChangedSuccess', <span class="fstat-no" title="function not covered" >function() {</span></span>
+<span class="cstat-no" title="statement not covered" >		if(isTutorial) {</span>
+<span class="cstat-no" title="statement not covered" >			$("#page-options-tutorial").show();</span>
+			//isTutorial = false;
+		}
+	});
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	$("#joyPop").hide();</span>
+<span class="cstat-no" title="statement not covered" >	hideButtons();</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >	if(isTutorial) {</span>
+		//setup Tutorial
+		
+<span class="cstat-no" title="statement not covered" >		tutorialSetup();</span>
+		
+<span class="cstat-no" title="statement not covered" >		$("#noTutorial").click(<span class="fstat-no" title="function not covered" >function() {</span></span>
+<span class="cstat-no" title="statement not covered" >			pageTransitions.switchPage("page-main");</span>
+<span class="cstat-no" title="statement not covered" >			$("#menuBar").show();</span>
+<span class="cstat-no" title="statement not covered" >			isTutorial = false;</span>
+		});
+	} else {
+<span class="cstat-no" title="statement not covered" >		mainPageSetup();</span>
+	}
+&nbsp;
+}</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Mar 08 2016 12:51:36 GMT-0800 (PST)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

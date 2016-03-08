@@ -1,14 +1,14 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Code coverage report for js/UIView.js</title>
+    <title>Code coverage report for js/ui/UIView.js</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="../prettify.css" />
-    <link rel="stylesheet" href="../base.css" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style type='text/css'>
         .coverage-summary .sorter {
-            background-image: url(../sort-arrow-sprite.png);
+            background-image: url(../../sort-arrow-sprite.png);
         }
     </style>
 </head>
@@ -16,28 +16,28 @@
 <div class='wrapper'>
   <div class='pad1'>
     <h1>
-      <a href="../index.html">all files</a> / <a href="index.html">js/</a> UIView.js
+      <a href="../../index.html">all files</a> / <a href="index.html">js/ui/</a> UIView.js
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">9.09% </span>
+        <span class="strong">36% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>2/22</span>
+        <span class='fraction'>9/25</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">25% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>0/4</span>
+        <span class='fraction'>2/8</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">40% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>0/4</span>
+        <span class='fraction'>2/5</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">9.09% </span>
+        <span class="strong">36% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>2/22</span>
+        <span class='fraction'>9/25</span>
       </div>
     </div>
   </div>
@@ -84,19 +84,26 @@
 39
 40
 41
-42</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+42
+43
+44
+45
+46
+47
+48
+49</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
@@ -107,19 +114,26 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -128,16 +142,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// THIS FILE SHOULD BE THE ONLY PLACE THE DOM IS MANIPULATED
 // Handles sending new data and commands out from the DOM, and
 // putting new updated data into the DOM
-var UIView = <span class="fstat-no" title="function not covered" >function(getData, setDataListener, login, createUser, setNetworkListener) {</span>
+var UIView = function(getData, setDataListener, networkManager) {
 	// events: updateAssets, trackSpending, setOption, 
 	//		   addEntry, changeEntry, removeEntry
-<span class="cstat-no" title="statement not covered" >	var self = this;</span>
+	var self = this;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >	var callbacks = {};</span>
+	var callbacks = {};
 &nbsp;
-<span class="cstat-no" title="statement not covered" >	this.registerCallback = <span class="fstat-no" title="function not covered" >function(event, callback) {</span></span>
-<span class="cstat-no" title="statement not covered" >		callbacks[event] = callbacks[event] || [];</span>
-<span class="cstat-no" title="statement not covered" >		callbacks[event].push(callback);</span>
+	this.registerCallback = function(event, callback) {
+		callbacks[event] = callbacks[event] || [];
+		callbacks[event].push(callback);
 	};
 &nbsp;
 <span class="fstat-no" title="function not covered" >	function notifyListeners(event, args) {</span>
@@ -146,13 +160,15 @@ var UIView = <span class="fstat-no" title="function not covered" >function(getDa
 <span class="cstat-no" title="statement not covered" >			callbackArr[i].apply(window, args);</span>
 		}
 	}
-	
+&nbsp;
 	//initially loaded elements
-<span class="cstat-no" title="statement not covered" >	setDataListener('ready', <span class="fstat-no" title="function not covered" >function(isNew) {</span></span>
+	setDataListener('ready', <span class="fstat-no" title="function not covered" >function(isNew) {</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >		var pageTransitions = new PageTransitions();</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >		var entryHelpers = new EntryHelpers(notifyListeners);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >		var tutorialUI = new TutorialUI(isNew, self.registerCallback, pageTransitions);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >		new BudgetUI(getData, setDataListener);</span>
 <span class="cstat-no" title="statement not covered" >		new AssetsUI(getData, setDataListener, notifyListeners);</span>
@@ -161,9 +177,14 @@ var UIView = <span class="fstat-no" title="function not covered" >function(getDa
 <span class="cstat-no" title="statement not covered" >		new ChargeUI(getData, entryHelpers);</span>
 <span class="cstat-no" title="statement not covered" >		new IncomeUI(getData, entryHelpers);</span>
 <span class="cstat-no" title="statement not covered" >		new OptionsUI(getData, setDataListener, notifyListeners);</span>
-<span class="cstat-no" title="statement not covered" >		new TutorialUI(isNew, self.registerCallback, pageTransitions);</span>
-<span class="cstat-no" title="statement not covered" >		new LoginUI(login, createUser, pageTransitions.switchPage);</span>
-			
+<span class="cstat-no" title="statement not covered" >		new LoginUI(networkManager.login, networkManager.addUser, networkManager.logout, networkManager.getLoggedInUser, tutorialUI.tutorialChangePage);</span>
+	});
+&nbsp;
+	// Open side menu on swipe from left edge
+	$(window).on("swiperight", <span class="fstat-no" title="function not covered" >function(info) {</span>
+<span class="cstat-no" title="statement not covered" >		if(info.swipestart.coords[0] &lt; 50 &amp;&amp; $("#menuBar").is(':visible')) {</span>
+<span class="cstat-no" title="statement not covered" >			$("#menuBar").click();</span>
+		}
 	});
 	
 };</pre></td></tr>
@@ -172,10 +193,10 @@ var UIView = <span class="fstat-no" title="function not covered" >function(getDa
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Mar 03 2016 01:06:32 GMT-0800 (PST)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Mar 08 2016 12:51:36 GMT-0800 (PST)
 </div>
 </div>
-<script src="../prettify.js"></script>
+<script src="../../prettify.js"></script>
 <script>
 window.onload = function () {
         if (typeof prettyPrint === 'function') {
@@ -183,6 +204,6 @@ window.onload = function () {
         }
 };
 </script>
-<script src="../sorter.js"></script>
+<script src="../../sorter.js"></script>
 </body>
 </html>

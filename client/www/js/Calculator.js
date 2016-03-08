@@ -110,7 +110,6 @@ var Calculator = function() {
 				delete changes[dates[i]];
 			}
 		}
-		// TODO: error if negative at end
 
 		// sort date keys in changes again after deleting entries, this time increasing
 		dates = [];
@@ -141,7 +140,7 @@ var Calculator = function() {
 			var dailyAmount = amountAvailable / differenceDays;
 			var lastDatePossible = getLastDayPossible(dailyAmount);
 			if(isNaN(lastDatePossible.getTime())) {
-				console.log("ERROR");
+				console.log("ERROR: last date NaN");
 				return 0;
 			}
 			if(lastDatePossible >= endDate) {
@@ -156,7 +155,6 @@ var Calculator = function() {
 				var lastDate = today;
 				for(var i = 0; i < dates.length; i++) {
 					var differenceMilliseconds = dates[i] - lastDate.getTime();
-					// TODO: check if +1 needed for inclusive end date
 					var differenceDays = Math.round(differenceMilliseconds / MILLISECONDS_PER_DAY);
 					lastDate = new Date(Number(dates[i]));
 					amountAvailable -= dailyAmount * differenceDays;

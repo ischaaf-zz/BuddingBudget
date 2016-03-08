@@ -138,7 +138,7 @@ function OptionsUI(getData, setDataListener, notifyListeners) {
 	});
 	
 	$("#trackTime").change(function() {
-		var val = timeInputToDate($("#trackTime").val().getTime());
+		var val = timeInputToDate($("#trackTime").val()).getTime();
 		
 		notifyListeners("setOption", ["notifyNightTime", val, function() {
 			//success

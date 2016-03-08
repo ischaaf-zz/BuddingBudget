@@ -4,22 +4,20 @@ function LoginUI(login, createUser, logout, getLoggedInUser, switchPage) {
 	if(loggedUser.username) {
 		//already logged in
 		$("#titleText").notify("Logged in as " + loggedUser.username, {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
-		$("#logout").show();
 		$("#user").html(loggedUser.name);
-		$("#user").show();	
-		$("#page-login-button").hide();	
+		$("#logout").show();
+		$("#page-login-button").css('visibility','hidden');	
 	} else {
-		$("#logout").hide();
-		$("#user").hide();	
+		$("#logout").css('visibility','hidden');
+		$("#user").html("Not logged in");	
 		$("#page-login-button").show();	
 	}
 
 	$("#logout").click(function() {
 		logout();
-		$("#user").innertHTML = "Not logged in";
+		$("#logout").css('visibility','hidden');
+		$("#user").html("Not logged in");	
 		$("#page-login-button").show();
-		$("#logout").hide();
-		$("#user").hide();
 		switchPage("page-login");
 		$("#menuBar").click();
 		$("#titleText").notify("Successfully logged out.", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
@@ -34,11 +32,10 @@ function LoginUI(login, createUser, logout, getLoggedInUser, switchPage) {
 			document.getElementById("username").value = "";
 			document.getElementById("password").value = "";
 
-			$("#page-login-button").hide();
-			$("#logout").show();
+			$("#page-login-button").css('visibility','hidden');
+			$("#logout").css('visibility','visible');
 			var u = getLoggedInUser();
 			$("#user").html(u.name);
-			$("#user").show();
 
 			switchPage("page-main");
 			$("#page-login-tutorial").html("NEXT");
@@ -51,12 +48,6 @@ function LoginUI(login, createUser, logout, getLoggedInUser, switchPage) {
 			}
 		});
 
-	});
-
-	$("#password").keyup(function(event) {
-		if(event.keyCode == 13) {
-			$("#login").click();
-		}
 	});
 
 	$("#addUser").click(function() {
@@ -97,7 +88,7 @@ function LoginUI(login, createUser, logout, getLoggedInUser, switchPage) {
 				$("#newUsername").val("");
 				$("#newPassword").val("");
 				$("#newPasswordVerify").val("");
-				$("#page-login-button").hide();
+				$("#page-login-button").css('visibility','hidden');
 				$("#logout").show();
 				var u = getLoggedInUser();
 				$("#user").html(u.name);
@@ -123,37 +114,42 @@ function LoginUI(login, createUser, logout, getLoggedInUser, switchPage) {
 		$("#page-login-tutorial").html("NEXT");
 	});
 
+	//focus on password on enter
 	$("#username").keyup(function(event) {
 		if(event.keyCode == 13) {
 			$("#password").focus();
 		}
 	});
 
+	//login on enter
 	$("#password").keyup(function(event) {
 		if(event.keyCode == 13) {
 			$("#login").click();
 		}
 	});
 
-
+	//focus on new username on enter
 	$("#newName").keyup(function(event) {
 		if(event.keyCode == 13) {
 			$("#newUsername").focus();
 		}
 	});
 
+	//focus on new password on enter
 	$("#newUsername").keyup(function(event) {
 		if(event.keyCode == 13) {
 			$("#newPassword").focus();
 		}
 	});
 
+	//focus on verify password on enter
 	$("#newPassword").keyup(function(event) {
 		if(event.keyCode == 13) {
 			$("#newPasswordVerify").focus();
 		}
 	});
 
+	//login on enter
 	$("#newPasswordVerify").keyup(function(event) {
 		if(event.keyCode == 13) {
 			$("#addUser").click();

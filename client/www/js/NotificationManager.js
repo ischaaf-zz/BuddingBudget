@@ -85,6 +85,7 @@ var NotificationManager = function(getData, setDataListener) {
 	// Wrapper around cordova's notification setting api
 	function setNotification(id, title, text, time) {
 		try {
+			time.setSeconds(0);
 			cordova.plugins.notification.local.schedule({
 			    id: id,
 	            title: title,

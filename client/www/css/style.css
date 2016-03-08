@@ -30,6 +30,7 @@ p.small {
 	box-shadow: none !important;
 }
 
+
 .red {
 	color : red;
 }
@@ -56,4 +57,14 @@ p.small {
 	top : 0px;
 	width : 70px;
 	height : 70px;
+}
+
+#logout {
+	width: 58%;
+	float: left;
+}
+
+.nd2-sidepanel-profile {
+	background-color: #8BC34A;
+	padding: 10px;
 }

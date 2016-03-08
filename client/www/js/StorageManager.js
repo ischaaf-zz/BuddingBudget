@@ -120,7 +120,9 @@ var StorageManager = function(dataManager, networkManager, readyCallback) {
 		if(index === -1) {
 			callFunc(failure, ["entry with name " + name + " does not exist"]);
 		} else {
-			newVal.nextTime = data[index].nextTime;
+			if(isToday(new Date(newVal.nextTime))) {
+				newVal.nextTime = findNextTime(newVal);
+			}
 			data[index] = newVal;
 			if(saveData(category, data)) {
 				networkManager.changeEntry(category, name, newVal);

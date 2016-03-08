@@ -5,7 +5,6 @@ function LoginUI(login, createUser, logout, getLoggedInUser, switchPage) {
 		//already logged in
 		$("#titleText").notify("Logged in as " + loggedUser.username, {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
 		$("#user").html(loggedUser.name);
-		$("#user").show();	
 		$("#logout").show();
 		$("#page-login-button").css('visibility','hidden');	
 	} else {
@@ -16,9 +15,9 @@ function LoginUI(login, createUser, logout, getLoggedInUser, switchPage) {
 
 	$("#logout").click(function() {
 		logout();
-		$("#page-login-button").show();
-		$("#user").html("Not logged in");	
 		$("#logout").css('visibility','hidden');
+		$("#user").html("Not logged in");	
+		$("#page-login-button").show();
 		switchPage("page-login");
 		$("#menuBar").click();
 		$("#titleText").notify("Successfully logged out.", {position:"bottom center", className:"success", autoHideDelay:1500, arrowShow:false});
@@ -49,12 +48,6 @@ function LoginUI(login, createUser, logout, getLoggedInUser, switchPage) {
 			}
 		});
 
-	});
-
-	$("#password").keyup(function(event) {
-		if(event.keyCode == 13) {
-			$("#login").click();
-		}
 	});
 
 	$("#addUser").click(function() {
@@ -121,37 +114,42 @@ function LoginUI(login, createUser, logout, getLoggedInUser, switchPage) {
 		$("#page-login-tutorial").html("NEXT");
 	});
 
+	//focus on password on enter
 	$("#username").keyup(function(event) {
 		if(event.keyCode == 13) {
 			$("#password").focus();
 		}
 	});
 
+	//login on enter
 	$("#password").keyup(function(event) {
 		if(event.keyCode == 13) {
 			$("#login").click();
 		}
 	});
 
-
+	//focus on new username on enter
 	$("#newName").keyup(function(event) {
 		if(event.keyCode == 13) {
 			$("#newUsername").focus();
 		}
 	});
 
+	//focus on new password on enter
 	$("#newUsername").keyup(function(event) {
 		if(event.keyCode == 13) {
 			$("#newPassword").focus();
 		}
 	});
 
+	//focus on verify password on enter
 	$("#newPassword").keyup(function(event) {
 		if(event.keyCode == 13) {
 			$("#newPasswordVerify").focus();
 		}
 	});
 
+	//login on enter
 	$("#newPasswordVerify").keyup(function(event) {
 		if(event.keyCode == 13) {
 			$("#addUser").click();

@@ -164,7 +164,7 @@ var NetworkManager = function(getData, dataKeys, readyCallback) {
 	};
 
 	this.fetchInitialData = function(success, failure) {
-		enqueueSend("GET", {}, "user?mode=full", function(data) {
+		enqueueSend("GET", {}, "user?mode=fullSingleTrack", function(data) {
 			console.log(data);
 			//lastModified = data.lastModified;
 			updateLastModified(data.lastModified);

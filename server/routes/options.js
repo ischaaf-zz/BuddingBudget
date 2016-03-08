@@ -21,8 +21,8 @@ router.put('/', function(req, res, next) {
     	params.entries["isNotifyMorning"] = utils.validateString(false, req.body.isNotifyMorning, onOffRegex);
     	params.entries["isNotifyNight"] = utils.validateString(false, req.body.isNotifyNight, onOffRegex);
     	params.entries["isNotifyAssets"] = utils.validateString(false, req.body.isNotifyAssets, onOffRegex);
-    	params.entries["notifyMorningTime"] = utils.validateNumber(false, req.body.notifyMorningTime);
-    	params.entries["notifyNightTime"] = utils.validateNumber(false, req.body.notifyNightTime);
+    	params.entries["notifyMorningTime"] = utils.validateDate(false, req.body.notifyMorningTime);
+    	params.entries["notifyNightTime"] = utils.validateDate(false, req.body.notifyNightTime);
     	params.entries["notifyAssetsPeriod"] = utils.validateString(false, req.body.notifyAssetsPeriod);
         params.entries["isEnableTracking"] = utils.validateString(false, req.body.isEnableTracking, onOffRegex);
         params.entries["minDailyBudget"] = utils.validateNumber(false, req.body.minDailyBudget);
@@ -34,9 +34,9 @@ router.put('/', function(req, res, next) {
     	if (params.entries["isNotifyAssets"].valid) 
     		user.data.options.isNotifyAssets = params.entries["isNotifyAssets"].value;
     	if (params.entries["notifyMorningTime"].valid) 
-    		user.data.options.notifyMorningTime = params.entries["notifyMorningTime"].value;
+    		user.data.options.notifyMorningTime = params.entries["notifyMorningTime"].value.getTime();
     	if (params.entries["notifyNightTime"].valid) 
-    		user.data.options.notifyNightTime = params.entries["notifyNightTime"].value;
+    		user.data.options.notifyNightTime = params.entries["notifyNightTime"].value.getTime();
     	if (params.entries["notifyAssetsPeriod"].valid) 
     		user.data.options.notifyAssetsPeriod = params.entries["notifyAssetsPeriod"].value;
         if (params.entries["isEnableTracking"].valid) 

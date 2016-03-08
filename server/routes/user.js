@@ -136,8 +136,8 @@ router.get('/', function(req, res, next) {
                 return;
             } else if (mode == 'fullSingleTrack') {
                 var last = user.data.entries[user.entries.length - 1];
-                user.data.entries = [];
-                user.data.entries.push(last);
+                delete user.data.entries;
+                user.data.trackedEntry = last;
                 res.json(user);
                 return;
             }

@@ -44,9 +44,9 @@ var NotificationManager = function(getData, setDataListener) {
 			notificationTime = copyTimeOfDay(notificationTime, new Date(options.notifyNightTime));
 			if(notificationTime < now) {
 				notificationTime.setDate(notificationTime.getDate() + 1);
-				setNotification(2, "Track Spending", "Tap here to track your spending", notificationTime);
+				setNotification(2, "Track Spending", "Please track your spending for the day", notificationTime);
 			} else {
-				setNotification(2, "Track Spending", "Tap here to track your spending", notificationTime);
+				setNotification(2, "Track Spending", "Please track your spending for the day", notificationTime);
 			}
 		}
 
@@ -90,6 +90,7 @@ var NotificationManager = function(getData, setDataListener) {
 	            title: title,
 	            text: text,
 	            at: time,
+	            icon: "file://img/icon.png"
 			});
 		} catch (e) {
 			console.log("Setting Notification for time " + time);

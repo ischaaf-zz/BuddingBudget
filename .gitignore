@@ -1,4 +1,9 @@
-client/platforms
+client/platforms/*
+!client/platforms/android
+
+client/platforms/android/*
+!client/platforms/android/res
+
 client/node_modules
 client/bin
 Thumbs.db

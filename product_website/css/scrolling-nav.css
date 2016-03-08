@@ -46,6 +46,7 @@ section {
     padding-right: 15vh;
 }
 
-section:nth-child(even) { background: #eee; }
+section:nth-child(even) { background: #a9d279
+; }
 section:nth-child(odd) { background: #fff; }
 

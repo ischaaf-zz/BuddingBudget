@@ -293,15 +293,15 @@ describe("StorageManager", function() {
                     succeedNotFail();
 
                     it("should set changed data", function() {
-                        expect(mockData.setData).toHaveBeenCalledWith(category, [{name: "nameVal2", nextTime: undefined}], undefined);
+                        expect(mockData.setData).toHaveBeenCalledWith(category, [{name: "nameVal2"}], undefined);
                     });
 
                     it("should update localforage", function() {
-                        expect(localforage.setItem).toHaveBeenCalledWith(category, [{name: "nameVal2", nextTime: undefined}]);
+                        expect(localforage.setItem).toHaveBeenCalledWith(category, [{name: "nameVal2"}]);
                     });
 
                     it("should update NetworkManager", function() {
-                        expect(mockNetwork.changeEntry).toHaveBeenCalledWith(category, "nameVal1", {name: "nameVal2", nextTime: undefined});
+                        expect(mockNetwork.changeEntry).toHaveBeenCalledWith(category, "nameVal1", {name: "nameVal2"});
                     })
 
                 });

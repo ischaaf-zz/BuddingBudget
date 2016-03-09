@@ -72,15 +72,11 @@ var UIController = function(getData, storageManager, registerUICallback) {
 		// if so, call storageManager equivalent function
 		// else, call failure with error code
 		if(verifyCategory(category)) {
-			// if(verifyType(category, val)) {
-				if(!/^[a-z|A-Z|0-9|\s]+$/.test(val.name)) {
-					callFunc(failure, ["Invalid entry name"]);
-				} else {
-					storageManager.addEntry(category, val, success, failure);
-				}
-			// } else {
-			// 	callFunc(failure, ["Value is invalid type for category " + category]);
-			// }
+			if(!/^[a-zA-Z0-9_]+( [a-zA-Z0-9_]+)*$/.test(val.name)) {
+				callFunc(failure, ["Invalid entry name"]);
+			} else {
+				storageManager.addEntry(category, val, success, failure);
+			}
 		} else {
 			callFunc(failure, ["Category is invalid: " + category]);
 		}
@@ -91,7 +87,6 @@ var UIController = function(getData, storageManager, registerUICallback) {
 		// if so, call storageManager equivalent function
 		// else, call failure with error code
 		if(verifyCategory(category)) {
-			// if(verifyType(category, newVal)) {
 			if(!isNaN(newVal.amount)) {
 				if(newVal.amount >= 0) {
 					storageManager.changeEntry(category, name, newVal, success, failure);
@@ -101,9 +96,6 @@ var UIController = function(getData, storageManager, registerUICallback) {
 			} else {
 				callFunc(failure, ['Cannot set entry to NaN']);
 			}
-			// } else {
-			// 	callFunc(failure, ["Value is invalid type for category " + category]);
-			// }
 		} else {
 			callFunc(failure, ["Category is invalid: " + category]);
 		}
@@ -123,18 +115,6 @@ var UIController = function(getData, storageManager, registerUICallback) {
 	function verifyCategory(category) {
 		return category == "savings" || category == "charges" || category == "income" || category == "users";
 	}
-
-	// function verifyType(category, value) {
-	// 	if(category == "savings") {
-	// 		return value instanceof SavingsEntry;
-	// 	} else if(category == "charges") {
-	// 		return value instanceof ChargeEntry;
-	// 	} else if(category == "income") {
-	// 		return value instanceof IncomeEntry;
-	// 	} else {
-	// 		return false;
-	// 	}
-	// }
 
 	function isValidNumber(val) {
 		return (typeof(val) === 'number' && !isNaN(val));

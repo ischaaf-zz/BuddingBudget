@@ -73,7 +73,7 @@ var UIController = function(getData, storageManager, registerUICallback) {
 		// else, call failure with error code
 		if(verifyCategory(category)) {
 			// if(verifyType(category, val)) {
-				if(!/^[a-zA-Z0-9]+$/.test(val.name)) {
+				if(!/^[a-z|A-Z|0-9|\s]+$/.test(val.name)) {
 					callFunc(failure, ["Invalid entry name"]);
 				} else {
 					storageManager.addEntry(category, val, success, failure);
